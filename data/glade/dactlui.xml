@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glade-catalog version="3.14" name="dactl" library="libdactl-ui-0.4.so" depends="gtk+">
+
+  <glade-widget-classes>
+
+    <glade-widget-class name="DactlSimpleWidget" generic-name="dactlsimplewidget" title="Dactl Simple Widget"/>
+
+    <glade-widget-class name="DactlCustomWidget" generic-name="dactlcustomwidget" title="Dactl Custom Widget"/>
+
+    <glade-widget-class name="DactlCompositeWidget" generic-name="dactlcompositewidget" title="Dactl Composite Widget"/>
+
+    <glade-widget-class name="DactlBox" generic-name="dactlbox" title="Dactl Box"/>
+
+    <glade-widget-class name="DactlAxis" generic-name="dactlaxis" title="Dactl Axis"/>
+
+    <glade-widget-class name="DactlChart" generic-name="dactlchart" title="Dactl Chart"/>
+
+    <glade-widget-class name="DactlChartCanvas" generic-name="dactlchartcanvas" title="Dactl Chart Canvas"/>
+
+    <glade-widget-class name="DactlPolarChartCanvas" generic-name="dactlpolarchartcanvas" title="Dactl Polar Chart Canvas"/>
+
+    <glade-widget-class name="DactlAxis" generic-name="dactlchartaxis" title="Dactl Axis"/>
+
+    <glade-widget-class name="DactlStripChart" generic-name="dactlstripchart" title="Dactl Stipchart"/>
+
+    <glade-widget-class name="DactlStripChartCanvas" generic-name="dactlstripchartcanvas" title="Dactl Stripchart Canvas"/>
+
+    <glade-widget-class name="DactlPage" generic-name="dactlpage" title="Dactl Page"/>
+
+  </glade-widget-classes>
+
+  <glade-widget-group name="dactl-widgets" title="Dactl Widgets">
+    <glade-widget-class-ref name="DactlSimpleWidget"/>
+    <glade-widget-class-ref name="DactlCustomWidget"/>
+    <glade-widget-class-ref name="DactlCompositeWidget"/>
+    <glade-widget-class-ref name="DactlBox"/>
+    <glade-widget-class-ref name="DactlAxis"/>
+    <glade-widget-class-ref name="DactlChart"/>
+    <glade-widget-class-ref name="DactlChartCanvas"/>
+    <glade-widget-class-ref name="DactlPolarChartCanvas"/>
+    <glade-widget-class-ref name="DactlAxis"/>
+    <glade-widget-class-ref name="DactlStripChart"/>
+    <glade-widget-class-ref name="DactlStripChartCanvas"/>
+    <glade-widget-class-ref name="DactlPage"/>
+  </glade-widget-group>
+
+</glade-catalog>

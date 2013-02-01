@@ -1,0 +1,303 @@
+/* Tango colors */
+@define-color butter1 #fce94f;
+@define-color butter2 #edd400;
+@define-color butter3 #c4a000;
+
+@define-color orange1 #fcaf3e;
+@define-color orange2 #f57900;
+@define-color orange3 #ce5c00;
+
+@define-color chocolate1 #e9b96e;
+@define-color chocolate2 #c17d11;
+@define-color chocolate3 #8f5902;
+
+@define-color chameleon1 #8ae234;
+@define-color chameleon2 #73d216;
+@define-color chameleon3 #4e9a06;
+
+@define-color skyblue1 #729fcf;
+@define-color skyblue2 #3465a4;
+@define-color skyblue3 #204a87;
+
+@define-color plum1 #ad7fa8;
+@define-color plum2 #75507b;
+@define-color plum3 #5c3566;
+
+@define-color scarletred1 #ef2929;
+@define-color scarletred2 #cc0000;
+@define-color scarletred3 #a40000;
+
+@define-color aluminium1 #eeeeec;
+@define-color aluminium2 #d3d7cf;
+@define-color aluminium3 #babdb6;
+@define-color aluminium4 #888a85;
+@define-color aluminium5 #555753;
+@define-color aluminium6 #2e3436;
+
+/* Application colors */
+@define-color dactl_bg_color shade (@theme_bg_color, 0.5);
+@define-color dactl_bg2_color mix (@theme_bg_color, @dactl_bg_color, 0.5);
+@define-color dactl_selected_color @skyblue2;
+@define-color dactl_alert_color @scarletred2;
+
+.readout {
+    border-width: 2px;
+    border-color: @tango_aluminum2;
+    border-style: solid;
+    background-color: @tango_aluminum3;
+    color: @tango_scarlet_red3;
+}
+
+.separator {
+    -GtkWidget-wide-separators: true;
+    -GtkWidget-separator-height: 1;
+}
+
+DactlChannelTreeView:selected {
+    background-color: @dactl_selected_color;
+    border-width: 1px 0 1px 0;
+    border-color: white;
+    border-style: solid;
+}
+
+.page {
+    /*background-color: @scarlet_red3;*/
+}
+
+.test0 {
+    background-color: @sky_blue1;
+}
+
+.test1 {
+    background-color: @sky_blue2;
+}
+
+.test2 {
+    background-color: @sky_blue3;
+}
+
+DactlChannelTreeView {
+    /*background-color: @plum1;*/
+}
+
+DactlPage GtkViewport {
+    padding: 5px 5px 5px 5px;
+}
+
+DactlPnid {
+    background-color: @aluminum2;
+}
+
+DactlChartCanvas {
+    background-color: @aluminum2;
+}
+
+DactlStripChartCanvas {
+    background-color: @aluminum2;
+}
+
+DactlLogControl .start-button {
+    /*
+     *background-image: -gtk-gradient(linear, left top, left bottom,
+     *                                from (shade(shade(@dactl_selected_color, 1.02), 1.05)),
+     *                                to (shade(shade(@dactl_selected_color, 1.02), 0.97)));
+     */
+}
+
+DactlLogControl .stop-button {
+    /*
+     *background-image: -gtk-gradient(linear, left top, left bottom,
+     *                                from (shade(shade(@dactl_alert_color, 1.02), 1.05)),
+     *                                to (shade(shade(@dactl_alert_color, 1.02), 0.97)));
+     */
+}
+
+/***************************/
+.destructive-action.button {
+    background-image: linear-gradient(to bottom,
+                                      @destructive_action_button_a,
+                                      @destructive_action_button_b);
+
+    color: @destructive_action_button_fg;
+}
+
+.destructive-action.button:hover {
+    background-image: linear-gradient(to bottom,
+                                      shade(@destructive_action_button_a, 1.10),
+                                      shade(@destructive_action_button_b, 1.05));
+}
+
+.destructive-action.button:active,
+.destructive-action.button:hover:active {
+    background-image: linear-gradient(to bottom,
+                                      @destructive_action_button_b,
+                                      @destructive_action_button_a);
+
+    color: @destructive_action_button_fg;
+}
+/***************************/
+
+.destructive-action.button {
+    text-shadow: 0 1px @destructive_action_button_shadow;
+    icon-shadow: 0 1px @destructive_action_button_shadow;
+}
+
+.destructive-action.button:active,
+.destructive-action.button:hover:active {
+    text-shadow: 0 1px shade(@destructive_action_button_shadow, 1.15);
+    icon-shadow: 0 1px shade(@destructive_action_button_shadow, 1.15);
+}
+
+.destructive-action.button:backdrop {
+    background-image: none;
+    text-shadow: none;
+    icon-shadow: none;
+    color: @theme_unfocused_text_color;
+}
+/***************************/
+
+.sidebar GtkTreeView:selected {
+    background-color: @dactl_selected_color;
+    border-width: 2px 8px 2px 0;
+    border-color: transparent;
+    border-image-source: url("icons/dactl-arrow.svg");
+    border-image-slice: 0 8 0 0;
+    border-image-width: 2px 8px 2px 0;
+    border-image-repeat: stretch;
+    border-style: solid;
+}
+
+.sidebar GtkTreeView {
+    -GtkTreeView-vertical-separator: 8;
+}
+
+.sidebar .cell {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.dactl-bg {
+    background-color: transparent;
+    background-image: none;
+}
+
+.dactl-property-name-label {
+    color: #bebebe;
+}
+
+.dactl-step-label {
+    color: #989898;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.dactl-source-label {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.dactl-graph-label {
+    font-size: 8px;
+    font-family: monospace;
+    color: #989898;
+}
+
+.dactl-source-nb {
+    background-color: alpha(#fff, 0.0);
+}
+
+.dactl-selected {
+    background-color: @dactl_selected_color;
+}
+
+.dactl-continue {
+    background-image: -gtk-gradient (linear,
+                                     left top, left bottom,
+                                     from (@dactl_selected_color),
+                                     to (darker (@dactl_selected_color)));
+}
+
+.dactl-continue:insensitive {
+    background-image: none;
+}
+
+/* Ensure the viewport is transparent so the background don't
+   show through the rounded corners */
+.dactl-menu GtkViewport {
+    background-image: none;
+    background-color: transparent;
+    border-style: none;
+}
+
+.dactl-menu-row {
+    -GtkWidget-focus-line-width: 0;
+    border-style: ridge none none none;
+    border-color: shade (@dactl_bg2_color, 0.7);
+    border-width: 2px 0 0 0;
+    box-shadow: none;
+    border-image: none;
+    background-image: none;
+    background-color: @dactl_bg2_color;
+    border-radius: 0;
+}
+
+.dactl-menu-row:nth-child(first) {
+    border-radius: 15px 15px 0 0;
+    border-style: none;
+}
+
+.dactl-menu-scrolled .dactl-menu-row:nth-child(first) {
+    border-radius: 0;
+}
+
+.dactl-menu > .dactl-menu-row:nth-child(last) {
+    border-radius: 0 0 15px 15px;
+}
+
+.dactl-menu-row:prelight, .dactl-menu-row:focus {
+    background-color: shade (@dactl_bg2_color, 1.2);
+}
+
+.dactl-menu-row:active {
+    background-color: @theme_selected_bg_color;
+}
+
+.dactl-menu-row *:active {
+    color: #ffffff;
+}
+
+.dactl-toplevel {
+    background-color: @theme_bg_color;
+}
+
+.dactl-empty-image {
+    color: #2e3436;
+    icon-shadow: 0 -1px rgba(0,0,0,0.5);
+}
+
+.dactl-empty-details-label {
+    color: #555753;
+}
+
+/* Settings window styles */
+GtkListBoxRow {
+    padding: 10px;
+}
+
+GtkBox .property-descriptions {
+    padding: 10px;
+}
+
+DactlPropertyBox {
+    padding: 10px;
+}
+
+DactlPropertyBox .property-nickname {
+    font-size: 10px;
+    font-weight: bold;
+}
+
+DactlPropertyBox .property-blurb {
+    font-size: 8px;
+    color: @theme_unfocused_fg_color;
+}

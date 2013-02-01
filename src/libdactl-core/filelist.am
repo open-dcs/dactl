@@ -1,0 +1,27 @@
+LIBDACTL_CORE_VAPI_SOURCE_FILES = \
+    dactl-abstract-config.vala \
+    dactl-application.vala \
+    dactl-application-model.vala \
+    dactl-application-view.vala \
+    dactl-application-controller.vala \
+    dactl-application-config.vala \
+    dactl-application-factory.vala \
+    dactl-buildable.vala \
+    dactl-cld-adapter.vala \
+    dactl-config.vala \
+    dactl-container.vala \
+    dactl-dataseries.vala \
+    dactl-dbus-interface.vala \
+    dactl-factory.vala \
+    dactl-log.vala \
+    dactl-meta-config.vala \
+    dactl-module-loader.vala \
+    dactl-object.vala \
+    dactl-plugin.vala \
+    dactl-plugin-loader.vala \
+    dactl-plugin-manager.vala \
+    dactl-point.vala \
+    dactl-view.vala
+
+LIBDACTL_CORE_NONVAPI_SOURCE_FILES = \
+    dactl-plugin-information.vala

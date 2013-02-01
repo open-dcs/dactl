@@ -1,0 +1,46 @@
+language: c
+compiler: gcc
+
+sudo: required
+dist: trusty
+
+env:
+  global:
+    - MAKE_CMD="make -j2"
+
+before_script:  .ci/before_script.sh
+script:         .ci/script.sh
+
+addons:
+  apt:
+    sources:
+      - sourceline: 'ppa:vala-team/ppa'
+      - sourceline: 'ppa:webkit-team/ppa'
+    packages:
+      - autoconf
+      - automake
+      - autoconf-archive
+      - gnome-common
+      - gobject-introspection
+      - libglib2.0-dev
+      - libjson-glib-dev
+      - libgee-0.8-dev
+      - libvala-0.30-dev
+      - libgsl0-dev
+      - libsqlite3-dev
+      - libxml2-dev
+      - libmatheval-dev
+      - libmodbus-dev
+      - libcomedi-dev
+      - librsvg2-dev
+      - libgirepository1.0-dev
+      - libpeas-dev
+      - libsoup2.4-dev
+      - libgtk-3-dev
+      - libgtksourceview-3.0-dev
+      - python-gi-dev
+      - valac-0.30
+      - webkit2gtk-4.0-dev
+
+notifications:
+  slack: opendcs:3d3YMfezT8S8vBHlpyJvTAic
