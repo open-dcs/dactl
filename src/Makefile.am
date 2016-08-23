@@ -1,14 +1,15 @@
 SUBDIRS = \
-	libdactl-core \
-	libdactl-net \
-	libdactl-log \
-	libdactl-daq \
-	libdactl-cli \
-	libdactl-ui \
-	dactl \
-	dactl-daq \
-	dactl-log \
-	dactl-plugin \
+	libdcs-core \
+	libdcs-net \
+	libdcs-log \
+	libdcs-daq \
+	libdcs-cli \
+	libdcs-ui \
+	dcs \
+	dcsg \
+	dcs-daq \
+	dcs-log \
+	dcs-plugin \
 	plugins \
 	backends \
 	devices \

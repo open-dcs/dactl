@@ -4,7 +4,7 @@
 
   <!-- Widget hierarchy:
 
-    window = new Dactl.ApplicationWindow ();
+    window = new Dcsg.ApplicationWindow ();
      |
      |-> main_vbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
      |     |
@@ -14,7 +14,7 @@
      |     |        |
      |     |        |-> settings = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
      |     |        |    |
-     |     |        |    |-> sidebar = new Dactl.Sidebar ();
+     |     |        |    |-> sidebar = new Dcsg.Sidebar ();
      |     |        |    |
      |     |        |    |-> ...
      |     |        |
@@ -22,18 +22,18 @@
      |     |        |
      |     |        |-> export = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
      |     |        |
-     |     |        |-> (generated page list) = new Dactl.Page ();
+     |     |        |-> (generated page list) = new Dcsg.Page ();
      |     |        |
      |     |        |-> ...
      |
-     |-> topbar = new Dactl.Topbar (); // as titlebar
+     |-> topbar = new Dcsg.Topbar (); // as titlebar
 
   -->
 
-  <template class="DactlUIApplicationView" parent="GtkApplicationWindow">
+  <template class="DcsgApplicationView" parent="GtkApplicationWindow">
     <property name="visible">False</property>
     <property name="show-menubar">False</property>
-    <property name="title" translatable="yes">Dactl</property>
+    <property name="title" translatable="yes">OpenDCS GUI</property>
     <signal name="delete-event" handler="delete_event_cb"/>
     <signal name="configure-event" handler="configure_event_cb"/>
     <signal name="window-state-event" handler="window_state_event_cb"/>
@@ -135,7 +135,7 @@
                     <property name="spacing">0</property>
 
                     <child>
-                      <object class="DactlSidebar" id="sidebar">
+                      <object class="DcsgSidebar" id="sidebar">
                         <property name="visible">True</property>
                       </object>
                     </child>
@@ -147,19 +147,19 @@
                 </child>
 
                 <child>
-                  <object class="DactlLoader" id="loader">
+                  <object class="DcsgLoader" id="loader">
                     <property name="visible">True</property>
                   </object>
                 </child>
 
                 <child>
-                  <object class="DactlConfigurationEditor" id="configuration">
+                  <object class="DcsgConfigurationEditor" id="configuration">
                     <property name="visible">True</property>
                   </object>
                 </child>
 
                 <child>
-                  <object class="DactlCsvExport" id="export">
+                  <object class="DcsgCsvExport" id="export">
                     <property name="visible">True</property>
                   </object>
                 </child>
@@ -173,7 +173,7 @@
     </child>
 
     <child type="titlebar">
-      <object class="DactlTopbar" id="topbar">
+      <object class="DcsgTopbar" id="topbar">
         <property name="visible">True</property>
       </object>
     </child>

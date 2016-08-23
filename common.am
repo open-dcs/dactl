@@ -1,4 +1,4 @@
-shareddir = $(datadir)/dactl
+shareddir = $(datadir)/dcs
 sysconfigdir = $(sysconfdir)
 desktopdir = $(datadir)/applications
 plugindir = @PLUGIN_DIR@
@@ -6,55 +6,55 @@ devicedir = @DEVICE_DIR@
 backenddir = @BACKEND_DIR@
 extensiondir = @WEB_EXTENSION_DIR@
 
-libdactlcoredir = $(top_srcdir)/src/libdactl-core
-libdactlclidir = $(top_srcdir)/src/libdactl-cli
-libdactldaqdir = $(top_srcdir)/src/libdactl-daq
-libdactllogdir = $(top_srcdir)/src/libdactl-log
-libdactlnetdir = $(top_srcdir)/src/libdactl-net
-libdactluidir = $(top_srcdir)/src/libdactl-ui
+libdcscoredir = $(top_srcdir)/src/libdcs-core
+libdcsclidir = $(top_srcdir)/src/libdcs-cli
+libdcsdaqdir = $(top_srcdir)/src/libdcs-daq
+libdcslogdir = $(top_srcdir)/src/libdcs-log
+libdcsnetdir = $(top_srcdir)/src/libdcs-net
+libdcsuidir = $(top_srcdir)/src/libdcs-ui
 
 MAINTAINERCLEANFILES = Makefile.in
 
-DACTL_COMMON_DEFINES_CFLAGS = \
+DCS_COMMON_DEFINES_CFLAGS = \
 	-DDATADIR='"$(shareddir)"' \
 	-include config.h
 
-DACTL_COMMON_LIBDACTL_CORE_VALAFLAGS = \
-	--vapidir=$(libdactlcoredir) \
-	--pkg dactl-core-0.4
+DCS_COMMON_LIBDCS_CORE_VALAFLAGS = \
+	--vapidir=$(libdcscoredir) \
+	--pkg dcs-core-0.1
 
-DACTL_COMMON_LIBDACTL_CORE_CFLAGS = \
-	$(DACTL_COMMON_DEFINES_CFLAGS) \
-	-I$(top_builddir)/src/libdactl-core \
-	-I$(top_srcdir)/src/libdactl-core
+DCS_COMMON_LIBDCS_CORE_CFLAGS = \
+	$(DCS_COMMON_DEFINES_CFLAGS) \
+	-I$(top_builddir)/src/libdcs-core \
+	-I$(top_srcdir)/src/libdcs-core
 
-DACTL_COMMON_LIBDACTL_CORE_LIBS = \
-	$(top_builddir)/src/libdactl-core/libdactl-core-0.4.la
+DCS_COMMON_LIBDCS_CORE_LIBS = \
+	$(top_builddir)/src/libdcs-core/libdcs-core-0.1.la
 
-DACTL_COMMON_LIBDACTL_UI_VALAFLAGS = \
-	--vapidir=$(libdactluidir) \
-	--pkg dactl-ui-0.4 \
-	$(DACTL_COMMON_LIBDACTL_CORE_VALAFLAGS)
+DCS_COMMON_LIBDCS_UI_VALAFLAGS = \
+	--vapidir=$(libdcsuidir) \
+	--pkg dcs-ui-0.1 \
+	$(DCS_COMMON_LIBDCS_CORE_VALAFLAGS)
 
-DACTL_COMMON_LIBDACTL_UI_CFLAGS = \
-	$(DACTL_COMMON_LIBDACTL_CORE_CFLAGS) \
-	-I$(top_builddir)/src/libdactl-ui \
-	-I$(top_srcdir)/src/libdactl-ui
+DCS_COMMON_LIBDCS_UI_CFLAGS = \
+	$(DCS_COMMON_LIBDCS_CORE_CFLAGS) \
+	-I$(top_builddir)/src/libdcs-ui \
+	-I$(top_srcdir)/src/libdcs-ui
 
-DACTL_COMMON_LIBDACTL_UI_LIBS = \
-	$(DACTL_COMMON_LIBDACTL_CORE_LIBS) \
-	$(top_builddir)/src/libdactl-ui/libdactl-ui-0.4.la
+DCS_COMMON_LIBDCS_UI_LIBS = \
+	$(DCS_COMMON_LIBDCS_CORE_LIBS) \
+	$(top_builddir)/src/libdcs-ui/libdcs-ui-0.1.la
 
-DACTL_COMMON_CONFIG_VALAFLAGS = \
-	--vapidir=$(libdactlcoredir) \
-	--pkg dactl-config
+DCS_COMMON_CONFIG_VALAFLAGS = \
+	--vapidir=$(libdcscoredir) \
+	--pkg dcs-config
 
 # Note: This must always be the last one in *_VALAFLAGS,
 # because the -g needs to be at the end of VALAFLAGS to not break make dist.
-DACTL_COMMON_VALAFLAGS = \
-	$(DACTL_COMMON_CONFIG_VALAFLAGS) \
-	$(DACTL_COMMON_VALAFLAGS_PKG) \
-	$(DACTL_DEBUG_VALAFLAGS)
+DCS_COMMON_VALAFLAGS = \
+	$(DCS_COMMON_CONFIG_VALAFLAGS) \
+	$(DCS_COMMON_VALAFLAGS_PKG) \
+	$(DCS_DEBUG_VALAFLAGS)
 
 vala-clean:
 	rm -f `find . -name "*.stamp"`

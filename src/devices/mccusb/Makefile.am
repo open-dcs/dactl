@@ -2,42 +2,42 @@ if ENABLE_MCCUSB_DEVICE
 
 EXTRA_DIST = $(plugin_DATA)
 
-plugindir = $(libdir)/dactl/devices
-plugin_LTLIBRARIES = libdactl-device-mccusb.la
+plugindir = $(libdir)/dcs/devices
+plugin_LTLIBRARIES = libdcs-device-mccusb.la
 dist_plugin_DATA = mccusb.plugin
 
-BUILT_SOURCES = libdactl_device_mccusb_la_vala.stamp
+BUILT_SOURCES = libdcs_device_mccusb_la_vala.stamp
 
-libdactl_device_mccusb_la_vala.stamp: $(libdactl_device_mccusb_la_VALASOURCES)
+libdcs_device_mccusb_la_vala.stamp: $(libdcs_device_mccusb_la_VALASOURCES)
 	$(AM_V_GEN)$(VALAC) \
-		$(libdactl_device_mccusb_la_VALAFLAGS) \
-		$(addprefix $(srcdir)/,$(libdactl_device_mccusb_la_VALASOURCES)) \
+		$(libdcs_device_mccusb_la_VALAFLAGS) \
+		$(addprefix $(srcdir)/,$(libdcs_device_mccusb_la_VALASOURCES)) \
 		--ccode \
 		&& touch $@
 
-libdactl_device_mccusb_la_VALASOURCES = \
-	dactl-mccusb-device.vala \
+libdcs_device_mccusb_la_VALASOURCES = \
+	dcs-mccusb-device.vala \
 	$(NULL)
 
-EXTRA_DIST += $(libdactl_device_mccusb_la_VALASOURCES)
+EXTRA_DIST += $(libdcs_device_mccusb_la_VALASOURCES)
 
-nodist_libdactl_device_mccusb_la_SOURCES = \
-	dactl-mccusb-device.c \
+nodist_libdcs_device_mccusb_la_SOURCES = \
+	dcs-mccusb-device.c \
 	$(NULL)
 
-CLEANFILES = $(BUILT_SOURCES) $(nodist_libdactl_device_mccusb_la_SOURCES)
+CLEANFILES = $(BUILT_SOURCES) $(nodist_libdcs_device_mccusb_la_SOURCES)
 
-libdactl_device_mccusb_la_VALAFLAGS = \
+libdcs_device_mccusb_la_VALAFLAGS = \
 	$(DEVICE_VALAFLAGS) \
 	$(NULL)
 
-libdactl_device_mccusb_la_CFLAGS = \
+libdcs_device_mccusb_la_CFLAGS = \
 	-DVALA_VERSION=\""$(VALA_VERSION)"\" \
-	-DPACKAGE_DATADIR=\""$(datadir)/dactl-0.4"\" \
+	-DPACKAGE_DATADIR=\""$(datadir)/dcs-0.1"\" \
 	-DG_LOG_DOMAIN=\"mccusb-device\" \
-	-DGETTEXT_PACKAGE=\"dactl\" \
+	-DGETTEXT_PACKAGE=\"dcs\" \
 	$(DEVICE_CFLAGS) \
-	$(LIBDACTL_DAQ_CFLAGS) \
+	$(LIBDCS_DAQ_CFLAGS) \
 	-Wno-deprecated-declarations \
 	-Wno-discarded-qualifiers \
 	-Wno-implicit-function-declaration \
@@ -47,11 +47,11 @@ libdactl_device_mccusb_la_CFLAGS = \
 	-Wno-unused-function \
 	$(NULL)
 
-libdactl_device_mccusb_la_LIBADD = $(DEVICE_LIBS)
+libdcs_device_mccusb_la_LIBADD = $(DEVICE_LIBS)
 
-libdactl_device_mccusb_la_LDFLAGS = \
+libdcs_device_mccusb_la_LDFLAGS = \
 	$(DEVICE_LDFLAGS) \
-	$(LIBDACTL_DAQ_LDFLAGS) \
+	$(LIBDCS_DAQ_LDFLAGS) \
 	$(NULL)
 
 include $(top_srcdir)/src/devices/Makefile.device

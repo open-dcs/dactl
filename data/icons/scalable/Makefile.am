@@ -5,7 +5,7 @@ context = apps
 svgdir = $(themedir)/$(size)/$(context)
 
 svg_DATA = \
-	dactl.svg
+	dcs.svg
 
 EXTRA_DIST = \
 	$(svg_DATA)

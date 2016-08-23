@@ -2,39 +2,39 @@ if ENABLE_VALA_PLUGIN
 
 EXTRA_DIST = $(plugin_DATA)
 
-plugindir = $(libdir)/dactl/plugins
-plugin_LTLIBRARIES = libdactl-vala.la
+plugindir = $(libdir)/dcs/plugins
+plugin_LTLIBRARIES = libdcs-vala.la
 dist_plugin_DATA = vala.plugin
 
-BUILT_SOURCES = libdactl_vala_la_vala.stamp
+BUILT_SOURCES = libdcs_vala_la_vala.stamp
 
-libdactl_vala_la_vala.stamp: $(libdactl_vala_la_VALASOURCES)
+libdcs_vala_la_vala.stamp: $(libdcs_vala_la_VALASOURCES)
 	$(AM_V_GEN)$(VALAC) \
-		$(libdactl_vala_la_VALAFLAGS) \
-		$(addprefix $(srcdir)/,$(libdactl_vala_la_VALASOURCES)) \
+		$(libdcs_vala_la_VALAFLAGS) \
+		$(addprefix $(srcdir)/,$(libdcs_vala_la_VALASOURCES)) \
 		--ccode \
 		&& touch $@
 
-libdactl_vala_la_VALASOURCES = \
-	dactl-vala-plugin.vala \
+libdcs_vala_la_VALASOURCES = \
+	dcs-vala-plugin.vala \
 	$(NULL)
 
-EXTRA_DIST += $(libdactl_vala_la_VALASOURCES)
+EXTRA_DIST += $(libdcs_vala_la_VALASOURCES)
 
-nodist_libdactl_vala_la_SOURCES = \
-	dactl-vala-plugin.c \
+nodist_libdcs_vala_la_SOURCES = \
+	dcs-vala-plugin.c \
 	$(NULL)
 
-CLEANFILES = $(BUILT_SOURCES) $(nodist_libdactl_vala_la_SOURCES)
+CLEANFILES = $(BUILT_SOURCES) $(nodist_libdcs_vala_la_SOURCES)
 
-libdactl_vala_la_VALAFLAGS = \
+libdcs_vala_la_VALAFLAGS = \
 	$(PLUGIN_VALAFLAGS)
 
-libdactl_vala_la_CFLAGS = \
+libdcs_vala_la_CFLAGS = \
 	-DVALA_VERSION=\""$(VALA_VERSION)"\" \
-	-DPACKAGE_DATADIR=\""$(datadir)/dactl-0.4"\" \
+	-DPACKAGE_DATADIR=\""$(datadir)/dcs-0.1"\" \
 	-DG_LOG_DOMAIN=\"vala-plugin\" \
-	-DGETTEXT_PACKAGE=\"dactl\" \
+	-DGETTEXT_PACKAGE=\"dcs\" \
 	$(PLUGIN_CFLAGS) \
 	$(VALA_CFLAGS) \
 	-Wno-deprecated-declarations \
@@ -45,14 +45,14 @@ libdactl_vala_la_CFLAGS = \
 	-Wno-unused-label \
 	-Wno-unused-function
 
-libdactl_vala_la_LIBADD = $(VALA_LIBS)
-libdactl_vala_la_LDFLAGS = $(PLUGIN_LDFLAGS)
+libdcs_vala_la_LIBADD = $(VALA_LIBS)
+libdcs_vala_la_LDFLAGS = $(PLUGIN_LDFLAGS)
 
 if ENABLE_WEBKIT
-libdactl_vala_la_VALAFLAGS += --pkg webkit2gtk-4.0
-libdactl_vala_la_CFLAGS += $(WEBKIT_CFLAGS)
-libdactl_vala_la_LIBADD += $(WEBKIT_LIBS)
-libdactl_vala_la_LDFLAGS += $(WEBKIT_LDFLAGS)
+libdcs_vala_la_VALAFLAGS += --pkg webkit2gtk-4.0
+libdcs_vala_la_CFLAGS += $(WEBKIT_CFLAGS)
+libdcs_vala_la_LIBADD += $(WEBKIT_LIBS)
+libdcs_vala_la_LDFLAGS += $(WEBKIT_LDFLAGS)
 endif
 
 include $(top_srcdir)/src/plugins/Makefile.plugin

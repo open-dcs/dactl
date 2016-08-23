@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
-  <template class="DactlLoader" parent="GtkBox">
+  <template class="DcsgLoader" parent="GtkBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="valign">center</property>
@@ -75,7 +75,7 @@
                   </object>
                 </child>
                 <style>
-                  <class name="dactl-menu-row"/>
+                  <class name="dcs-menu-row"/>
                 </style>
               </object>
               <packing>
@@ -126,7 +126,7 @@
                   </object>
                 </child>
                 <style>
-                  <class name="dactl-menu-row"/>
+                  <class name="dcs-menu-row"/>
                 </style>
               </object>
               <packing>
@@ -136,8 +136,8 @@
               </packing>
             </child>
             <style>
-              <class name="dactl-menu"/>
-              <class name="dactl-source-nb"/>
+              <class name="dcs-menu"/>
+              <class name="dcs-source-nb"/>
             </style>
           </object>
           <packing>

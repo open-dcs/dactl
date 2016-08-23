@@ -3,26 +3,26 @@ SUBDIRS = gsettings config glade icons mime systemd templates .
 @APPSTREAM_XML_RULES@
 @INTLTOOL_XML_RULE@
 
-appstream_in_files = org.coanda.Dactl.appdata.xml.in
+appstream_in_files = org.opendcs.Dcs.appdata.xml.in
 appstream_XML = $(appstream_in_files:.xml.in=.xml)
 
 desktopdir = $(datadir)/applications
-desktop_in_in_files = org.coanda.Dactl.desktop.in.in
-desktop_in_files = org.coanda.Dactl.desktop.in
+desktop_in_in_files = org.opendcs.Dcsg.desktop.in.in
+desktop_in_files = org.opendcs.Dcsg.desktop.in
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
 # D-Bus service file.
 servicedir = $(datadir)/dbus-1/services
-service_in_files = org.coanda.Dactl.service.in
+service_in_files = org.opendcs.Dcs.service.in
 service_DATA = $(service_in_files:.service.in=.service)
 
-org.coanda.Dactl.service: org.coanda.Dactl.service.in
+org.opendcs.dcs.service: org.opendcs.Dcs.service.in
 	$(AM_V_GEN)	\
 		[ -d $(@D) ] || $(mkdir_p) $(@D) ; \
 		sed -e "s|\@bindir\@|$(bindir)|" $< > $@.tmp && mv $@.tmp $@
 
-gresource_file = dactl.gresource.xml
+gresource_file = dcsg.gresource.xml
 resource_files = $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies $(gresource_file))
 
 EXTRA_DIST = \

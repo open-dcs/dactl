@@ -1,7 +1,7 @@
 #!/bin/bash
 
-SESSION=org.coanda.Dactl.UI.Manager
-PATH="/org/coanda/dactl/ui/manager"
+SESSION=org.opendcs.Dcs.UI.Manager
+PATH="/org/opendcs/dcs/ui/manager"
 
 function dbus_call {
     _s=$1
@@ -26,19 +26,19 @@ function dbus_call {
 
 read -r -d '' JSON << EOM
 {
-  'type': 'DactlUIWindow',
+  'type': 'DcsUIWindow',
   'properties': {
     'dest': '',
     'id': 'win0'
   },
   'objects': [{
-    'type': 'DactlPage',
+    'type': 'DcsPage',
       'properties': {
         'dest': 'win0',
         'id': 'pg1',
       },
       'objects': [{
-        'type': 'DactlBox',
+        'type': 'DcsBox',
         'properties': {
           'dest': 'pg1',
           'id': 'box0',
@@ -52,12 +52,12 @@ EOM
 
 #dbus_call $SESSION $PATH "AddWidget" "$JSON"
 
-dbus_call $SESSION $PATH "AddWidget" "{ 'type': 'DactlUIWindow', 'properties': { 'dest': '', 'id': 'win0' } }"
+dbus_call $SESSION $PATH "AddWidget" "{ 'type': 'DcsUIWindow', 'properties': { 'dest': '', 'id': 'win0' } }"
 
 #dbus_call $SESSION $PATH "ListPages"
-dbus_call $SESSION $PATH "AddWidget" "{ 'type': 'DactlPage', 'properties': { 'dest': 'win0', 'id': 'pg1' } }"
-dbus_call $SESSION $PATH "AddWidget" "{ 'type': 'DactlBox', 'properties': { 'dest': 'pg1', 'id': 'box0', 'orientation': 'horizontal' } }"
-dbus_call $SESSION $PATH "AddWidget" "{ 'type': 'DactlBox', 'properties': { 'dest': 'box0', 'id': 'box0-0', 'orientation': 'vertical' } }"
-dbus_call $SESSION $PATH "AddWidget" "{ 'type': 'DactlBox', 'properties': { 'dest': 'box0', 'id': 'box0-1', 'orientation': 'vertical' } }"
-dbus_call $SESSION $PATH "AddWidget" "{ 'type': 'DactlUIRichContent', 'properties': { 'dest': 'box0-1', 'id': 'rc0', 'uri': 'http://10.0.2.2/~gjohn/dev/dcs/' } }"
+dbus_call $SESSION $PATH "AddWidget" "{ 'type': 'DcsPage', 'properties': { 'dest': 'win0', 'id': 'pg1' } }"
+dbus_call $SESSION $PATH "AddWidget" "{ 'type': 'DcsBox', 'properties': { 'dest': 'pg1', 'id': 'box0', 'orientation': 'horizontal' } }"
+dbus_call $SESSION $PATH "AddWidget" "{ 'type': 'DcsBox', 'properties': { 'dest': 'box0', 'id': 'box0-0', 'orientation': 'vertical' } }"
+dbus_call $SESSION $PATH "AddWidget" "{ 'type': 'DcsBox', 'properties': { 'dest': 'box0', 'id': 'box0-1', 'orientation': 'vertical' } }"
+dbus_call $SESSION $PATH "AddWidget" "{ 'type': 'DcsUIRichContent', 'properties': { 'dest': 'box0-1', 'id': 'rc0', 'uri': 'http://10.0.2.2/~gjohn/dev/dcs/' } }"
 #dbus_call $SESSION $PATH "ListPages"

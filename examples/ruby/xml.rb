@@ -3,7 +3,7 @@
 require 'xml'
 require 'gir_ffi'
 
-#GirFFI.setup :DactlUI
+#GirFFI.setup :DcsUI
 
 xml = XML::Node.new('object')
 XML::Attr.new(xml, 'id', 'ai-ctl0')

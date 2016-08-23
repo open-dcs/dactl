@@ -1,7 +1,7 @@
 if ENABLE_MIME
 
 mimexmldir = $(datadir)/mime/packages
-mimexml_DATA = dactl.xml
+mimexml_DATA = dcs.xml
 
 @INTLTOOL_XML_RULE@
 

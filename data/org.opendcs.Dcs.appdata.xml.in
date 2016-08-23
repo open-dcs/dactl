@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2014 Igor Gnatenko <ignatenko@src.gnome.org> -->
+<component type="desktop">
+  <id>org.opendcs.Dcsg.desktop</id>
+  <metadata_license>CC0</metadata_license>
+  <project_license>GPL-3.0+ and GPL-2.0+ and LGPL-3.0+ and LGPL-2.0+ and MIT</project_license>
+  <_name>OpenDCS</_name>
+  <_summary>Distributed Control System Components</_summary>
+
+  <description>
+    <_p>
+      OpenDCS is a set of applications and services to design and use
+      distributed control systems for data acquisition systems.
+    </_p>
+    <_p>Features:</_p>
+    <ul>
+      <_li>Configurable UI through XML</_li>
+      <_li>Configurable data acquisition services through XML</_li>
+      <_li>Configurable data logging services through XML</_li>
+      <_li>Configurable feedback control services through XML</_li>
+      <_li>Plugin system to simplify adding support for measurement devices</_li>
+      <_li>Plugin system to simplify adding support for new data logging backends</_li>
+    </ul>
+  </description>
+
+  <screenshots>
+    <screenshot type="default">
+      <image width="1920" height="1080">https://github.com/open-dcs/dcs/data/appdata/dcsg.png</image>
+    </screenshot>
+  </screenshots>
+
+  <url type="homepage">https://github.com/open-dcs/dcs</url>
+  <url type="bugtracker">https://github.com/open-dcs/dcs/issues</url>
+  <project_group>GNOME</project_group>
+
+  <kudos>
+    <kudo>AppMenu</kudo>
+  </kudos>
+
+  <update_contact>geoff.jay@gmail.com</update_contact>
+  <translation type="gettext">dcs</translation>
+</component>

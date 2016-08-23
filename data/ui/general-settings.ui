@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.16.1 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <template class="DactlGeneralSettings" parent="GtkBox">
+  <template class="DcsgGeneralSettings" parent="GtkBox">
     <property name="name">general</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -205,7 +205,7 @@
       </packing>
     </child>
     <style>
-      <class name="dactl-bg"/>
+      <class name="dcs-bg"/>
     </style>
   </template>
 </interface>

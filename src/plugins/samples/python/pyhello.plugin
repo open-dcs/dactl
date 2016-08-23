@@ -3,5 +3,5 @@ Module=pyhello
 Loader=python3
 Name=Python Says Hello
 Description=Says Hello from a python plugin.
-Authors=Geoff Johnson <geoff.johnson@coanda.ca>
+Authors=Geoff Johnson <geoff.jay@gmail.com>
 Copyright=Copyright © 2016 Geoff Johnson

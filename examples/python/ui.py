@@ -2,14 +2,14 @@
 #! -*- coding: utf-8 -*-
 
 from gi.repository import Cld
-from gi.repository import DactlCore as dc
-from gi.repository import DactlUI as du
+from gi.repository import DcsCore as dc
+from gi.repository import DcsUI as du
 from gi.repository import Gtk
 
-class DactlExample(Gtk.Window):
+class DcsExample(Gtk.Window):
 
     def __init__(self):
-        Gtk.Window.__init__(self, title="Dactl Example")
+        Gtk.Window.__init__(self, title="DCS Example")
 
         config = Cld.XmlConfig.with_file_name("examples/cld.xml")
         self.context = Cld.Context.from_config(config)
@@ -29,7 +29,7 @@ class DactlExample(Gtk.Window):
     def offer(self, widget):
         widget.offer_cld_object(self.chan)
 
-win = DactlExample()
+win = DcsExample()
 win.connect("delete-event", Gtk.main_quit)
 win.show_all()
 Gtk.main()

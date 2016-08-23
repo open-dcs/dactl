@@ -15,7 +15,7 @@
     <property name="child_model">listmodel</property>
   </object>
 
-  <template class="DactlSettingsSidebar" parent="GtkBox">
+  <template class="DcsgSettingsSidebar" parent="GtkBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="orientation">vertical</property>

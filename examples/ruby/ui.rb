@@ -4,7 +4,7 @@ require 'gir_ffi'
 require 'gir_ffi-gtk3'
 
 GirFFI.setup :Cld
-GirFFI.setup :DactlUI
+GirFFI.setup :DcsUI
 
 # load the CLD configuration
 config = Cld::XmlConfig.with_file_name('examples/cld.xml')
@@ -26,7 +26,7 @@ win = Gtk::Window.new :toplevel
 win.show
 win.signal_connect('destroy') { Gtk.main_quit }
 
-aictl = DactlUI::AIControl.new('/daqctl0/dev0/ai0')
+aictl = DcsUI::AIControl.new('/daqctl0/dev0/ai0')
 aictl.signal_connect('request_object') { aictl.offer_cld_object (chan) }
 win.add(aictl)
 

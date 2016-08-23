@@ -1,5 +1,5 @@
 catalogdir = $(datadir)/glade/catalogs/
 catalog_DATA = \
-	dactlui.xml
+	dcsui.xml
 
 -include $(top_srcdir)/git.mk

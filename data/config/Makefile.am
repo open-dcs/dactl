@@ -1,5 +1,5 @@
 configdir = $(sysconfdir)/@PACKAGE@
 config_DATA = \
-	dactl.xml
+	dcs.xml
 
 -include $(top_srcdir)/git.mk

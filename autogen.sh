@@ -4,9 +4,9 @@
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
-PKG_NAME="dactl"
+PKG_NAME="dcs"
 
-(test -f $srcdir/src/libdactl-core/dactl-object.vala) || {
+(test -f $srcdir/src/libdcs-core/dcs-object.vala) || {
     echo -n "**Error**: Directory "\`$srcdir\'" does not look like the"
     echo " top-level $PKG_NAME directory"
     exit 1

@@ -2,14 +2,14 @@ if ENABLE_DOC
 
 include Makefile.sphinx
 
-docdir=$(datadir)/devhelp/references/dactl-0.4
-innerdocdir=$(datadir)/devhelp/references/dactl-0.4/dactl-0.4
-imgdir=$(datadir)/devhelp/references/dactl-0.4/dactl-0.4/img
+docdir=$(datadir)/devhelp/references/dcs-0.1
+innerdocdir=$(datadir)/devhelp/references/dcs-0.1/dcs-0.1
+imgdir=$(datadir)/devhelp/references/dcs-0.1/dcs-0.1/img
 
 core_valaflags = \
 	--pkg=cld-0.3 \
 	--pkg=comedi \
-	--pkg=dactl-config \
+	--pkg=dcs-config \
 	--pkg=gee-0.8 \
 	--pkg=gmodule-2.0 \
 	--pkg=json-glib-1.0 \
@@ -30,41 +30,41 @@ net_valaflags = \
 	--pkg=libzmq
 
 doc_data = \
-	dactl-0.4/*.css \
-	dactl-0.4/*.png \
+	dcs-0.1/*.css \
+	dcs-0.1/*.png \
 	$(NULL)
 
 doc_DATA = \
-	dactl-0.4/index.html \
+	dcs-0.1/index.html \
 	$(doc_data) \
 	$(NULL)
 
 innerdoc_DATA = \
-	dactl-0.4/dactl-0.4/index.htm \
-	dactl-0.4/dactl-0.4/*.html \
+	dcs-0.1/dcs-0.1/index.htm \
+	dcs-0.1/dcs-0.1/*.html \
 	$(NULL)
 
 img_DATA = \
-	dactl-0.4/dactl-0.4/*.png \
+	dcs-0.1/dcs-0.1/*.png \
 	$(NULL)
 
-$(doc_data) $(innerdoc_DATA) $(img_DATA): dactl-0.4/index.html
+$(doc_data) $(innerdoc_DATA) $(img_DATA): dcs-0.1/index.html
 
-dactl-0.4/index.html:
-	$(VALADOC) -o dactl-0.4/ --wiki ./ --target-glib=2.44 \
+dcs-0.1/index.html:
+	$(VALADOC) -o dcs-0.1/ --wiki ./ --target-glib=2.44 \
 		--force -b $(top_srcdir) \
-		$(top_srcdir)/src/libdactl-core/*.vala \
-		$(top_srcdir)/src/libdactl-ui/*.vala \
-		$(top_srcdir)/src/libdactl-cli/*.vala \
-		$(top_srcdir)/src/libdactl-daq/*.vala \
-		$(top_srcdir)/src/libdactl-log/*.vala \
-		$(top_srcdir)/src/libdactl-net/*.vala \
+		$(top_srcdir)/src/libdcs-core/*.vala \
+		$(top_srcdir)/src/libdcs-ui/*.vala \
+		$(top_srcdir)/src/libdcs-cli/*.vala \
+		$(top_srcdir)/src/libdcs-daq/*.vala \
+		$(top_srcdir)/src/libdcs-log/*.vala \
+		$(top_srcdir)/src/libdcs-net/*.vala \
 		--pkg=linux \
 		--pkg=posix \
 		$(core_valaflags) \
 		$(ui_valaflags) \
 		$(net_valaflags) \
-		--vapidir=$(top_srcdir)/src/libdactl-core \
+		--vapidir=$(top_srcdir)/src/libdcs-core \
 		--vapidir=$(top_srcdir)/vapi
 
 EXTRA_DIST = \
@@ -75,7 +75,7 @@ endif
 
 GITIGNOREFILES = \
 	build \
-	dactl-0.4 \
+	dcs-0.1 \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk

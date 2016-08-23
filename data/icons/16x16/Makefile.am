@@ -5,7 +5,7 @@ context = apps
 iconsdir = $(themedir)/$(size)/$(context)
 
 icons_DATA = \
-	dactl.png
+	dcs.png
 
 EXTRA_DIST = \
 	$(icons_DATA)
