@@ -3,7 +3,7 @@ public enum Dcs.UI.WindowState {
     FULLSCREEN
 }
 
-[GtkTemplate (ui = "/org/coanda/libdactl/ui/window.ui")]
+[GtkTemplate (ui = "/org/opendcs/libdcs/ui/window.ui")]
 public class Dcs.UI.Window : Dcs.UI.WindowBase {
 
     private string _xml = """
@@ -62,7 +62,7 @@ public class Dcs.UI.Window : Dcs.UI.WindowBase {
      * Default construction.
      */
     public Window () {
-        GLib.Object (title: "Data Acquisition and Control - Child Window",
+        GLib.Object (title: "DCS HMI - Child Window",
                      window_position: Gtk.WindowPosition.CENTER);
     }
 
@@ -70,7 +70,7 @@ public class Dcs.UI.Window : Dcs.UI.WindowBase {
      * Construction using an XML node.
      */
     public Window.from_xml_node (Xml.Node *node) {
-        GLib.Object (title: "Data Acquisition and Control - Child Window",
+        GLib.Object (title: "DCS HMI - Child Window",
                      window_position: Gtk.WindowPosition.CENTER);
 
         build_from_xml_node (node);

@@ -1,4 +1,4 @@
-protected class Dcs.UI.ColorMap : Dcs.Canvas, Dcs.Buildable, Dcs.Object {
+protected class Dcs.UI.ColorMap : Dcs.UI.Canvas, Dcs.Buildable, Dcs.Object {
 
     private Xml.Node* _node;
 

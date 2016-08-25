@@ -1,4 +1,4 @@
-[GtkTemplate (ui = "/org/coanda/libdcs-ui/ui/pid-control.ui")]
+[GtkTemplate (ui = "/org/opendcs/libdcs/ui/pid-control.ui")]
 public class Dcs.UI.PidControl : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
 
     private string _xml = """

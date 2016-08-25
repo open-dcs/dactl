@@ -1,4 +1,4 @@
-[GtkTemplate (ui = "/org/coanda/libdcs-ui/ui/ai-control.ui")]
+[GtkTemplate (ui = "/org/opendcs/libdcs/ui/ai-control.ui")]
 public class Dcs.UI.AIControl : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
 
     [GtkChild]

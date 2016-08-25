@@ -1,7 +1,7 @@
 /**
  * Box class used to act as a layout for other interface classes.
  */
-[GtkTemplate (ui = "/org/coanda/libdcs-ui/ui/box.ui")]
+[GtkTemplate (ui = "/org/opendcs/libdcs/ui/box.ui")]
 public class Dcs.UI.Box : Dcs.UI.CompositeWidget {
 
     private string _xml = """
@@ -211,7 +211,7 @@ public class Dcs.UI.Box : Dcs.UI.CompositeWidget {
                             object = new Dcs.UI.VideoProcessor.from_xml_node (iter);
                             break;
                         case "rich-content":
-                            object = new Dcs.UI.UI.RichContent.from_xml_node (iter);
+                            object = new Dcs.UI.RichContent.from_xml_node (iter);
                             break;
                         default:
                             object = null;

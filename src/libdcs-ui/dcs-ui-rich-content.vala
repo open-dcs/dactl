@@ -1,10 +1,10 @@
-[DBus (name = "org.coanda.Dcs.Extension")]
+[DBus (name = "org.opendcs.Dcs.Extension")]
 interface Dcs.UI.DOMMessenger : GLib.Object {
     public signal void div_clicked (string num);
     public abstract void add_div (string color) throws IOError;
 }
 
-[GtkTemplate (ui = "/org/coanda/libdactl/ui/rich-content.ui")]
+[GtkTemplate (ui = "/org/opendcs/libdcs/ui/rich-content.ui")]
 public class Dcs.UI.RichContent : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
 
     private Gee.Map<string, Dcs.Object> _objects;
@@ -99,7 +99,7 @@ public class Dcs.UI.RichContent : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
 
         objects = new Gee.TreeMap<string, Dcs.Object> ();
 
-        Bus.watch_name (BusType.SESSION, "org.coanda.Dcs.Extension",
+        Bus.watch_name (BusType.SESSION, "org.opendcs.Dcs.Extension",
                         BusNameWatcherFlags.NONE,
                         (connection, name, owner) => {
                             extension_appeared_cb (connection, name, owner);
@@ -138,8 +138,8 @@ public class Dcs.UI.RichContent : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
 
     private void extension_appeared_cb (DBusConnection connection, string name, string owner) {
         try {
-            messenger = connection.get_proxy_sync ("org.coanda.Dcs.Extension",
-                "/org/coanda/dcs-ui/extension", DBusProxyFlags.NONE, null);
+            messenger = connection.get_proxy_sync ("org.opendcs.Dcs.Extension",
+                "/org/opendcs/dcs/extension", DBusProxyFlags.NONE, null);
             messenger.div_clicked.connect ((num) => { div_clicked (num); });
         } catch (IOError error) {
             warning ("Problem connecting to WebKit extension: %s", error.message);

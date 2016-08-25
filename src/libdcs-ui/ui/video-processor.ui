@@ -20,7 +20,7 @@
     <property name="xpad">5</property>
     <property name="icon_name">document-save</property>
   </object>
-  <template class="DactlVideoProcessor" parent="DactlCompositeWidget">
+  <template class="DcsUIVideoProcessor" parent="DcsUICompositeWidget">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="margin_left">5</property>

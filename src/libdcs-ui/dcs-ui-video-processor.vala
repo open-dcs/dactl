@@ -1,4 +1,4 @@
-[GtkTemplate (ui = "/org/coanda/libdcs-ui/ui/video-processor.ui")]
+[GtkTemplate (ui = "/org/opendcs/libdcs/ui/video-processor.ui")]
 public class Dcs.UI.VideoProcessor : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
 
     [GtkChild]

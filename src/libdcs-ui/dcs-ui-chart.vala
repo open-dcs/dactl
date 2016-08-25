@@ -118,7 +118,7 @@ protected class Dcs.UI.ChartCanvas : Dcs.UI.Canvas {
     }
 }
 
-[GtkTemplate (ui = "/org/coanda/libdcs-ui/ui/chart.ui")]
+[GtkTemplate (ui = "/org/opendcs/libdcs/ui/chart.ui")]
 public class Dcs.UI.Chart : Dcs.UI.CompositeWidget {
 
     private Xml.Node* _node;

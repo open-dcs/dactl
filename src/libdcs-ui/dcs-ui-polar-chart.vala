@@ -1,4 +1,4 @@
-[GtkTemplate (ui = "/org/coanda/libdcs-ui/ui/polar-chart.ui")]
+[GtkTemplate (ui = "/org/opendcs/libdcs/ui/polar-chart.ui")]
 public class Dcs.UI.PolarChart : Dcs.UI.CompositeWidget {
 
     private int _refresh_ms = 33;

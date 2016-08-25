@@ -9,19 +9,19 @@ include $(top_srcdir)/common.am
 include $(srcdir)/filelist.am
 
 pkglibdir = $(libdir)/dcs
-pkglib_LTLIBRARIES = libdcs-ui-0.4.la
+pkglib_LTLIBRARIES = libdcs-ui-0.1.la
 
-headersdir = $(includedir)/dcs-0.4
+headersdir = $(includedir)/dcs-0.1
 nobase_headers_DATA =
 
-pkgconfig_DATA = dcs-ui-0.4.pc
+pkgconfig_DATA = dcs-ui-0.1.pc
 pkgconfigdir = $(libdir)/pkgconfig
 
 EXTRA_DIST += \
-	dcs-ui-0.4.pc.in \
+	dcs-ui-0.1.pc.in \
 	$(NULL)
 
-LIBDCS_UI_VERSION=0:4:0
+LIBDCS_UI_VERSION=0:1:0
 
 gresource_file = libdcs-ui.gresource.xml
 resource_files = $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies $(gresource_file))
@@ -33,30 +33,30 @@ BUILT_SOURCES += \
 	$(gresource_file) \
 	$(NULL)
 
-libdcs_ui_0_4_la_public_headers = \
+libdcs_ui_0_1_la_public_headers = \
 	$(NULL)
 
-libdcs_ui_0_4_la_public_sources = \
+libdcs_ui_0_1_la_public_sources = \
 	resources.c \
 	$(NULL)
 
-libdcs_ui_0_4_la_SOURCES = \
-	$(libdcs_ui_0_4_la_public_sources) \
+libdcs_ui_0_1_la_SOURCES = \
+	$(libdcs_ui_0_1_la_public_sources) \
 	$(LIBDCS_UI_VAPI_SOURCE_FILES) \
 	$(LIBDCS_UI_NONVAPI_SOURCE_FILES)
 
-libdcs_ui_0_4_la_includes = \
+libdcs_ui_0_1_la_includes = \
 	$(DEBUG_CFLAGS) \
 	-I$(top_srcdir)/src/libdcs-core \
 	-I$(top_srcdir)/src/libdcs-net \
 	$(NULL)
 
-libdcs_ui_0_4_la_VALAFLAGS = \
+libdcs_ui_0_1_la_VALAFLAGS = \
 	--target-glib=2.44 \
 	--thread \
 	-H dcs-ui.h -C \
-	--library=dcs-ui-0.4 \
-	--gir=Dcs-0.4.gir \
+	--library=dcs-ui-0.1 \
+	--gir=Dcs-0.1.gir \
 	--gresources $(gresource_file) \
 	--vapidir=$(top_srcdir)/vapi \
 	--pkg posix \
@@ -75,7 +75,7 @@ libdcs_ui_0_4_la_VALAFLAGS = \
 	$(DCS_COMMON_LIBDCS_CORE_VALAFLAGS) \
 	$(DCS_COMMON_VALAFLAGS)
 
-libdcs_ui_0_4_la_CFLAGS = \
+libdcs_ui_0_1_la_CFLAGS = \
 	-DWEB_EXTENSION_DIR=\""$(extensiondir)"\" \
 	-DG_LOG_DOMAIN=\"libdcs-ui\" \
 	-DGETTEXT_PACKAGE=\"dcs\" \
@@ -85,7 +85,7 @@ libdcs_ui_0_4_la_CFLAGS = \
 	$(DCS_CLD_DEPS_CFLAGS) \
 	$(DCS_COMMON_LIBDCS_CORE_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
-	$(libdcs_ui_0_4_la_includes) \
+	$(libdcs_ui_0_1_la_includes) \
 	-Wno-deprecated-declarations \
 	-Wno-discarded-qualifiers \
 	-Wno-implicit-function-declaration \
@@ -94,12 +94,12 @@ libdcs_ui_0_4_la_CFLAGS = \
 	-Wno-unused-label \
 	-Wno-unused-function
 
-libdcs_ui_0_4_la_LDFLAGS = \
+libdcs_ui_0_1_la_LDFLAGS = \
 	$(OPTIMIZE_LDFLAGS) \
 	$(DCS_DATA_DIR_DEFINES) \
 	-version-info $(LIBDCS_UI_VERSION)
 
-libdcs_ui_0_4_la_LIBADD = \
+libdcs_ui_0_1_la_LIBADD = \
 	$(LIBDCS_LIBS) \
 	$(LIBDCS_UI_LIBS) \
 	$(DCS_CLD_DEPS_LIBS) \
@@ -107,14 +107,14 @@ libdcs_ui_0_4_la_LIBADD = \
 
 
 if ENABLE_WEBKIT
-libdcs_ui_0_4_la_SOURCES += \
+libdcs_ui_0_1_la_SOURCES += \
 	dcs-ui-webkit-widget.vala \
 	dcs-ui-rich-content.vala \
 	$(NULL)
-libdcs_ui_0_4_la_VALAFLAGS += --pkg webkit2gtk-4.0
-libdcs_ui_0_4_la_CFLAGS += $(WEBKIT_CFLAGS)
-libdcs_ui_0_4_la_LIBADD += $(WEBKIT_LIBS)
-libdcs_ui_0_4_la_LDFLAGS += $(WEBKIT_LDFLAGS)
+libdcs_ui_0_1_la_VALAFLAGS += --pkg webkit2gtk-4.0
+libdcs_ui_0_1_la_CFLAGS += $(WEBKIT_CFLAGS)
+libdcs_ui_0_1_la_LIBADD += $(WEBKIT_LIBS)
+libdcs_ui_0_1_la_LDFLAGS += $(WEBKIT_LDFLAGS)
 endif
 
 
@@ -124,10 +124,10 @@ if HAVE_INTROSPECTION
 INTROSPECTION_GIRS =
 INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all
 INTROSPECTION_COMPILER_ARGS = \
-	-l libdcs-ui-0.4.so.0 \
+	-l libdcs-ui-0.1.so.0 \
 	--includedir=$(builddir)/../libdcs-core \
 	--includedir=$(srcdir)/../libdcs-core
-$(builddir)/DcsUI-0.4.gir: $(srcdir)/Dcs-0.4.gir
+$(builddir)/DcsUI-0.1.gir: $(srcdir)/Dcs-0.1.gir
 	$(AM_V_GEN)$(SED) \
 		-e 's,Dcs\.,DcsUI.,g' \
 		-e 's,namespace name="Dcs",namespace name="DcsUI",g' \
@@ -137,9 +137,9 @@ $(builddir)/DcsUI-0.4.gir: $(srcdir)/Dcs-0.4.gir
 		-e 's,DcsUI\.CldAdapter,DcsCore.CldAdapter,g' \
 		-e 's,DcsUI\.Extension,DcsCore.Extension,g' \
 		-e 's,DcsUI\.Factory,DcsCore.Factory,g' \
-		-e 's,<package name="dcs-ui-0.4"/>,<include name="DcsCore" version="0.4"/>\n<package name="dcs-ui-0.4"/>,' \
+		-e 's,<package name="dcs-ui-0.1"/>,<include name="DcsCore" version="0.1"/>\n<package name="dcs-ui-0.1"/>,' \
 		$< >$@
-GIRS = DcsUI-0.4.gir
+GIRS = DcsUI-0.1.gir
 
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(GIRS)
@@ -151,7 +151,7 @@ CLEANFILES += $(gir_DATA) $(typelib_DATA)
 endif
 
 
-libdcs_ui_0_4_vapi_DEPS = \
+libdcs_ui_0_1_vapi_DEPS = \
 	gee-0.8 \
 	gio-2.0 \
 	gtk+-3.0 \
@@ -159,22 +159,22 @@ libdcs_ui_0_4_vapi_DEPS = \
 	librsvg-2.0 \
 	libxml-2.0
 
-dcs-ui-0.4.deps: Makefile
-	$(AM_V_GEN) echo $(libdcs_ui_0_4_vapi_DEPS) | tr ' ' '\n' > $@
+dcs-ui-0.1.deps: Makefile
+	$(AM_V_GEN) echo $(libdcs_ui_0_1_vapi_DEPS) | tr ' ' '\n' > $@
 
-VAPI_FILES = dcs-ui-0.4.vapi
-DEPS_FILES = dcs-ui-0.4.deps
+VAPI_FILES = dcs-ui-0.1.vapi
+DEPS_FILES = dcs-ui-0.1.deps
 
 vapidir = $(VAPIDIR)
 vapi_DATA = $(VAPI_FILES) $(DEPS_FILES)
-dcs-ui.h dcs-cli-0.4.vapi: libdcs_ui_0_4_la_vala.stamp
+dcs-ui.h dcs-cli-0.1.vapi: libdcs_ui_0_1_la_vala.stamp
 
 BUILT_SOURCES += \
 	dcs-ui.h \
 	$(VAPI_FILES) \
 	$(DEPS_FILES) \
-	DcsUI-0.4.gir \
-	Dcs-0.4.gir \
+	DcsUI-0.1.gir \
+	Dcs-0.1.gir \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk

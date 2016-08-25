@@ -94,7 +94,7 @@ internal class Dcsg.Main : GLib.Object {
     }
 
     private int run (string[] args) {
-        debug (_("OpenDCS GUI v%s starting..."), Config.PACKAGE_VERSION);
+        debug (_("OpenDCS GUI v%s starting..."), Dcs.Config.PACKAGE_VERSION);
         app.launch (args);
 
         return exit_code;
@@ -131,8 +131,8 @@ internal class Dcsg.Main : GLib.Object {
         });
     }
 
-    private void on_plugin_loaded (PluginLoader plugin_loader,
-                                   Plugin       plugin) {
+    private void on_plugin_loaded (Dcs.PluginLoader plugin_loader,
+                                   Dcs.Plugin       plugin) {
         if (plugin.has_factory) {
             Dcs.ApplicationFactory.register_factory (plugin.factory);
         }
@@ -165,12 +165,12 @@ internal class Dcsg.Main : GLib.Object {
         var original_args = args;
 
         Intl.setlocale (LocaleCategory.ALL, "");
-        Intl.bindtextdomain (Config.GETTEXT_PACKAGE, Config.LOCALEDIR);
-        Intl.bind_textdomain_codeset (Config.GETTEXT_PACKAGE, "UTF-8");
-        Intl.textdomain (Config.GETTEXT_PACKAGE);
+        Intl.bindtextdomain (Dcs.Config.GETTEXT_PACKAGE, Dcs.Config.LOCALEDIR);
+        Intl.bind_textdomain_codeset (Dcs.Config.GETTEXT_PACKAGE, "UTF-8");
+        Intl.textdomain (Dcs.Config.GETTEXT_PACKAGE);
 
-        GLib.Environment.set_prgname (_(Config.PACKAGE_NAME));
-        GLib.Environment.set_application_name (_(Config.PACKAGE_NAME));
+        GLib.Environment.set_prgname (_(Dcs.Config.PACKAGE_NAME));
+        GLib.Environment.set_application_name (_(Dcs.Config.PACKAGE_NAME));
 
         try {
             parse_local_args (ref args);

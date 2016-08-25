@@ -92,7 +92,7 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
 
         Gtk.Window.set_default_icon_name ("dcsg");
 
-        WebKit.WebContext.get_default ().set_web_extensions_directory (Config.WEB_EXTENSION_DIR);
+        WebKit.WebContext.get_default ().set_web_extensions_directory (Dcs.Config.WEB_EXTENSION_DIR);
 
         debug ("Creating application model using file %s", opt_cfgfile);
         model = new Dcsg.ApplicationModel (opt_cfgfile);
@@ -234,8 +234,8 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
                             });
 
                             debug ("Attempting to add the plugin control to the layout");
-                            var parent = model.get_object ((control as Dcs.PluginControl).parent_ref);
-                            (parent as Dcs.Box).add_child (control);
+                            var parent = model.get_object ((control as Dcs.UI.PluginControl).parent_ref);
+                            (parent as Dcs.UI.Box).add_child (control);
                         }
                     }
                 }
@@ -391,7 +391,7 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
         opt_help = false;
         opt_cfgfile = null;
 
-        var opt_context = new OptionContext (Config.PACKAGE_NAME);
+        var opt_context = new OptionContext (Dcs.Config.PACKAGE_NAME);
         opt_context.add_main_entries (options, null);
         opt_context.set_help_enabled (false);
 
@@ -411,7 +411,7 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
         }
 
         if (opt_cfgfile == null) {
-            opt_cfgfile = Path.build_filename (Config.DATADIR, "dcs.xml");
+            opt_cfgfile = Path.build_filename (Dcs.Config.DATADIR, "dcs.xml");
             GLib.message ("Configuration file not provided, using %s", opt_cfgfile);
         }
 
@@ -495,7 +495,7 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
         //(view as Dcsg.ApplicationView).layout_change_page ("settings");
         (view as Gtk.Window).get_position (out x, out y);
         (view as Gtk.Window).get_size (out wp, out hp);
-        var settings = new Dcs.SettingsDialog ();
+        var settings = new Dcsg.SettingsDialog ();
         settings.delete_event.connect ((settings as Gtk.Widget).hide_on_delete);
         settings.get_size (out ws, out hs);
 
@@ -740,7 +740,7 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
 
         Gdk.Pixbuf? logo = null;
         try {
-            logo = Dcs.load_asset ("dcs.svg");
+            logo = Dcsg.load_asset ("dcs.svg");
         } catch (GLib.Error error) {
             warning (error.message);
         }
@@ -755,7 +755,7 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
          dialog.set_license_type (Gtk.License.MIT_X11);
          dialog.documenters = documenters;
          dialog.logo = logo;
-         dialog.version = Config.PACKAGE_VERSION;
+         dialog.version = Dcs.Config.PACKAGE_VERSION;
          dialog.website = "http://open-dcs.github.io";
          dialog.website_label = "OpenDCS";
 

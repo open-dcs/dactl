@@ -1,4 +1,4 @@
-protected class Dcs.UI.PolarChartCanvas : Dcs.Canvas {
+protected class Dcs.UI.PolarChartCanvas : Dcs.UI.Canvas {
 
     public weak Dcs.UI.PolarAxis mag_axis { get; set; }
 

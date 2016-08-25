@@ -4,7 +4,7 @@
  * This control displays the state of a digital channel.
  * If the channel is an output it will allow the user to change the output value
  **/
-[GtkTemplate (ui = "/org/coanda/libdcs-ui/ui/digital-control.ui")]
+[GtkTemplate (ui = "/org/opendcs/libdcs/ui/digital-control.ui")]
 public class Dcs.UI.DigitalControl : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
 
     [GtkChild]

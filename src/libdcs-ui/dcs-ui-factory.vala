@@ -1,7 +1,7 @@
 /**
  * Class use to build objects from configuration data.
  */
-public class Dcs.UI.Factory : GLib.Object, Dcs.UI.Factory {
+public class Dcs.UI.Factory : GLib.Object, Dcs.Factory {
 
     /* Factory singleton */
     private static Dcs.UI.Factory factory;
@@ -67,9 +67,9 @@ public class Dcs.UI.Factory : GLib.Object, Dcs.UI.Factory {
             case "DcsUIChannelTreeEntry":       break;
             case "DcsUIVideoProcessor":         break;
             case "DcsUIRichContent":            break;
-            case "DcsUIUIWindow":               break;
+            case "DcsUIWindow":                 break;
             default:
-                throw new Dcs.UI.FactoryError.TYPE_NOT_FOUND (
+                throw new Dcs.FactoryError.TYPE_NOT_FOUND (
                     _("The type requested is not a known Dcs type"));
         }
 
@@ -111,7 +111,7 @@ public class Dcs.UI.Factory : GLib.Object, Dcs.UI.Factory {
                     case "rich-content":        return make_rich_content (node);
                     case "window":              return make_window (node);
                     default:
-                        throw new Dcs.UI.FactoryError.TYPE_NOT_FOUND (
+                        throw new Dcs.FactoryError.TYPE_NOT_FOUND (
                             _("The type requested is not a known Dcs type"));
                 }
             }

@@ -17,7 +17,7 @@ servicedir = $(datadir)/dbus-1/services
 service_in_files = org.opendcs.Dcs.service.in
 service_DATA = $(service_in_files:.service.in=.service)
 
-org.opendcs.dcs.service: org.opendcs.Dcs.service.in
+org.opendcs.Dcs.service: org.opendcs.Dcs.service.in
 	$(AM_V_GEN)	\
 		[ -d $(@D) ] || $(mkdir_p) $(@D) ; \
 		sed -e "s|\@bindir\@|$(bindir)|" $< > $@.tmp && mv $@.tmp $@

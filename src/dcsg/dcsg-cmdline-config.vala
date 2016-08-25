@@ -39,7 +39,7 @@ public class Dcsg.CmdlineConfig : Dcs.AbstractConfig {
     public static void parse_args (ref unowned string[] args)
                                    throws CmdlineConfigError.VERSION_ONLY,
                                           OptionError {
-        var parameter_string = "- " + Config.PACKAGE_NAME;
+        var parameter_string = "- " + Dcs.Config.PACKAGE_NAME;
         var opt_context = new OptionContext (parameter_string);
         opt_context.set_help_enabled (true);
         opt_context.set_ignore_unknown_options (true);
@@ -50,19 +50,19 @@ public class Dcsg.CmdlineConfig : Dcs.AbstractConfig {
         } catch (OptionError.BAD_VALUE err) {
             stdout.printf (opt_context.get_help (true, null));
 
-            throw new CmdlineConfigError.VERSION_ONLY ("");
+            throw new Dcsg.CmdlineConfigError.VERSION_ONLY ("");
         }
 
         if (version) {
-            stdout.printf ("%s\n", Config.PACKAGE_STRING);
+            stdout.printf ("%s\n", Dcs.Config.PACKAGE_STRING);
 
-            throw new CmdlineConfigError.VERSION_ONLY ("");
+            throw new Dcsg.CmdlineConfigError.VERSION_ONLY ("");
         }
     }
 
     public string get_plugin_path () throws GLib.Error {
         if (plugin_path == null) {
-            throw new ConfigError.NO_VALUE_SET ("No value available");
+            throw new Dcs.ConfigError.NO_VALUE_SET ("No value available");
         }
 
         return plugin_path;
@@ -70,7 +70,7 @@ public class Dcsg.CmdlineConfig : Dcs.AbstractConfig {
 
     public string get_config_file () throws GLib.Error {
         if (config_file == null) {
-            throw new ConfigError.NO_VALUE_SET (_("No value available"));
+            throw new Dcs.ConfigError.NO_VALUE_SET (_("No value available"));
         }
 
         return config_file;

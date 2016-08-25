@@ -160,7 +160,7 @@ public class Dcsg.PluginSettings : Dcsg.CldSettingsPage {
 
 public class Dcsg.WidgetSettings : Dcsg.NativeSettingsPage {
     construct {
-        var charts = app.model.get_object_map (typeof (Dcs.CompositeWidget));
+        var charts = app.model.get_object_map (typeof (Dcs.UI.CompositeWidget));
         (treeview as Dcsg.NativeSettingsTreeView).generate (charts, 0);
         data = new Dcsg.NativeSettingsData.from_map (charts);
 

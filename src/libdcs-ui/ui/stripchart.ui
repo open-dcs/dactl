@@ -3,7 +3,7 @@
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <requires lib="" version="3.10"/>
-  <requires lib="dactl" version="3.14"/>
+  <requires lib="dcs" version="3.14"/>
   <object class="GtkAdjustment" id="adj_delta_t">
     <property name="lower">1</property>
     <property name="upper">1000000</property>
@@ -51,12 +51,12 @@
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
-  <template class="DactlStripChart" parent="DactlCompositeWidget">
+  <template class="DcsUIStripChart" parent="DcsUICompositeWidget">
     <property name="name">stripchart</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
-      <object class="DactlStripChartCanvas" id="canvas">
+      <object class="DcsUIStripChartCanvas" id="canvas">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="id">canvas0</property>

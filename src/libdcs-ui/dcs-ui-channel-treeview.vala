@@ -218,7 +218,7 @@ public class Dcs.UI.ChannelTreeCategory : GLib.Object, Dcs.Object, Dcs.Buildable
     }
 }
 
-[GtkTemplate (ui = "/org/coanda/libdcs-ui/ui/channel-tree.ui")]
+[GtkTemplate (ui = "/org/opendcs/libdcs/ui/channel-tree.ui")]
 public class Dcs.UI.ChannelTreeView : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
 
     private Gee.List<int> columns;

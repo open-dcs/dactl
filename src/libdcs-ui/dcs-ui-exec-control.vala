@@ -1,4 +1,4 @@
-[GtkTemplate (ui = "/org/coanda/libdcs-ui/ui/exec-control.ui")]
+[GtkTemplate (ui = "/org/opendcs/libdcs/ui/exec-control.ui")]
 public class Dcs.UI.ExecControl : Dcs.UI.CompositeWidget {
 
     private string _xml = """

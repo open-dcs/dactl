@@ -1,4 +1,4 @@
-[GtkTemplate (ui = "/org/coanda/libdcs-ui/ui/chart-widget.ui")]
+[GtkTemplate (ui = "/org/opendcs/libdcs/ui/chart-widget.ui")]
 public class Dcs.UI.ChartWidget : Gtk.Box {
 
     [GtkChild]

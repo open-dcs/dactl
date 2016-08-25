@@ -4,44 +4,44 @@ if ENABLE_WEBKIT
 
 EXTRA_DIST = $(extensions_DATA)
 
-extensionsdir = $(libdir)/dactl/extensions
-extensions_LTLIBRARIES = libdactl-ui-extension-dom.la
+extensionsdir = $(libdir)/dcs/extensions
+extensions_LTLIBRARIES = libdcs-ui-extension-dom.la
 
-BUILT_SOURCES = libdactl_ui_extension_dom_la_vala.stamp
+BUILT_SOURCES = libdcs_ui_extension_dom_la_vala.stamp
 
-libdactl_ui_extension_dom_la_vala.stamp: $(libdactl_ui_extension_dom_la_VALASOURCES)
+libdcs_ui_extension_dom_la_vala.stamp: $(libdcs_ui_extension_dom_la_VALASOURCES)
 	$(AM_V_GEN)$(VALAC) \
-		$(libdactl_ui_extension_dom_la_VALAFLAGS) \
-		$(addprefix $(srcdir)/,$(libdactl_ui_extension_dom_la_VALASOURCES)) \
+		$(libdcs_ui_extension_dom_la_VALAFLAGS) \
+		$(addprefix $(srcdir)/,$(libdcs_ui_extension_dom_la_VALASOURCES)) \
 		--ccode \
 		&& touch $@
 
-libdactl_ui_extension_dom_la_VALASOURCES = \
-	dactl-ui-extension-dom.vala \
+libdcs_ui_extension_dom_la_VALASOURCES = \
+	dcs-ui-extension-dom.vala \
 	$(NULL)
 
-EXTRA_DIST += $(libdactl_ui_extension_dom_la_VALASOURCES)
+EXTRA_DIST += $(libdcs_ui_extension_dom_la_VALASOURCES)
 
-nodist_libdactl_ui_extension_dom_la_SOURCES = \
-	dactl-ui-extension-dom.c \
+nodist_libdcs_ui_extension_dom_la_SOURCES = \
+	dcs-ui-extension-dom.c \
 	$(NULL)
 
-CLEANFILES = $(BUILT_SOURCES) $(nodist_libdactl_ui_extension_dom_la_SOURCES)
+CLEANFILES = $(BUILT_SOURCES) $(nodist_libdcs_ui_extension_dom_la_SOURCES)
 
-libdactl_ui_extension_dom_la_VALAFLAGS = \
+libdcs_ui_extension_dom_la_VALAFLAGS = \
 	--vapidir=$(top_srcdir)/vapi \
 	--pkg webkit2gtk-web-extension-4.0 \
 	--pkg javascriptcoregtk-3.0 \
 	$(NULL)
 
-libdactl_ui_extension_dom_la_CFLAGS = \
-	-DG_LOG_DOMAIN=\"libdactl-ui-extension-dom\" \
-	-DGETTEXT_PACKAGE=\"dactl\" \
+libdcs_ui_extension_dom_la_CFLAGS = \
+	-DG_LOG_DOMAIN=\"libdcs-ui-extension-dom\" \
+	-DGETTEXT_PACKAGE=\"dcs\" \
 	$(WEBKIT_CFLAGS) \
 	$(NULL)
 
-libdactl_ui_extension_dom_la_LIBADD = $(WEBKIT_LIBS)
-libdactl_ui_extension_dom_la_LDFLAGS = -module -avoid-version -no-undefined
+libdcs_ui_extension_dom_la_LIBADD = $(WEBKIT_LIBS)
+libdcs_ui_extension_dom_la_LDFLAGS = -module -avoid-version -no-undefined
 
 endif
 

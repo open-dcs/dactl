@@ -1,5 +1,5 @@
-[DBus (name = "org.coanda.Dactl.Extension")]
-public class Dactl.UI.Extension.DOM : GLib.Object {
+[DBus (name = "org.opendcs.Dcs.Extension")]
+public class Dcs.UI.Extension.DOM : GLib.Object {
 
     private int count;
 
@@ -42,7 +42,7 @@ public class Dactl.UI.Extension.DOM : GLib.Object {
     [DBus (visible = false)]
     public void bus_acquired_cb (DBusConnection connection) {
         try {
-            connection.register_object ("/org/coanda/dactl/extension", this);
+            connection.register_object ("/org/opendcs/dcs/extension", this);
         } catch (IOError error) {
             warning ("Could not register service: %s", error.message);
         }
@@ -162,20 +162,20 @@ public class Dactl.UI.Extension.DOM : GLib.Object {
     }
 }
 
-[DBus (name = "org.coanda.Dactl.Extension")]
+[DBus (name = "org.opendcs.Dcs.Extension")]
 public errordomain DOMError {
     ERROR
 }
 
 [CCode (cname = "G_MODULE_EXPORT webkit_web_extension_initialize", instance_pos = -1)]
 public static void webkit_web_extension_initialize (WebKit.WebExtension extension) {
-    Dactl.UI.Extension.DOM dom = new Dactl.UI.Extension.DOM ();
+    Dcs.UI.Extension.DOM dom = new Dcs.UI.Extension.DOM ();
     WebKit.ScriptWorld world = WebKit.ScriptWorld.get_default ();
 
     extension.page_created.connect (dom.page_created_cb);
     world.window_object_cleared.connect (dom.window_object_cleared_cb);
 
-    Bus.own_name (BusType.SESSION, "org.coanda.Dactl.Extension", BusNameOwnerFlags.NONE,
+    Bus.own_name (BusType.SESSION, "org.opendcs.Dcs.Extension", BusNameOwnerFlags.NONE,
                   dom.bus_acquired_cb, null,
                   () => { warning ("Could not acquired bus name"); });
 }

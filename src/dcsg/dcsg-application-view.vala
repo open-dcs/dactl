@@ -35,7 +35,7 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
     public Dcs.ApplicationModel model { get; construct set; }
 
     [GtkChild]
-    private Dcs.Topbar topbar;
+    private Dcsg.Topbar topbar;
 
     [GtkChild]
     private Gtk.Stack layout;
@@ -44,13 +44,13 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
     private Gtk.Revealer settings;
 
     [GtkChild]
-    private Dcs.Loader loader;
+    private Dcsg.Loader loader;
 
     [GtkChild]
-    private Dcs.ConfigurationEditor configuration;
+    private Dcsg.ConfigurationEditor configuration;
 
     [GtkChild]
-    private Dcs.CsvExport export;
+    private Dcsg.CsvExport export;
 
     [GtkChild]
     private Gtk.Box main_vbox;
@@ -112,7 +112,7 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
     private void load_style () {
         /* XXX use resource instead - see gtk3-demo for example */
         /* Apply stylings from CSS resource */
-        var provider = Dcs.load_css ("theme/shared.css");
+        var provider = Dcsg.load_css ("theme/shared.css");
         Gtk.StyleContext.add_provider_for_screen (Gdk.Screen.get_default (),
                                                   provider,
                                                   600);
@@ -138,13 +138,13 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
     public void construct_layout () {
 
         /* Currently only pages can be added to the notebook */
-        var pages = model.get_object_map (typeof (Dcs.Page));
+        var pages = model.get_object_map (typeof (Dcs.UI.Page));
         if (pages.size == 0) {
-            layout_add_page (new Dcs.Page ());
+            layout_add_page (new Dcs.UI.Page ());
         } else {
             foreach (var page in pages.values) {
                 message ("Constructing layout for page `%s'", page.id);
-                layout_add_page (page as Dcs.Page);
+                layout_add_page (page as Dcs.UI.Page);
             }
         }
 
@@ -160,7 +160,7 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
         window.show_all ();
     }
 
-    public void layout_add_page (Dcs.Page page) {
+    public void layout_add_page (Dcs.UI.Page page) {
         message ("Adding page `%s' with title `%s'", page.id, page.title);
         layout.add_titled (page, page.id, page.title);
         pages += page.id;
@@ -227,14 +227,14 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
 
     public void connect_signals () {
         /* Callbacks with functions */
-        var treeviews = model.get_object_map (typeof (Dcs.ChannelTreeView));
+        var treeviews = model.get_object_map (typeof (Dcs.UI.ChannelTreeView));
         foreach (var treeview in treeviews.values) {
-            (treeview as Dcs.ChannelTreeView).channel_selected.connect (treeview_channel_selected_cb);
+            (treeview as Dcs.UI.ChannelTreeView).channel_selected.connect (treeview_channel_selected_cb);
         }
 
-        var settables = model.get_object_map (typeof (Dcs.Settable));
+        var settables = model.get_object_map (typeof (Dcs.UI.Settable));
         foreach (var settable in settables.values) {
-            (settable as Dcs.Settable).reveal_menu.connect ((settings_menu) => {
+            (settable as Dcs.UI.Settable).reveal_menu.connect ((settings_menu) => {
                 var style = settings_menu.get_style_context ();
                 style.add_class ("background");
 
@@ -258,14 +258,14 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
         /**
          * FIXME: the stripchart class doesn't use the chart as its base yet
          */
-        var charts = model.get_object_map (typeof (Dcs.StripChart));
+        var charts = model.get_object_map (typeof (Dcs.UI.StripChart));
         foreach (var chart in charts.values) {
-            (chart as Dcs.StripChart).highlight_trace (id);
+            (chart as Dcs.UI.StripChart).highlight_trace (id);
         }
 
-        charts = model.get_object_map (typeof (Dcs.RTChart));
+        charts = model.get_object_map (typeof (Dcs.UI.RTChart));
         foreach (var chart in charts.values) {
-            (chart as Dcs.RTChart).highlight_trace (id);
+            (chart as Dcs.UI.RTChart).highlight_trace (id);
         }
     }
 

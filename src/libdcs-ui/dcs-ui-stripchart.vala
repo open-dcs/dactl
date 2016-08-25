@@ -706,7 +706,7 @@ private class Dcs.UI.StripChartCanvas : Dcs.UI.Canvas {
     }
 }
 
-[GtkTemplate (ui = "/org/coanda/libdcs-ui/ui/stripchart.ui")]
+[GtkTemplate (ui = "/org/opendcs/libdcs/ui/stripchart.ui")]
 public class Dcs.UI.StripChart : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
 
     private string _xml = """

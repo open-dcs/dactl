@@ -1,7 +1,7 @@
 /**
  * Page data model class that is configurable using the application builder.
  */
-[GtkTemplate (ui = "/org/coanda/libdcs-ui/ui/page.ui")]
+[GtkTemplate (ui = "/org/opendcs/libdcs/ui/page.ui")]
 public class Dcs.UI.Page : Dcs.UI.CompositeWidget {
 
     private string _xml = """

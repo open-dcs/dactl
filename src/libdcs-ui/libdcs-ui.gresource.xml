@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/org/coanda/libdactl">
+  <gresource prefix="/org/opendcs/libdcs">
     <file preprocess="xml-stripblanks">ui/ai-control.ui</file>
     <file preprocess="xml-stripblanks">ui/ao-control.ui</file>
     <file preprocess="xml-stripblanks">ui/box.ui</file>

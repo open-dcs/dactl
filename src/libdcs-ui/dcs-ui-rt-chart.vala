@@ -208,8 +208,8 @@ public class Dcs.UI.RTChart : Dcs.UI.Chart, Dcs.UI.Settable {
     }
 }
 
-[GtkTemplate (ui = "/org/coanda/libdcs-ui/ui/rt-chart-settings.ui")]
-public class Dcs.UI.RTChartSettings : Gtk.ScrolledWindow, Dcs.SettingsWidget {
+[GtkTemplate (ui = "/org/opendcs/libdcs/ui/rt-chart-settings.ui")]
+public class Dcs.UI.RTChartSettings : Gtk.ScrolledWindow, Dcs.UI.SettingsWidget {
 
     public string title { get; set; }
     public string y_axis_label { get; set; }

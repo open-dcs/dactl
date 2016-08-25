@@ -595,7 +595,7 @@ AC_CONFIG_FILES([
 	data/icons/48x48/Makefile
 	data/icons/scalable/Makefile
 	data/mime/Makefile
-	data/org.opendcs.dcsg.desktop.in
+	data/org.opendcs.Dcsg.desktop.in
 
     data/systemd/Makefile
     data/systemd/dcs-ctl.service
@@ -646,6 +646,9 @@ AC_CONFIG_FILES([
 	src/devices/samples/Makefile
 
 	examples/Makefile
+	examples/javascript/Makefile
+	examples/python/Makefile
+	examples/ruby/Makefile
 	examples/vala/Makefile
 
 	src/libdcs-core/dcs-core-0.1.pc

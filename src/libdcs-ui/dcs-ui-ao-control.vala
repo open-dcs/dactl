@@ -1,4 +1,4 @@
-[GtkTemplate (ui = "/org/coanda/libdcs-ui/ui/ao-control.ui")]
+[GtkTemplate (ui = "/org/opendcs/libdcs/ui/ao-control.ui")]
 public class Dcs.UI.AOControl : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
 
     private string _xml = """
