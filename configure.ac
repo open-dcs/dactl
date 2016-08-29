@@ -42,6 +42,7 @@ LIBDCS_CLI_VERSION=dcs_version
 LIBDCS_DAQ_VERSION=dcs_version
 LIBDCS_LOG_VERSION=dcs_version
 LIBDCS_NET_VERSION=dcs_version
+LIBDCS_CONTROL_VERSION=dcs_version
 LIBDCS_UI_VERSION=dcs_version
 AC_SUBST(MAJOR_VERSION)
 AC_SUBST(MINOR_VERSION)
@@ -51,6 +52,7 @@ AC_SUBST(LIBDCS_CLI_VERSION)
 AC_SUBST(LIBDCS_DAQ_VERSION)
 AC_SUBST(LIBDCS_LOG_VERSION)
 AC_SUBST(LIBDCS_NET_VERSION)
+AC_SUBST(LIBDCS_CONTROL_VERSION)
 AC_SUBST(LIBDCS_UI_VERSION)
 
 
@@ -226,6 +228,11 @@ PKG_CHECK_MODULES(LIBDCS_NET, [gee-0.8 >= gee_required_version
                                libsoup-2.4 >= soup_required_version
                                libzmq > zmq_required_version
                                cld-0.3 >= cld_required_version])
+PKG_CHECK_MODULES(LIBDCS_CONTROL, [gio-2.0 >= glib_required_version
+                                   gee-0.8 >= gee_required_version
+                                   libpeas-1.0 >= peas_required_version
+                                   libzmq >= zmq_required_version
+                                   cld-0.3 >= cld_required_version])
 PKG_CHECK_MODULES(LIBDCS_UI, [gio-2.0 >= glib_required_version
                               gee-0.8 >= gee_required_version
                               gtk+-3.0 >= gtk_required_version
@@ -352,6 +359,14 @@ dnl ***********************************************************************
 m4_include([src/backends/xml/configure.ac])
 
 AC_SUBST([BACKEND_DIR],[${libdir}/dcs/backends])
+
+
+dnl ***********************************************************************
+dnl Check for supported control loops
+dnl ***********************************************************************
+m4_include([src/loops/pid/configure.ac])
+
+AC_SUBST([LOOP_DIR],[${libdir}/dcs/loops])
 
 
 dnl ***********************************************************************
@@ -586,6 +601,38 @@ AC_SUBST(BACKEND_VALAFLAGS)
 
 
 dnl ***********************************************************************
+dnl Setup common cflags and ldflags for control loops
+dnl ***********************************************************************
+LOOP_CFLAGS="$LOOP_CFLAGS -I\$(top_srcdir)/src/libdcs-core"
+LOOP_CFLAGS="$LOOP_CFLAGS -I\$(top_srcdir)/src/libdcs-control"
+LOOP_CFLAGS="$LOOP_CFLAGS -I\$(top_srcdir)/src/libdcs-net"
+LOOP_CFLAGS="$LOOP_CFLAGS $LIBDCS_CORE_CFLAGS"
+LOOP_CFLAGS="$LOOP_CFLAGS $LIBDCS_NET_CFLAGS"
+LOOP_CFLAGS="$LOOP_CFLAGS $LIBDCS_CONTROL_CFLAGS"
+LOOP_CFLAGS="$LOOP_CFLAGS $DEBUG_CFLAGS"
+LOOP_CFLAGS="$LOOP_CFLAGS $OPTIMIZE_CFLAGS"
+AC_SUBST(LOOP_CFLAGS)
+
+LOOP_LDFLAGS="$LOOP_LDFLAGS $OPTIMIZE_LDFLAGS"
+LOOP_LDFLAGS="$LOOP_LDFLAGS -avoid-version"
+dnl LOOP_LDFLAGS="$LOOP_LDFLAGS -export-symbols-regex peas_register_types"
+LOOP_LDFLAGS="$LOOP_LDFLAGS -module"
+AC_SUBST(LOOP_LDFLAGS)
+
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --target-glib=2.44"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --thread"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_srcdir)/vapi"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-core"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-control"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-net"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-core-0.1"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-control-0.1"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-net-0.1"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg libpeas-1.0"
+AC_SUBST(LOOP_VALAFLAGS)
+
+
+dnl ***********************************************************************
 dnl Process .in Files
 dnl ***********************************************************************
 AC_CONFIG_FILES([
@@ -642,6 +689,7 @@ AC_CONFIG_FILES([
 	src/dcs-analyze/Makefile
 	src/dcs-daq/Makefile
 	src/dcs-log/Makefile
+	src/dcs-control/Makefile
 	src/dcs-plugin/Makefile
 	src/dcs-plugin/setup.cfg
 
@@ -650,10 +698,13 @@ AC_CONFIG_FILES([
 	src/libdcs-daq/Makefile
 	src/libdcs-log/Makefile
 	src/libdcs-net/Makefile
+	src/libdcs-control/Makefile
 	src/libdcs-ui/Makefile
 	src/libdcs-ui/extensions/Makefile
 
     src/backends/Makefile
+
+    src/loops/Makefile
 
 	src/plugins/Makefile
 	src/plugins/samples/Makefile
@@ -674,6 +725,7 @@ AC_CONFIG_FILES([
 	src/libdcs-daq/dcs-daq-0.1.pc
 	src/libdcs-log/dcs-log-0.1.pc
 	src/libdcs-net/dcs-net-0.1.pc
+	src/libdcs-control/dcs-control-0.1.pc
 	src/libdcs-ui/dcs-ui-0.1.pc
 ])
 AC_OUTPUT
@@ -715,6 +767,10 @@ AC_MSG_NOTICE([
      Arduino: ..................................... : ${enable_arduino_device}
      Comedi: ...................................... : ${enable_comedi_device}
      MCC USB: ..................................... : ${enable_mccusb_device}
+
+    Control Loops
+
+     PID: ......................................... : ${enable_pid_loop}
 
     Example Plugins
 

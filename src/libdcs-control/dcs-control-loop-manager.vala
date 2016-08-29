@@ -1,15 +1,19 @@
-public class Dcs.DAQ.DeviceManager : Dcs.PluginManager {
+public class Dcs.Control.LoopManager : Dcs.PluginManager {
+
+    private Dcs.Net.ZmqClient zmq_client;
 
     private Dcs.Net.ZmqService zmq_service;
 
-    public Dcs.DAQ.Device ext { get; set; }
+    public Dcs.Control.LoopProxy ext { get; set; }
 
-    public DeviceManager (Dcs.Net.ZmqService zmq_service) {
+    public LoopManager (Dcs.Net.ZmqClient zmq_client,
+                        Dcs.Net.ZmqService zmq_service) {
+        this.zmq_client = zmq_client;
         this.zmq_service = zmq_service;
 
         engine = Peas.Engine.get_default ();
-        ext = new Dcs.DAQ.Device (zmq_service);
-        search_path = Dcs.Config.DEVICE_DIR;
+        ext = new Dcs.Control.LoopProxy (zmq_client, zmq_service);
+        search_path = Dcs.Config.LOOP_DIR;
 
         init ();
         add_extension ();
@@ -17,7 +21,7 @@ public class Dcs.DAQ.DeviceManager : Dcs.PluginManager {
     }
 
     protected override void add_extension () {
-        // The extension set
+		// The extension set
         extensions = new Peas.ExtensionSet (engine,
                                             typeof (Peas.Activatable),
                                             "object",

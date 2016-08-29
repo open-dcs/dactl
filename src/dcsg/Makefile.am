@@ -89,15 +89,14 @@ dcsg_SOURCES = \
 	dcsg-application-model.vala \
 	dcsg-application-view.vala \
 	dcsg-application-controller.vala \
-	dcsg-dbus-service.vala \
-	dcsg-cmdline-config.vala \
-	dcsg-utility.vala \
 	dcsg-application-menu.vala \
 	dcsg-application-toolbar.vala \
+	dcsg-cmdline-config.vala \
 	dcsg-configuration-editor.vala \
 	dcsg-configuration-toolbar.vala \
 	dcsg-csv-export.vala \
 	dcsg-csv-export-toolbar.vala \
+	dcsg-dbus-service.vala \
 	dcsg-general-settings.vala \
 	dcsg-loader.vala \
 	dcsg-loader-toolbar.vala \
@@ -112,6 +111,7 @@ dcsg_SOURCES = \
 	dcsg-settings-treeview.vala \
 	dcsg-sidebar.vala \
 	dcsg-topbar.vala \
+	dcsg-utility.vala \
 	dcsg-ux-manager.vala \
 	$(NULL)
 

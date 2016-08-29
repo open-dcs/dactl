@@ -1,3 +1,5 @@
+![OpenDCS Logo][logo]
+
 # OpenDCS - Distributed Control System Components
 [![Documentation Status](https://readthedocs.org/projects/dactl/badge/?version=latest)](https://readthedocs.org/projects/dactl/?badge=latest)
 [![Build Status](https://travis-ci.org/coanda/dactl.svg)](https://travis-ci.org/coanda/dactl)
@@ -19,3 +21,5 @@ for use in other languages, the support of which is still a work in progress.
 
 Instructions for installing OpenDCS and it's dependencies can be read
 [here](https://dactl.readthedocs.org/en/latest/setup.html).
+
+[logo]: http://open-dcs.github.io/assets/img/dcs.svg "OpenDCS Logo"

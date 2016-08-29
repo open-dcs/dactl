@@ -4,6 +4,7 @@ desktopdir = $(datadir)/applications
 plugindir = @PLUGIN_DIR@
 devicedir = @DEVICE_DIR@
 backenddir = @BACKEND_DIR@
+loopdir = @LOOP_DIR@
 extensiondir = @WEB_EXTENSION_DIR@
 
 libdcscoredir = $(top_srcdir)/src/libdcs-core
