@@ -1,0 +1,103 @@
+  <refsect2>
+    <title>DCS Utility Common Options</title>
+    <variablelist>
+      <varlistentry>
+        <term><option>-a</option></term>
+        <term><option>--address=<replaceable class="parameter">address</replaceable></option></term>
+        <listitem>
+          <para>
+            Bind an address to the socket. The default value is 0.0.0.0.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>-g</option></term>
+        <term><option>--lo<emphasis>g</emphasis>-rate=<replaceable class="parameter">log-rate</replaceable></option></term>
+        <listitem>
+          <para>
+            The number of log entries per second.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>-l</option></term>
+        <term><option>--log=<replaceable class="parameter">log-path</replaceable></option></term>
+        <listitem>
+            <para>
+                Send output to a file <filename>log-path</filename>.
+            </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>-p</option></term>
+        <term><option>--port=<replaceable class="parameter">port-number</replaceable></option></term>
+        <listitem>
+            <para>
+              Assign a port number to the socket.
+              The accepted values are from 1025 to 65535 with a default value of 5588.
+            </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>-t</option></term>
+        <term><option>--transport</option></term>
+        <listitem>
+          <para>
+            Specify the transport protocol.
+						<variablelist>
+							<varlistentry>
+								<term><option>INPROC</option></term>
+							<listitem>
+								<para>
+								In-process communication.
+								</para>
+							</listitem>
+							</varlistentry>
+							<varlistentry>
+								<term><option>IPC</option></term>
+							<listitem>
+								<para>
+								Inter-process communication.
+								</para>
+							</listitem>
+							</varlistentry>
+							<varlistentry>
+								<term><option>TCP</option></term>
+							<listitem>
+								<para>
+													Transmission Control Protocol
+								</para>
+							</listitem>
+							</varlistentry>
+							<varlistentry>
+								<term><option>PGM</option></term>
+							<listitem>
+								<para>
+													Pragmatic General Multicast
+								</para>
+							</listitem>
+							</varlistentry>
+						</variablelist>
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>-v, -vv, -vvv</option></term>
+        <term><option>--verbose </option></term>
+        <listitem>
+            <para>
+              Be verbose, very verbose or very, very verbose.
+            </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+          <term><command>command </command><replaceable class="option">arg</replaceable></term>
+        <listitem>
+          <para>
+            Execute a command (see next section for details).
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect2>
+

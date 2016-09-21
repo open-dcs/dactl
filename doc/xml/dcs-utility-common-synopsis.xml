@@ -1,0 +1,17 @@
+        <arg choice="opt">-a <replaceable class="parameter">address</replaceable></arg>
+        <arg choice="opt">-g <replaceable class="parameter">log-rate</replaceable></arg>
+        <arg choice="opt">-l <replaceable class="parameter">log-path</replaceable></arg>
+        <arg choice="opt">-p <replaceable class="parameter">port-number</replaceable></arg>
+        <arg choice="opt">-t
+          <group choice="req">
+            <arg choice="plain">INPROC</arg>
+            <arg choice="plain">IPC</arg>
+            <arg choice="plain">TCP</arg>
+            <arg choice="plain">PGM</arg>
+          </group>
+        </arg>
+        <arg choice="opt">-v</arg>
+        <arg choice="opt" rep="repeat">
+          <replaceable class="command">command </replaceable>
+          <arg choice="opt"><replaceable class="parameter">arg</replaceable></arg>
+        </arg>

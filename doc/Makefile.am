@@ -1,3 +1,5 @@
+SUBDIRS = xml man
+
 if ENABLE_DOC
 
 include Makefile.sphinx
@@ -76,6 +78,7 @@ endif
 GITIGNOREFILES = \
 	build \
 	dcs-0.1 \
+	html \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk

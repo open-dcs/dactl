@@ -87,6 +87,7 @@ AC_PROG_MAKE_SET
 AC_PATH_PROG([GLIB_GENMARSHAL], [glib-genmarshal])
 AC_PATH_PROG([GLIB_MKENUMS], [glib-mkenums])
 AC_PATH_PROG([GLIB_COMPILE_RESOURCES], [glib-compile-resources])
+AC_PATH_PROG([XSLTPROC], [xsltproc])
 AC_HEADER_STDC
 PKG_PROG_PKG_CONFIG([0.22])
 GOBJECT_INTROSPECTION_CHECK([1.42.0])
@@ -618,6 +619,9 @@ AC_CONFIG_FILES([
 	data/gsettings/org.opendcs.dcs.gschema.xml
 
 	doc/Makefile
+	doc/man/Makefile
+	doc/man/man1/Makefile
+	doc/xml/Makefile
 
 	po/Makefile.in
 

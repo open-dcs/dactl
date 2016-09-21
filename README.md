@@ -12,8 +12,8 @@ system is Linux and its modern distribution variants.
 
 The current public release is a beta release that is a fork of
 [dactl](https://github.com/coanda/dactl) and probably won't be in a usable
-state until the next release. The libraries include GIR output for use in other
-languages, the support of which is still a work in progress.
+state until at least the next minor release. The libraries include GIR output
+for use in other languages, the support of which is still a work in progress.
 
 ### Installation Instructions:
 

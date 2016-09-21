@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
+[
+<!ENTITY authors SYSTEM "authors.xml">
+<!ENTITY seealso SYSTEM "seealso.xml">
+<!ENTITY notes SYSTEM "notes.xml">
+<!ENTITY dcs-subcommands SYSTEM "dcs-subcommands.xml">
+<!ENTITY dcs-utility-common-options SYSTEM "dcs-utility-common-options.xml">
+<!ENTITY dcs-utility-common-synopsis SYSTEM "dcs-utility-common-synopsis.xml">
+]>
+
+<refentry id="dcs-publish">
+  <refentryinfo>
+    <title>dcs-publish</title>
+    <productname>OpenDCS</productname>
+    &authors;
+  </refentryinfo>
+  <refmeta>
+    <refentrytitle>dcs-publish</refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>dcs-publish</refname>
+    <refpurpose>Test and validation utility for data publishers</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>dcs-publish</command>
+        <arg choice="opt">-B <replaceable class="parameter">block-size</replaceable></arg>
+        <arg choice="opt">-C <replaceable class="parameter">count</replaceable></arg>
+        <arg choice="opt">-r <replaceable class="parameter">msg-rate</replaceable></arg>
+        <arg choice="opt">-R <replaceable class="parameter">row-size</replaceable></arg>
+        &dcs-utility-common-synopsis;
+    </cmdsynopsis>
+   </refsynopsisdiv>
+  <refsect1 id="description">
+    <title>Description</title>
+    <para>
+      <emphasis>dcs-publish</emphasis> is a utility application that will
+      publish simulated data on the specified transport layer.
+      It can be used to test sytem functionality or as a stand in for a
+      a presently unavailable component. Options setting and
+      command execution can all be done from the command line.
+    </para>
+    <para>
+      Status information can be periodically written to a log file.    </para>
+    <para>
+      Messages can be configured as blocks of row data. The <emphasis>row-size</emphasis>
+      sets the number of data points for a single time stamp value and the
+      <emphasis>block-size</emphasis> determines the number of rows that are sent
+      in each message. Once the <emphasis>start</emphasis> command has been issued,
+      the messages will begin sending continuously or, if set, <emphasis>num-blocks</emphasis>
+      messages will be sent.
+     </para>
+  </refsect1>
+
+  <refsect1 id="options">
+    <title>Options</title>
+    <para>
+      The following options are supported:
+    </para>
+    <variablelist>
+      <varlistentry>
+        <term><option>-B</option></term>
+        <term><option>--block-size=<replaceable class="parameter">size</replaceable></option></term>
+        <listitem>
+          <para>
+            The number of time stamped values in a message.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>-C</option></term>
+        <term><option>--count=<replaceable class="parameter">num</replaceable></option></term>
+        <listitem>
+            <para>
+              Set the number of blocks that are transmitted. If this parameter
+              is not specified, the transmission will be continuous.
+            </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>-r</option></term>
+        <term><option>--msg-rate=<replaceable class="parameter">msg-rate</replaceable></option></term>
+        <listitem>
+            <para>
+              Set the number of messages sent per second.
+            </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>-R</option></term>
+        <term><option>--row-size=<replaceable class="parameter">size</replaceable></option></term>
+        <listitem>
+            <para>
+              Set the number of data points included for each time stamp value.
+            </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    &dcs-utility-common-options;
+  </refsect1>
+  <refsect1 id="commands">
+    <title>Commands</title>
+    &dcs-subcommands;
+    <variablelist>
+      <varlistentry>
+        <term><command>start</command></term>
+        <listitem>
+          <para>
+            Start publishing data.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+  <refsect1 id="examples">
+    <title>Examples</title>
+    <example><title>Publish Data</title>
+      <para>
+        Publish data continuously on 127.0.0.1:5588 at 1000 messages per second.
+        The message consists of 16 values per timestamp in blocks of 10.
+        Write the status to a log file once every second. Start transmitting
+        data immediately.
+      </para>
+      <para>
+        dcs-publish -b 127.0.0.1 -p 5588 -t TCP -m 1000 -R 16 -B 10 -l ./log.txt -g 1 start
+      </para>
+    </example>
+    <example><title>Load a configuration then run a script</title>
+      <para>
+        Load the parameters from a configuration file then execute commands from
+        a script file.
+      </para>
+      <para>
+        dcs-publish -c config.xml -s test-script.txt
+      </para>
+    </example>
+  </refsect1>
+
+  &seealso;
+
+  &notes;
+
+</refentry>

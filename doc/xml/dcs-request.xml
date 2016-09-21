@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
+[
+<!ENTITY authors SYSTEM "authors.xml">
+<!ENTITY seealso SYSTEM "seealso.xml">
+<!ENTITY notes SYSTEM "notes.xml">
+<!ENTITY dcs-subcommands SYSTEM "dcs-subcommands.xml">
+<!ENTITY dcs-utility-common-options SYSTEM "dcs-utility-common-options.xml">
+<!ENTITY dcs-utility-common-synopsis SYSTEM "dcs-utility-common-synopsis.xml">
+]>
+
+<refentry id="dcs-request">
+  <refentryinfo>
+    <title>dcs-request</title>
+    <productname>OpenDCS</productname>
+    &authors;
+  </refentryinfo>
+
+  <refmeta>
+    <refentrytitle>dcs-request</refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>dcs-request</refname>
+    <refpurpose>Test and validation utility for data requesters.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>dcs-request</command>
+        <arg choice="opt">-C <replaceable class="parameter">count</replaceable></arg>
+        <arg choice="opt">-L <replaceable class="parameter">msg-length</replaceable></arg>
+        <arg choice="opt">-m <replaceable class="parameter">msg-text</replaceable></arg>
+        <arg choice="opt">-r <replaceable class="parameter">msg-rate</replaceable></arg>
+        &dcs-utility-common-synopsis;
+    </cmdsynopsis>
+   </refsynopsisdiv>
+
+  <refsect1 id="description">
+    <title>Description</title>
+    <para>
+      <emphasis>dcs-request</emphasis> is a utility application that will
+      make requests to a replying socket.
+      It can be used to test sytem functionality or as a stand in for a
+      a presently unavailable component. Options setting and
+      command execution can all be done from the command line.
+    </para>
+    <para>
+      Status information can be periodically written to a log file.
+    </para>
+    <para>
+      Request messages can be configured to be custom or the default type which
+      contains random bytes of data with a configurable length.
+    </para>
+    <para>
+      Once the <emphasis>start</emphasis> command has been issued,
+      the messages will begin sending continuously or, if set, <emphasis>count</emphasis>
+      messages will be sent.
+     </para>
+  </refsect1>
+  <refsect1 id="options">
+    <title>Options</title>
+    <para>
+      The following options are supported:
+    </para>
+    <variablelist>
+      <varlistentry>
+        <term><option>-C</option></term>
+        <term><option>--count=<replaceable class="parameter">count</replaceable></option></term>
+        <listitem>
+          <para>
+            The total number of messages sent.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>-L</option></term>
+        <term><option>--length=<replaceable class="parameter">msg-length</replaceable></option></term>
+        <listitem>
+            <para>
+                The number of random bytes in a generic request message. If a custom <option>msg-text</option>
+                is set, it will override the generic message.
+            </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>-m</option></term>
+        <term><option>--message=<replaceable class="parameter">msg-text</replaceable></option></term>
+        <listitem>
+            <para>
+                A custom message to be sent.
+            </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>-r</option></term>
+        <term><option>--rate=<replaceable class="parameter">msg-rate</replaceable></option></term>
+        <listitem>
+            <para>
+              Set the number of messages sent per second.
+            </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    &dcs-utility-common-options;
+  </refsect1>
+  <refsect1 id="commands">
+    <title>Commands</title>
+    &dcs-subcommands;
+    <variablelist>
+      <varlistentry>
+        <term><command>start</command></term>
+        <listitem>
+          <para>
+            Start requesting data.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+  <refsect1 id="examples">
+    <title>Examples</title>
+    <example><title>Make requests</title>
+      <para>
+        Send 5000 requests to 127.0.0.1:5588 at 1000 requests per second.
+        The message length is 500 bytes.
+        Write the status to a log file 12 times every second. Start transmitting
+        data immediately.
+      </para>
+      <para>
+        dcs-request -a 127.0.0.1 -p 5588 -t TCP -C 5000 -m 1000 -L 500 -l ./log.txt -g 12 start
+      </para>
+    </example>
+    <example><title>Load a configuration then run a script</title>
+      <para>
+        Load the parameters from a configuration file then execute commands from
+        a script file.
+      </para>
+      <para>
+        dcs-request -c config.xml -s test-script.txt
+      </para>
+    </example>
+  </refsect1>
+
+  &seealso;
+
+  &notes;
+
+</refentry>

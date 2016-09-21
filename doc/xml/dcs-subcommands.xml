@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<variablelist>
+  <varlistentry>
+    <term>
+      <command>get
+        <replaceable class="parameter">parameter</replaceable>
+      </command>
+    </term>
+    <listitem>
+      <para>
+        Retrieve a parameter value.
+      </para>
+    </listitem>
+  </varlistentry>
+
+  <varlistentry>
+    <term>
+      <command>set
+        <replaceable class="parameter">parameter </replaceable>
+        <replaceable class="parameter">value</replaceable>
+      </command>
+    </term>
+    <listitem>
+      <para>
+        Set a parameter to a value.
+      </para>
+    </listitem>
+  </varlistentry>
+</variablelist>
