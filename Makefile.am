@@ -1,4 +1,4 @@
-SUBDIRS = build contrib data doc src examples
+SUBDIRS = build contrib data doc src examples tests
 
 ACLOCAL_AMFLAGS = -I build/autotools
 

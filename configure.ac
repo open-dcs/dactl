@@ -417,6 +417,17 @@ AC_C_CONST
 
 
 dnl ***********************************************************************
+dnl Always build tests
+dnl ***********************************************************************
+AC_ARG_ENABLE([tests],
+              AS_HELP_STRING([--enable-tests],
+                             [Enable always building tests during 'make all' [default=no]]),
+              [enable_tests=$enableval], [enable_tests=no])
+
+AM_CONDITIONAL([ENABLE_TESTS], test "$enable_tests" = "yes")
+
+
+dnl ***********************************************************************
 dnl Support for valadoc Documentation Engine
 dnl ***********************************************************************
 AC_ARG_ENABLE(doc,
@@ -650,6 +661,8 @@ AC_CONFIG_FILES([
 	src/devices/Makefile
 	src/devices/samples/Makefile
 
+	tests/Makefile
+
 	examples/Makefile
 	examples/javascript/Makefile
 	examples/python/Makefile
@@ -684,6 +697,7 @@ AC_MSG_NOTICE([
      Enable Debug: ................................ : ${enable_debug}
      Enable Tracing: .............................. : ${enable_tracing}
      Enable Profiling (-pg): ...................... : ${enable_profiling}
+     Build Test Suite: ............................ : ${enable_tests}
      Build documentation: ......................... : ${enable_doc}
      Build API reference: ......................... : ${enable_doc}
      Update MIME Database: ........................ : ${enable_mime}
