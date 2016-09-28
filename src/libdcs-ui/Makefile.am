@@ -92,7 +92,8 @@ libdcs_ui_0_1_la_CFLAGS = \
 	-Wno-incompatible-pointer-types \
 	-Wno-unused-but-set-variable \
 	-Wno-unused-label \
-	-Wno-unused-function
+	-Wno-unused-function \
+	-Wformat-nonliteral
 
 libdcs_ui_0_1_la_LDFLAGS = \
 	$(OPTIMIZE_LDFLAGS) \

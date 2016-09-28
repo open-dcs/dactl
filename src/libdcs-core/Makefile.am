@@ -67,6 +67,7 @@ libdcs_core_0_1_la_CFLAGS = \
 	-Wno-unused-but-set-variable \
 	-Wno-unused-label \
 	-Wno-unused-function \
+	-Wformat-nonliteral \
 	$(NULL)
 
 libdcs_core_0_1_la_LDFLAGS = \

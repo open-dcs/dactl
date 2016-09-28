@@ -10,7 +10,12 @@
   <description>
     <_p>
       OpenDCS is a set of applications and services to design and use
-      distributed control systems for data acquisition systems.
+      distributed control systems for data acquisition and control.
+      Libraries for all core functionality and a libpeas plugins framework
+      are provided to extend what is possible. Additionally, the core
+      services use ZeroMQ as a message queue, a RESTful interface, and
+      DBus calls to make it possible to communicate with them in any
+      language that can communicate in these ways.
     </_p>
     <_p>Features:</_p>
     <ul>

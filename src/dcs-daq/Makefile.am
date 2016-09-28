@@ -40,6 +40,7 @@ dcs_daq_CFLAGS = \
 	-DGETTEXT_PACKAGE=\"dcs\" \
 	$(LIBDCS_CFLAGS) \
 	$(LIBDCS_CLI_CFLAGS) \
+	$(LIBDCS_DAQ_CFLAGS) \
 	$(LIBDCS_NET_CFLAGS) \
 	$(DEBUG_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
@@ -51,11 +52,13 @@ dcs_daq_CFLAGS = \
 	-Wno-unused-but-set-variable \
 	-Wno-unused-label \
 	-Wno-unused-function \
+	-Wformat-nonliteral \
 	$(NULL)
 
 dcs_daq_LDADD = \
 	$(LIBDCS_LIBS) \
 	$(LIBDCS_CLI_LIBS) \
+	$(LIBDCS_DAQ_LIBS) \
 	$(LIBDCS_NET_LIBS) \
 	$(top_builddir)/src/libdcs-core/libdcs-core-0.1.la \
 	$(top_builddir)/src/libdcs-cli/libdcs-cli-0.1.la \

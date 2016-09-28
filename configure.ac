@@ -394,7 +394,7 @@ AX_APPEND_COMPILE_FLAGS([ \
 	-Wall \
 	-Wcast-align \
 	-Wdeclaration-after-statement \
-	-Werror=format-security \
+	-Wformat-security \
 	-Werror=format=2 \
 	-Wextra \
 	-Wmissing-include-dirs \
@@ -624,6 +624,7 @@ AC_CONFIG_FILES([
 	src/Makefile
 	src/dcs/Makefile
 	src/dcsg/Makefile
+	src/dcs-analyze/Makefile
 	src/dcs-daq/Makefile
 	src/dcs-log/Makefile
 	src/dcs-plugin/Makefile

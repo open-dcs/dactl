@@ -49,7 +49,8 @@ dcsg_CFLAGS = \
 	-Wno-incompatible-pointer-types \
 	-Wno-unused-but-set-variable \
 	-Wno-unused-label \
-	-Wno-unused-function
+	-Wno-unused-function \
+	-Wformat-nonliteral
 
 dcsg_LDADD = \
 	$(DCS_DEPS_LIBS) \
