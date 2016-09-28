@@ -1,4 +1,4 @@
-Dactl Coding Style
+OpenDCS Coding Style
 ==================
 
 The coding style to respect in this project is very similar to most
@@ -53,8 +53,8 @@ from the Rygel Coding Style.
    fetch_the_document ();
 
  * Each class should go in a separate .vala file & named according to
-   the class in it. E.g Dactl.PolarChart class should go under
-   dactl-polar-chart.vala.
+   the class in it. E.g Dcs.UI.PolarChart class should go under
+   dcs-ui-polar-chart.vala.
 
  * Avoid putting more than 3 'using' statements in each .vala file. If
    you feel you need to use more, perhaps you should consider
@@ -63,7 +63,7 @@ from the Rygel Coding Style.
  * Declare the namespace(s) of the class/errordomain with the
    class/errordomain itself. Like this:
 
-        private class Dactl.Hello {
+        private class Dcs.Hello {
         ...
         };
 

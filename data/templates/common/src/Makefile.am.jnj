@@ -1,6 +1,6 @@
 EXTRA_DIST = $(plugin_DATA)
 
-plugindir = $(libdir)/dactl/plugins
+plugindir = $(libdir)/dcs/plugins
 plugin_LTLIBRARIES = lib{{ project.name }}-{{ plugin.name }}.la
 dist_plugin_DATA = {{ plugin.name }}.plugin
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
   - Sample configuration file
-  - Geoff Johnson <geoff.johnson@coanda.ca>
+  - Geoff Johnson <geoff.jay@gmail.com>
   - 2015-03-17
   -->
 <dactl xmlns:cld="urn:libcld" xmlns:ui="urn:libdactl-ui">

@@ -1,14 +1,21 @@
-# Data Acquisition and Control Application
-[![Documentation Status](https://readthedocs.org/projects/dactl/badge/?version=latest)](https://readthedocs.org/projects/dactl/?badge=latest) [![Build Status](https://travis-ci.org/coanda/dactl.svg)](https://travis-ci.org/coanda/dactl) [![Issues Status](https://badge.waffle.io/coanda/dactl.png?label=ready&title=Ready)](https://waffle.io/coanda/dactl)
+# OpenDCS - Distributed Control System Components
+[![Documentation Status](https://readthedocs.org/projects/dactl/badge/?version=latest)](https://readthedocs.org/projects/dactl/?badge=latest)
+[![Build Status](https://travis-ci.org/coanda/dactl.svg)](https://travis-ci.org/coanda/dactl)
 
 ## Description
 
-Dactl is a configurations based application for creating custom data acquisition and control systems in the GNOME desktop environment.
+OpenDCS is a set of services and applications for creating custom data
+acquisition and control systems in a distributed manner. The target operating
+system is Linux and its modern distribution variants.
 
-### Release 0.4
+### Release 0.1
 
-The current public release brings many bug fixes and has separated out as libraries the core and UI components. These libraries include GIR output for use in other languages, the support of which is still a work in progress.
+The current public release is a beta release that is a fork of
+[dactl](https://github.com/coanda/dactl) and probably won't be in a usable
+state until the next release. The libraries include GIR output for use in other
+languages, the support of which is still a work in progress.
 
 ### Installation Instructions:
 
-Instructions for installing dactl and it's dependencies can be read at https://dactl.readthedocs.org/en/latest/setup.html.
+Instructions for installing OpenDCS and it's dependencies can be read
+[here](https://dactl.readthedocs.org/en/latest/setup.html).

@@ -1,7 +1,7 @@
 [Plugin]
-Module=dactl-device-comedi
+Module=dcs-device-comedi
 Name=Comedi Device Plugin
 Description=A device plugin using the Comedi driver.
-Authors=Geoff Johnson <geoff.johnson@coanda.ca>
+Authors=Geoff Johnson <geoff.jay@gmail.com>
 Copyright=Copyright © 2016 Geoff Johnson
 Builtin=true

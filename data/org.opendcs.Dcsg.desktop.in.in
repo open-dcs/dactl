@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=OpenDCS GUI
+Comment=Display and interact with data from OpenDCS systems
+Version=1.0
+GenericName=User interface to OpenDCS components
+TryExec=dcsg
+Exec=dcsg
+Icon=dcs
+DBusActivatable=true
+Type=Application
+Categories=Utility;
+MimeType=application/x-dcs;
+
+_Keywords=Acquisition;Control;Logging;

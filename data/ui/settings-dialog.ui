@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.18.3 -->
 <interface domain="lugin">
   <requires lib="gtk+" version="3.10"/>
-  <template class="DactlSettingsDialog" parent="GtkWindow">
+  <template class="DcsgSettingsDialog" parent="GtkWindow">
 
     <property name="width_request">1200</property>
     <property name="height_request">800</property>
@@ -19,7 +19,7 @@
 
         <!-- Settings toolbar -->
         <child>
-          <object class="DactlSettingsTopbar" id="settings_topbar">
+          <object class="DcsgSettingsTopbar" id="settings_topbar">
             <property name="visible">True</property>
           </object>
         </child>
@@ -39,7 +39,7 @@
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="DactlGeneralSettings" id="general">
+                  <object class="DcsgGeneralSettings" id="general">
                     <property name="visible">True</property>
                     <property name="expand">True</property>
                   </object>
@@ -68,7 +68,7 @@
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="DactlAcquisitionSettings" id="acquisition">
+                  <object class="DcsgAcquisitionSettings" id="acquisition">
                     <property name="visible">True</property>
                     <property name="expand">True</property>
                   </object>
@@ -101,7 +101,7 @@
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="DactlControlSettings" id="control">
+                  <object class="DcsgControlSettings" id="control">
                     <property name="visible">True</property>
                     <property name="expand">True</property>
                   </object>
@@ -134,7 +134,7 @@
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="DactlLogSettings" id="log">
+                  <object class="DcsgLogSettings" id="log">
                     <property name="visible">True</property>
                     <property name="expand">True</property>
                   </object>
@@ -167,7 +167,7 @@
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="DactlPluginSettings" id="plugin">
+                  <object class="DcsgPluginSettings" id="plugin">
                     <property name="visible">True</property>
                     <property name="expand">True</property>
                   </object>
@@ -200,7 +200,7 @@
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="DactlWidgetSettings" id="widget">
+                  <object class="DcsgWidgetSettings" id="widget">
                     <property name="visible">True</property>
                     <property name="expand">True</property>
                   </object>

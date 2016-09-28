@@ -4,27 +4,27 @@ AC_PREREQ([2.69])
 dnl ***********************************************************************
 dnl Define Versioning Information
 dnl ***********************************************************************
-m4_define([dactl_major_version],[0])
-m4_define([dactl_minor_version],[4])
-m4_define([dactl_micro_version],[1])
-m4_define([dactl_version],[dactl_major_version.dactl_minor_version.dactl_micro_version])
-m4_define([dactl_interface_age],[0])
-m4_define([dactl_bugreport_url],
-          [https://github.com/coanda/dactl/issues])
-m4_define([dactl_debug_default],
-          [m4_if(m4_eval(dactl_minor_version % 2), [1], [yes], [minimum])])
+m4_define([dcs_major_version],[0])
+m4_define([dcs_minor_version],[1])
+m4_define([dcs_micro_version],[0])
+m4_define([dcs_version],[dcs_major_version.dcs_minor_version.dcs_micro_version])
+m4_define([dcs_interface_age],[0])
+m4_define([dcs_bugreport_url],
+          [https://github.com/open-dcs/dcs/issues])
+m4_define([dcs_debug_default],
+          [m4_if(m4_eval(dcs_minor_version % 2), [1], [yes], [minimum])])
 
 
 dnl ***********************************************************************
 dnl Initialize Autoconf
 dnl ***********************************************************************
-AC_INIT([dactl],
-        [dactl_version],
-        [dactl_bugreport_url],
-        [dactl],
-        [https://github.com/coanda/dactl])
+AC_INIT([dcs],
+        [dcs_version],
+        [dcs_bugreport_url],
+        [dcs],
+        [https://github.com/open-dcs/dcs])
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_SRCDIR([src/dactl/dactl-main.vala])
+AC_CONFIG_SRCDIR([src/dcs/dcs-main.vala])
 AC_CONFIG_MACRO_DIR([build/autotools])
 AC_CONFIG_AUX_DIR([build])
 AC_SUBST(ACLOCAL_AMFLAGS, "-I build/autotools")
@@ -34,24 +34,24 @@ AC_CANONICAL_HOST
 dnl ***********************************************************************
 dnl Make Version Info Available to .in Files
 dnl ***********************************************************************
-MAJOR_VERSION=dactl_major_version
-MINOR_VERSION=dactl_minor_version
-MICRO_VERSION=dactl_micro_version
-LIBDACTL_CORE_VERSION=dactl_version
-LIBDACTL_CLI_VERSION=dactl_version
-LIBDACTL_DAQ_VERSION=dactl_version
-LIBDACTL_LOG_VERSION=dactl_version
-LIBDACTL_NET_VERSION=dactl_version
-LIBDACTL_UI_VERSION=dactl_version
+MAJOR_VERSION=dcs_major_version
+MINOR_VERSION=dcs_minor_version
+MICRO_VERSION=dcs_micro_version
+LIBDCS_CORE_VERSION=dcs_version
+LIBDCS_CLI_VERSION=dcs_version
+LIBDCS_DAQ_VERSION=dcs_version
+LIBDCS_LOG_VERSION=dcs_version
+LIBDCS_NET_VERSION=dcs_version
+LIBDCS_UI_VERSION=dcs_version
 AC_SUBST(MAJOR_VERSION)
 AC_SUBST(MINOR_VERSION)
 AC_SUBST(MICRO_VERSION)
-AC_SUBST(LIBDACTL_CORE_VERSION)
-AC_SUBST(LIBDACTL_CLI_VERSION)
-AC_SUBST(LIBDACTL_DAQ_VERSION)
-AC_SUBST(LIBDACTL_LOG_VERSION)
-AC_SUBST(LIBDACTL_NET_VERSION)
-AC_SUBST(LIBDACTL_UI_VERSION)
+AC_SUBST(LIBDCS_CORE_VERSION)
+AC_SUBST(LIBDCS_CLI_VERSION)
+AC_SUBST(LIBDCS_DAQ_VERSION)
+AC_SUBST(LIBDCS_LOG_VERSION)
+AC_SUBST(LIBDCS_NET_VERSION)
+AC_SUBST(LIBDCS_UI_VERSION)
 
 
 dnl ***********************************************************************
@@ -162,9 +162,9 @@ AC_SUBST(ENABLE_TRACING)
 
 AC_ARG_ENABLE(debug,
               AS_HELP_STRING([--enable-debug=@<:@no/minimum/yes@:>@],
-                             [turn on debugging @<:@default=dactl_debug_default@:>@]),
+                             [turn on debugging @<:@default=dcs_debug_default@:>@]),
               ,
-              enable_debug=dactl_debug_default)
+              enable_debug=dcs_debug_default)
 AS_CASE(["$enable_debug"],
         [yes],[
             DEBUG_CFLAGS="$DEBUG_CFLAGS -O0"
@@ -181,7 +181,7 @@ AS_CASE(["$enable_debug"],
         [])
 AC_SUBST(DEBUG_CFLAGS)
 
-BUGREPORT_URL=dactl_bugreport_url
+BUGREPORT_URL=dcs_bugreport_url
 AC_SUBST(BUGREPORT_URL)
 
 
@@ -200,77 +200,77 @@ m4_define([rsvg_required_version], [2.40.0])
 m4_define([soup_required_version], [2.4.0])
 m4_define([zmq_required_version], [3.2.0])
 
-PKG_CHECK_MODULES(LIBDACTL_CORE, [gio-2.0 >= glib_required_version
-                                  gee-0.8 >= gee_required_version
-                                  libxml-2.0 >= libxml_required_version
-                                  libpeas-1.0 >= peas_required_version
-                                  cld-0.3 >= cld_required_version])
-PKG_CHECK_MODULES(LIBDACTL_CLI, [glib-2.0 >= glib_required_version
-                                 gee-0.8 >= gee_required_version
-                                 libxml-2.0 >= libxml_required_version
-                                 libpeas-1.0 >= peas_required_version
-                                 cld-0.3 >= cld_required_version])
-PKG_CHECK_MODULES(LIBDACTL_DAQ, [glib-2.0 >= glib_required_version
-                                 gee-0.8 >= gee_required_version
-                                 libpeas-1.0 >= peas_required_version
-                                 cld-0.3 >= cld_required_version])
-PKG_CHECK_MODULES(LIBDACTL_LOG, [gio-2.0 >= glib_required_version
-                                 gee-0.8 >= gee_required_version
-                                 libpeas-1.0 >= peas_required_version
-                                 libzmq >= zmq_required_version
-                                 cld-0.3 >= cld_required_version])
-PKG_CHECK_MODULES(LIBDACTL_NET, [gee-0.8 >= gee_required_version
-                                 json-glib-1.0 >= json_required_version
-                                 libpeas-1.0 >= peas_required_version
-                                 libsoup-2.4 >= soup_required_version
-                                 libzmq > zmq_required_version
-                                 cld-0.3 >= cld_required_version])
-PKG_CHECK_MODULES(LIBDACTL_UI, [gio-2.0 >= glib_required_version
+PKG_CHECK_MODULES(LIBDCS_CORE, [gio-2.0 >= glib_required_version
                                 gee-0.8 >= gee_required_version
-                                gtk+-3.0 >= gtk_required_version
-                                gtksourceview-3.0 >= gtk_required_version
-                                cld-0.3 >= cld_required_version
-                                json-glib-1.0 >= json_required_version
                                 libxml-2.0 >= libxml_required_version
                                 libpeas-1.0 >= peas_required_version
-                                libpeas-gtk-1.0 >= peas_required_version
-                                librsvg-2.0 >= rsvg_required_version
-                                libsoup-2.4 >= soup_required_version])
+                                cld-0.3 >= cld_required_version])
+PKG_CHECK_MODULES(LIBDCS_CLI, [glib-2.0 >= glib_required_version
+                               gee-0.8 >= gee_required_version
+                               libxml-2.0 >= libxml_required_version
+                               libpeas-1.0 >= peas_required_version
+                               cld-0.3 >= cld_required_version])
+PKG_CHECK_MODULES(LIBDCS_DAQ, [glib-2.0 >= glib_required_version
+                               gee-0.8 >= gee_required_version
+                               libpeas-1.0 >= peas_required_version
+                               cld-0.3 >= cld_required_version])
+PKG_CHECK_MODULES(LIBDCS_LOG, [gio-2.0 >= glib_required_version
+                               gee-0.8 >= gee_required_version
+                               libpeas-1.0 >= peas_required_version
+                               libzmq >= zmq_required_version
+                               cld-0.3 >= cld_required_version])
+PKG_CHECK_MODULES(LIBDCS_NET, [gee-0.8 >= gee_required_version
+                               json-glib-1.0 >= json_required_version
+                               libpeas-1.0 >= peas_required_version
+                               libsoup-2.4 >= soup_required_version
+                               libzmq > zmq_required_version
+                               cld-0.3 >= cld_required_version])
+PKG_CHECK_MODULES(LIBDCS_UI, [gio-2.0 >= glib_required_version
+                              gee-0.8 >= gee_required_version
+                              gtk+-3.0 >= gtk_required_version
+                              gtksourceview-3.0 >= gtk_required_version
+                              cld-0.3 >= cld_required_version
+                              json-glib-1.0 >= json_required_version
+                              libxml-2.0 >= libxml_required_version
+                              libpeas-1.0 >= peas_required_version
+                              libpeas-gtk-1.0 >= peas_required_version
+                              librsvg-2.0 >= rsvg_required_version
+                              libsoup-2.4 >= soup_required_version])
 
 
 dnl Need to work these in to simplify checking
-DACTL_BASE_MODULES="gee-0.8 libxml-2.0 libpeas-1.0"
-DACTL_BASE_MODULES_VALAFLAGS="--pkg gee-0.8 --pkg libxml-2.0 --pkg glib-extra --pkg libpeas-1.0"
+DCS_BASE_MODULES="gee-0.8 libxml-2.0 libpeas-1.0"
+DCS_BASE_MODULES_VALAFLAGS="--pkg gee-0.8 --pkg libxml-2.0 --pkg glib-extra --pkg libpeas-1.0"
 
-DACTL_COMMON_MODULES="$DACTL_BASE_MODULES"
-DACTL_COMMON_MODULES_VALAFLAGS="$DACTL_BASE_MODULES_VALAFLAGS"
-AC_SUBST([DACTL_COMMON_MODULES_VALAFLAGS])
+DCS_COMMON_MODULES="$DCS_BASE_MODULES"
+DCS_COMMON_MODULES_VALAFLAGS="$DCS_BASE_MODULES_VALAFLAGS"
+AC_SUBST([DCS_COMMON_MODULES_VALAFLAGS])
 
-PKG_CHECK_MODULES([DACTL_DEPS], [$DACTL_COMMON_MODULES gio-2.0 gmodule-2.0])
-DACTL_DEPS_VALAFLAGS="$DACTL_COMMON_MODULES_VALAFLAGS --pkg gio-2.0 --pkg gmodule-2.0"
-AC_SUBST([DACTL_DEPS_VALAFLAGS])
+PKG_CHECK_MODULES([DCS_DEPS], [$DCS_COMMON_MODULES gio-2.0 gmodule-2.0])
+DCS_DEPS_VALAFLAGS="$DCS_COMMON_MODULES_VALAFLAGS --pkg gio-2.0 --pkg gmodule-2.0"
+AC_SUBST([DCS_DEPS_VALAFLAGS])
 
-PKG_CHECK_MODULES([DACTL_UI_DEPS], [gtk+-3.0 librsvg-2.0 gtksourceview-3.0 libsoup-2.4])
-DACTL_UI_MODULES="gtk+-3.0 librsvg-2.0 gtksourceview-3.0 libsoup-2.4"
-DACTL_UI_DEPS_VALAFLAGS="--pkg gtk+-3.0 --pkg cogl-1.0 --pkg librsvg-2.0 --pkg gtksourceview-3.0 --pkg libsoup-2.4"
-AC_SUBST([DACTL_UI_DEPS_VALAFLAGS])
-DACTL_PLUGIN_COMMON_VALAFLAGS="$DACTL_PLUGIN_COMMON_VALAFLAGS $DACTL_UI_DEPS_VALAFLAGS"
+PKG_CHECK_MODULES([DCS_UI_DEPS], [gtk+-3.0 librsvg-2.0 gtksourceview-3.0 libsoup-2.4])
+DCS_UI_MODULES="gtk+-3.0 librsvg-2.0 gtksourceview-3.0 libsoup-2.4"
+DCS_UI_DEPS_VALAFLAGS="--pkg gtk+-3.0 --pkg cogl-1.0 --pkg librsvg-2.0 --pkg gtksourceview-3.0 --pkg libsoup-2.4"
+AC_SUBST([DCS_UI_DEPS_VALAFLAGS])
+DCS_PLUGIN_COMMON_VALAFLAGS="$DCS_PLUGIN_COMMON_VALAFLAGS $DCS_UI_DEPS_VALAFLAGS"
 
 dnl Check if building CLD support was requested
 dnl XXX CLD is more of a requirement than an option at this point but the hope
-dnl     is that dactl can be more generic and function with it as an engine
+dnl     is that dcs can be more generic and function with it as an engine
 AC_ARG_WITH(cld,
     AS_HELP_STRING([--without-cld], [Do not build with CLD support]),
     [try_cld=$withval], [try_cld=yes])
 
 HAVE_CLD=no
 AS_IF([test "x$try_cld" = "xyes"],
-      [PKG_CHECK_MODULES([DACTL_CLD_DEPS], [cld-0.3 comedi gio-2.0 gsl sqlite3 gee-0.8 libxml-2.0],
+      [PKG_CHECK_MODULES([DCS_CLD_DEPS], [cld-0.3 comedi gio-2.0 gsl sqlite3 gee-0.8 libxml-2.0],
 	    [
-           DACTL_CHECK_PACKAGES([cld-0.3 comedi gio-2.0 gsl sqlite3 gee-0.8 libxml-2.0], [HAVE_CLD=yes])
-           DACTL_CLD_DEPS_VALAFLAGS="--pkg cld-0.3 --pkg comedi --pkg gio-2.0 --pkg gsl --pkg sqlite3 --pkg gee-0.8 --pkg libxml-2.0"
-	       DACTL_PLUGIN_COMMON_VALAFLAGS="$DACTL_PLUGIN_COMMON_VALAFLAGS $DACTL_CLD_DEPS_VALAFLAGS"
-           AC_SUBST([DACTL_CLD_DEPS_VALAFLAGS])
+           DCS_CHECK_PACKAGES([cld-0.3 comedi gio-2.0 gsl sqlite3 gee-0.8 libxml-2.0], [HAVE_CLD=yes])
+           DCS_CLD_DEPS_VALAFLAGS="--pkg cld-0.3 --pkg comedi --pkg gio-2.0 --pkg gsl --pkg sqlite3 --pkg gee-0.8 --pkg libxml-2.0"
+	       DCS_PLUGIN_COMMON_VALAFLAGS="$DCS_PLUGIN_COMMON_VALAFLAGS $DCS_CLD_DEPS_VALAFLAGS"
+           AC_SUBST([DCS_CLD_DEPS_VALAFLAGS])
         ],
         [
           AC_MSG_WARN([CLD dependencies not found.])
@@ -308,7 +308,7 @@ AS_IF([test "$enable_webkit" != no],[
 	       AC_MSG_ERROR([--enable-webkit requires webkit2gtk-4.0 >= webkit_required_version])
 	])
 
-	AC_SUBST([WEB_EXTENSION_DIR],[${libdir}/dactl/extensions])
+	AC_SUBST([WEB_EXTENSION_DIR],[${libdir}/dcs/extensions])
 
 	enable_webkit=$have_webkit
 ])
@@ -329,15 +329,10 @@ AM_CONDITIONAL(ENABLE_PLUGIN_UTIL, [test "x$enable_plugin_util" = "xyes"])
 dnl ***********************************************************************
 dnl Check for supported plugins
 dnl ***********************************************************************
-m4_include([src/plugins/brabender/configure.ac])
-m4_include([src/plugins/heidolph/configure.ac])
-m4_include([src/plugins/licor/configure.ac])
-m4_include([src/plugins/parker/configure.ac])
-m4_include([src/plugins/velmex/configure.ac])
 m4_include([src/plugins/samples/python/configure.ac])
 m4_include([src/plugins/samples/vala/configure.ac])
 
-AC_SUBST([PLUGIN_DIR],[${libdir}/dactl/plugins])
+AC_SUBST([PLUGIN_DIR],[${libdir}/dcs/plugins])
 
 
 dnl ***********************************************************************
@@ -347,7 +342,7 @@ m4_include([src/devices/comedi/configure.ac])
 m4_include([src/devices/mccusb/configure.ac])
 m4_include([src/devices/arduino/configure.ac])
 
-AC_SUBST([DEVICE_DIR],[${libdir}/dactl/devices])
+AC_SUBST([DEVICE_DIR],[${libdir}/dcs/devices])
 
 
 dnl ***********************************************************************
@@ -355,7 +350,7 @@ dnl Check for supported backends
 dnl ***********************************************************************
 m4_include([src/backends/xml/configure.ac])
 
-AC_SUBST([BACKEND_DIR],[${libdir}/dactl/backends])
+AC_SUBST([BACKEND_DIR],[${libdir}/dcs/backends])
 
 
 dnl ***********************************************************************
@@ -368,9 +363,9 @@ AS_IF([test "x$have_pygobject" = "xyes"],[
 	AS_IF([test -z "${PYTHON3_CONFIG}"],[
 		AC_MSG_RESULT([Failed to locate python3-config.])
 	],[
-		LIBDACTL_CORE_CFLAGS="${LIBDACTL_CORE_CFLAGS} `${PYTHON3_CONFIG} --includes`"
-		LIBDACTL_CORE_LIBS="${LIBDACTL_CORE_LIBS} `${PYTHON3_CONFIG} --libs`"
-		LIBDACTL_CORE_LDFLAGS="${LIBDACTL_CORE_LDFLAGS} `${PYTHON3_CONFIG} --ldflags`"
+		LIBDCS_CORE_CFLAGS="${LIBDCS_CORE_CFLAGS} `${PYTHON3_CONFIG} --includes`"
+		LIBDCS_CORE_LIBS="${LIBDCS_CORE_LIBS} `${PYTHON3_CONFIG} --libs`"
+		LIBDCS_CORE_LDFLAGS="${LIBDCS_CORE_LDFLAGS} `${PYTHON3_CONFIG} --ldflags`"
 		enable_python_scripting=yes
 	])
 
@@ -399,7 +394,7 @@ AX_APPEND_COMPILE_FLAGS([ \
 	-Wall \
 	-Wcast-align \
 	-Wdeclaration-after-statement \
-	-Werror=format-security \
+	-Wformat-security \
 	-Werror=format=2 \
 	-Wextra \
 	-Wmissing-include-dirs \
@@ -483,12 +478,12 @@ AC_MSG_RESULT([$enable_profiling])
 dnl ***********************************************************************
 dnl Setup common cflags and ldflags for plugins
 dnl ***********************************************************************
-PLUGIN_CFLAGS="$PLUGIN_CFLAGS -I\$(top_srcdir)/src/libdactl-core"
-PLUGIN_CFLAGS="$PLUGIN_CFLAGS -I\$(top_srcdir)/src/libdactl-net"
-PLUGIN_CFLAGS="$PLUGIN_CFLAGS -I\$(top_srcdir)/src/libdactl-ui"
-PLUGIN_CFLAGS="$PLUGIN_CFLAGS $LIBDACTL_CORE_CFLAGS"
-PLUGIN_CFLAGS="$PLUGIN_CFLAGS $LIBDACTL_NET_CFLAGS"
-PLUGIN_CFLAGS="$PLUGIN_CFLAGS $LIBDACTL_UI_CFLAGS"
+PLUGIN_CFLAGS="$PLUGIN_CFLAGS -I\$(top_srcdir)/src/libdcs-core"
+PLUGIN_CFLAGS="$PLUGIN_CFLAGS -I\$(top_srcdir)/src/libdcs-net"
+PLUGIN_CFLAGS="$PLUGIN_CFLAGS -I\$(top_srcdir)/src/libdcs-ui"
+PLUGIN_CFLAGS="$PLUGIN_CFLAGS $LIBDCS_CORE_CFLAGS"
+PLUGIN_CFLAGS="$PLUGIN_CFLAGS $LIBDCS_NET_CFLAGS"
+PLUGIN_CFLAGS="$PLUGIN_CFLAGS $LIBDCS_UI_CFLAGS"
 PLUGIN_CFLAGS="$PLUGIN_CFLAGS $DEBUG_CFLAGS"
 PLUGIN_CFLAGS="$PLUGIN_CFLAGS $OPTIMIZE_CFLAGS"
 AC_SUBST(PLUGIN_CFLAGS)
@@ -502,12 +497,12 @@ AC_SUBST(PLUGIN_LDFLAGS)
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --target-glib=2.44"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --thread"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --vapidir \$(top_srcdir)/vapi"
-PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --vapidir \$(top_builddir)/src/libdactl-core"
-PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --vapidir \$(top_builddir)/src/libdactl-net"
-PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --vapidir \$(top_builddir)/src/libdactl-ui"
-PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dactl-core-0.4"
-PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dactl-net-0.4"
-PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dactl-ui-0.4"
+PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-core"
+PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-net"
+PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-ui"
+PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dcs-core-0.1"
+PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dcs-net-0.1"
+PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dcs-ui-0.1"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg libpeas-1.0"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg libpeas-gtk-1.0"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg libzmq"
@@ -517,12 +512,12 @@ AC_SUBST(PLUGIN_VALAFLAGS)
 dnl ***********************************************************************
 dnl Setup common cflags and ldflags for devices
 dnl ***********************************************************************
-DEVICE_CFLAGS="$DEVICE_CFLAGS -I\$(top_srcdir)/src/libdactl-core"
-DEVICE_CFLAGS="$DEVICE_CFLAGS -I\$(top_srcdir)/src/libdactl-daq"
-DEVICE_CFLAGS="$DEVICE_CFLAGS -I\$(top_srcdir)/src/libdactl-net"
-DEVICE_CFLAGS="$DEVICE_CFLAGS $LIBDACTL_CORE_CFLAGS"
-DEVICE_CFLAGS="$DEVICE_CFLAGS $LIBDACTL_NET_CFLAGS"
-DEVICE_CFLAGS="$DEVICE_CFLAGS $LIBDACTL_DAQ_CFLAGS"
+DEVICE_CFLAGS="$DEVICE_CFLAGS -I\$(top_srcdir)/src/libdcs-core"
+DEVICE_CFLAGS="$DEVICE_CFLAGS -I\$(top_srcdir)/src/libdcs-daq"
+DEVICE_CFLAGS="$DEVICE_CFLAGS -I\$(top_srcdir)/src/libdcs-net"
+DEVICE_CFLAGS="$DEVICE_CFLAGS $LIBDCS_CORE_CFLAGS"
+DEVICE_CFLAGS="$DEVICE_CFLAGS $LIBDCS_NET_CFLAGS"
+DEVICE_CFLAGS="$DEVICE_CFLAGS $LIBDCS_DAQ_CFLAGS"
 DEVICE_CFLAGS="$DEVICE_CFLAGS $DEBUG_CFLAGS"
 DEVICE_CFLAGS="$DEVICE_CFLAGS $OPTIMIZE_CFLAGS"
 AC_SUBST(DEVICE_CFLAGS)
@@ -536,12 +531,12 @@ AC_SUBST(DEVICE_LDFLAGS)
 DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --target-glib=2.44"
 DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --thread"
 DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --vapidir \$(top_srcdir)/vapi"
-DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --vapidir \$(top_builddir)/src/libdactl-core"
-DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --vapidir \$(top_builddir)/src/libdactl-daq"
-DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --vapidir \$(top_builddir)/src/libdactl-net"
-DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dactl-core-0.4"
-DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dactl-daq-0.4"
-DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dactl-net-0.4"
+DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-core"
+DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-daq"
+DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-net"
+DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dcs-core-0.1"
+DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dcs-daq-0.1"
+DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dcs-net-0.1"
 DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg libpeas-1.0"
 AC_SUBST(DEVICE_VALAFLAGS)
 
@@ -549,12 +544,12 @@ AC_SUBST(DEVICE_VALAFLAGS)
 dnl ***********************************************************************
 dnl Setup common cflags and ldflags for logging backends
 dnl ***********************************************************************
-BACKEND_CFLAGS="$BACKEND_CFLAGS -I\$(top_srcdir)/src/libdactl-core"
-BACKEND_CFLAGS="$BACKEND_CFLAGS -I\$(top_srcdir)/src/libdactl-log"
-BACKEND_CFLAGS="$BACKEND_CFLAGS -I\$(top_srcdir)/src/libdactl-net"
-BACKEND_CFLAGS="$BACKEND_CFLAGS $LIBDACTL_CORE_CFLAGS"
-BACKEND_CFLAGS="$BACKEND_CFLAGS $LIBDACTL_NET_CFLAGS"
-BACKEND_CFLAGS="$BACKEND_CFLAGS $LIBDACTL_LOG_CFLAGS"
+BACKEND_CFLAGS="$BACKEND_CFLAGS -I\$(top_srcdir)/src/libdcs-core"
+BACKEND_CFLAGS="$BACKEND_CFLAGS -I\$(top_srcdir)/src/libdcs-log"
+BACKEND_CFLAGS="$BACKEND_CFLAGS -I\$(top_srcdir)/src/libdcs-net"
+BACKEND_CFLAGS="$BACKEND_CFLAGS $LIBDCS_CORE_CFLAGS"
+BACKEND_CFLAGS="$BACKEND_CFLAGS $LIBDCS_NET_CFLAGS"
+BACKEND_CFLAGS="$BACKEND_CFLAGS $LIBDCS_LOG_CFLAGS"
 BACKEND_CFLAGS="$BACKEND_CFLAGS $DEBUG_CFLAGS"
 BACKEND_CFLAGS="$BACKEND_CFLAGS $OPTIMIZE_CFLAGS"
 AC_SUBST(BACKEND_CFLAGS)
@@ -568,12 +563,12 @@ AC_SUBST(BACKEND_LDFLAGS)
 BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --target-glib=2.44"
 BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --thread"
 BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --vapidir \$(top_srcdir)/vapi"
-BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --vapidir \$(top_builddir)/src/libdactl-core"
-BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --vapidir \$(top_builddir)/src/libdactl-log"
-BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --vapidir \$(top_builddir)/src/libdactl-net"
-BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dactl-core-0.4"
-BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dactl-log-0.4"
-BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dactl-net-0.4"
+BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-core"
+BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-log"
+BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-net"
+BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dcs-core-0.1"
+BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dcs-log-0.1"
+BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dcs-net-0.1"
 BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg libpeas-1.0"
 AC_SUBST(BACKEND_VALAFLAGS)
 
@@ -600,12 +595,12 @@ AC_CONFIG_FILES([
 	data/icons/48x48/Makefile
 	data/icons/scalable/Makefile
 	data/mime/Makefile
-	data/org.coanda.Dactl.desktop.in
+	data/org.opendcs.Dcsg.desktop.in
 
     data/systemd/Makefile
-    data/systemd/dactl-ctl.service
-    data/systemd/dactl-daq.service
-    data/systemd/dactl-log.service
+    data/systemd/dcs-ctl.service
+    data/systemd/dcs-daq.service
+    data/systemd/dcs-log.service
 
     data/templates/Makefile
     data/templates/common/Makefile
@@ -620,26 +615,28 @@ AC_CONFIG_FILES([
     data/templates/plugin/src/Makefile
 
     data/gsettings/Makefile
-	data/gsettings/org.coanda.dactl.gschema.xml
+	data/gsettings/org.opendcs.dcs.gschema.xml
 
 	doc/Makefile
 
 	po/Makefile.in
 
 	src/Makefile
-	src/dactl/Makefile
-	src/dactl-daq/Makefile
-	src/dactl-log/Makefile
-	src/dactl-plugin/Makefile
-	src/dactl-plugin/setup.cfg
+	src/dcs/Makefile
+	src/dcsg/Makefile
+	src/dcs-analyze/Makefile
+	src/dcs-daq/Makefile
+	src/dcs-log/Makefile
+	src/dcs-plugin/Makefile
+	src/dcs-plugin/setup.cfg
 
-	src/libdactl-core/Makefile
-	src/libdactl-cli/Makefile
-	src/libdactl-daq/Makefile
-	src/libdactl-log/Makefile
-	src/libdactl-net/Makefile
-	src/libdactl-ui/Makefile
-	src/libdactl-ui/extensions/Makefile
+	src/libdcs-core/Makefile
+	src/libdcs-cli/Makefile
+	src/libdcs-daq/Makefile
+	src/libdcs-log/Makefile
+	src/libdcs-net/Makefile
+	src/libdcs-ui/Makefile
+	src/libdcs-ui/extensions/Makefile
 
     src/backends/Makefile
 
@@ -650,13 +647,17 @@ AC_CONFIG_FILES([
 	src/devices/samples/Makefile
 
 	examples/Makefile
+	examples/javascript/Makefile
+	examples/python/Makefile
+	examples/ruby/Makefile
+	examples/vala/Makefile
 
-	src/libdactl-core/dactl-core-0.4.pc
-	src/libdactl-cli/dactl-cli-0.4.pc
-	src/libdactl-daq/dactl-daq-0.4.pc
-	src/libdactl-log/dactl-log-0.4.pc
-	src/libdactl-net/dactl-net-0.4.pc
-	src/libdactl-ui/dactl-ui-0.4.pc
+	src/libdcs-core/dcs-core-0.1.pc
+	src/libdcs-cli/dcs-cli-0.1.pc
+	src/libdcs-daq/dcs-daq-0.1.pc
+	src/libdcs-log/dcs-log-0.1.pc
+	src/libdcs-net/dcs-net-0.1.pc
+	src/libdcs-ui/dcs-ui-0.1.pc
 ])
 AC_OUTPUT
 
@@ -685,11 +686,7 @@ AC_MSG_NOTICE([
 
     Plugins
 
-     Brabender: ................................... : ${enable_brabender_plugin}
-     Heidolph: .................................... : ${enable_heidolph_plugin}
-     Licor: ....................................... : ${enable_licor_plugin}
-     Parker: ...................................... : ${enable_parker_plugin}
-     Velmex: ...................................... : ${enable_velmex_plugin}
+     (placeholder): ............................... : ${enable_placeholder_plugin}
 
     Backends
 

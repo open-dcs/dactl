@@ -70,7 +70,7 @@
       <column type="&lt; define a new column &gt;"/>
     </columns>
   </object>
-  <template class="DactlLogSettings" parent="GtkBox">
+  <template class="DcsgLogSettings" parent="GtkBox">
     <property name="name">log</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -562,7 +562,7 @@
       </packing>
     </child>
     <style>
-      <class name="dactl-bg"/>
+      <class name="dcs-bg"/>
     </style>
   </template>
 </interface>

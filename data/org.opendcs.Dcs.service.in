@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.opendcs.Dcs
+Exec=@bindir@/dcsg --gapplication-service

@@ -1,5 +1,5 @@
 gsettings_SCHEMAS = \
-	org.coanda.dactl.gschema.xml \
+	org.opendcs.dcs.gschema.xml \
 	$(NULL)
 
 .PRECIOUS: $(gsettings_SCHEMAS)

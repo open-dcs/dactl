@@ -12,7 +12,7 @@
       <column type="gchararray"/>
     </columns>
   </object>
-  <template class="DactlAcquisitionSettings" parent="GtkBox">
+  <template class="DcsgAcquisitionSettings" parent="GtkBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>

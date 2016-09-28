@@ -1,7 +1,7 @@
 #!/usr/bin/gjs
 
 const Cld = imports.gi.Cld;
-const DactlUI = imports.gi.DactlUI;
+const DcsUI = imports.gi.DcsUI;
 const Gtk = imports.gi.Gtk;
 
 function onDeleteEvent(widget, event) {
@@ -26,7 +26,7 @@ function main() {
     win.connect("destroy", onDestroy);
     win.set_border_width(10);
 
-    let aictl = new DactlUI.AIControl("/ai0");
+    let aictl = new DcsUI.AIControl("/ai0");
     aictl.connect("request_object",
         function() {
             aictl.offer_cld_object(chan);

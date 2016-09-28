@@ -12,7 +12,7 @@
       <column type="gchararray"/>
     </columns>
   </object>
-  <template class="DactlSettingsTreeView" parent="GtkTreeView">
+  <template class="DcsgSettingsTreeView" parent="GtkTreeView">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
     <property name="model">treestore</property>

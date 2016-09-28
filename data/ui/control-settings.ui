@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <template class="DactlControlSettings" parent="GtkBox">
+  <template class="DcsgControlSettings" parent="GtkBox">
     <property name="name">control</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -13,7 +13,7 @@
     <property name="orientation">vertical</property>
 
     <child>
-      <object class="DactlChartSettingsPage" id="chart">
+      <object class="DcsgChartSettingsPage" id="chart">
         <property name="visible">True</property>
       </object>
 
@@ -85,7 +85,7 @@
    -->
 
     <style>
-      <class name="dactl-bg"/>
+      <class name="dcs-bg"/>
     </style>
   </template>
 </interface>

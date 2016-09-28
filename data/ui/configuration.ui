@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <template class="DactlConfigurationEditor" parent="GtkBox">
+  <template class="DcsgConfigurationEditor" parent="GtkBox">
     <property name="name">configuration</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -53,7 +53,7 @@
           <object class="GtkLabel" id="lbl_filename">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">~/.dactl</property>
+            <property name="label" translatable="yes">~/.dcs</property>
           </object>
           <packing>
             <property name="expand">False</property>

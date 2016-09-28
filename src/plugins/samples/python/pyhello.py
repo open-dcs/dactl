@@ -4,21 +4,21 @@ import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Peas', '1.0')
 gi.require_version('PeasGtk', '1.0')
-gi.require_version('DactlCore', '0.4')
-gi.require_version('DactlUI', '0.4')
+gi.require_version('DcsCore', '0.4')
+gi.require_version('DcsUI', '0.4')
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Peas
 from gi.repository import PeasGtk
-from gi.repository import DactlCore
-from gi.repository import DactlUI
+from gi.repository import DcsCore
+from gi.repository import DcsUI
 
 LABEL_STRING="Python Plugin Sample"
 
 class PyHelloPlugin(GObject.Object, Peas.Activatable):
     __gtype_name__ = 'PythonPlugin'
 
-    # view = GObject.Property(type=DactlCore.ApplicationView)
+    # view = GObject.Property(type=DcsCore.ApplicationView)
     object = GObject.property(type=GObject.Object)
 
     def do_activate(self):
