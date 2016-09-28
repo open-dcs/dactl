@@ -32,7 +32,10 @@ public class Dcs.ApplicationConfig : GLib.Object {
 
     private void load_document () throws Dcs.ConfigError {
         /* Load XML document */
-        doc = Xml.Parser.parse_file (file_name);
+        doc = Xml.Parser.read_file (file_name, null,
+                                    Xml.ParserOption.DTDATTR |
+                                    Xml.ParserOption.NOENT |
+                                    Xml.ParserOption.DTDVALID)
         if (doc == null) {
             loaded = false;
             throw new Dcs.ConfigError.FILE_NOT_FOUND (
