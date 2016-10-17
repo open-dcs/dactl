@@ -9,6 +9,7 @@ GITIGNOREFILES = \
 	ltmain.sh \
 	missing \
 	py-compile \
+	test-driver \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk

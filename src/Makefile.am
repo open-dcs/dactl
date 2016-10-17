@@ -8,7 +8,6 @@ SUBDIRS = \
 	libdcs-ui \
 	dcs \
 	dcsg \
-	dcs-analyze \
 	dcs-daq \
 	dcs-log \
 	dcs-control \
