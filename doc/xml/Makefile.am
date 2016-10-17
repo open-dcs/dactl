@@ -65,23 +65,7 @@ edit = sed \
 	-e 's|\@PACKAGE_STRING\@|$(PACKAGE_STRING)|'
 
 # This is disgusting, buuut less work than writing an XSLT
-md = sed \
-	-e 's|^\s*||' \
-	-e 's|><|>\n<|g' \
-	-e 's|<[/]\?html[^>]*>||g' \
-	-e 's|<[/]\?head[^>]*>||g' \
-	-e 's|<[/]\?meta[^>]*>||g' \
-	-e 's|<[/]\?title[^>]*>||g' \
-	-e 's|<[/]\?body[^>]*>||g' \
-	-e 's|<[/]\?div[^>]*>||g' \
-	-e 's|<[/]\?d[dt][^>]*>||g' \
-	-e 's|<[/]\?blockquote[^>]*>||g' \
-	-e 's|<h1>\([[:space:][:alnum:]]\+\)<\/h1>|\n\# \1\n|' \
-	-e 's|<h2>\([[:space:][:alnum:]]\+\)<\/h2>|\n\#\# \1\n|' \
-	-e 's|<h3>\([[:space:][:alnum:]]\+\)<\/h3>|\n\#\#\# \1\n|' \
-	-e 's|<h4>\([[:space:][:alnum:]]\+\)<\/h4>|\n\#\#\#\# \1\n|' \
-	-e 's|<h5>\([[:space:][:alnum:]]\+\)<\/h5>|\n\#\#\#\#\# \1\n|' \
-	-e 's|<h6>\([[:space:][:alnum:]]\+\)<\/h6>|\n\#\#\#\#\#\# \1\n|'
+md = $(top_srcdir)/util/html2md.pl
 
 transform-man.xsl: transform-man.xsl.in
 	$(edit) $< >$@

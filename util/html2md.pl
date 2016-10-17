@@ -5,7 +5,7 @@ use warnings;
 use POSIX qw(strftime);
 use HTML::FormatMarkdown;
 
-my $verbose = 1;
+my $verbose = undef;
 
 # This script is just meant to be a partial conversion from the HTML output
 # generated from the docbook files to be copied to the documentation project
