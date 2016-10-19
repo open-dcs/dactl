@@ -1,13 +1,14 @@
+include $(top_srcdir)/common.am
+
 CLEANFILES =
 DISTCLEANFILES =
 BUILT_SOURCES =
 EXTRA_DIST =
 
-if ENABLE_UI
-
 SUBDIRS = extensions
 
-include $(top_srcdir)/common.am
+if ENABLE_UI
+
 include $(srcdir)/filelist.am
 
 pkglibdir = $(libdir)/dcs

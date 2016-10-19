@@ -16,13 +16,14 @@ dcsg_VALAFLAGS = \
 	--target-glib=2.44 \
 	--thread \
 	--gresources $(gresource_file) \
-	$(DCS_DEPS_VALAFLAGS) \
 	$(DCS_CLD_DEPS_VALAFLAGS) \
 	--vapidir=$(top_srcdir)/vapi \
 	--vapidir=$(top_srcdir)/src/libdcs-core \
 	--vapidir=$(top_srcdir)/src/libdcs-ui \
 	--pkg posix \
 	--pkg linux \
+	--pkg glib-extra \
+	--pkg gtksourceview-3.0 \
 	--pkg json-glib-1.0 \
 	--pkg dcs-config \
 	--pkg dcs-core-0.1 \
@@ -39,7 +40,6 @@ dcsg_includes = \
 dcsg_CFLAGS = \
 	-DG_LOG_DOMAIN=\"dcs\" \
 	-DGETTEXT_PACKAGE=\"dcs\" \
-	$(DCS_DEPS_CFLAGS) \
 	$(DCS_CLD_DEPS_CFLAGS) \
 	$(LIBDCS_CORE_CFLAGS) \
 	$(LIBDCS_UI_CFLAGS) \
@@ -55,7 +55,6 @@ dcsg_CFLAGS = \
 	-Wformat-nonliteral
 
 dcsg_LDADD = \
-	$(DCS_DEPS_LIBS) \
 	$(DCS_CLD_DEPS_LIBS) \
 	$(LIBDCS_CORE_LIBS) \
 	$(LIBDCS_UI_LIBS) \

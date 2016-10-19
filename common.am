@@ -9,6 +9,7 @@ extensiondir = @WEB_EXTENSION_DIR@
 
 libdcscoredir = $(top_srcdir)/src/libdcs-core
 libdcsclidir = $(top_srcdir)/src/libdcs-cli
+libdcscontroldir = $(top_srcdir)/src/libdcs-control
 libdcsdaqdir = $(top_srcdir)/src/libdcs-daq
 libdcslogdir = $(top_srcdir)/src/libdcs-log
 libdcsnetdir = $(top_srcdir)/src/libdcs-net
@@ -16,50 +17,10 @@ libdcsuidir = $(top_srcdir)/src/libdcs-ui
 
 MAINTAINERCLEANFILES = Makefile.in
 
-DCS_COMMON_DEFINES_CFLAGS = \
-	-DDATADIR='"$(shareddir)"' \
-	-include config.h
-
-# XXX removed from libdcs-ui
-DCS_COMMON_LIBDCS_CORE_VALAFLAGS = \
-	--vapidir=$(libdcscoredir) \
-	--pkg dcs-core-0.1
-
-# XXX removed from libdcs-ui
-DCS_COMMON_LIBDCS_CORE_CFLAGS = \
-	$(DCS_COMMON_DEFINES_CFLAGS) \
-	-I$(top_builddir)/src/libdcs-core \
-	-I$(top_srcdir)/src/libdcs-core
-
-# XXX removed from libdcs-ui
-DCS_COMMON_LIBDCS_CORE_LIBS = \
-	$(top_builddir)/src/libdcs-core/libdcs-core-0.1.la
-
-DCS_COMMON_LIBDCS_UI_VALAFLAGS = \
-	--vapidir=$(libdcsuidir) \
-	--pkg dcs-ui-0.1 \
-	$(DCS_COMMON_LIBDCS_CORE_VALAFLAGS)
-
-DCS_COMMON_LIBDCS_UI_CFLAGS = \
-	$(DCS_COMMON_LIBDCS_CORE_CFLAGS) \
-	-I$(top_builddir)/src/libdcs-ui \
-	-I$(top_srcdir)/src/libdcs-ui
-
-DCS_COMMON_LIBDCS_UI_LIBS = \
-	$(DCS_COMMON_LIBDCS_CORE_LIBS) \
-	$(top_builddir)/src/libdcs-ui/libdcs-ui-0.1.la
-
-DCS_COMMON_CONFIG_VALAFLAGS = \
-	--vapidir=$(libdcscoredir) \
-	--pkg dcs-config
-
-# Note: This must always be the last one in *_VALAFLAGS,
-# because the -g needs to be at the end of VALAFLAGS to not break make dist.
-# XXX removed from libdcs-ui
-DCS_COMMON_VALAFLAGS = \
-	$(DCS_COMMON_CONFIG_VALAFLAGS) \
-	$(DCS_COMMON_VALAFLAGS_PKG) \
-	$(DCS_DEBUG_VALAFLAGS)
+#
+# All common sections were removed in favor of handling on a per
+# library/application basis. What remains here will be removed as well.
+#
 
 vala-clean:
 	rm -f `find . -name "*.stamp"`

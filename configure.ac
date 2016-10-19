@@ -43,7 +43,7 @@ LIBDCS_DAQ_VERSION=dcs_version
 LIBDCS_LOG_VERSION=dcs_version
 LIBDCS_NET_VERSION=dcs_version
 LIBDCS_CONTROL_VERSION=dcs_version
-LIBDCS_UI_VERSION=dcs_version
+#LIBDCS_UI_VERSION=dcs_version
 AC_SUBST(MAJOR_VERSION)
 AC_SUBST(MINOR_VERSION)
 AC_SUBST(MICRO_VERSION)
@@ -53,7 +53,7 @@ AC_SUBST(LIBDCS_DAQ_VERSION)
 AC_SUBST(LIBDCS_LOG_VERSION)
 AC_SUBST(LIBDCS_NET_VERSION)
 AC_SUBST(LIBDCS_CONTROL_VERSION)
-AC_SUBST(LIBDCS_UI_VERSION)
+#AC_SUBST(LIBDCS_UI_VERSION)
 
 
 dnl ***********************************************************************
@@ -233,19 +233,6 @@ PKG_CHECK_MODULES(LIBDCS_CONTROL, [gio-2.0 >= glib_required_version
                                    cld-0.3 >= cld_required_version])
 
 
-dnl Need to work these in to simplify checking
-DCS_BASE_MODULES="gee-0.8 libxml-2.0 libpeas-1.0"
-DCS_BASE_MODULES_VALAFLAGS="--pkg gee-0.8 --pkg libxml-2.0 --pkg glib-extra --pkg libpeas-1.0"
-
-DCS_COMMON_MODULES="$DCS_BASE_MODULES"
-DCS_COMMON_MODULES_VALAFLAGS="$DCS_BASE_MODULES_VALAFLAGS"
-AC_SUBST([DCS_COMMON_MODULES_VALAFLAGS])
-
-PKG_CHECK_MODULES([DCS_DEPS], [$DCS_COMMON_MODULES gio-2.0 gmodule-2.0])
-DCS_DEPS_VALAFLAGS="$DCS_COMMON_MODULES_VALAFLAGS --pkg gio-2.0 --pkg gmodule-2.0"
-AC_SUBST([DCS_DEPS_VALAFLAGS])
-
-
 dnl ***********************************************************************
 dnl Check if building CLD support was requested
 dnl XXX CLD is more of a requirement than an option currently but the hope
@@ -260,8 +247,7 @@ AS_IF([test "x$try_cld" = "xyes"],
       [PKG_CHECK_MODULES([DCS_CLD_DEPS], [cld-0.3 comedi gio-2.0 gsl sqlite3 gee-0.8 libxml-2.0],
 	    [
            DCS_CHECK_PACKAGES([cld-0.3 comedi gio-2.0 gsl sqlite3 gee-0.8 libxml-2.0], [HAVE_CLD=yes])
-           DCS_CLD_DEPS_VALAFLAGS="--pkg cld-0.3 --pkg comedi --pkg gio-2.0 --pkg gsl --pkg sqlite3 --pkg gee-0.8 --pkg libxml-2.0"
-	       DCS_PLUGIN_COMMON_VALAFLAGS="$DCS_PLUGIN_COMMON_VALAFLAGS $DCS_CLD_DEPS_VALAFLAGS"
+           DCS_CLD_DEPS_VALAFLAGS="--pkg cld-0.3 --pkg comedi --pkg gsl --pkg sqlite3"
            AC_SUBST([DCS_CLD_DEPS_VALAFLAGS])
         ],
         [
@@ -273,16 +259,25 @@ AM_CONDITIONAL(USE_CLD, test "x$HAVE_CLD" = "xyes")
 
 
 dnl ***********************************************************************
+dnl Check if pygobject is available
+dnl ***********************************************************************
+m4_define([pygobject_required_version], [3.18.0])
+PKG_CHECK_MODULES(PYGOBJECT,[pygobject-3.0 >= pygobject_required_version],
+                            [have_pygobject=yes]
+                            [have_pygobject=no])
+
+
+dnl ***********************************************************************
 dnl Check if UI should be built
 dnl ***********************************************************************
 m4_define([gtk_required_version], [3.18.1])
 m4_define([rsvg_required_version], [2.40.0])
 AC_ARG_ENABLE([ui],
-              [AS_HELP_STRING([--enable-ui=@<:@yes/no/auto@:>@],
+              [AS_HELP_STRING([--enable-ui=@<:@yes/no@:>@],
                               [Build the user interface components.])],
               [enable_ui=$enableval],
-              [enable_ui=auto])
-AS_IF([test "$enable_ui" != no],[
+              [enable_ui=yes])
+AS_IF([test "x$enable_ui" != "xno"],[
     PKG_CHECK_MODULES(LIBDCS_UI,
                       [gio-2.0 >= glib_required_version
                        gee-0.8 >= gee_required_version
@@ -298,20 +293,11 @@ AS_IF([test "$enable_ui" != no],[
                       [have_ui=yes],
                       [have_ui=no])
 
-	AS_IF([test "$enable_ui" = "yes" && "$have_ui" = "no"],[
+	AS_IF([test "$enable_ui" = "yes" && test "$have_ui" = "no"],[
 	       AC_MSG_ERROR([--enable-ui requires dependencies that were missing])
 	])
 ])
 AM_CONDITIONAL(ENABLE_UI, [test "x$enable_ui" = "xyes"])
-
-
-dnl ***********************************************************************
-dnl Check if pygobject is available
-dnl ***********************************************************************
-m4_define([pygobject_required_version], [3.18.0])
-PKG_CHECK_MODULES(PYGOBJECT,[pygobject-3.0 >= pygobject_required_version],
-                            [have_pygobject=yes]
-                            [have_pygobject=no])
 
 
 dnl ***********************************************************************
@@ -329,7 +315,7 @@ AS_IF([test "$enable_webkit" != no],[
 	                  [have_webkit=yes],
 	                  [have_webkit=no])
 
-	AS_IF([test "$enable_webkit" = "yes" && "$have_webkit" = "no"],[
+	AS_IF([test "$enable_webkit" = "yes" && test "$have_webkit" = "no"],[
 	       AC_MSG_ERROR([--enable-webkit requires webkit2gtk-4.0 >= webkit_required_version])
 	])
 
@@ -344,7 +330,7 @@ dnl ***********************************************************************
 dnl Check if we're building the Python plugin generator utility
 dnl ***********************************************************************
 AC_ARG_ENABLE([plugin-util],
-              [AS_HELP_STRING([--enable-plugin-util=@<:@yes.no@:>@],
+              [AS_HELP_STRING([--enable-plugin-util=@<:@yes/no@:>@],
                               [Build the plugin generator.])],
               [enable_plugin_util=$enableval],
               [enable_plugin_util=no])
@@ -703,7 +689,6 @@ AC_CONFIG_FILES([
 	src/Makefile
 	src/dcs/Makefile
 	src/dcsg/Makefile
-	src/dcs-analyze/Makefile
 	src/dcs-daq/Makefile
 	src/dcs-log/Makefile
 	src/dcs-control/Makefile
@@ -761,7 +746,7 @@ AC_MSG_NOTICE([
 
     Development Options
 
-     DAQ support: ................................. : ${with_cld}
+     DAQ support: ................................. : ${use_cld}
      UI support: .................................. : ${enable_ui}
      Enable Debug: ................................ : ${enable_debug}
      Enable Tracing: .............................. : ${enable_tracing}

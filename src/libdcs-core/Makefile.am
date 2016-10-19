@@ -49,7 +49,6 @@ libdcs_core_0_1_la_VALAFLAGS = \
 	--pkg libxml-2.0 \
 	--pkg libpeas-1.0 \
 	--pkg dcs-config \
-	--pkg dcs-core-0.1 \
 	$(DCS_CLD_DEPS_VALAFLAGS) \
 	$(NULL)
 
