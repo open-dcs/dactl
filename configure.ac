@@ -195,11 +195,9 @@ m4_define([cld_required_version], [0.3.0])
 m4_define([comedi_required_version], [0.8.1])
 m4_define([gee_required_version], [0.18.0])
 m4_define([glib_required_version], [2.46.0])
-m4_define([gtk_required_version], [3.18.1])
 m4_define([json_required_version], [1.0.0])
 m4_define([libxml_required_version], [2.9.0])
 m4_define([peas_required_version], [1.16.0])
-m4_define([rsvg_required_version], [2.40.0])
 m4_define([soup_required_version], [2.4.0])
 m4_define([zmq_required_version], [3.2.0])
 
@@ -233,17 +231,6 @@ PKG_CHECK_MODULES(LIBDCS_CONTROL, [gio-2.0 >= glib_required_version
                                    libpeas-1.0 >= peas_required_version
                                    libzmq >= zmq_required_version
                                    cld-0.3 >= cld_required_version])
-PKG_CHECK_MODULES(LIBDCS_UI, [gio-2.0 >= glib_required_version
-                              gee-0.8 >= gee_required_version
-                              gtk+-3.0 >= gtk_required_version
-                              gtksourceview-3.0 >= gtk_required_version
-                              cld-0.3 >= cld_required_version
-                              json-glib-1.0 >= json_required_version
-                              libxml-2.0 >= libxml_required_version
-                              libpeas-1.0 >= peas_required_version
-                              libpeas-gtk-1.0 >= peas_required_version
-                              librsvg-2.0 >= rsvg_required_version
-                              libsoup-2.4 >= soup_required_version])
 
 
 dnl Need to work these in to simplify checking
@@ -258,15 +245,12 @@ PKG_CHECK_MODULES([DCS_DEPS], [$DCS_COMMON_MODULES gio-2.0 gmodule-2.0])
 DCS_DEPS_VALAFLAGS="$DCS_COMMON_MODULES_VALAFLAGS --pkg gio-2.0 --pkg gmodule-2.0"
 AC_SUBST([DCS_DEPS_VALAFLAGS])
 
-PKG_CHECK_MODULES([DCS_UI_DEPS], [gtk+-3.0 librsvg-2.0 gtksourceview-3.0 libsoup-2.4])
-DCS_UI_MODULES="gtk+-3.0 librsvg-2.0 gtksourceview-3.0 libsoup-2.4"
-DCS_UI_DEPS_VALAFLAGS="--pkg gtk+-3.0 --pkg cogl-1.0 --pkg librsvg-2.0 --pkg gtksourceview-3.0 --pkg libsoup-2.4"
-AC_SUBST([DCS_UI_DEPS_VALAFLAGS])
-DCS_PLUGIN_COMMON_VALAFLAGS="$DCS_PLUGIN_COMMON_VALAFLAGS $DCS_UI_DEPS_VALAFLAGS"
 
+dnl ***********************************************************************
 dnl Check if building CLD support was requested
-dnl XXX CLD is more of a requirement than an option at this point but the hope
+dnl XXX CLD is more of a requirement than an option currently but the hope
 dnl     is that dcs can be more generic and function with it as an engine
+dnl ***********************************************************************
 AC_ARG_WITH(cld,
     AS_HELP_STRING([--without-cld], [Do not build with CLD support]),
     [try_cld=$withval], [try_cld=yes])
@@ -286,6 +270,39 @@ AS_IF([test "x$try_cld" = "xyes"],
         ])])
 
 AM_CONDITIONAL(USE_CLD, test "x$HAVE_CLD" = "xyes")
+
+
+dnl ***********************************************************************
+dnl Check if UI should be built
+dnl ***********************************************************************
+m4_define([gtk_required_version], [3.18.1])
+m4_define([rsvg_required_version], [2.40.0])
+AC_ARG_ENABLE([ui],
+              [AS_HELP_STRING([--enable-ui=@<:@yes/no/auto@:>@],
+                              [Build the user interface components.])],
+              [enable_ui=$enableval],
+              [enable_ui=auto])
+AS_IF([test "$enable_ui" != no],[
+    PKG_CHECK_MODULES(LIBDCS_UI,
+                      [gio-2.0 >= glib_required_version
+                       gee-0.8 >= gee_required_version
+                       gtk+-3.0 >= gtk_required_version
+                       gtksourceview-3.0 >= gtk_required_version
+                       cld-0.3 >= cld_required_version
+                       json-glib-1.0 >= json_required_version
+                       libxml-2.0 >= libxml_required_version
+                       libpeas-1.0 >= peas_required_version
+                       libpeas-gtk-1.0 >= peas_required_version
+                       librsvg-2.0 >= rsvg_required_version
+                       libsoup-2.4 >= soup_required_version],
+                      [have_ui=yes],
+                      [have_ui=no])
+
+	AS_IF([test "$enable_ui" = "yes" && "$have_ui" = "no"],[
+	       AC_MSG_ERROR([--enable-ui requires dependencies that were missing])
+	])
+])
+AM_CONDITIONAL(ENABLE_UI, [test "x$enable_ui" = "xyes"])
 
 
 dnl ***********************************************************************
@@ -745,7 +762,7 @@ AC_MSG_NOTICE([
     Development Options
 
      DAQ support: ................................. : ${with_cld}
-     UI support: .................................. : ${with_ui}
+     UI support: .................................. : ${enable_ui}
      Enable Debug: ................................ : ${enable_debug}
      Enable Tracing: .............................. : ${enable_tracing}
      Enable Profiling (-pg): ...................... : ${enable_profiling}

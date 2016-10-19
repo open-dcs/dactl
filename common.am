@@ -20,15 +20,18 @@ DCS_COMMON_DEFINES_CFLAGS = \
 	-DDATADIR='"$(shareddir)"' \
 	-include config.h
 
+# XXX removed from libdcs-ui
 DCS_COMMON_LIBDCS_CORE_VALAFLAGS = \
 	--vapidir=$(libdcscoredir) \
 	--pkg dcs-core-0.1
 
+# XXX removed from libdcs-ui
 DCS_COMMON_LIBDCS_CORE_CFLAGS = \
 	$(DCS_COMMON_DEFINES_CFLAGS) \
 	-I$(top_builddir)/src/libdcs-core \
 	-I$(top_srcdir)/src/libdcs-core
 
+# XXX removed from libdcs-ui
 DCS_COMMON_LIBDCS_CORE_LIBS = \
 	$(top_builddir)/src/libdcs-core/libdcs-core-0.1.la
 
@@ -52,6 +55,7 @@ DCS_COMMON_CONFIG_VALAFLAGS = \
 
 # Note: This must always be the last one in *_VALAFLAGS,
 # because the -g needs to be at the end of VALAFLAGS to not break make dist.
+# XXX removed from libdcs-ui
 DCS_COMMON_VALAFLAGS = \
 	$(DCS_COMMON_CONFIG_VALAFLAGS) \
 	$(DCS_COMMON_VALAFLAGS_PKG) \
