@@ -3,17 +3,19 @@ SUBDIRS = \
 	libdcs-net \
 	libdcs-log \
 	libdcs-daq \
+	libdcs-control \
 	libdcs-cli \
 	libdcs-ui \
 	dcs \
 	dcsg \
-	dcs-analyze \
 	dcs-daq \
 	dcs-log \
+	dcs-control \
 	dcs-plugin \
-	plugins \
 	backends \
 	devices \
+	loops \
+	plugins \
 	$(NULL)
 
 MAINTAINERCLEANFILES = Makefile.in

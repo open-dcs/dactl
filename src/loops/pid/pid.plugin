@@ -1,0 +1,7 @@
+[Plugin]
+Module=dcs-loop-pid
+Name=PID Loop Plugin
+Description=A control loop plugin using PID for feedback control.
+Authors=Geoff Johnson <geoff.jay@gmail.com>
+Copyright=Copyright © 2016 Geoff Johnson
+Builtin=true

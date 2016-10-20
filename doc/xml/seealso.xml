@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refsect1>
+  <title>See Also</title>
+
+  <simplelist type="inline">
+    <member><citerefentry><refentrytitle>dcs</refentrytitle><manvolnum>1</manvolnum></citerefentry></member>
+    <member><citerefentry><refentrytitle>dcs-publish</refentrytitle><manvolnum>1</manvolnum></citerefentry></member>
+    <member><citerefentry><refentrytitle>dcs-subscribe</refentrytitle><manvolnum>1</manvolnum></citerefentry></member>
+    <member><citerefentry><refentrytitle>dcs-request</refentrytitle><manvolnum>1</manvolnum></citerefentry></member>
+    <member><citerefentry><refentrytitle>dcs-reply</refentrytitle><manvolnum>1</manvolnum></citerefentry></member>
+    <member><citerefentry><refentrytitle>dcs-daqd</refentrytitle><manvolnum>1</manvolnum></citerefentry></member>
+    <member><citerefentry><refentrytitle>dcs-logd</refentrytitle><manvolnum>1</manvolnum></citerefentry></member>
+    <member><citerefentry><refentrytitle>dcs-controld</refentrytitle><manvolnum>1</manvolnum></citerefentry></member>
+    <member><citerefentry><refentrytitle>dcsg</refentrytitle><manvolnum>1</manvolnum></citerefentry></member>
+  </simplelist>
+
+</refsect1>

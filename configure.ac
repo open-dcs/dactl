@@ -6,7 +6,7 @@ dnl Define Versioning Information
 dnl ***********************************************************************
 m4_define([dcs_major_version],[0])
 m4_define([dcs_minor_version],[1])
-m4_define([dcs_micro_version],[0])
+m4_define([dcs_micro_version],[3])
 m4_define([dcs_version],[dcs_major_version.dcs_minor_version.dcs_micro_version])
 m4_define([dcs_interface_age],[0])
 m4_define([dcs_bugreport_url],
@@ -42,7 +42,8 @@ LIBDCS_CLI_VERSION=dcs_version
 LIBDCS_DAQ_VERSION=dcs_version
 LIBDCS_LOG_VERSION=dcs_version
 LIBDCS_NET_VERSION=dcs_version
-LIBDCS_UI_VERSION=dcs_version
+LIBDCS_CONTROL_VERSION=dcs_version
+#LIBDCS_UI_VERSION=dcs_version
 AC_SUBST(MAJOR_VERSION)
 AC_SUBST(MINOR_VERSION)
 AC_SUBST(MICRO_VERSION)
@@ -51,7 +52,8 @@ AC_SUBST(LIBDCS_CLI_VERSION)
 AC_SUBST(LIBDCS_DAQ_VERSION)
 AC_SUBST(LIBDCS_LOG_VERSION)
 AC_SUBST(LIBDCS_NET_VERSION)
-AC_SUBST(LIBDCS_UI_VERSION)
+AC_SUBST(LIBDCS_CONTROL_VERSION)
+#AC_SUBST(LIBDCS_UI_VERSION)
 
 
 dnl ***********************************************************************
@@ -87,6 +89,7 @@ AC_PROG_MAKE_SET
 AC_PATH_PROG([GLIB_GENMARSHAL], [glib-genmarshal])
 AC_PATH_PROG([GLIB_MKENUMS], [glib-mkenums])
 AC_PATH_PROG([GLIB_COMPILE_RESOURCES], [glib-compile-resources])
+AC_PATH_PROG([XSLTPROC], [xsltproc])
 AC_HEADER_STDC
 PKG_PROG_PKG_CONFIG([0.22])
 GOBJECT_INTROSPECTION_CHECK([1.42.0])
@@ -192,11 +195,9 @@ m4_define([cld_required_version], [0.3.0])
 m4_define([comedi_required_version], [0.8.1])
 m4_define([gee_required_version], [0.18.0])
 m4_define([glib_required_version], [2.46.0])
-m4_define([gtk_required_version], [3.18.1])
 m4_define([json_required_version], [1.0.0])
 m4_define([libxml_required_version], [2.9.0])
 m4_define([peas_required_version], [1.16.0])
-m4_define([rsvg_required_version], [2.40.0])
 m4_define([soup_required_version], [2.4.0])
 m4_define([zmq_required_version], [3.2.0])
 
@@ -225,40 +226,18 @@ PKG_CHECK_MODULES(LIBDCS_NET, [gee-0.8 >= gee_required_version
                                libsoup-2.4 >= soup_required_version
                                libzmq > zmq_required_version
                                cld-0.3 >= cld_required_version])
-PKG_CHECK_MODULES(LIBDCS_UI, [gio-2.0 >= glib_required_version
-                              gee-0.8 >= gee_required_version
-                              gtk+-3.0 >= gtk_required_version
-                              gtksourceview-3.0 >= gtk_required_version
-                              cld-0.3 >= cld_required_version
-                              json-glib-1.0 >= json_required_version
-                              libxml-2.0 >= libxml_required_version
-                              libpeas-1.0 >= peas_required_version
-                              libpeas-gtk-1.0 >= peas_required_version
-                              librsvg-2.0 >= rsvg_required_version
-                              libsoup-2.4 >= soup_required_version])
+PKG_CHECK_MODULES(LIBDCS_CONTROL, [gio-2.0 >= glib_required_version
+                                   gee-0.8 >= gee_required_version
+                                   libpeas-1.0 >= peas_required_version
+                                   libzmq >= zmq_required_version
+                                   cld-0.3 >= cld_required_version])
 
 
-dnl Need to work these in to simplify checking
-DCS_BASE_MODULES="gee-0.8 libxml-2.0 libpeas-1.0"
-DCS_BASE_MODULES_VALAFLAGS="--pkg gee-0.8 --pkg libxml-2.0 --pkg glib-extra --pkg libpeas-1.0"
-
-DCS_COMMON_MODULES="$DCS_BASE_MODULES"
-DCS_COMMON_MODULES_VALAFLAGS="$DCS_BASE_MODULES_VALAFLAGS"
-AC_SUBST([DCS_COMMON_MODULES_VALAFLAGS])
-
-PKG_CHECK_MODULES([DCS_DEPS], [$DCS_COMMON_MODULES gio-2.0 gmodule-2.0])
-DCS_DEPS_VALAFLAGS="$DCS_COMMON_MODULES_VALAFLAGS --pkg gio-2.0 --pkg gmodule-2.0"
-AC_SUBST([DCS_DEPS_VALAFLAGS])
-
-PKG_CHECK_MODULES([DCS_UI_DEPS], [gtk+-3.0 librsvg-2.0 gtksourceview-3.0 libsoup-2.4])
-DCS_UI_MODULES="gtk+-3.0 librsvg-2.0 gtksourceview-3.0 libsoup-2.4"
-DCS_UI_DEPS_VALAFLAGS="--pkg gtk+-3.0 --pkg cogl-1.0 --pkg librsvg-2.0 --pkg gtksourceview-3.0 --pkg libsoup-2.4"
-AC_SUBST([DCS_UI_DEPS_VALAFLAGS])
-DCS_PLUGIN_COMMON_VALAFLAGS="$DCS_PLUGIN_COMMON_VALAFLAGS $DCS_UI_DEPS_VALAFLAGS"
-
+dnl ***********************************************************************
 dnl Check if building CLD support was requested
-dnl XXX CLD is more of a requirement than an option at this point but the hope
+dnl XXX CLD is more of a requirement than an option currently but the hope
 dnl     is that dcs can be more generic and function with it as an engine
+dnl ***********************************************************************
 AC_ARG_WITH(cld,
     AS_HELP_STRING([--without-cld], [Do not build with CLD support]),
     [try_cld=$withval], [try_cld=yes])
@@ -268,8 +247,7 @@ AS_IF([test "x$try_cld" = "xyes"],
       [PKG_CHECK_MODULES([DCS_CLD_DEPS], [cld-0.3 comedi gio-2.0 gsl sqlite3 gee-0.8 libxml-2.0],
 	    [
            DCS_CHECK_PACKAGES([cld-0.3 comedi gio-2.0 gsl sqlite3 gee-0.8 libxml-2.0], [HAVE_CLD=yes])
-           DCS_CLD_DEPS_VALAFLAGS="--pkg cld-0.3 --pkg comedi --pkg gio-2.0 --pkg gsl --pkg sqlite3 --pkg gee-0.8 --pkg libxml-2.0"
-	       DCS_PLUGIN_COMMON_VALAFLAGS="$DCS_PLUGIN_COMMON_VALAFLAGS $DCS_CLD_DEPS_VALAFLAGS"
+           DCS_CLD_DEPS_VALAFLAGS="--pkg cld-0.3 --pkg comedi --pkg gsl --pkg sqlite3"
            AC_SUBST([DCS_CLD_DEPS_VALAFLAGS])
         ],
         [
@@ -290,6 +268,39 @@ PKG_CHECK_MODULES(PYGOBJECT,[pygobject-3.0 >= pygobject_required_version],
 
 
 dnl ***********************************************************************
+dnl Check if UI should be built
+dnl ***********************************************************************
+m4_define([gtk_required_version], [3.18.1])
+m4_define([rsvg_required_version], [2.40.0])
+AC_ARG_ENABLE([ui],
+              [AS_HELP_STRING([--enable-ui=@<:@yes/no@:>@],
+                              [Build the user interface components.])],
+              [enable_ui=$enableval],
+              [enable_ui=yes])
+AS_IF([test "x$enable_ui" != "xno"],[
+    PKG_CHECK_MODULES(LIBDCS_UI,
+                      [gio-2.0 >= glib_required_version
+                       gee-0.8 >= gee_required_version
+                       gtk+-3.0 >= gtk_required_version
+                       gtksourceview-3.0 >= gtk_required_version
+                       cld-0.3 >= cld_required_version
+                       json-glib-1.0 >= json_required_version
+                       libxml-2.0 >= libxml_required_version
+                       libpeas-1.0 >= peas_required_version
+                       libpeas-gtk-1.0 >= peas_required_version
+                       librsvg-2.0 >= rsvg_required_version
+                       libsoup-2.4 >= soup_required_version],
+                      [have_ui=yes],
+                      [have_ui=no])
+
+	AS_IF([test "$enable_ui" = "yes" && test "$have_ui" = "no"],[
+	       AC_MSG_ERROR([--enable-ui requires dependencies that were missing])
+	])
+])
+AM_CONDITIONAL(ENABLE_UI, [test "x$enable_ui" = "xyes"])
+
+
+dnl ***********************************************************************
 dnl Check if we have WebKit support
 dnl ***********************************************************************
 m4_define([webkit_required_version], [2.12.0])
@@ -304,7 +315,7 @@ AS_IF([test "$enable_webkit" != no],[
 	                  [have_webkit=yes],
 	                  [have_webkit=no])
 
-	AS_IF([test "$enable_webkit" = "yes" && "$have_webkit" = "no"],[
+	AS_IF([test "$enable_webkit" = "yes" && test "$have_webkit" = "no"],[
 	       AC_MSG_ERROR([--enable-webkit requires webkit2gtk-4.0 >= webkit_required_version])
 	])
 
@@ -319,7 +330,7 @@ dnl ***********************************************************************
 dnl Check if we're building the Python plugin generator utility
 dnl ***********************************************************************
 AC_ARG_ENABLE([plugin-util],
-              [AS_HELP_STRING([--enable-plugin-util=@<:@yes.no@:>@],
+              [AS_HELP_STRING([--enable-plugin-util=@<:@yes/no@:>@],
                               [Build the plugin generator.])],
               [enable_plugin_util=$enableval],
               [enable_plugin_util=no])
@@ -351,6 +362,14 @@ dnl ***********************************************************************
 m4_include([src/backends/xml/configure.ac])
 
 AC_SUBST([BACKEND_DIR],[${libdir}/dcs/backends])
+
+
+dnl ***********************************************************************
+dnl Check for supported control loops
+dnl ***********************************************************************
+m4_include([src/loops/pid/configure.ac])
+
+AC_SUBST([LOOP_DIR],[${libdir}/dcs/loops])
 
 
 dnl ***********************************************************************
@@ -413,6 +432,17 @@ AX_APPEND_COMPILE_FLAGS([ \
 	-Wundef \
 ], [], [$ax_compiler_flags_test])
 AC_C_CONST
+
+
+dnl ***********************************************************************
+dnl Always build tests
+dnl ***********************************************************************
+AC_ARG_ENABLE([tests],
+              AS_HELP_STRING([--enable-tests],
+                             [Enable always building tests during 'make all' [default=no]]),
+              [enable_tests=$enableval], [enable_tests=no])
+
+AM_CONDITIONAL([ENABLE_TESTS], test "$enable_tests" = "yes")
 
 
 dnl ***********************************************************************
@@ -574,6 +604,38 @@ AC_SUBST(BACKEND_VALAFLAGS)
 
 
 dnl ***********************************************************************
+dnl Setup common cflags and ldflags for control loops
+dnl ***********************************************************************
+LOOP_CFLAGS="$LOOP_CFLAGS -I\$(top_srcdir)/src/libdcs-core"
+LOOP_CFLAGS="$LOOP_CFLAGS -I\$(top_srcdir)/src/libdcs-control"
+LOOP_CFLAGS="$LOOP_CFLAGS -I\$(top_srcdir)/src/libdcs-net"
+LOOP_CFLAGS="$LOOP_CFLAGS $LIBDCS_CORE_CFLAGS"
+LOOP_CFLAGS="$LOOP_CFLAGS $LIBDCS_NET_CFLAGS"
+LOOP_CFLAGS="$LOOP_CFLAGS $LIBDCS_CONTROL_CFLAGS"
+LOOP_CFLAGS="$LOOP_CFLAGS $DEBUG_CFLAGS"
+LOOP_CFLAGS="$LOOP_CFLAGS $OPTIMIZE_CFLAGS"
+AC_SUBST(LOOP_CFLAGS)
+
+LOOP_LDFLAGS="$LOOP_LDFLAGS $OPTIMIZE_LDFLAGS"
+LOOP_LDFLAGS="$LOOP_LDFLAGS -avoid-version"
+dnl LOOP_LDFLAGS="$LOOP_LDFLAGS -export-symbols-regex peas_register_types"
+LOOP_LDFLAGS="$LOOP_LDFLAGS -module"
+AC_SUBST(LOOP_LDFLAGS)
+
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --target-glib=2.44"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --thread"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_srcdir)/vapi"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-core"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-control"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-net"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-core-0.1"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-control-0.1"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-net-0.1"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg libpeas-1.0"
+AC_SUBST(LOOP_VALAFLAGS)
+
+
+dnl ***********************************************************************
 dnl Process .in Files
 dnl ***********************************************************************
 AC_CONFIG_FILES([
@@ -618,15 +680,18 @@ AC_CONFIG_FILES([
 	data/gsettings/org.opendcs.dcs.gschema.xml
 
 	doc/Makefile
+	doc/man/Makefile
+	doc/man/man1/Makefile
+	doc/xml/Makefile
 
 	po/Makefile.in
 
 	src/Makefile
 	src/dcs/Makefile
 	src/dcsg/Makefile
-	src/dcs-analyze/Makefile
 	src/dcs-daq/Makefile
 	src/dcs-log/Makefile
+	src/dcs-control/Makefile
 	src/dcs-plugin/Makefile
 	src/dcs-plugin/setup.cfg
 
@@ -635,16 +700,21 @@ AC_CONFIG_FILES([
 	src/libdcs-daq/Makefile
 	src/libdcs-log/Makefile
 	src/libdcs-net/Makefile
+	src/libdcs-control/Makefile
 	src/libdcs-ui/Makefile
 	src/libdcs-ui/extensions/Makefile
 
     src/backends/Makefile
+
+    src/loops/Makefile
 
 	src/plugins/Makefile
 	src/plugins/samples/Makefile
 
 	src/devices/Makefile
 	src/devices/samples/Makefile
+
+	tests/Makefile
 
 	examples/Makefile
 	examples/javascript/Makefile
@@ -657,6 +727,7 @@ AC_CONFIG_FILES([
 	src/libdcs-daq/dcs-daq-0.1.pc
 	src/libdcs-log/dcs-log-0.1.pc
 	src/libdcs-net/dcs-net-0.1.pc
+	src/libdcs-control/dcs-control-0.1.pc
 	src/libdcs-ui/dcs-ui-0.1.pc
 ])
 AC_OUTPUT
@@ -675,11 +746,12 @@ AC_MSG_NOTICE([
 
     Development Options
 
-     DAQ support: ................................. : ${with_cld}
-     UI support: .................................. : ${with_ui}
+     DAQ support: ................................. : ${use_cld}
+     UI support: .................................. : ${enable_ui}
      Enable Debug: ................................ : ${enable_debug}
      Enable Tracing: .............................. : ${enable_tracing}
      Enable Profiling (-pg): ...................... : ${enable_profiling}
+     Build Test Suite: ............................ : ${enable_tests}
      Build documentation: ......................... : ${enable_doc}
      Build API reference: ......................... : ${enable_doc}
      Update MIME Database: ........................ : ${enable_mime}
@@ -697,6 +769,10 @@ AC_MSG_NOTICE([
      Arduino: ..................................... : ${enable_arduino_device}
      Comedi: ...................................... : ${enable_comedi_device}
      MCC USB: ..................................... : ${enable_mccusb_device}
+
+    Control Loops
+
+     PID: ......................................... : ${enable_pid_loop}
 
     Example Plugins
 

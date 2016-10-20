@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
+[
+<!ENTITY authors SYSTEM "authors.xml">
+<!ENTITY seealso SYSTEM "seealso.xml">
+<!ENTITY notes SYSTEM "notes.xml">
+]>
+
+<refentry id="dcs-daqd">
+  <refentryinfo>
+      <title>dcs-daqd</title>
+    <productname>OpenDCS</productname>
+    &authors;
+  </refentryinfo>
+
+  <refmeta>
+    <refentrytitle>dcs-daqd</refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>dcs-daqd</refname>
+    <refpurpose>A service for acquiring data from data acquisition devices.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>dcs-daqd</command>
+      <arg choice="opt">-c <replaceable class="parameter">path</replaceable></arg>
+      <arg choice="opt">-h</arg>
+      <arg choice="opt" rep="repeat">
+        <replaceable class="command">command </replaceable>
+        <arg choice="opt"><replaceable class="parameter">arg</replaceable></arg>
+      </arg>
+    </cmdsynopsis>
+   </refsynopsisdiv>
+
+  <refsect1 id="description">
+    <title>Description</title>
+    <para>
+      <emphasis>dcs-daqd</emphasis> is a daemon application used to acquire data from data
+      acquisition devices. Data is provided using the OpenDCS message format over ZeroMQ.
+     </para>
+  </refsect1>
+
+  <refsect1 id="options">
+    <title>Options</title>
+    <para>
+      The following options are supported:
+    </para>
+    <variablelist>
+      <varlistentry>
+        <term><option>-c</option></term>
+        <term><option>--config=<replaceable class="parameter">path</replaceable></option></term>
+        <listitem>
+          <para>
+            Launch the application using settings in the provided configuration file.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>-h</option></term>
+        <term><option>--help</option></term>
+        <listitem>
+          <para>
+            Prints the help...
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+  <refsect1 id="examples">
+    <title>Examples</title>
+    <example><title>Some useful example...</title>
+      <para>
+        Provide some information here...
+      </para>
+      <para>
+        dcs-daqd -c daq.dcf -vvv
+      </para>
+    </example>
+  </refsect1>
+
+  &seealso;
+
+  &notes;
+
+</refentry>

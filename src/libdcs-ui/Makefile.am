@@ -1,3 +1,5 @@
+include $(top_srcdir)/common.am
+
 CLEANFILES =
 DISTCLEANFILES =
 BUILT_SOURCES =
@@ -5,7 +7,8 @@ EXTRA_DIST =
 
 SUBDIRS = extensions
 
-include $(top_srcdir)/common.am
+if ENABLE_UI
+
 include $(srcdir)/filelist.am
 
 pkglibdir = $(libdir)/dcs
@@ -59,6 +62,7 @@ libdcs_ui_0_1_la_VALAFLAGS = \
 	--gir=Dcs-0.1.gir \
 	--gresources $(gresource_file) \
 	--vapidir=$(top_srcdir)/vapi \
+	--vapidir=$(top_srcdir)/src/libdcs-core \
 	--pkg posix \
 	--pkg gee-0.8 \
 	--pkg glib-2.0 \
@@ -71,19 +75,18 @@ libdcs_ui_0_1_la_VALAFLAGS = \
 	--pkg libpeas-gtk-1.0 \
 	--pkg libsoup-2.4 \
 	--pkg librsvg-2.0 \
-	$(DCS_CLD_DEPS_VALAFLAGS) \
-	$(DCS_COMMON_LIBDCS_CORE_VALAFLAGS) \
-	$(DCS_COMMON_VALAFLAGS)
+	--pkg dcs-core-0.1 \
+	--pkg dcs-config \
+	$(DCS_CLD_DEPS_VALAFLAGS)
 
 libdcs_ui_0_1_la_CFLAGS = \
 	-DWEB_EXTENSION_DIR=\""$(extensiondir)"\" \
 	-DG_LOG_DOMAIN=\"libdcs-ui\" \
 	-DGETTEXT_PACKAGE=\"dcs\" \
 	$(AM_CFLAGS) \
-	$(LIBDCS_CFLAGS) \
+	$(LIBDCS_CORE_CFLAGS) \
 	$(LIBDCS_UI_CFLAGS) \
 	$(DCS_CLD_DEPS_CFLAGS) \
-	$(DCS_COMMON_LIBDCS_CORE_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
 	$(libdcs_ui_0_1_la_includes) \
 	-Wno-deprecated-declarations \
@@ -101,10 +104,9 @@ libdcs_ui_0_1_la_LDFLAGS = \
 	-version-info $(LIBDCS_UI_VERSION)
 
 libdcs_ui_0_1_la_LIBADD = \
-	$(LIBDCS_LIBS) \
+	$(LIBDCS_CORE_LIBS) \
 	$(LIBDCS_UI_LIBS) \
-	$(DCS_CLD_DEPS_LIBS) \
-	$(DCS_COMMON_LIBDCS_CORE_LIBS)
+	$(DCS_CLD_DEPS_LIBS)
 
 
 if ENABLE_WEBKIT
@@ -177,5 +179,7 @@ BUILT_SOURCES += \
 	DcsUI-0.1.gir \
 	Dcs-0.1.gir \
 	$(NULL)
+
+endif
 
 -include $(top_srcdir)/git.mk

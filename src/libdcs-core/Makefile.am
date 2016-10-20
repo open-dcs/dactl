@@ -38,6 +38,7 @@ libdcs_core_0_1_la_VALAFLAGS = \
 	--library=dcs-core-0.1 \
 	--gir=Dcs-0.1.gir \
 	--vapidir=$(top_srcdir)/vapi \
+	--vapidir=$(top_srcdir)/src/libdcs-core \
 	--pkg posix \
 	--pkg linux \
 	--pkg cld-0.3 \
@@ -47,17 +48,17 @@ libdcs_core_0_1_la_VALAFLAGS = \
 	--pkg gmodule-2.0 \
 	--pkg libxml-2.0 \
 	--pkg libpeas-1.0 \
+	--pkg dcs-config \
 	$(DCS_CLD_DEPS_VALAFLAGS) \
-	$(DCS_COMMON_VALAFLAGS) \
 	$(NULL)
 
 libdcs_core_0_1_la_CFLAGS = \
 	-DG_LOG_DOMAIN=\"libdcs-core\" \
 	-DGETTEXT_PACKAGE=\"dcs\" \
 	$(AM_CFLAGS) \
+	$(LIBDCS_CFLAGS) \
 	$(LIBDCS_CORE_CFLAGS) \
 	$(DCS_CLD_DEPS_CFLAGS) \
-	$(DCS_COMMON_DEFINES_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
 	$(libdcs_core_0_1_la_includes) \
 	-Wno-deprecated-declarations \
@@ -78,6 +79,7 @@ libdcs_core_0_1_la_LDFLAGS = \
 
 libdcs_core_0_1_la_LIBADD = \
 	-lm \
+	$(LIBDCS_LIBS) \
 	$(LIBDCS_CORE_LIBS) \
 	$(DCS_CLD_DEPS_LIBS) \
 	$(NULL)

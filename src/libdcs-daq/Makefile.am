@@ -25,12 +25,14 @@ libdcs_daq_0_1_la_public_headers = \
 
 libdcs_daq_0_1_la_public_sources = \
 	dcs-daq-channel.c \
+	dcs-daq-device.c \
 	dcs-daq-device-manager.c \
 	dcs-daq-factory.c \
 	$(NULL)
 
 libdcs_daq_0_1_la_VALASOURCES = \
 	dcs-daq-channel.vala \
+	dcs-daq-device.vala \
 	dcs-daq-device-manager.vala \
 	dcs-daq-factory.vala \
 	$(NULL)

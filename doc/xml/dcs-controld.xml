@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
+[
+<!ENTITY authors SYSTEM "authors.xml">
+<!ENTITY seealso SYSTEM "seealso.xml">
+<!ENTITY notes SYSTEM "notes.xml">
+]>
+
+<refentry id="dcs-controld">
+  <refentryinfo>
+      <title>dcs-controld</title>
+    <productname>OpenDCS</productname>
+    &authors;
+  </refentryinfo>
+
+  <refmeta>
+    <refentrytitle>dcs-controld</refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>dcs-controld</refname>
+    <refpurpose>A service for acquiring data from data acquisition devices.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>dcs-controld</command>
+      <arg choice="opt">-c <replaceable class="parameter">path</replaceable></arg>
+      <arg choice="opt">-h</arg>
+      <arg choice="opt" rep="repeat">
+        <replaceable class="command">command </replaceable>
+        <arg choice="opt"><replaceable class="parameter">arg</replaceable></arg>
+      </arg>
+    </cmdsynopsis>
+   </refsynopsisdiv>
+
+  <refsect1 id="description">
+    <title>Description</title>
+    <para>
+      <emphasis>dcs-controld</emphasis> is a daemon application used to receive data from
+      a data acquisition daemon and use it to calculate control values which it then feeds
+      back to the same or another data acquisition daemon that interfaces with output
+      hardware. Data is received and provided using the OpenDCS message format over ZeroMQ.
+     </para>
+  </refsect1>
+
+  <refsect1 id="options">
+    <title>Options</title>
+    <para>
+      The following options are supported:
+    </para>
+    <variablelist>
+      <varlistentry>
+        <term><option>-c</option></term>
+        <term><option>--config=<replaceable class="parameter">path</replaceable></option></term>
+        <listitem>
+          <para>
+            Launch the application using settings in the provided configuration file.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>-h</option></term>
+        <term><option>--help</option></term>
+        <listitem>
+          <para>
+						Prints the help...
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+  <refsect1 id="examples">
+    <title>Examples</title>
+    <example><title>Some useful example...</title>
+      <para>
+        Provide some information here...
+      </para>
+      <para>
+        dcs-controld -c control.dcf -vvv
+      </para>
+    </example>
+  </refsect1>
+
+  &seealso;
+
+  &notes;
+
+</refentry>

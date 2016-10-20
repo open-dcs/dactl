@@ -3,6 +3,8 @@ DISTCLEANFILES =
 BUILT_SOURCES =
 EXTRA_DIST =
 
+if ENABLE_UI
+
 include $(top_srcdir)/common.am
 
 bin_PROGRAMS = dcsg
@@ -14,32 +16,32 @@ dcsg_VALAFLAGS = \
 	--target-glib=2.44 \
 	--thread \
 	--gresources $(gresource_file) \
-	$(DCS_DEPS_VALAFLAGS) \
 	$(DCS_CLD_DEPS_VALAFLAGS) \
-	$(DCS_UI_DEPS_VALAFLAGS) \
-	$(DCS_COMMON_LIBDCS_CORE_VALAFLAGS) \
-	$(DCS_COMMON_LIBDCS_UI_VALAFLAGS) \
-	$(DCS_COMMON_VALAFLAGS) \
 	--vapidir=$(top_srcdir)/vapi \
+	--vapidir=$(top_srcdir)/src/libdcs-core \
+	--vapidir=$(top_srcdir)/src/libdcs-ui \
 	--pkg posix \
 	--pkg linux \
-	--pkg json-glib-1.0
+	--pkg glib-extra \
+	--pkg gtksourceview-3.0 \
+	--pkg json-glib-1.0 \
+	--pkg dcs-config \
+	--pkg dcs-core-0.1 \
+	--pkg dcs-ui-0.1
 
 dcsg_includes = \
 	$(DEBUG_CFLAGS) \
 	-include config.h \
 	-DLOCALEDIR=\""$(datadir)/locale"\" \
-	-DDATADIR=\""$(sharedir)"\"
+	-DDATADIR=\""$(sharedir)"\" \
+	-I$(top_srcdir)/src/libdcs-core \
+	-I$(top_srcdir)/src/libdcs-ui
 
 dcsg_CFLAGS = \
 	-DG_LOG_DOMAIN=\"dcs\" \
 	-DGETTEXT_PACKAGE=\"dcs\" \
-	$(DCS_DEPS_CFLAGS) \
 	$(DCS_CLD_DEPS_CFLAGS) \
-	$(DCS_UI_DEPS_CFLAGS) \
-	$(DCS_COMMON_LIBDCS_CORE_CFLAGS) \
-	$(DCS_COMMON_LIBDCS_UI_CFLAGS) \
-	$(LIBDCS_CFLAGS) \
+	$(LIBDCS_CORE_CFLAGS) \
 	$(LIBDCS_UI_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
 	$(dcsg_includes) \
@@ -53,13 +55,11 @@ dcsg_CFLAGS = \
 	-Wformat-nonliteral
 
 dcsg_LDADD = \
-	$(DCS_DEPS_LIBS) \
 	$(DCS_CLD_DEPS_LIBS) \
-	$(DCS_UI_DEPS_LIBS) \
-	$(DCS_COMMON_LIBDCS_CORE_LIBS) \
-	$(DCS_COMMON_LIBDCS_UI_LIBS) \
-	$(LIBDCS_LIBS) \
-	$(LIBDCS_UI_LIBS)
+	$(LIBDCS_CORE_LIBS) \
+	$(LIBDCS_UI_LIBS) \
+	$(top_builddir)/src/libdcs-core/libdcs-core-0.1.la \
+	$(top_builddir)/src/libdcs-ui/libdcs-ui-0.1.la
 
 
 if ENABLE_WEBKIT
@@ -89,15 +89,14 @@ dcsg_SOURCES = \
 	dcsg-application-model.vala \
 	dcsg-application-view.vala \
 	dcsg-application-controller.vala \
-	dcsg-dbus-service.vala \
-	dcsg-cmdline-config.vala \
-	dcsg-utility.vala \
 	dcsg-application-menu.vala \
 	dcsg-application-toolbar.vala \
+	dcsg-cmdline-config.vala \
 	dcsg-configuration-editor.vala \
 	dcsg-configuration-toolbar.vala \
 	dcsg-csv-export.vala \
 	dcsg-csv-export-toolbar.vala \
+	dcsg-dbus-service.vala \
 	dcsg-general-settings.vala \
 	dcsg-loader.vala \
 	dcsg-loader-toolbar.vala \
@@ -112,6 +111,7 @@ dcsg_SOURCES = \
 	dcsg-settings-treeview.vala \
 	dcsg-sidebar.vala \
 	dcsg-topbar.vala \
+	dcsg-utility.vala \
 	dcsg-ux-manager.vala \
 	$(NULL)
 
@@ -127,5 +127,7 @@ EXTRA_DIST += \
 	$(gresource_file) \
 	$(BUILT_SOURCES) \
 	$(NULL)
+
+endif
 
 -include $(top_srcdir)/git.mk

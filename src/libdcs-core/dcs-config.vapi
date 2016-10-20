@@ -48,6 +48,9 @@ public class Dcs.Config {
     [CCode (cname = "BACKEND_DIR")]
     public static const string BACKEND_DIR;
 
+    [CCode (cname = "LOOP_DIR")]
+    public static const string LOOP_DIR;
+
     [CCode (cname = "LIBDIR")]
     public static const string LIBDIR;
 }

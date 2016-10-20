@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
+[
+<!ENTITY authors SYSTEM "authors.xml">
+<!ENTITY seealso SYSTEM "seealso.xml">
+<!ENTITY notes SYSTEM "notes.xml">
+<!ENTITY dcs-subcommands SYSTEM "dcs-subcommands.xml">
+<!ENTITY dcs-utility-common-options SYSTEM "dcs-utility-common-options.xml">
+<!ENTITY dcs-utility-common-synopsis SYSTEM "dcs-utility-common-synopsis.xml">
+]>
+
+<refentry id="dcs-subscribe">
+  <refentryinfo>
+    <title>dcs-subscribe</title>
+    <productname>OpenDCS</productname>
+    &authors;
+  </refentryinfo>
+
+  <refmeta>
+    <refentrytitle>dcs-subscribe</refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>dcs-subscribe</refname>
+    <refpurpose>Test and validation utility for data subscribeers</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>dcs-test-subscribe</command>
+        <arg choice="opt">-C <replaceable class="parameter">num</replaceable></arg>
+        &dcs-utility-common-synopsis;
+    </cmdsynopsis>
+   </refsynopsisdiv>
+
+  <refsect1 id="description">
+    <title>Description</title>
+    <para>
+      <emphasis>dcs-subscribe</emphasis> is a dcs utility application that will
+      subscribe to published data on the specified transport layer.
+      It can be used to test sytem functionality or as a stand in for a
+      a presently unavailable component. Options setting and
+      command execution can all be done from the command line.
+    </para>
+    <para>
+      Status information can be periodically written to a log file.    </para>
+    <para>
+      The <emphasis>count</emphasis> parameter sets the number of messages
+      that will be received after the <emphasis>start</emphasis> command is issued.
+     </para>
+  </refsect1>
+
+  <refsect1 id="options">
+    <title>Options</title>
+    <para>
+      The following options are supported:
+    </para>
+    <variablelist>
+      <varlistentry>
+        <term><option>-C</option></term>
+        <term><option>--count=<replaceable class="parameter">num</replaceable></option></term>
+        <listitem>
+            <para>
+              Set the number of blocks that will be recieved. If this parameter
+              is not specified, the reception will be continuous.
+            </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+		&dcs-utility-common-options;
+  </refsect1>
+  <refsect1 id="commands">
+    <title>Commands</title>
+    &dcs-subcommands;
+    <variablelist>
+      <varlistentry>
+        <term><command>start</command></term>
+        <listitem>
+          <para>
+            Connect to the publishing socket and start listening for data.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><command>stop</command></term>
+        <listitem>
+          <para>
+            Disconnect from the publishing socket.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+  <refsect1 id="examples">
+    <title>Examples</title>
+    <example><title>Subscribe to published data</title>
+      <para>
+        Subscribe data continuously from 127.0.0.1:5588. Receive 100 messages
+        Write the status to a log file once every second. Start receiving data immediately
+        data immediately.
+      </para>
+      <para>
+        dcs-subscribe -a 127.0.0.1 -p 5588 -t TCP -n 10 -l ./log.txt -g 1 start
+      </para>
+    </example>
+    <example><title>Load a configuration then run a script</title>
+      <para>
+        Load the parameters from a configuration file then execute commands from
+        a script file.
+      </para>
+      <para>
+        dcs-subscribe -c config.xml -s test-script.txt
+      </para>
+    </example>
+  </refsect1>
+
+  &seealso;
+
+  &notes;
+
+</refentry>

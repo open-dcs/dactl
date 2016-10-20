@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
+[
+<!ENTITY authors SYSTEM "authors.xml">
+<!ENTITY seealso SYSTEM "seealso.xml">
+<!ENTITY notes SYSTEM "notes.xml">
+]>
+
+<refentry id="dcsg">
+  <refentryinfo>
+    <title>dcsg</title>
+    <productname>OpenDCS</productname>
+    &authors;
+  </refentryinfo>
+
+  <refmeta>
+    <refentrytitle>dcsg</refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>dcsg</refname>
+    <refpurpose>A service for acquiring data from data acquisition devices.</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>dcsg</command>
+      <arg choice="opt">-c <replaceable class="parameter">path</replaceable></arg>
+      <arg choice="opt">-h</arg>
+      <arg choice="opt" rep="repeat">
+        <replaceable class="command">command </replaceable>
+        <arg choice="opt"><replaceable class="parameter">arg</replaceable></arg>
+      </arg>
+    </cmdsynopsis>
+   </refsynopsisdiv>
+
+  <refsect1 id="description">
+    <title>Description</title>
+    <para>
+      <emphasis>dcsg</emphasis> is a Gtk application used to communicate with other OpenDCS
+      services to allow an operator to interact with the systems and the data they provide.
+      Data is received using the OpenDCS message format over ZeroMQ.
+     </para>
+  </refsect1>
+
+  <refsect1 id="options">
+    <title>Options</title>
+    <para>
+      The following options are supported:
+    </para>
+    <variablelist>
+      <varlistentry>
+        <term><option>-c</option></term>
+        <term><option>--config=<replaceable class="parameter">path</replaceable></option></term>
+        <listitem>
+          <para>
+            Launch the application using settings in the provided configuration file.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>-h</option></term>
+        <term><option>--help</option></term>
+        <listitem>
+          <para>
+            Prints the help...
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+  <refsect1 id="examples">
+    <title>Examples</title>
+    <example><title>Some useful example...</title>
+      <para>
+        Provide some information here...
+      </para>
+      <para>
+        dcsg -c dcsg.dcf -vvv
+      </para>
+    </example>
+  </refsect1>
+
+  &seealso;
+
+  &notes;
+
+</refentry>

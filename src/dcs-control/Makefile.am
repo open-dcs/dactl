@@ -3,13 +3,14 @@ DISTCLEANFILES =
 BUILT_SOURCES =
 EXTRA_DIST =
 
-bin_PROGRAMS = dcs-analyze
+bin_PROGRAMS = dcs-control
 
-dcs_analyze_VALAFLAGS = \
-	-H $(srcdir)/libdcs-analyze.h -C -c --thread \
+dcs_control_VALAFLAGS = \
+	-H $(srcdir)/libdcs-control.h -C -c --thread \
 	--vapidir=$(top_srcdir)/vapi \
 	--vapidir=$(top_srcdir)/src/libdcs-core \
 	--vapidir=$(top_srcdir)/src/libdcs-cli \
+	--vapidir=$(top_srcdir)/src/libdcs-control \
 	--vapidir=$(top_srcdir)/src/libdcs-net \
 	--pkg posix \
 	--pkg gio-2.0 \
@@ -20,27 +21,30 @@ dcs_analyze_VALAFLAGS = \
 	--pkg dcs-config \
 	--pkg dcs-core-0.1 \
 	--pkg dcs-cli-0.1 \
+	--pkg dcs-control-0.1 \
 	--pkg dcs-net-0.1 \
 	$(NULL)
 
-dcs_analyze_includes = \
-	-include config.h \
+dcs_control_includes = \
+	--include config.h \
 	-DLOCALEDIR=\""$(datadir)/locale"\" \
 	-DDATADIR=\""$(shareddir)"\" \
 	-I$(top_srcdir)/src/libdcs-core \
 	-I$(top_srcdir)/src/libdcs-cli \
+	-I$(top_srcdir)/src/libdcs-control \
 	-I$(top_srcdir)/src/libdcs-net \
 	$(NULL)
 
-dcs_analyze_CFLAGS = \
-	-DG_LOG_DOMAIN=\"dcs-analyze\" \
+dcs_control_CFLAGS = \
+	-DG_LOG_DOMAIN=\"dcs-control\" \
 	-DGETTEXT_PACKAGE=\"dcs\" \
 	$(LIBDCS_CFLAGS) \
 	$(LIBDCS_CLI_CFLAGS) \
+	$(LIBDCS_CONTROL_CFLAGS) \
 	$(LIBDCS_NET_CFLAGS) \
 	$(DEBUG_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
-	$(dcs_analyze_includes) \
+	$(dcs_control_includes) \
 	-Wno-deprecated-declarations \
 	-Wno-discarded-qualifiers \
 	-Wno-implicit-function-declaration \
@@ -50,23 +54,29 @@ dcs_analyze_CFLAGS = \
 	-Wno-unused-function \
 	$(NULL)
 
-dcs_analyze_LDADD = \
+dcs_control_LDADD = \
 	$(LIBDCS_LIBS) \
 	$(LIBDCS_CLI_LIBS) \
 	$(LIBDCS_NET_LIBS) \
 	$(top_builddir)/src/libdcs-core/libdcs-core-0.1.la \
 	$(top_builddir)/src/libdcs-cli/libdcs-cli-0.1.la \
+	$(top_builddir)/src/libdcs-control/libdcs-control-0.1.la \
 	$(top_builddir)/src/libdcs-net/libdcs-net-0.1.la \
 	$(NULL)
 
-dcs_analyze_headers = \
-	libdcs-analyze.h \
+dcs_control_headers = \
+	libdcs-control.h \
 	$(NULL)
 
-dcs_analyze_SOURCES = \
+dcs_control_SOURCES = \
 	main.vala \
+	server.vala \
+	dbus-service.vala \
+	rest-service.vala \
+	zmq-service.vala \
+	zmq-client.vala \
 	$(NULL)
 
-BUILT_SOURCES += libdcs-analyze.h
+BUILT_SOURCES += libdcs-control.h
 
 -include $(top_srcdir)/git.mk

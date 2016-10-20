@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN" "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
+[
+<!ENTITY authors SYSTEM "authors.xml">
+<!ENTITY seealso SYSTEM "seealso.xml">
+<!ENTITY notes SYSTEM "notes.xml">
+<!ENTITY dcs-subcommands SYSTEM "dcs-subcommands.xml">
+]>
+
+<refentry id="dcs">
+  <refentryinfo>
+      <title>dcs</title>
+    <productname>OpenDCS</productname>
+    &authors;
+  </refentryinfo>
+
+  <refmeta>
+    <refentrytitle>dcs</refentrytitle>
+    <manvolnum>1</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>dcs</refname>
+    <refpurpose>An interactive utility for dcs</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>dcs</command>
+        <arg choice="opt">-h</arg>
+        <arg choice="opt" rep="norepeat">-c
+          <replaceable class="parameter">config-file</replaceable>
+        </arg>
+        <arg choice="opt" rep="norepeat">
+          <group choice="plain">
+            <arg choice="plain" rep="norepeat">
+              <replaceable class="command">command</replaceable>
+            </arg>
+            <arg choice="plain" rep="norepeat">
+              <replaceable class="parameter">script-file</replaceable>
+            </arg>
+          </group>
+        </arg>
+    </cmdsynopsis>
+   </refsynopsisdiv>
+
+  <refsect1 id="description">
+    <title>Description</title>
+    <para>
+      <emphasis>dcs</emphasis> is a common interface to dcs commands. It is interactive
+      and able to provide help on the accesible commands. Its main purpose is for
+      testing and validation of various dcs components and can also be used for
+      diagnostics or system simulation.
+     </para>
+  </refsect1>
+
+  <refsect1 id="options">
+    <title>Options</title>
+    <para>
+      The following options are supported:
+    </para>
+    <variablelist>
+      <varlistentry>
+        <term><option>-c</option></term>
+        <term><option>--config=<replaceable class="parameter">path</replaceable></option></term>
+        <listitem>
+          <para>
+            Load and launch the application from a configuration file.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>-h</option></term>
+        <term><option>--help</option></term>
+        <listitem>
+          <para>
+						Prints the dcs command synopsis and a list of the avaiable commands.
+						If a dcs command is named this option will bring up the manual
+						page for that command.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>command</option></term>
+        <listitem>
+          <para>
+            Execute a command (see next section for details).
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+  <refsect1 id="commands">
+    <title>Commands</title>
+    <variablelist>
+      <varlistentry>
+        <term><command>publish</command></term>
+        <listitem>
+          <para>
+            A utility for publishing simulated data on the specified transport
+						layer.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><command>subscribe</command></term>
+        <listitem>
+          <para>
+            A utility that subscribes to published data.
+						(see <citerefentry><refentrytitle>dcs-subscribe</refentrytitle><manvolnum>1</manvolnum></citerefentry>)
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><command>request</command></term>
+        <listitem>
+          <para>
+            Request a reply from a <command>reply</command>.
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><command>reply</command></term>
+        <listitem>
+          <para>
+            Reply to a <command>request</command>.
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+  <refsect1 id="examples">
+    <title>Examples</title>
+    <example><title>Load a Configuration and Run a  Script</title>
+      <para>
+        Load the parameters from a configuration file then execute commands from
+        a script file.
+      </para>
+      <para>
+        dcs --config=config.xml script.txt
+      </para>
+    </example>
+  </refsect1>
+
+  &seealso;
+
+  &notes;
+
+</refentry>
