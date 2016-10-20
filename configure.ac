@@ -6,7 +6,7 @@ dnl Define Versioning Information
 dnl ***********************************************************************
 m4_define([dcs_major_version],[0])
 m4_define([dcs_minor_version],[1])
-m4_define([dcs_micro_version],[0])
+m4_define([dcs_micro_version],[3])
 m4_define([dcs_version],[dcs_major_version.dcs_minor_version.dcs_micro_version])
 m4_define([dcs_interface_age],[0])
 m4_define([dcs_bugreport_url],
