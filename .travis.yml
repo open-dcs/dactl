@@ -17,8 +17,11 @@ addons:
       - sourceline: 'ppa:vala-team/ppa'
     packages:
       - autoconf
-      - automake
       - autoconf-archive
+      - automake
+      - gettext
+      - libtool
+      - intltool
       - gobject-introspection
       - libglib2.0-dev
       - libjson-glib-dev
@@ -33,6 +36,7 @@ addons:
       - libgirepository1.0-dev
       - libpeas-dev
       - libsoup2.4-dev
+      - libzmq3-dev
       - python-gi-dev
       - valac-0.30
 
