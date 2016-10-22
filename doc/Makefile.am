@@ -1,4 +1,4 @@
-SUBDIRS = xml man
+SUBDIRS = xml man md
 
 if ENABLE_DOC
 
