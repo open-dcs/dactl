@@ -21,9 +21,10 @@ addons:
       - automake
       - docbook-xsl
       - gettext
-      - libtool
-      - intltool
       - gobject-introspection
+      - intltool
+      - libtool
+      - xsltproc
       - libcomedi-dev
       - libgee-0.8-dev
       - libglib2.0-dev
