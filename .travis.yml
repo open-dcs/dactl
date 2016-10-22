@@ -19,23 +19,24 @@ addons:
       - autoconf
       - autoconf-archive
       - automake
+      - docbook-xsl
       - gettext
       - libtool
       - intltool
       - gobject-introspection
-      - libglib2.0-dev
-      - libjson-glib-dev
+      - libcomedi-dev
       - libgee-0.8-dev
-      - libvala-0.30-dev
+      - libglib2.0-dev
+      - libgirepository1.0-dev
       - libgsl0-dev
-      - libsqlite3-dev
-      - libxml2-dev
+      - libjson-glib-dev
       - libmatheval-dev
       - libmodbus-dev
-      - libcomedi-dev
-      - libgirepository1.0-dev
       - libpeas-dev
       - libsoup2.4-dev
+      - libsqlite3-dev
+      - libvala-0.30-dev
+      - libxml2-dev
       - libzmq3-dev
       - python-gi-dev
       - valac-0.30

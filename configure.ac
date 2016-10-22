@@ -97,10 +97,16 @@ VAPIGEN_CHECK
 GLIB_GSETTINGS
 APPSTREAM_XML
 
+
+dnl ***********************************************************************
+dnl Check for the desktop validation tool
+dnl XXX This is only for the UI component so it should maybe go within the
+dnl     check for that, with an error message instead of a warning here.
+dnl ***********************************************************************
 AC_ARG_VAR([DESKTOP_FILE_VALIDATE], [the desktop-file-validate program])
 AC_PATH_PROG([DESKTOP_FILE_VALIDATE], [desktop-file-validate], [])
 if test -z "$DESKTOP_FILE_VALIDATE"; then
-	AC_MSG_ERROR([desktop-file-validate not found])
+	AC_MSG_WARN([desktop-file-validate not found])
 fi
 
 
