@@ -45,6 +45,7 @@ test_dcs_core_SOURCES = \
 	$(tests_common_sources) \
 	test-dcs-core.vala \
 	test-dcs-object.vala \
+	test-dcs-config.vala \
 	$(NULL)
 
 test_dcs_core_VALAFLAGS = $(tests_valaflags)

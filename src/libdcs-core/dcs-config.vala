@@ -11,8 +11,7 @@ public enum Dcs.ConfigFormat {
     OPTIONS,
     INI,
     JSON,
-    XML,
-    YAML
+    XML
 }
 
 public enum Dcs.ConfigEntry {
