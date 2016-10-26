@@ -125,7 +125,7 @@ public class Dcs.PluginLoader : Dcs.ModuleLoader {
     }
 
     private static string get_config_path () {
-        var path = Config.PLUGIN_DIR;
+        var path = Dcs.Build.PLUGIN_DIR;
         /*
          *try {
          *    var config = MetaConfig.get_default ();

@@ -9,8 +9,10 @@ public errordomain Dcs.ConfigError {
 
 public enum Dcs.ConfigFormat {
     OPTIONS,
+    INI,
     JSON,
-    XML
+    XML,
+    YAML
 }
 
 public enum Dcs.ConfigEntry {
@@ -20,9 +22,9 @@ public enum Dcs.ConfigEntry {
 /**
  * Interface for handling Dcs configuration.
  */
-public interface Dcs.Configuration : GLib.Object {
+public abstract class Dcs.Config : GLib.Object {
 
-    public abstract Dcs.ConfigFormat format { get; set; }
+    public virtual Dcs.ConfigFormat format { get; set; }
 
     /**
      * Emitted when any known configuration setting has changed.
@@ -37,37 +39,79 @@ public interface Dcs.Configuration : GLib.Object {
     /**
      * TODO fill me in
      */
-    public abstract string get_string (string ns,
-                                       string key)
-                                       throws GLib.Error;
+    public virtual string get_string (string ns,
+                                      string key)
+                                      throws GLib.Error {
+		string value = null;
+
+        if (value != null) {
+            return value;
+        } else {
+            throw new ConfigError.NO_VALUE_SET (_("No value available"));
+		}
+    }
 
     /**
      * TODO fill me in
      */
-    public abstract Gee.ArrayList<string> get_string_list (string ns,
-                                                           string key)
-                                                           throws GLib.Error;
+    public virtual Gee.ArrayList<string> get_string_list (string ns,
+                                                          string key)
+                                                          throws GLib.Error {
+        Gee.ArrayList<string> value = null;
+
+        if (value != null) {
+            return value;
+        } else {
+            throw new ConfigError.NO_VALUE_SET (_("No value available"));
+		}
+    }
 
     /**
      * TODO fill me in
      */
-    public abstract int get_int (string ns,
-                                 string key)
-                                 throws GLib.Error;
+    public virtual int get_int (string ns,
+                                string key)
+                                throws GLib.Error {
+		int value = 0;
+		bool value_set = false;
+
+        if (value_set) {
+            return value;
+        } else {
+            throw new ConfigError.NO_VALUE_SET (_("No value available"));
+		}
+    }
 
     /**
      * TODO fill me in
      */
-    public abstract Gee.ArrayList<int> get_int_list (string ns,
-                                                     string key)
-                                                     throws GLib.Error;
+    public virtual Gee.ArrayList<int> get_int_list (string ns,
+                                                    string key)
+                                                    throws GLib.Error {
+        Gee.ArrayList<int> value = null;
+
+        if (value != null) {
+            return value;
+        } else {
+            throw new ConfigError.NO_VALUE_SET (_("No value available"));
+		}
+    }
 
     /**
      * TODO fill me in
      */
-    public abstract bool get_bool (string ns,
-                                   string key)
-                                   throws GLib.Error;
+    public virtual bool get_bool (string ns,
+                                  string key)
+                                  throws GLib.Error {
+		bool value = false;
+		bool value_set = false;
+
+        if (value_set) {
+            return value;
+        } else {
+            throw new ConfigError.NO_VALUE_SET (_("No value available"));
+		}
+    }
 
 /*
  *    public abstract float get_float (string ns,

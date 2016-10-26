@@ -1,5 +1,4 @@
 LIBDCS_CORE_VAPI_SOURCE_FILES = \
-    dcs-abstract-config.vala \
     dcs-application.vala \
     dcs-application-config.vala \
     dcs-application-factory.vala \

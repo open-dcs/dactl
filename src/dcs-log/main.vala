@@ -21,7 +21,7 @@ internal class Dcs.Recorder.Main : GLib.Object {
     }
 
     private static void parse_local_args (ref unowned string[] args) {
-        var opt_context = new OptionContext (Dcs.Config.PACKAGE_NAME);
+        var opt_context = new OptionContext (Dcs.Build.PACKAGE_NAME);
         opt_context.set_ignore_unknown_options (true);
         opt_context.set_help_enabled (false);
         opt_context.add_main_entries (Options.entries, null);
@@ -33,7 +33,7 @@ internal class Dcs.Recorder.Main : GLib.Object {
         }
 
         if (Options.version) {
-            stdout.printf ("%s - version %s\n", args[0], Dcs.Config.PACKAGE_VERSION);
+            stdout.printf ("%s - version %s\n", args[0], Dcs.Build.PACKAGE_VERSION);
             Posix.exit (0);
         }
     }
@@ -80,7 +80,7 @@ internal class Dcs.Recorder.Main : GLib.Object {
     }
 
     private int run (string[] args) {
-        message (_("Recorder Server v%s starting..."), Config.PACKAGE_VERSION);
+        message (_("Recorder Server v%s starting..."), Dcs.Build.PACKAGE_VERSION);
         app.launch (args);
 
         return this.exit_code;
@@ -97,12 +97,12 @@ internal class Dcs.Recorder.Main : GLib.Object {
         var original_args = args;
 
         Intl.setlocale (LocaleCategory.ALL, "");
-        Intl.bindtextdomain (Dcs.Config.GETTEXT_PACKAGE, Dcs.Config.LOCALEDIR);
-        Intl.bind_textdomain_codeset (Dcs.Config.GETTEXT_PACKAGE, "UTF-8");
-        Intl.textdomain (Dcs.Config.GETTEXT_PACKAGE);
+        Intl.bindtextdomain (Dcs.Build.GETTEXT_PACKAGE, Dcs.Build.LOCALEDIR);
+        Intl.bind_textdomain_codeset (Dcs.Build.GETTEXT_PACKAGE, "UTF-8");
+        Intl.textdomain (Dcs.Build.GETTEXT_PACKAGE);
 
-        GLib.Environment.set_prgname (_(Dcs.Config.PACKAGE_NAME));
-        GLib.Environment.set_application_name (_(Dcs.Config.PACKAGE_NAME));
+        GLib.Environment.set_prgname (_(Dcs.Build.PACKAGE_NAME));
+        GLib.Environment.set_application_name (_(Dcs.Build.PACKAGE_NAME));
 
         try {
             parse_local_args (ref args);

@@ -40,12 +40,12 @@ public class Dcs.Client : GLib.Object {
         int retval = 0;
 
         Intl.setlocale (LocaleCategory.ALL, "");
-        Intl.bindtextdomain (Dcs.Config.GETTEXT_PACKAGE, Dcs.Config.LOCALEDIR);
-        Intl.bind_textdomain_codeset (Dcs.Config.GETTEXT_PACKAGE, "UTF-8");
-        Intl.textdomain (Dcs.Config.GETTEXT_PACKAGE);
+        Intl.bindtextdomain (Dcs.Build.GETTEXT_PACKAGE, Dcs.Build.LOCALEDIR);
+        Intl.bind_textdomain_codeset (Dcs.Build.GETTEXT_PACKAGE, "UTF-8");
+        Intl.textdomain (Dcs.Build.GETTEXT_PACKAGE);
 
-        GLib.Environment.set_prgname (_(Dcs.Config.PACKAGE_NAME));
-        GLib.Environment.set_application_name (_(Dcs.Config.PACKAGE_NAME));
+        GLib.Environment.set_prgname (_(Dcs.Build.PACKAGE_NAME));
+        GLib.Environment.set_application_name (_(Dcs.Build.PACKAGE_NAME));
 
         parse_local_args (ref args);
         main_client = new Dcs.Client ();
@@ -142,7 +142,7 @@ public class Dcs.Client : GLib.Object {
 
         if (Options.version) {
             stdout.printf (_("%s - version %s\n"), args[0],
-                           Dcs.Config.PACKAGE_VERSION);
+                           Dcs.Build.PACKAGE_VERSION);
             Posix.exit (0);
         }
     }

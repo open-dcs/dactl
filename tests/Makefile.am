@@ -6,7 +6,7 @@ tests_valaflags = \
 	--pkg gio-2.0 \
 	--pkg gee-0.8 \
 	--pkg json-glib-1.0 \
-	--pkg dcs-config \
+	--pkg dcs-build \
 	--pkg dcs-core-0.1 \
 	$(NULL)
 

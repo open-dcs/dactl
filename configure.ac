@@ -445,9 +445,8 @@ dnl Always build tests
 dnl ***********************************************************************
 AC_ARG_ENABLE([tests],
               AS_HELP_STRING([--enable-tests],
-                             [Enable always building tests during 'make all' [default=no]]),
+                             [Enable always building tests during 'make all' [default=yes]]),
               [enable_tests=$enableval], [enable_tests=no])
-
 AM_CONDITIONAL([ENABLE_TESTS], test "$enable_tests" = "yes")
 
 

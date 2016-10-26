@@ -72,7 +72,7 @@ libdcs_ui_0_1_la_VALAFLAGS = \
 	--pkg libsoup-2.4 \
 	--pkg librsvg-2.0 \
 	--pkg dcs-core-0.1 \
-	--pkg dcs-config \
+	--pkg dcs-build \
 	$(DCS_CLD_DEPS_VALAFLAGS)
 
 libdcs_ui_0_1_la_CFLAGS = \

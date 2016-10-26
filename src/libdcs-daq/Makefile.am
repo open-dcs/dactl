@@ -64,7 +64,7 @@ libdcs_daq_0_1_la_VALAFLAGS = \
 	--pkg libzmq \
 	--pkg dcs-core-0.1 \
 	--pkg dcs-net-0.1 \
-	--pkg dcs-config \
+	--pkg dcs-build \
 	$(NULL)
 
 libdcs_daq_0_1_la_CFLAGS = \

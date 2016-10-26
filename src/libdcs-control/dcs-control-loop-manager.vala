@@ -13,7 +13,7 @@ public class Dcs.Control.LoopManager : Dcs.PluginManager {
 
         engine = Peas.Engine.get_default ();
         ext = new Dcs.Control.LoopProxy (zmq_client, zmq_service);
-        search_path = Dcs.Config.LOOP_DIR;
+        search_path = Dcs.Build.LOOP_DIR;
 
         init ();
         add_extension ();
