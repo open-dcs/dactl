@@ -36,6 +36,20 @@ public abstract class Dcs.Config : GLib.Object {
     public signal void setting_changed (string ns, string key);
 
     /**
+     * Emitted when configuration data has been loaded.
+     */
+    public signal void config_loaded ();
+
+    /**
+     * Load a configuration file using the data provided.
+     */
+    public virtual void load_data (string data,
+                                   Dcs.ConfigFormat format)
+                                   throws GLib.Error {
+        config_loaded ();
+    }
+
+    /**
      * TODO fill me in
      */
     public virtual string get_string (string ns,

@@ -12,12 +12,14 @@ public class Dcs.Test.CmdlineConfig : Dcs.Config {
 
     private static bool test_a = false;
     private static bool test_b = false;
+    private static bool test_c = false;
 
     private static Dcs.Test.CmdlineConfig config;
 
     const OptionEntry[] options = {
         { "test-a", 'a', 0, OptionArg.NONE, ref test_a, "Test A", null },
         { "test-b", 'b', 0, OptionArg.NONE, ref test_b, "Test B", null },
+        { "test-c", 'b', 0, OptionArg.NONE, ref test_c, "Test C", null },
         { null }
     };
 
@@ -56,6 +58,14 @@ public class Dcs.Test.CmdlineConfig : Dcs.Config {
         }
 
         return test_b;
+    }
+
+    public bool get_test_c () throws GLib.Error {
+        if (test_c == false) {
+            throw new Dcs.ConfigError.NO_VALUE_SET ("No value available");
+        }
+
+        return test_c;
     }
 }
 
@@ -116,6 +126,7 @@ public class Dcs.ConfigTests : Dcs.ConfigTestsBase {
         try {
             assert_true ((_test_config as Dcs.Test.CmdlineConfig).get_test_a ());
             assert_true ((_test_config as Dcs.Test.CmdlineConfig).get_test_b ());
+            assert_false ((_test_config as Dcs.Test.CmdlineConfig).get_test_c ());
         } catch (GLib.Error e) {
         }
     }
@@ -149,22 +160,44 @@ public class Dcs.ConfigTests : Dcs.ConfigTestsBase {
 
     private void test_load_xml_data () {
         assert_true (true);
+
+        string xml = """
+          <?xml version="1.0" encoding="ISO-8859-1"?>
+          <dcs xmlns:daq="urn:libdcs-daq" xmlns:net="urn:libdcs-net">
+            <!--
+              - This doesn't need to contain anything yet, but it should have
+              - more to validate for instance number of objects constructed or
+              - depth possibly.
+              -->
+            <property name="sprop">string</property>
+            <property name="slprop">string,string</property>
+            <property name="iprop">1</property>
+            <property name="ilprop">1,1</property>
+            <property name="bprop">true</property>
+          </dcs>
+        """;
+
         /*
-         *string xml = """
-         *  <?xml version="1.0" encoding="ISO-8859-1"?>
-         *  <dcs xmlns:daq="urn:libdcs-daq" xmlns:net="urn:libdcs-net">
-         *    <!--
-         *      - This doesn't need to contain anything yet, but it should have
-         *      - more to validate for instance number of objects constructed or
-         *      - depth possibly.
-         *      -->
-         *  </dcs>
-         *""";
          *test_config.config_loaded.connect ((res) => {
          *    assert_true (res);
          *});
-         *test_config.load_data (xml, Dcs.ConfigFormat.XML);
-         *assert_true (test_config.format == Dcs.ConfigFormat.XML);
          */
+
+        try {
+            test_config.load_data (xml, Dcs.ConfigFormat.XML);
+            assert_true (test_config.format == Dcs.ConfigFormat.XML);
+            assert_true (test_config.get_string ("dcs", "sprop") == "string");
+            var slist = test_config.get_string_list ("dcs", "slprop");
+            foreach (var item in slist) {
+                assert_true (item == "string");
+            }
+            assert_true (test_config.get_int ("dcs", "iprop") == 1);
+            var ilist = test_config.get_int_list ("dcs", "ilprop");
+            foreach (var item in ilist) {
+                assert_true (item == 1);
+            }
+            assert_true (test_config.get_bool ("dcs", "bprop"));
+        } catch (GLib.Error e) {
+        }
     }
 }
