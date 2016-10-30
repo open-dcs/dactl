@@ -1,0 +1,282 @@
+@startuml
+
+title OpenDCS UML
+
+/' OpenDCS UML
+ '
+ ' Language: Vala
+ '
+ ' Because Vala uses public properties and can generate getters and setters
+ ' using syntactic sugar any public property will be assumed to have an
+ ' associated get/set. Other property cases will be documented.
+ '/
+
+package "Dcs" #DDDDDD {
+
+    '
+    ' Enumerations
+    '
+
+    enum FactoryError {
+        TYPE_NOT_FOUND
+    }
+
+    enum LogLevel {
+        LEVEL_TRACE
+    }
+
+    enum MessageType {
+        UNKNOWN,
+        ALERT,
+        ERROR,
+        INFO,
+        WARNING
+    }
+
+    '
+    ' Interfaces
+    '
+
+    interface Object {
+        -- properties --
+        +{abstract} string id
+        -- methods --
+        +virtual bool equal (Object a, Object b)
+        +virtual int compare (Object a)
+        +virtual string to_string ()
+    }
+
+    interface Buildable {
+        -- properties --
+        #{abstract} string xml  ' need to deprecate these
+        #{abstract} string xsd  '  "
+        +{abstract} {static} Xml.Node* node
+        -- methods --
+        +{static} unowned string get_xml_default ()
+        +{static} unowned string get_xsd_default ()
+        ~{abstract} void build_from_xml_node (Xml.Node* node)
+    }
+
+    interface CldAdapter {
+        -- properties --
+        #{abstract} bool satisfied
+        -- signals --
+        +void request_object (string id)
+        -- methods --
+        +{abstract} void offer_cld_object (Object object)
+        +virtual async void nap (uint interval, int priority)
+        #{abstract} async void request_data ()
+    }
+
+    interface Container {
+        -- properties --
+        +{abstract} Gee.Map<string, Object> objects
+        -- signals --
+        +{abstract} void request_object (string id)
+        -- methods --
+        +virtual void add_child (Object object)
+        +virtual void remove_child (Object object)
+        +virtual Object? get_object (string id)
+        +virtual Gee.Map<string, Object> get_object_map (GLib.Type type)
+        +virtual Gee.Map<string, Object> get_children (GLib.Type type)
+        +virtual void sort_objects ()
+        +virtual void print_objects (int depth)
+    }
+
+    interface Factory {
+        -- signals --
+        +void build_complete ()
+        -- methods --
+        +{abstract} Gee.TreeMap<string, Object> make_object_map (Xml.Node* node)
+        +{abstract} Object make_object (GLib.Type type) throws GLib.Error
+        +{abstract} Object make_object_from_node (Xml.Node* node) throws GLib.Error
+    }
+
+    '
+    ' Classes
+    '
+
+    class DataSeries {
+        -- properties --
+        +string ch_ref
+        +Cld.Channel channel
+        +int buffer_size
+        +int stride
+        +string id
+        #string xml
+        #string xsd
+        #virtual Xml.Node* node
+        #bool satisfied
+        -- methods --
+        ~void build_from_xml_node
+        +void offer_cld_object (Cld.Object object)
+        #async void request_data ()
+        +SimplePoint[] to_array ()
+    }
+
+    class Message {
+        -- properties --
+        -- methods --
+        +Message Message()
+        +Message Message.alert ()
+        +Message Message.error ()
+        +Message Message.info ()
+        +Message Message.warning ()
+        +{abstract} void pack ()
+        +{abstract} void unpack ()
+    }
+
+    class SysLog {
+        -- properties --
+        +{static} int verbosity
+        -- methods --
+        +{static} unowned SysLog get_default ()
+        +{static} void init (bool stdout, string? filename)
+        +{static} void shutdown ()
+        +{static} void increase_verbosity ()
+    }
+
+    '
+    ' Associations
+    '
+
+    Object --|> GLib.Object
+    Buildable --|> GLib.Object
+    CldAdapter --|> GLib.Object
+    Container --|> GLib.Object
+    DataSeries --|> GLib.Object
+    DataSeries ..|> Object
+    DataSeries ..|> Buildable
+    DataSeries ..|> CldAdapter
+    Factory --|> GLib.Object
+    SysLog --|> GLib.Object
+
+    '
+    ' Notes
+    '
+
+    note top of SysLog: Bad name, planning on changing
+
+    note top of Message
+        This should probably be a compact class.
+        Other namespaces will contain message classes
+        as well that are more specific to the scope.
+    end note
+
+    package "UI" {
+
+        '
+        ' Enumerations
+        '
+
+        enum Orientation {
+            HORIZONTAL,
+            VERTICAL
+        }
+
+        enum PositionType {
+            LEFT,
+            RIGHT,
+            TOP,
+            BOTTOM
+        }
+
+        enum PolarAxisType {
+            MAGNITUDE,
+            ANGLE
+        }
+
+        enum ColorGradientType {
+            RGB,
+            HSV
+        }
+
+        '
+        ' Interfaces
+        '
+
+        interface Widget {
+            -- properties --
+            +{abstract} bool fill
+        }
+
+        '
+        ' Classes
+        '
+
+        abstract class Canvas {
+            -- properties --
+            +virtual string id
+        }
+
+        abstract class SimpleWidget {
+            -- properties --
+            +virtual string id
+            +{abstract} string xml
+            +{abstract} string xsd
+            #virtual Xml.Node* node
+            +bool fill
+            -- methods --
+            +{abstract} void build_from_xml_node (Xml.Node* node)
+            #{abstract} void update_node ()
+        }
+
+        abstract class CustomWidget {
+            -- properties --
+            +virtual string id
+            +{abstract} string xml
+            +{abstract} string xsd
+            #virtual Xml.Node* node
+            +bool fill
+            -- methods --
+            +{abstract} void build_from_xml_node (Xml.Node* node)
+            #{abstract} void update_node ()
+        }
+
+        abstract class CompositeWidget {
+            -- properties --
+            +virtual string id
+            +{abstract} string xml
+            +{abstract} string xsd
+            #virtual Xml.Node* node
+            +bool fill
+            +{abstract} Gee.Map<string, Object> objects
+            -- methods --
+            +{abstract} void build_from_xml_node (Xml.Node* node)
+            #{abstract} void update_objects (Gee.Map<string, Object> val)
+        }
+
+        '
+        ' Associations
+        '
+
+        Widget --|> GLib.Object
+        Canvas --|> Gtk.DrawingArea
+        Canvas ..|> Object
+        SimpleWidget --|> Gtk.Box
+        SimpleWidget ..|> Widget
+        SimpleWidget ..|> Buildable
+        SimpleWidget ..|> Object
+        CustomWidget --|> Gtk.DrawingArea
+        CustomWidget ..|> Widget
+        CustomWidget ..|> Buildable
+        CustomWidget ..|> Object
+        CompositeWidget --|> Gtk.Box
+        CompositeWidget ..|> Widget
+        CompositeWidget ..|> Container
+        CompositeWidget ..|> Buildable
+        CompositeWidget ..|> Object
+
+        '
+        ' Notes
+        '
+
+        note top of CompositeWidget
+            This is just a simple widget that implements Container.
+            Could probably just simplify it down to
+            "Dcs.UI.CompositeWidget : Dcs.UI.SimpleWidget, Dcs.Container"
+        end note
+    }
+}
+
+@enduml

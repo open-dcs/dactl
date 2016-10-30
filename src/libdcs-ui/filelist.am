@@ -32,6 +32,7 @@ LIBDCS_UI_VAPI_SOURCE_FILES = \
     dcs-ui-factory.vala \
     dcs-ui-plugin-manager.vala \
     dcs-ui-window.vala \
+    dcs-ui-window-base.vala \
     dcs-ui-video-processor.vala \
     dcs-ui-widget.vala
 
@@ -74,6 +75,7 @@ libdcs_ui_la_public_sources = \
     dcs-ui-plugin-manager.c \
     dcs-ui-utility.c \
     dcs-ui-window.c \
+    dcs-ui-window-base.c \
     dcs-ui-video-processor.c \
     dcs-ui-widget.c \
     dcs-ui-widget-information.c

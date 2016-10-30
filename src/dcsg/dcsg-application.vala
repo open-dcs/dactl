@@ -95,22 +95,22 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
         WebKit.WebContext.get_default ().set_web_extensions_directory (Dcs.Config.WEB_EXTENSION_DIR);
 
         debug ("Creating application model using file %s", opt_cfgfile);
-        model = new Dcsg.ApplicationModel (opt_cfgfile);
+        model = new Dcsg.Model (opt_cfgfile);
         assert (model != null);
 
         (model as Dcs.Container).print_objects (0);
         Gtk.Settings.get_default ().gtk_application_prefer_dark_theme =
-            (model as Dcsg.ApplicationModel).dark_theme;
+            (model as Dcsg.Model).dark_theme;
 
         debug ("Finished constructing the model");
 
-        view = new Dcsg.ApplicationView (model);
+        view = new Dcsg.Window (model);
         assert (view != null);
         (view as Gtk.Window).application = this;
 
         debug ("Finished constructing the view");
 
-        ux_manager = new Dcsg.UxManager ((Dcsg.ApplicationView) view);
+        ux_manager = new Dcsg.UxManager ((Dcsg.Window) view);
 
         /**
          * FIXME: This hides the window and then shows the message box
@@ -120,22 +120,21 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
          *});
          */
 
-        controller = new Dcsg.ApplicationController (
-                            (Dcsg.ApplicationModel) model,
-                            (Dcsg.ApplicationView) view);
+        controller = new Dcsg.Controller ((Dcsg.Model) model,
+                                          (Dcsg.Window) view);
         assert (controller != null);
 
         debug ("Finished constructing the controller");
 
         /* XXX would like to move this inside of the view but doesn't work until
          *     the application activate is performed */
-        (view as Dcsg.ApplicationView).maximize ();
-        (view as Dcsg.ApplicationView).show_all ();
+        (view as Dcsg.Window).maximize ();
+        (view as Dcsg.Window).show_all ();
 
         (view as Gtk.ApplicationWindow).present ();
 
         /* Load the layout from either the configuration or use the default */
-        (view as Dcsg.ApplicationView).construct_layout ();
+        (view as Dcsg.Window).construct_layout ();
 
         view_constructed ();
 
@@ -337,7 +336,7 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
 
         /* Handling some of the actions at the view level to reduce the need to
          * make public a lot of widget content. */
-        (view as Dcsg.ApplicationView).add_actions ();
+        (view as Dcsg.Window).add_actions ();
     }
 
     public override void shutdown () {
@@ -492,7 +491,7 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
     private void settings_activated_cb (SimpleAction action, Variant? parameter) {
         GLib.debug ("Settings: Dialog activated.");
         int x, y, wp, hp, ws, hs;
-        //(view as Dcsg.ApplicationView).layout_change_page ("settings");
+        //(view as Dcsg.Window).layout_change_page ("settings");
         (view as Gtk.Window).get_position (out x, out y);
         (view as Gtk.Window).get_size (out wp, out hp);
         var settings = new Dcsg.SettingsDialog ();
@@ -519,7 +518,7 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
      * Action callback for configuration.
      */
     private void configuration_action_activated_cb (SimpleAction action, Variant? parameter) {
-        (view as Dcsg.ApplicationView).layout_change_page ("configuration");
+        (view as Dcsg.Window).layout_change_page ("configuration");
 
     }
 
@@ -527,49 +526,49 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
      * Action callback for going back to previous page from configuration.
      */
     private void configuration_back_activated_cb (SimpleAction action, Variant? parameter) {
-        (view as Dcsg.ApplicationView).layout_back_page ();
+        (view as Dcsg.Window).layout_back_page ();
     }
 
     /**
      * Action callback for CSV export.
      */
     private void export_action_activated_cb (SimpleAction action, Variant? parameter) {
-        (view as Dcsg.ApplicationView).layout_change_page ("export");
+        (view as Dcsg.Window).layout_change_page ("export");
     }
 
     /**
      * Action callback for going back to previous page from the CSV export.
      */
     private void export_back_activated_cb (SimpleAction action, Variant? parameter) {
-        (view as Dcsg.ApplicationView).layout_back_page ();
+        (view as Dcsg.Window).layout_back_page ();
     }
 
     /**
      * Action callback for configuration loader.
      */
     private void loader_action_activated_cb (SimpleAction action, Variant? parameter) {
-        (view as Dcsg.ApplicationView).layout_change_page ("loader");
+        (view as Dcsg.Window).layout_change_page ("loader");
     }
 
     /**
      * Action callback for going back to previous page from the configuration loader.
      */
     private void loader_back_activated_cb (SimpleAction action, Variant? parameter) {
-        (view as Dcsg.ApplicationView).layout_back_page ();
+        (view as Dcsg.Window).layout_back_page ();
     }
 
     /**
      * Action callback for going to the previous available non-settings page.
      */
     private void previous_page_activated_cb (SimpleAction action, Variant? parameter) {
-        (view as Dcsg.ApplicationView).layout_previous_page ();
+        (view as Dcsg.Window).layout_previous_page ();
     }
 
     /**
      * Action callback for going to the next available non-settings page.
      */
     private void next_page_activated_cb (SimpleAction action, Variant? parameter) {
-        (view as Dcsg.ApplicationView).layout_next_page ();
+        (view as Dcsg.Window).layout_next_page ();
     }
 
     /**

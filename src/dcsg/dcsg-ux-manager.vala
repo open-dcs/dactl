@@ -8,9 +8,9 @@ public errordomain Dcsg.UxManagerError {
 [DBus (name = "org.opendcs.Dcs.UI.Manager")]
 public class Dcsg.UxManager : GLib.Object {
 
-    private Dcsg.ApplicationView view;
+    private Dcsg.Window view;
 
-    public UxManager (Dcsg.ApplicationView view) {
+    public UxManager (Dcsg.Window view) {
         this.view = view;
 
         Bus.own_name (BusType.SESSION,

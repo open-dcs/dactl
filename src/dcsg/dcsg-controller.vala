@@ -1,7 +1,6 @@
-public class Dcsg.ApplicationController : Dcs.ApplicationController {
+public class Dcsg.Controller : Dcs.ApplicationController {
 
-    public ApplicationController (Dcsg.ApplicationModel model,
-                                  Dcsg.ApplicationView view) {
+    public Controller (Dcsg.Model model, Dcsg.Window view) {
         base (model, view);
 
         var app = Dcsg.Application.get_default ();

@@ -12,7 +12,7 @@ internal class Dcs.Control.RestService : Dcs.Net.RestService {
     }
 
     private void init () {
-        debug (_("Starting Control REST service on port %d"), port);
+        debug ("Starting Control REST service on port %d", port);
         listen_all (port, 0);
 
         add_handler (null,        route_default);

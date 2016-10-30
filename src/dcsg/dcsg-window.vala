@@ -2,8 +2,37 @@
  * The Gtk.Application class expects an ApplicationWindow so a lot is being
  * moved here from outside of the actual view class.
  */
-[GtkTemplate (ui = "/org/opendcs/dcs/ui/application-view.ui")]
-public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, Dcs.Object {
+[GtkTemplate (ui = "/org/opendcs/dcs/ui/window.ui")]
+public class Dcsg.Window : Dcs.UI.WindowBase {
+
+    private string _xml = """
+    """;
+
+    private string _xsd = """
+    """;
+
+    /**
+     * {@inheritDoc}
+     */
+    protected override string xml {
+        get { return _xml; }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected override string xsd {
+        get { return _xsd; }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    private Gee.Map<string, Dcs.Object> _objects;
+    public override Gee.Map<string, Dcs.Object> objects {
+        get { return _objects; }
+        set { update_objects (value); }
+    }
 
     /**
      * {@inheritDoc}
@@ -34,11 +63,14 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
     /* Model used to update the view */
     public Dcs.ApplicationModel model { get; construct set; }
 
+    /* Layout - XXX maybe the Window should contain the layout? */
+    public Dcsg.Layout layout { get; construct set; }
+
     [GtkChild]
     private Dcsg.Topbar topbar;
 
     [GtkChild]
-    private Gtk.Stack layout;
+    private Gtk.Stack stack;
 
     [GtkChild]
     private Gtk.Revealer settings;
@@ -64,11 +96,21 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
 
     private string previous_page;
 
-    public Dcs.UI.WindowState state { get; set; default = Dcs.UI.WindowState.WINDOWED; }
+    public Dcs.UI.WindowState state {
+        get;
+        set;
+        default = Dcs.UI.WindowState.WINDOWED;
+    }
 
-    // The application page is intentionally left out
-    private string[] pages = { "loader", "configuration", "export", "settings" };
+    /* List of pages default that get added, default layout omitted */
+    private string[] pages = {
+        "loader",
+        "configuration",
+        "export",
+        "settings"
+    };
 
+    /* Common construction */
     construct {
         id = "rootwin0";
     }
@@ -77,9 +119,9 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
      * Default construction.
      *
      * @param model Data model class that the interface uses to update itself
-     * @return A new instance of an ApplicationView object
+     * @return A new instance of an Window object
      */
-    internal ApplicationView (Dcs.ApplicationModel model) {
+    internal Window (Dcs.ApplicationModel model) {
         GLib.Object (title: "Data Acquisition and Control",
                      window_position: Gtk.WindowPosition.CENTER);
 
@@ -98,10 +140,17 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
         load_style ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public override void build_from_xml_node (Xml.Node *node) {
+        // XXX do something
+    }
+
     private void setup () {
-        layout.transition_duration = 400;
-        layout.transition_type = Gtk.StackTransitionType.CROSSFADE;
-        layout.expand = true;
+        stack.transition_duration = 400;
+        stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+        stack.expand = true;
 
         configuration.filename = model.config_filename;
     }
@@ -148,9 +197,9 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
             }
         }
 
-        layout.show_all ();
+        stack.show_all ();
 
-        layout_change_page ((model as Dcsg.ApplicationModel).startup_page);
+        layout_change_page ((model as Dcsg.Model).startup_page);
         connect_signals ();
     }
 
@@ -162,29 +211,29 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
 
     public void layout_add_page (Dcs.UI.Page page) {
         message ("Adding page `%s' with title `%s'", page.id, page.title);
-        layout.add_titled (page, page.id, page.title);
+        stack.add_titled (page, page.id, page.title);
         pages += page.id;
 
         model.add_child (page);
     }
 
     public void layout_change_page (string id) {
-        debug ("Changing layout page from `%s' to `%s'", layout.visible_child_name, id);
-        if (layout.visible_child_name != id) {
-            if (id == "loader" && layout.visible_child != loader) {
-                previous_page = layout.visible_child_name;
-                layout.visible_child = loader;
+        debug ("Changing layout page from `%s' to `%s'", stack.visible_child_name, id);
+        if (stack.visible_child_name != id) {
+            if (id == "loader" && stack.visible_child != loader) {
+                previous_page = stack.visible_child_name;
+                stack.visible_child = loader;
                 topbar.set_visible_child_name (id);
-            } else if (id == "configuration" && layout.visible_child != configuration) {
-                previous_page = layout.visible_child_name;
-                layout.visible_child = configuration;
+            } else if (id == "configuration" && stack.visible_child != configuration) {
+                previous_page = stack.visible_child_name;
+                stack.visible_child = configuration;
                 topbar.set_visible_child_name (id);
-            } else if (id == "export" && layout.visible_child != export) {
-                previous_page = layout.visible_child_name;
-                layout.visible_child = export;
+            } else if (id == "export" && stack.visible_child != export) {
+                previous_page = stack.visible_child_name;
+                stack.visible_child = export;
                 topbar.set_visible_child_name (id);
             } else {
-                layout.set_visible_child_name (id);
+                stack.set_visible_child_name (id);
                 topbar.set_visible_child_name ("application");
             }
         }
@@ -199,14 +248,14 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
         int pos = -1;
 
         for (int i = 0; i < pages.length; i++) {
-            if (layout.visible_child_name == pages[i])
+            if (stack.visible_child_name == pages[i])
                 pos = i;
         }
 
         if (pos != -1 && pages[pos - 1] != "settings") {
-            layout.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
+            stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
             layout_change_page (pages[pos - 1]);
-            layout.transition_type = Gtk.StackTransitionType.CROSSFADE;
+            stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
         }
     }
 
@@ -214,14 +263,14 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
         int pos = -1;
 
         for (int i = 0; i < pages.length; i++) {
-            if (layout.visible_child_name == pages[i])
+            if (stack.visible_child_name == pages[i])
                 pos = i;
         }
 
         if (pos != -1 && pages[pos + 1] != "loader") {
-            layout.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
+            stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
             layout_change_page (pages[pos + 1]);
-            layout.transition_type = Gtk.StackTransitionType.CROSSFADE;
+            stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
         }
     }
 
@@ -249,6 +298,13 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public override void update_objects (Gee.Map<string, Dcs.Object> val) {
+        _objects = val;
     }
 
     private void treeview_channel_selected_cb (string id) {
@@ -290,7 +346,7 @@ public class Dcsg.ApplicationView : Gtk.ApplicationWindow, Dcs.ApplicationView, 
         var default_modifiers = Gtk.accelerator_get_default_mod_mask ();
 
         if (event.keyval == Gdk.Key.Home) {             // Home -> go to default page
-            layout_change_page ((model as Dcsg.ApplicationModel).startup_page);
+            layout_change_page ((model as Dcsg.Model).startup_page);
         } else if (event.keyval == Gdk.Key.F11) {       // F11 -> fullscreen
             if (state == Dcs.UI.WindowState.WINDOWED) {
                 (this as Gtk.Window).fullscreen ();
