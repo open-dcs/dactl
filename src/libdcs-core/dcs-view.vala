@@ -77,3 +77,15 @@
      */
     //public abstract signal void closed ();
 //}
+
+[GenericAccessors]
+public interface Dcs.ApplicationView : GLib.Object {
+
+    protected abstract Dcs.ApplicationModel model { get; set; }
+
+    protected void connect (owned Dcs.ModelUpdatedFunc model_func) {
+        model.updated.connect (() => {
+            model_func ();
+        });
+    }
+}

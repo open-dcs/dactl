@@ -80,7 +80,7 @@ public class Dcs.ApplicationFactory : GLib.Object, Dcs.Factory {
      * {@inheritDoc}
      */
     public Dcs.Object make_object (Type type)
-                                     throws GLib.Error {
+                                   throws GLib.Error {
         Dcs.Object object = null;
 
         foreach (var factory in Dcs.ApplicationFactory.factories) {
@@ -110,7 +110,7 @@ public class Dcs.ApplicationFactory : GLib.Object, Dcs.Factory {
      * {@inheritDoc}
      */
     public Dcs.Object make_object_from_node (Xml.Node *node)
-                                               throws GLib.Error {
+                                             throws GLib.Error {
         Dcs.Object object = null;
 
         foreach (var factory in Dcs.ApplicationFactory.factories) {

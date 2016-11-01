@@ -1,7 +1,5 @@
 @startuml
 
-title OpenDCS UML
-
 /' OpenDCS UML
  '
  ' Language: Vala
@@ -9,9 +7,32 @@ title OpenDCS UML
  ' Because Vala uses public properties and can generate getters and setters
  ' using syntactic sugar any public property will be assumed to have an
  ' associated get/set. Other property cases will be documented.
+ '
+ ' If a class contains only properties and methods the separators will not be
+ ' modified allowing plantuml to put each where they belong. In the case that
+ ' the class contains signals and/or getters and setters it will use:
+ '
+ ' class Foo {
+ '     int foo_prop
+ '     -- signals --
+ '     void foo_signal ()
+ '     ---- ' force a blank line
+ '     void foo_method ()
+ '     .. get/set ..
+ '     int get_foo_prop ()
+ '     void set_foo_prop (int foo)
+ ' }
  '/
 
+title OpenDCS UML
+
+left to right direction
+
+page 2x1
+
 package "Dcs" #DDDDDD {
+
+    top to bottom direction
 
     '
     ' Enumerations
@@ -38,42 +59,36 @@ package "Dcs" #DDDDDD {
     '
 
     interface Object {
-        -- properties --
         +{abstract} string id
-        -- methods --
         +virtual bool equal (Object a, Object b)
         +virtual int compare (Object a)
         +virtual string to_string ()
     }
 
     interface Buildable {
-        -- properties --
         #{abstract} string xml  ' need to deprecate these
         #{abstract} string xsd  '  "
         +{abstract} {static} Xml.Node* node
-        -- methods --
         +{static} unowned string get_xml_default ()
         +{static} unowned string get_xsd_default ()
         ~{abstract} void build_from_xml_node (Xml.Node* node)
     }
 
     interface CldAdapter {
-        -- properties --
         #{abstract} bool satisfied
         -- signals --
         +void request_object (string id)
-        -- methods --
+        ----
         +{abstract} void offer_cld_object (Object object)
         +virtual async void nap (uint interval, int priority)
         #{abstract} async void request_data ()
     }
 
     interface Container {
-        -- properties --
         +{abstract} Gee.Map<string, Object> objects
         -- signals --
         +{abstract} void request_object (string id)
-        -- methods --
+        ----
         +virtual void add_child (Object object)
         +virtual void remove_child (Object object)
         +virtual Object? get_object (string id)
@@ -86,7 +101,7 @@ package "Dcs" #DDDDDD {
     interface Factory {
         -- signals --
         +void build_complete ()
-        -- methods --
+        ----
         +{abstract} Gee.TreeMap<string, Object> make_object_map (Xml.Node* node)
         +{abstract} Object make_object (GLib.Type type) throws GLib.Error
         +{abstract} Object make_object_from_node (Xml.Node* node) throws GLib.Error
@@ -96,8 +111,22 @@ package "Dcs" #DDDDDD {
     ' Classes
     '
 
+    ' XXX Currently ApplicationController, will rename Controller
+    class Controller {
+        +bool admin
+        -- signals --
+        +void acquisition_state_changed (bool state)
+        ----
+        +Controller (Model, View)
+        -~Controller ()
+        #void save_requested_cb ()
+        +void start_acquisition ()
+        +void stop_acquisition ()
+        +void start_device_output ()
+        +void stop_device_output ()
+    }
+
     class DataSeries {
-        -- properties --
         +string ch_ref
         +Cld.Channel channel
         +int buffer_size
@@ -107,34 +136,80 @@ package "Dcs" #DDDDDD {
         #string xsd
         #virtual Xml.Node* node
         #bool satisfied
-        -- methods --
         ~void build_from_xml_node
         +void offer_cld_object (Cld.Object object)
         #async void request_data ()
         +SimplePoint[] to_array ()
     }
 
+    class DBusInterface {
+        +const string SERVICE_NAME
+        +const string OBJECT_PATH
+        +{abstract} void shutdown () throws GLib.IOError
+    }
+
     class Message {
-        -- properties --
-        -- methods --
-        +Message Message()
-        +Message Message.alert ()
-        +Message Message.error ()
-        +Message Message.info ()
-        +Message Message.warning ()
+        +Message()
+        +Message.alert ()
+        +Message.error ()
+        +Message.info ()
+        +Message.warning ()
         +{abstract} void pack ()
         +{abstract} void unpack ()
     }
 
+    ' XXX Currently ApplicationModel, will rename Model
+    class Model {
+        +string name
+        +bool admin
+        +bool def_enabled
+        +Gee.Map<string, Object> objects
+        +string config_filename
+        +bool active
+        +bool verbose
+        ~ApplicationConfig config
+        ~Cld.XmlConfig xml
+        ~Cld.Context ctx
+        ~GLib.Settings settings
+        -- signals --
+        +void log_state_chaged (string log, bool state)
+        +void updated ()
+        ----
+        +Model (string config_filename)
+        +void update_objects (Gee.Map<string, Object> val)
+        .. get/set ..
+        +ApplicationConfig get_config ()
+        +Cld.XmlConfig get_xml ()
+        +Cld.Context get_ctx ()
+        +GLib.Settings get_settings ()
+    }
+
+    class Point <<compact>> {
+        +double x
+        +double y
+        +Point (double x, double y)
+    }
+
     class SysLog {
-        -- properties --
         +{static} int verbosity
-        -- methods --
         +{static} unowned SysLog get_default ()
         +{static} void init (bool stdout, string? filename)
         +{static} void shutdown ()
         +{static} void increase_verbosity ()
     }
+
+    ' TODO Needs to be written still
+    ' XXX What is a view supposed to do in an MVC?
+    class View {
+        #Dcs.Model model
+        #void connect (Dcs.ModelUpdateFunc model_func)
+    }
+
+    /'
+     'box Delegates {
+     '    +void ModelUpdateFunc ()
+     '}
+     '/
 
     '
     ' Associations
@@ -144,16 +219,34 @@ package "Dcs" #DDDDDD {
     Buildable --|> GLib.Object
     CldAdapter --|> GLib.Object
     Container --|> GLib.Object
+    Controller --|> GLib.Object
     DataSeries --|> GLib.Object
     DataSeries ..|> Object
     DataSeries ..|> Buildable
     DataSeries ..|> CldAdapter
+    DBusInterface --|> GLib.Object
     Factory --|> GLib.Object
+    Message --|> GLib.Object
+    Model --|> GLib.Object
+    Model ..|> Container
+    Point --|> GLib.Object
     SysLog --|> GLib.Object
+    View --|> GLib.Object
 
     '
     ' Notes
     '
+
+    legend right
+        OpenDCS is built using the Vala language which can use special syntax
+        to define property getters and setters with scope that's different from
+        the property itself. For instance:
+            <i>public int value { get; private set; }</i>
+        which will result in a public getter and a private setter. UML has no
+        way of displaying this if so it should be implied that any property that
+        is marked public (+) will also have a public get/set, and if a property
+        should specify scope it will be marked as internal (~).
+    end legend
 
     note top of SysLog: Bad name, planning on changing
 
@@ -205,43 +298,36 @@ package "Dcs" #DDDDDD {
         '
 
         abstract class Canvas {
-            -- properties --
             +virtual string id
         }
 
         abstract class SimpleWidget {
-            -- properties --
             +virtual string id
             +{abstract} string xml
             +{abstract} string xsd
             #virtual Xml.Node* node
             +bool fill
-            -- methods --
             +{abstract} void build_from_xml_node (Xml.Node* node)
             #{abstract} void update_node ()
         }
 
         abstract class CustomWidget {
-            -- properties --
             +virtual string id
             +{abstract} string xml
             +{abstract} string xsd
             #virtual Xml.Node* node
             +bool fill
-            -- methods --
             +{abstract} void build_from_xml_node (Xml.Node* node)
             #{abstract} void update_node ()
         }
 
         abstract class CompositeWidget {
-            -- properties --
             +virtual string id
             +{abstract} string xml
             +{abstract} string xsd
             #virtual Xml.Node* node
             +bool fill
             +{abstract} Gee.Map<string, Object> objects
-            -- methods --
             +{abstract} void build_from_xml_node (Xml.Node* node)
             #{abstract} void update_objects (Gee.Map<string, Object> val)
         }
@@ -276,6 +362,101 @@ package "Dcs" #DDDDDD {
             Could probably just simplify it down to
             "Dcs.UI.CompositeWidget : Dcs.UI.SimpleWidget, Dcs.Container"
         end note
+    }
+
+    package "CLI" {
+
+        '
+        ' Enumerations
+        '
+
+        '
+        ' Interfaces
+        '
+
+        '
+        ' Associations
+        '
+
+        '
+        ' Notes
+        '
+    }
+
+    package "Control" {
+
+        '
+        ' Enumerations
+        '
+
+        '
+        ' Interfaces
+        '
+
+        '
+        ' Associations
+        '
+
+        '
+        ' Notes
+        '
+    }
+
+    package "DAQ" {
+
+        '
+        ' Enumerations
+        '
+
+        '
+        ' Interfaces
+        '
+
+        '
+        ' Associations
+        '
+
+        '
+        ' Notes
+        '
+    }
+
+    package "Log" {
+
+        '
+        ' Enumerations
+        '
+
+        '
+        ' Interfaces
+        '
+
+        '
+        ' Associations
+        '
+
+        '
+        ' Notes
+        '
+    }
+
+    package "Net" {
+
+        '
+        ' Enumerations
+        '
+
+        '
+        ' Interfaces
+        '
+
+        '
+        ' Associations
+        '
+
+        '
+        ' Notes
+        '
     }
 }
 

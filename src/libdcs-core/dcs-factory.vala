@@ -24,7 +24,7 @@ public interface Dcs.Factory : GLib.Object {
      * @return Resulting object constructed with associated default settings
      */
     public abstract Dcs.Object make_object (Type type)
-                                              throws GLib.Error;
+                                            throws GLib.Error;
 
     /**
      * Constructs an object using the XML node provided and returns the result.
@@ -33,5 +33,5 @@ public interface Dcs.Factory : GLib.Object {
      * @return Resulting object constructed from the input node
      */
     public abstract Dcs.Object make_object_from_node (Xml.Node *node)
-                                                        throws GLib.Error;
+                                                      throws GLib.Error;
 }

@@ -461,10 +461,14 @@ AC_ARG_ENABLE(doc,
 AM_CONDITIONAL(ENABLE_DOC, test x$enable_doc = xyes)
 
 AS_IF([test "x$enable_doc" != xno],
-	[AC_PATH_PROG(VALADOC, valadoc, :)
+	[AC_PATH_PROG([VALADOC], [valadoc], :)
 	 AC_SUBST(VALADOC)
 	 AS_IF([test "$VALADOC" = :],
-		[AC_MSG_ERROR([valadoc not found])])])
+           [AC_MSG_ERROR([valadoc not found])])
+	 AC_PATH_PROG([PLANTUML], [plantuml], :)
+     AC_SUBST(PLANTUML)
+	 AS_IF([test "$PLANTUML" = :],
+           [AC_MSG_ERROR([plantuml not found])])])
 
 
 dnl ***********************************************************************
@@ -689,6 +693,7 @@ AC_CONFIG_FILES([
 	doc/man/Makefile
 	doc/man/man1/Makefile
 	doc/md/Makefile
+	doc/uml/Makefile
 	doc/xml/Makefile
 
 	po/Makefile.in

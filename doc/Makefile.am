@@ -1,4 +1,4 @@
-SUBDIRS = xml man md
+SUBDIRS = xml man md uml
 
 if ENABLE_DOC
 
