@@ -26,8 +26,8 @@ dcsg_VALAFLAGS = \
 	--pkg gtksourceview-3.0 \
 	--pkg json-glib-1.0 \
 	--pkg dcs-build \
-	--pkg dcs-core-0.1 \
-	--pkg dcs-ui-0.1
+	--pkg dcs-core-0.2 \
+	--pkg dcs-ui-0.2
 
 dcsg_includes = \
 	$(DEBUG_CFLAGS) \
@@ -59,8 +59,8 @@ dcsg_LDADD = \
 	$(DCS_CLD_DEPS_LIBS) \
 	$(LIBDCS_CORE_LIBS) \
 	$(LIBDCS_UI_LIBS) \
-	$(top_builddir)/src/libdcs-core/libdcs-core-0.1.la \
-	$(top_builddir)/src/libdcs-ui/libdcs-ui-0.1.la
+	$(top_builddir)/src/libdcs-core/libdcs-core-0.2.la \
+	$(top_builddir)/src/libdcs-ui/libdcs-ui-0.2.la
 
 
 if ENABLE_WEBKIT

@@ -5,8 +5,8 @@ dnl ***********************************************************************
 dnl Define Versioning Information
 dnl ***********************************************************************
 m4_define([dcs_major_version],[0])
-m4_define([dcs_minor_version],[1])
-m4_define([dcs_micro_version],[3])
+m4_define([dcs_minor_version],[2])
+m4_define([dcs_micro_version],[0])
 m4_define([dcs_version],[dcs_major_version.dcs_minor_version.dcs_micro_version])
 m4_define([dcs_interface_age],[0])
 m4_define([dcs_bugreport_url],
@@ -539,9 +539,9 @@ PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --vapidir \$(top_srcdir)/vapi"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-core"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-net"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-ui"
-PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dcs-core-0.1"
-PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dcs-net-0.1"
-PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dcs-ui-0.1"
+PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dcs-core-0.2"
+PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dcs-net-0.2"
+PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dcs-ui-0.2"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg libpeas-1.0"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg libpeas-gtk-1.0"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg libzmq"
@@ -573,9 +573,9 @@ DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --vapidir \$(top_srcdir)/vapi"
 DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-core"
 DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-daq"
 DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-net"
-DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dcs-core-0.1"
-DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dcs-daq-0.1"
-DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dcs-net-0.1"
+DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dcs-core-0.2"
+DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dcs-daq-0.2"
+DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dcs-net-0.2"
 DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg libpeas-1.0"
 AC_SUBST(DEVICE_VALAFLAGS)
 
@@ -605,9 +605,9 @@ BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --vapidir \$(top_srcdir)/vapi"
 BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-core"
 BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-log"
 BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-net"
-BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dcs-core-0.1"
-BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dcs-log-0.1"
-BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dcs-net-0.1"
+BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dcs-core-0.2"
+BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dcs-log-0.2"
+BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dcs-net-0.2"
 BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg libpeas-1.0"
 AC_SUBST(BACKEND_VALAFLAGS)
 
@@ -637,9 +637,9 @@ LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_srcdir)/vapi"
 LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-core"
 LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-control"
 LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-net"
-LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-core-0.1"
-LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-control-0.1"
-LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-net-0.1"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-core-0.2"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-control-0.2"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-net-0.2"
 LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg libpeas-1.0"
 AC_SUBST(LOOP_VALAFLAGS)
 
@@ -732,13 +732,13 @@ AC_CONFIG_FILES([
 	examples/ruby/Makefile
 	examples/vala/Makefile
 
-	src/libdcs-core/dcs-core-0.1.pc
-	src/libdcs-cli/dcs-cli-0.1.pc
-	src/libdcs-daq/dcs-daq-0.1.pc
-	src/libdcs-log/dcs-log-0.1.pc
-	src/libdcs-net/dcs-net-0.1.pc
-	src/libdcs-control/dcs-control-0.1.pc
-	src/libdcs-ui/dcs-ui-0.1.pc
+	src/libdcs-core/dcs-core-0.2.pc
+	src/libdcs-cli/dcs-cli-0.2.pc
+	src/libdcs-daq/dcs-daq-0.2.pc
+	src/libdcs-log/dcs-log-0.2.pc
+	src/libdcs-net/dcs-net-0.2.pc
+	src/libdcs-control/dcs-control-0.2.pc
+	src/libdcs-ui/dcs-ui-0.2.pc
 ])
 AC_OUTPUT
 

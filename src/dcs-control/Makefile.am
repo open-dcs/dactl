@@ -19,10 +19,10 @@ dcs_control_VALAFLAGS = \
 	--pkg libsoup-2.4 \
 	--pkg libzmq \
 	--pkg dcs-build \
-	--pkg dcs-core-0.1 \
-	--pkg dcs-cli-0.1 \
-	--pkg dcs-control-0.1 \
-	--pkg dcs-net-0.1 \
+	--pkg dcs-core-0.2 \
+	--pkg dcs-cli-0.2 \
+	--pkg dcs-control-0.2 \
+	--pkg dcs-net-0.2 \
 	$(NULL)
 
 dcs_control_includes = \
@@ -58,10 +58,10 @@ dcs_control_LDADD = \
 	$(LIBDCS_LIBS) \
 	$(LIBDCS_CLI_LIBS) \
 	$(LIBDCS_NET_LIBS) \
-	$(top_builddir)/src/libdcs-core/libdcs-core-0.1.la \
-	$(top_builddir)/src/libdcs-cli/libdcs-cli-0.1.la \
-	$(top_builddir)/src/libdcs-control/libdcs-control-0.1.la \
-	$(top_builddir)/src/libdcs-net/libdcs-net-0.1.la \
+	$(top_builddir)/src/libdcs-core/libdcs-core-0.2.la \
+	$(top_builddir)/src/libdcs-cli/libdcs-cli-0.2.la \
+	$(top_builddir)/src/libdcs-control/libdcs-control-0.2.la \
+	$(top_builddir)/src/libdcs-net/libdcs-net-0.2.la \
 	$(NULL)
 
 dcs_control_headers = \

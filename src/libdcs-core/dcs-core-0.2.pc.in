@@ -6,10 +6,10 @@ includedir=@includedir@
 plugindir=@PLUGIN_DIR@
 plugin_ldflags=@PLUGIN_LDFLAGS@
 
-Name: dcs-cli-0.1
-Description: Distributed Control System - CLI Components
+Name: dcs-core-0.4
+Description: Data Acquisition and Control Interface
 Version: @VERSION@
-Libs: -L${libdir} -ldcs-cli-0.1
-Cflags: -I${includedir}/dcs-0.1
+Libs: -L${libdir} -ldcs-core-0.2
+Cflags: -I${includedir}/dcs-0.2
 Requires: gee-0.8
-Requires.Private: gio-2.0
+Requires.Private: gmodule-2.0

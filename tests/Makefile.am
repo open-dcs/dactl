@@ -7,7 +7,7 @@ tests_valaflags = \
 	--pkg gee-0.8 \
 	--pkg json-glib-1.0 \
 	--pkg dcs-build \
-	--pkg dcs-core-0.1 \
+	--pkg dcs-core-0.2 \
 	$(NULL)
 
 tests_cflags = \
@@ -18,7 +18,7 @@ tests_cflags = \
 
 tests_libs = \
 	$(LIBDCS_CORE_LIBS) \
-	$(top_builddir)/src/libdcs-core/libdcs-core-0.1.la \
+	$(top_builddir)/src/libdcs-core/libdcs-core-0.2.la \
 	$(NULL)
 
 tests_ldflags = \

@@ -6,33 +6,33 @@ EXTRA_DIST =
 include $(top_srcdir)/common.am
 include $(srcdir)/filelist.am
 
-libdcsincdir = $(includedir)/dcs-0.1
+libdcsincdir = $(includedir)/dcs-0.2
 
 libdcsinc_HEADERS = dcs-core.h
 
-lib_LTLIBRARIES = libdcs-core-0.1.la
+lib_LTLIBRARIES = libdcs-core-0.2.la
 
-pkgconfig_DATA = dcs-core-0.1.pc
+pkgconfig_DATA = dcs-core-0.2.pc
 pkgconfigdir = $(libdir)/pkgconfig
 
-LIBDCS_CORE_VERSION=0:1:0
+LIBDCS_CORE_VERSION=0:2:0
 
-libdcs_core_0_1_la_SOURCES = \
+libdcs_core_0_2_la_SOURCES = \
 	$(LIBDCS_CORE_VAPI_SOURCE_FILES) \
 	$(LIBDCS_CORE_NONVAPI_SOURCE_FILES) \
 	$(NULL)
 
-libdcs_core_0_1_la_includes = \
+libdcs_core_0_2_la_includes = \
 	$(DEBUG_CFLAGS) \
 	-DPLUGIN_DIR=\""$(plugindir)"\" \
 	-DSMALL_ICON_DIR=\""$(smallicondir)"\" \
 	-DBIG_ICON_DIR=\""$(bigicondir)"\" \
 	$(NULL)
 
-libdcs_core_0_1_la_VALAFLAGS = \
+libdcs_core_0_2_la_VALAFLAGS = \
 	-H dcs-core.h -C \
-	--library=dcs-core-0.1 \
-	--gir=Dcs-0.1.gir \
+	--library=dcs-core-0.2 \
+	--gir=Dcs-0.2.gir \
 	--vapidir=$(top_srcdir)/vapi \
 	--vapidir=$(top_srcdir)/src/libdcs-core \
 	--pkg posix \
@@ -48,7 +48,7 @@ libdcs_core_0_1_la_VALAFLAGS = \
 	$(DCS_CLD_DEPS_VALAFLAGS) \
 	$(NULL)
 
-libdcs_core_0_1_la_CFLAGS = \
+libdcs_core_0_2_la_CFLAGS = \
 	-DG_LOG_DOMAIN=\"libdcs-core\" \
 	-DGETTEXT_PACKAGE=\"dcs\" \
 	$(AM_CFLAGS) \
@@ -56,7 +56,7 @@ libdcs_core_0_1_la_CFLAGS = \
 	$(LIBDCS_CORE_CFLAGS) \
 	$(DCS_CLD_DEPS_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
-	$(libdcs_core_0_1_la_includes) \
+	$(libdcs_core_0_2_la_includes) \
 	-Wno-deprecated-declarations \
 	-Wno-discarded-qualifiers \
 	-Wno-implicit-function-declaration \
@@ -68,13 +68,13 @@ libdcs_core_0_1_la_CFLAGS = \
 	-Wredundant-decls \
 	$(NULL)
 
-libdcs_core_0_1_la_LDFLAGS = \
+libdcs_core_0_2_la_LDFLAGS = \
 	$(OPTIMIZE_LDFLAGS) \
 	$(DCS_DATA_DIR_DEFINES) \
 	-version-info $(LIBDCS_CORE_VERSION) \
 	$(NULL)
 
-libdcs_core_0_1_la_LIBADD = \
+libdcs_core_0_2_la_LIBADD = \
 	-lm \
 	$(LIBDCS_LIBS) \
 	$(LIBDCS_CORE_LIBS) \
@@ -86,12 +86,12 @@ if HAVE_INTROSPECTION
 
 INTROSPECTION_GIRS =
 INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all
-INTROSPECTION_COMPILER_ARGS = -l libdcs-core-0.1.so.0
-$(builddir)/DcsCore-0.1.gir: $(srcdir)/Dcs-0.1.gir
+INTROSPECTION_COMPILER_ARGS = -l libdcs-core-0.2.so.0
+$(builddir)/DcsCore-0.2.gir: $(srcdir)/Dcs-0.2.gir
 	$(AM_V_GEN)$(SED) -e 's,Dcs\.,DcsCore.,g' -e \
         's,namespace name="Dcs",namespace name="DcsCore",g' \
         $< >$@
-GIRS = DcsCore-0.1.gir
+GIRS = DcsCore-0.2.gir
 
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(GIRS)
@@ -103,7 +103,7 @@ CLEANFILES += $(gir_DATA) $(typelib_DATA)
 endif
 
 
-libdcs_core_0_1_vapi_DEPS = \
+libdcs_core_0_2_vapi_DEPS = \
 	posix \
 	linux \
 	cld-0.3 \
@@ -113,23 +113,23 @@ libdcs_core_0_1_vapi_DEPS = \
 	libxml-2.0 \
 	libpeas-1.0
 
-dcs-core-0.1.deps: Makefile
-	$(AM_V_GEN) echo $(libdcs_core_0_1_vapi_DEPS) | tr ' ' '\n' > $@
+dcs-core-0.2.deps: Makefile
+	$(AM_V_GEN) echo $(libdcs_core_0_2_vapi_DEPS) | tr ' ' '\n' > $@
 
-VAPI_FILES = dcs-core-0.1.vapi
-DEPS_FILES = dcs-core-0.1.deps
+VAPI_FILES = dcs-core-0.2.vapi
+DEPS_FILES = dcs-core-0.2.deps
 
 vapidir = $(VAPIDIR)
 vapi_DATA = $(VAPI_FILES) $(DEPS_FILES)
-dcs-core.h dcs-core-0.1.vapi Dcs-0.1.gir: libdcs_core_0_1_la_vala.stamp
+dcs-core.h dcs-core-0.2.vapi Dcs-0.2.gir: libdcs_core_0_2_la_vala.stamp
 
 BUILT_SOURCES += \
 	dcs-core.h \
 	dcs-build.vapi \
 	$(VAPI_FILES) \
 	$(DEPS_FILES) \
-	DcsCore-0.1.gir \
-	Dcs-0.1.gir \
+	DcsCore-0.2.gir \
+	Dcs-0.2.gir \
 	$(NULL)
 
 EXTRA_DIST += \

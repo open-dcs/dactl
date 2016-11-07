@@ -17,8 +17,8 @@ dcs_VALAFLAGS = \
 	--pkg json-glib-1.0 \
 	--pkg readline \
 	--pkg dcs-build \
-	--pkg dcs-core-0.1 \
-	--pkg dcs-cli-0.1 \
+	--pkg dcs-core-0.2 \
+	--pkg dcs-cli-0.2 \
 	$(NULL)
 
 dcs_includes = \
@@ -52,8 +52,8 @@ dcs_LDADD = \
 	$(LIBDCS_CORE_LIBS) \
 	$(LIBDCS_CLI_LIBS) \
 	-lreadline \
-	$(top_builddir)/src/libdcs-core/libdcs-core-0.1.la \
-	$(top_builddir)/src/libdcs-cli/libdcs-cli-0.1.la \
+	$(top_builddir)/src/libdcs-core/libdcs-core-0.2.la \
+	$(top_builddir)/src/libdcs-cli/libdcs-cli-0.2.la \
 	$(NULL)
 
 dcs_headers = \
