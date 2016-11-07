@@ -1,13 +1,14 @@
-# From here - https://people.gnome.org/~federico/docs/login-profile/plot-timeline.py
-
 #!/usr/bin/env python
 import math
 import optparse
 import os
 import re
 import sys
-
 import cairo
+
+#
+# Copied from here: https://people.gnome.org/~federico/docs/login-profile/plot-timeline.py
+#
 
 FONT_NAME = "Bitstream Vera Sans"
 FONT_SIZE = 10

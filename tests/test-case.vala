@@ -13,7 +13,7 @@ public abstract class Dcs.TestCase : GLib.Object {
 	}
 
 	public void add_test (string name, TestMethod test) {
-		var adaptor = new Adaptor (name, (owned)test, this);
+		var adaptor = new Adaptor (name, test, this);
 		this.adaptors += adaptor;
 
 		this.suite.add (new GLib.TestCase (adaptor.name,
@@ -22,11 +22,9 @@ public abstract class Dcs.TestCase : GLib.Object {
 		                                   adaptor.tear_down ));
 	}
 
-	public virtual void set_up () {
-	}
+	public virtual void set_up () { }
 
-	public virtual void tear_down () {
-	}
+	public virtual void tear_down () { }
 
 	public GLib.TestSuite get_suite () {
 		return this.suite;

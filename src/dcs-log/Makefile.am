@@ -18,11 +18,11 @@ dcs_log_VALAFLAGS = \
 	--pkg json-glib-1.0 \
 	--pkg libsoup-2.4 \
 	--pkg libzmq \
-	--pkg dcs-config \
-	--pkg dcs-core-0.1 \
-	--pkg dcs-cli-0.1 \
-	--pkg dcs-log-0.1 \
-	--pkg dcs-net-0.1 \
+	--pkg dcs-build \
+	--pkg dcs-core-0.2 \
+	--pkg dcs-cli-0.2 \
+	--pkg dcs-log-0.2 \
+	--pkg dcs-net-0.2 \
 	$(NULL)
 
 dcs_log_includes = \
@@ -59,10 +59,10 @@ dcs_log_LDADD = \
 	$(LIBDCS_LIBS) \
 	$(LIBDCS_CLI_LIBS) \
 	$(LIBDCS_NET_LIBS) \
-	$(top_builddir)/src/libdcs-core/libdcs-core-0.1.la \
-	$(top_builddir)/src/libdcs-cli/libdcs-cli-0.1.la \
-	$(top_builddir)/src/libdcs-log/libdcs-log-0.1.la \
-	$(top_builddir)/src/libdcs-net/libdcs-net-0.1.la \
+	$(top_builddir)/src/libdcs-core/libdcs-core-0.2.la \
+	$(top_builddir)/src/libdcs-cli/libdcs-cli-0.2.la \
+	$(top_builddir)/src/libdcs-log/libdcs-log-0.2.la \
+	$(top_builddir)/src/libdcs-net/libdcs-net-0.2.la \
 	$(NULL)
 
 dcs_log_headers = \

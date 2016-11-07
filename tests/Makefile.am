@@ -6,8 +6,8 @@ tests_valaflags = \
 	--pkg gio-2.0 \
 	--pkg gee-0.8 \
 	--pkg json-glib-1.0 \
-	--pkg dcs-config \
-	--pkg dcs-core-0.1 \
+	--pkg dcs-build \
+	--pkg dcs-core-0.2 \
 	$(NULL)
 
 tests_cflags = \
@@ -18,7 +18,7 @@ tests_cflags = \
 
 tests_libs = \
 	$(LIBDCS_CORE_LIBS) \
-	$(top_builddir)/src/libdcs-core/libdcs-core-0.1.la \
+	$(top_builddir)/src/libdcs-core/libdcs-core-0.2.la \
 	$(NULL)
 
 tests_ldflags = \
@@ -45,6 +45,7 @@ test_dcs_core_SOURCES = \
 	$(tests_common_sources) \
 	test-dcs-core.vala \
 	test-dcs-object.vala \
+	test-dcs-config.vala \
 	$(NULL)
 
 test_dcs_core_VALAFLAGS = $(tests_valaflags)

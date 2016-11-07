@@ -206,66 +206,6 @@ public abstract class Dcs.UI.Canvas : Gtk.DrawingArea, Dcs.Object {
 }
 
 /**
- * Window base class to use with buildable child windows.
- *
- * XXX Probably unnecessary as there will probably only ever be a single class
- * that derives this.
- */
-public abstract class Dcs.UI.WindowBase : Gtk.ApplicationWindow, Dcs.Container, Dcs.Buildable, Dcs.Object {
-
-    private Xml.Node* _node;
-
-    /**
-     * {@inheritDoc}
-     */
-    public virtual string id { get; set; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected abstract string xml { get; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected abstract string xsd { get; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected virtual Xml.Node* node {
-        get {
-            return _node;
-        }
-        set {
-            _node = value;
-        }
-    }
-
-    public bool fullscreen { get; set; default = false; }
-
-    /**
-     * Current window state
-     */
-    public Dcs.UI.WindowState state { get; set; default = Dcs.UI.WindowState.WINDOWED; }
-
-    /**
-     * {@inheritDoc}
-     */
-    public abstract Gee.Map<string, Dcs.Object> objects { get; set; }
-
-    /**
-     * {@inheritDoc}
-     */
-    public abstract void build_from_xml_node (Xml.Node *node);
-
-    /**
-     * {@inheritDoc}
-     */
-    public abstract void update_objects (Gee.Map<string, Dcs.Object> val);
-}
-
-/**
  *
  */
 public abstract class Dcs.UI.SimpleWidget : Gtk.Box, Dcs.UI.Widget, Dcs.Buildable, Dcs.Object {

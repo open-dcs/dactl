@@ -1,4 +1,4 @@
-SUBDIRS = build contrib data doc src examples tests
+SUBDIRS = . build contrib data doc src examples po tests
 
 ACLOCAL_AMFLAGS = -I build/autotools
 
@@ -6,10 +6,13 @@ EXTRA_DIST = \
 	$(noinst_DATA) \
 	.version \
 	autogen.sh \
+	AUTHORS \
 	$(NULL)
 
 DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-introspection \
+	--disable-tracing \
+	--disable-maintainer-mode \
 	$(NULL)
 
 # Extra clean files so that maintainer-clean removes *everything*
@@ -73,6 +76,40 @@ dist-hook:
 	fi
 
 .PHONY: AUTHORS
+
+RUNTIME_TYPELIB_PATH = \
+	src/libdcs-core:src/libdcs-control:src/libdcs-daq:src/libdcs-log:src/libdcs-net:src/libdcs-ui:$(GI_TYPELIB_PATH)
+
+run:
+	PEAS_DEBUG=1 \
+	GI_TYPELIB_PATH="$(RUNTIME_TYPELIB_PATH)" \
+	GOBJECT_DEBUG=instance-count \
+	PATH=$(top_builddir)/src/dcsg:$(PATH) \
+	$(LIBTOOL) --mode=execute gdb -ex run --args src/dcsg/dcsg -vvv -f tests/config/blank.xml
+
+strace:
+	PEAS_DEBUG=1 \
+	GI_TYPELIB_PATH="$(RUNTIME_TYPELIB_PATH)" \
+	GOBJECT_DEBUG=instance-count \
+	PATH=$(top_builddir)/src/dcsg:$(PATH) \
+	$(LIBTOOL) --mode=execute strace -T src/dcsg/dcsg -vvv -f tests/config/blank.xml
+
+debug:
+	G_SLICE=always-malloc \
+	PEAS_DEBUG=1 \
+	GI_TYPELIB_PATH="$(RUNTIME_TYPELIB_PATH)" \
+	G_DEBUG=fatal-criticals \
+	GOBJECT_DEBUG=instance-count \
+	PATH=$(top_builddir)/src/dcsg:$(PATH) \
+	$(LIBTOOL) --mode=execute gdb -ex run --args src/dcsg/dcsg -vvv -f tests/config/blank.xml
+
+valgrind:
+	PEAS_DEBUG=1 \
+	GI_TYPELIB_PATH="$(RUNTIME_TYPELIB_PATH)" \
+	G_DEBUG=fatal-criticals \
+	G_SLICE=always-malloc \
+	PATH=$(top_builddir)/src/dcsg:$(PATH) \
+	$(LIBTOOL) --mode=execute gdb -ex run --args src/dcsg/dcsg -vvv -f tests/config/blank.xml
 
 vala-clean:
 	rm -f `find . -name "*.stamp"`

@@ -34,7 +34,7 @@ public class Dcs.Control.ZmqClient : Dcs.Net.ZmqClient {
                     var msg = ZMQ.Msg ();
                     var n = msg.recv (subscriber);
                     if (n == -1) {
-                        critical (_("Failed to read data from the server"));
+                        critical ("Failed to read data from the server");
                     }
 
                     size_t size = msg.size () + 1;
@@ -44,7 +44,7 @@ public class Dcs.Control.ZmqClient : Dcs.Net.ZmqClient {
                     var str = (string) data;
 
                     data_received (data);
-                    debug (_("received (%9d): %s"), ntimes, str);
+                    debug ("received (%9d): %s", ntimes, str);
                     ntimes++;
                 }
             } catch (GLib.Error e) {

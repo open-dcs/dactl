@@ -61,7 +61,7 @@ public class Dcs.Recorder.Server : Dcs.CLI.Application {
     public override int command_line (GLib.ApplicationCommandLine cmdline) {
         opt_help = false;
 
-        var opt_context = new OptionContext (Config.PACKAGE_NAME);
+        var opt_context = new OptionContext (Dcs.Build.PACKAGE_NAME);
         opt_context.add_main_entries (options, null);
         opt_context.set_help_enabled (false);
 

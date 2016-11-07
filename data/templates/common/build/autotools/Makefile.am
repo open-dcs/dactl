@@ -16,4 +16,6 @@ templateautotools_DATA = \
 	__Makefile.am.marshal \
 	$(m4files)
 
+EXTRA_DIST = $(templateautotools_DATA)
+
 -include $(top_srcdir)/git.mk

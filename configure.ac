@@ -5,8 +5,8 @@ dnl ***********************************************************************
 dnl Define Versioning Information
 dnl ***********************************************************************
 m4_define([dcs_major_version],[0])
-m4_define([dcs_minor_version],[1])
-m4_define([dcs_micro_version],[3])
+m4_define([dcs_minor_version],[2])
+m4_define([dcs_micro_version],[0])
 m4_define([dcs_version],[dcs_major_version.dcs_minor_version.dcs_micro_version])
 m4_define([dcs_interface_age],[0])
 m4_define([dcs_bugreport_url],
@@ -97,10 +97,16 @@ VAPIGEN_CHECK
 GLIB_GSETTINGS
 APPSTREAM_XML
 
+
+dnl ***********************************************************************
+dnl Check for the desktop validation tool
+dnl XXX This is only for the UI component so it should maybe go within the
+dnl     check for that, with an error message instead of a warning here.
+dnl ***********************************************************************
 AC_ARG_VAR([DESKTOP_FILE_VALIDATE], [the desktop-file-validate program])
 AC_PATH_PROG([DESKTOP_FILE_VALIDATE], [desktop-file-validate], [])
 if test -z "$DESKTOP_FILE_VALIDATE"; then
-	AC_MSG_ERROR([desktop-file-validate not found])
+	AC_MSG_WARN([desktop-file-validate not found])
 fi
 
 
@@ -439,9 +445,8 @@ dnl Always build tests
 dnl ***********************************************************************
 AC_ARG_ENABLE([tests],
               AS_HELP_STRING([--enable-tests],
-                             [Enable always building tests during 'make all' [default=no]]),
-              [enable_tests=$enableval], [enable_tests=no])
-
+                             [Enable always building tests during 'make all' [default=yes]]),
+              [enable_tests=$enableval], [enable_tests=yes])
 AM_CONDITIONAL([ENABLE_TESTS], test "$enable_tests" = "yes")
 
 
@@ -455,10 +460,14 @@ AC_ARG_ENABLE(doc,
 AM_CONDITIONAL(ENABLE_DOC, test x$enable_doc = xyes)
 
 AS_IF([test "x$enable_doc" != xno],
-	[AC_PATH_PROG(VALADOC, valadoc, :)
+	[AC_PATH_PROG([VALADOC], [valadoc], :)
 	 AC_SUBST(VALADOC)
 	 AS_IF([test "$VALADOC" = :],
-		[AC_MSG_ERROR([valadoc not found])])])
+           [AC_MSG_ERROR([valadoc not found])])
+	 AC_PATH_PROG([PLANTUML], [plantuml], :)
+     AC_SUBST(PLANTUML)
+	 AS_IF([test "$PLANTUML" = :],
+           [AC_MSG_ERROR([plantuml not found])])])
 
 
 dnl ***********************************************************************
@@ -530,9 +539,9 @@ PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --vapidir \$(top_srcdir)/vapi"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-core"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-net"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-ui"
-PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dcs-core-0.1"
-PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dcs-net-0.1"
-PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dcs-ui-0.1"
+PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dcs-core-0.2"
+PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dcs-net-0.2"
+PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg dcs-ui-0.2"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg libpeas-1.0"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg libpeas-gtk-1.0"
 PLUGIN_VALAFLAGS="$PLUGIN_VALAFLAGS --pkg libzmq"
@@ -564,9 +573,9 @@ DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --vapidir \$(top_srcdir)/vapi"
 DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-core"
 DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-daq"
 DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-net"
-DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dcs-core-0.1"
-DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dcs-daq-0.1"
-DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dcs-net-0.1"
+DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dcs-core-0.2"
+DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dcs-daq-0.2"
+DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg dcs-net-0.2"
 DEVICE_VALAFLAGS="$DEVICE_VALAFLAGS --pkg libpeas-1.0"
 AC_SUBST(DEVICE_VALAFLAGS)
 
@@ -596,9 +605,9 @@ BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --vapidir \$(top_srcdir)/vapi"
 BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-core"
 BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-log"
 BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-net"
-BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dcs-core-0.1"
-BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dcs-log-0.1"
-BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dcs-net-0.1"
+BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dcs-core-0.2"
+BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dcs-log-0.2"
+BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg dcs-net-0.2"
 BACKEND_VALAFLAGS="$BACKEND_VALAFLAGS --pkg libpeas-1.0"
 AC_SUBST(BACKEND_VALAFLAGS)
 
@@ -628,9 +637,9 @@ LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_srcdir)/vapi"
 LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-core"
 LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-control"
 LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-net"
-LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-core-0.1"
-LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-control-0.1"
-LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-net-0.1"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-core-0.2"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-control-0.2"
+LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-net-0.2"
 LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg libpeas-1.0"
 AC_SUBST(LOOP_VALAFLAGS)
 
@@ -677,11 +686,12 @@ AC_CONFIG_FILES([
     data/templates/plugin/src/Makefile
 
     data/gsettings/Makefile
-	data/gsettings/org.opendcs.dcs.gschema.xml
 
 	doc/Makefile
 	doc/man/Makefile
 	doc/man/man1/Makefile
+	doc/md/Makefile
+	doc/uml/Makefile
 	doc/xml/Makefile
 
 	po/Makefile.in
@@ -722,13 +732,13 @@ AC_CONFIG_FILES([
 	examples/ruby/Makefile
 	examples/vala/Makefile
 
-	src/libdcs-core/dcs-core-0.1.pc
-	src/libdcs-cli/dcs-cli-0.1.pc
-	src/libdcs-daq/dcs-daq-0.1.pc
-	src/libdcs-log/dcs-log-0.1.pc
-	src/libdcs-net/dcs-net-0.1.pc
-	src/libdcs-control/dcs-control-0.1.pc
-	src/libdcs-ui/dcs-ui-0.1.pc
+	src/libdcs-core/dcs-core-0.2.pc
+	src/libdcs-cli/dcs-cli-0.2.pc
+	src/libdcs-daq/dcs-daq-0.2.pc
+	src/libdcs-log/dcs-log-0.2.pc
+	src/libdcs-net/dcs-net-0.2.pc
+	src/libdcs-control/dcs-control-0.2.pc
+	src/libdcs-ui/dcs-ui-0.2.pc
 ])
 AC_OUTPUT
 

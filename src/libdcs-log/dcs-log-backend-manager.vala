@@ -9,7 +9,7 @@ public class Dcs.Log.BackendManager : Dcs.PluginManager {
 
         engine = Peas.Engine.get_default ();
         ext = new Dcs.Log.BackendProxy (zmq_client);
-        search_path = Dcs.Config.BACKEND_DIR;
+        search_path = Dcs.Build.BACKEND_DIR;
 
         init ();
         add_extension ();

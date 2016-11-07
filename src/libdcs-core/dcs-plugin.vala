@@ -26,12 +26,12 @@ public enum Dcs.PluginCapabilities {
 }
 
 /**
- * This represents a Dcs plugin.
+ * This represents a legacy Dcs plugin.
  *
  * Plugin libraries should provide an object of this class or a subclass in
  * their module_init () function.
  */
-public class Dcs.Plugin : GLib.Object {
+public class Dcs.LegacyPlugin : GLib.Object {
 
     public PluginCapabilities capabilities { get; construct set; }
 
@@ -60,10 +60,10 @@ public class Dcs.Plugin : GLib.Object {
      * @param capabilities The functionality and services that the plugin
      *                     provides.
      */
-    public Plugin (string  name,
-                   string? title,
-                   string? description = null,
-                   PluginCapabilities capabilities = PluginCapabilities.NONE) {
+    public LegacyPlugin (string  name,
+                         string? title,
+                         string? description = null,
+                         PluginCapabilities capabilities = PluginCapabilities.NONE) {
         GLib.Object (name : name,
                      title : title,
                      description : description,

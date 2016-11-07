@@ -18,11 +18,11 @@ dcs_daq_VALAFLAGS = \
 	--pkg json-glib-1.0 \
 	--pkg libsoup-2.4 \
 	--pkg libzmq \
-	--pkg dcs-config \
-	--pkg dcs-core-0.1 \
-	--pkg dcs-cli-0.1 \
-	--pkg dcs-daq-0.1 \
-	--pkg dcs-net-0.1 \
+	--pkg dcs-build \
+	--pkg dcs-core-0.2 \
+	--pkg dcs-cli-0.2 \
+	--pkg dcs-daq-0.2 \
+	--pkg dcs-net-0.2 \
 	$(NULL)
 
 dcs_daq_includes = \
@@ -60,10 +60,10 @@ dcs_daq_LDADD = \
 	$(LIBDCS_CLI_LIBS) \
 	$(LIBDCS_DAQ_LIBS) \
 	$(LIBDCS_NET_LIBS) \
-	$(top_builddir)/src/libdcs-core/libdcs-core-0.1.la \
-	$(top_builddir)/src/libdcs-cli/libdcs-cli-0.1.la \
-	$(top_builddir)/src/libdcs-daq/libdcs-daq-0.1.la \
-	$(top_builddir)/src/libdcs-net/libdcs-net-0.1.la \
+	$(top_builddir)/src/libdcs-core/libdcs-core-0.2.la \
+	$(top_builddir)/src/libdcs-cli/libdcs-cli-0.2.la \
+	$(top_builddir)/src/libdcs-daq/libdcs-daq-0.2.la \
+	$(top_builddir)/src/libdcs-net/libdcs-net-0.2.la \
 	$(NULL)
 
 dcs_daq_headers = \

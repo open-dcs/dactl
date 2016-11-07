@@ -15,17 +15,19 @@ libdcs_loop_pid_la_vala.stamp: $(libdcs_loop_pid_la_VALASOURCES)
 		--ccode \
 		&& touch $@
 
+libdcs_loop_pid_la_public_sources = \
+	dcs-pid-loop.c \
+	$(NULL)
+
 libdcs_loop_pid_la_VALASOURCES = \
 	dcs-pid-loop.vala \
 	$(NULL)
 
-EXTRA_DIST += $(libdcs_loop_pid_la_VALASOURCES)
-
-nodist_libdcs_loop_pid_la_SOURCES = \
-	dcs-pid-loop.c \
+libdcs_loop_pid_la_SOURCES = \
+	$(libdcs_loop_pid_la_VALASOURCES) \
 	$(NULL)
 
-CLEANFILES = $(BUILT_SOURCES) $(nodist_libdcs_loop_pid_la_SOURCES)
+CLEANFILES = $(BUILT_SOURCES)
 
 libdcs_loop_pid_la_VALAFLAGS = \
 	$(LOOP_VALAFLAGS) \
@@ -33,7 +35,7 @@ libdcs_loop_pid_la_VALAFLAGS = \
 
 libdcs_loop_pid_la_CFLAGS = \
 	-DVALA_VERSION=\""$(VALA_VERSION)"\" \
-	-DPACKAGE_DATADIR=\""$(datadir)/dcs-0.1"\" \
+	-DPACKAGE_DATADIR=\""$(datadir)/dcs-0.2"\" \
 	-DG_LOG_DOMAIN=\"pid-loop\" \
 	-DGETTEXT_PACKAGE=\"dcs\" \
 	$(LOOP_CFLAGS) \

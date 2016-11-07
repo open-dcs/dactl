@@ -11,7 +11,7 @@ private class Dcsg.Topbar : Gtk.Stack {
     };
 
     [GtkChild]
-    public Dcsg.ApplicationToolbar application_toolbar;
+    public Dcsg.Toolbar application_toolbar;
 
     [GtkChild]
     public Dcsg.LoaderToolbar loader_toolbar;

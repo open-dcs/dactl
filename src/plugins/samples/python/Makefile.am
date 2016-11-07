@@ -1,13 +1,11 @@
 if ENABLE_PYTHON_PLUGIN
 
-EXTRA_DIST = \
-	$(plugin_DATA) \
-	pyhello.plugin.in
+EXTRA_DIST = $(plugin_DATA)
 
 plugindir = $(libdir)/dcs/plugins
 dist_plugin_DATA = \
-	pyhello.py \
-	pyhello.plugin
+	python.py \
+	python.plugin
 
 endif
 

@@ -6,8 +6,8 @@ example_VALAFLAGS = \
 	$(DCS_CLD_DEPS_VALAFLAGS) \
 	--vapidir=$(top_srcdir)/vapi \
 	--vapidir=$(top_srcdir)/src/libdcs-core \
-	--pkg dcs-core-0.1 \
-	--pkg dcs-config
+	--pkg dcs-core-0.2 \
+	--pkg dcs-build
 
 example_CFLAGS = \
 	$(DEBUG_CFLAGS) \
@@ -18,7 +18,7 @@ example_CFLAGS = \
 example_LDADD = \
 	$(DCS_CLD_DEPS_LIBS) \
 	$(LIBDCS_CORE_LIBS) \
-	$(top_builddir)/src/libdcs-core/libdcs-core-0.1.la
+	$(top_builddir)/src/libdcs-core/libdcs-core-0.2.la
 
 if ENABLE_UI
 
@@ -26,7 +26,7 @@ noinst_PROGRAMS += box channel-treeview chart chart-axis page pnid
 
 example_ui_VALAFLAGS = \
 	--vapidir=$(top_srcdir)/src/libdcs-ui \
-	--pkg dcs-ui-0.1
+	--pkg dcs-ui-0.2
 
 example_ui_CFLAGS = \
 	$(LIBDCS_UI_CFLAGS) \
@@ -34,7 +34,7 @@ example_ui_CFLAGS = \
 
 example_ui_LDADD = \
 	$(LIBDCS_UI_LIBS) \
-	$(top_builddir)/src/libdcs-ui/libdcs-ui-0.1.la
+	$(top_builddir)/src/libdcs-ui/libdcs-ui-0.2.la
 
 example_VALAFLAGS += $(example_ui_VALAFLAGS)
 example_CFLAGS += $(example_ui_CFLAGS)

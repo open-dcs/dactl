@@ -12,4 +12,8 @@ man_MANS = \
 	dcsg.1 \
 	$(NULL)
 
+GITIGNOREFILES = \
+	$(man_MANS) \
+	$(NULL)
+
 -include $(top_srcdir)/git.mk

@@ -1,24 +1,24 @@
-public class Dcs.UI.Plugin : GLib.Object {
+public class Dcs.UI.Plugin : GLib.Object, Dcs.Extension {
 
-    public Dcs.ApplicationView view { get; construct set; }
+    public Dcs.Application app { get; construct set; }
 
-    public Plugin (Dcs.ApplicationView view) {
+    public Plugin (Dcs.Application app) {
         debug ("UI Plugin constructor");
-        this.view = view;
+        this.app = app;
     }
 }
 
 public class Dcs.UI.PluginManager : Dcs.PluginManager {
 
-    private Dcs.ApplicationView view;
+    private Dcs.Application app;
 
     public Dcs.UI.Plugin ext { get; set; }
 
-    public PluginManager (Dcs.ApplicationView view) {
-        this.view = view;
+    public PluginManager (Dcs.Application app) {
+        this.app = app;
 
         engine = Peas.Engine.get_default ();
-        ext = new Dcs.UI.Plugin (view);
+        ext = new Dcs.UI.Plugin (app);
         // XXX UI plugins are installed to the default location - change???
 
         init ();

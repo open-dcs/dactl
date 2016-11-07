@@ -20,10 +20,6 @@ HTMLS = \
 	$(man1_MANS:../man/man1/%.1=../html/%.html) \
 	$(NULL)
 
-MARKDOWNS = \
-	$(man1_MANS:../man/man1/%.1=../md/%.md) \
-	$(NULL)
-
 man1_MANS = \
 	../man/man1/dcs.1 \
 	../man/man1/dcs-publish.1 \
@@ -56,16 +52,10 @@ clean:
 ../html/%.html: %.xml authors.xml notes.xml seealso.xml transform-html.xsl
 	$(XSLTPROC) -o $@ $(XSLTPROC_HTML_FLAGS) $<
 
-../md/%.md: $(HTMLS)
-	$(md) $< >$@
-
 edit = sed \
 	-e 's|\@PREFIX\@|$(prefix)|' \
 	-e 's|\@SYSCONFDIR\@|$(sysconfdir)|' \
 	-e 's|\@PACKAGE_STRING\@|$(PACKAGE_STRING)|'
-
-# This is disgusting, buuut less work than writing an XSLT
-md = $(top_srcdir)/util/html2md.pl
 
 transform-man.xsl: transform-man.xsl.in
 	$(edit) $< >$@

@@ -4,24 +4,20 @@ BUILT_SOURCES =
 EXTRA_DIST =
 
 pkglibdir = $(libdir)/dcs
-pkglib_LTLIBRARIES = libdcs-net-0.1.la
+pkglib_LTLIBRARIES = libdcs-net-0.2.la
 
 headersdir = $(includedir)/dcs-@VERSION@/libdcs-net
 nobase_headers_DATA =
 
-pkgconfig_DATA = dcs-net-0.1.pc
+pkgconfig_DATA = dcs-net-0.2.pc
 pkgconfigdir = $(libdir)/pkgconfig
 
-EXTRA_DIST += \
-	dcs-net-0.1.pc.in \
+LIBDCS_NET_VERSION=0:2:0
+
+libdcs_net_0_2_la_public_headers = \
 	$(NULL)
 
-LIBDCS_NET_VERSION=0:1:0
-
-libdcs_net_0_1_la_public_headers = \
-	$(NULL)
-
-libdcs_net_0_1_la_public_sources = \
+libdcs_net_0_2_la_public_sources = \
 	dcs-net-enum.c \
 	dcs-net-factory.c \
 	dcs-net-rest-service.c \
@@ -29,7 +25,7 @@ libdcs_net_0_1_la_public_sources = \
 	dcs-net-zmq-client.c \
 	$(NULL)
 
-libdcs_net_0_1_la_VALASOURCES = \
+libdcs_net_0_2_la_VALASOURCES = \
 	dcs-net-enum.vala \
 	dcs-net-factory.vala \
 	dcs-net-rest-service.vala \
@@ -37,11 +33,11 @@ libdcs_net_0_1_la_VALASOURCES = \
 	dcs-net-zmq-client.vala \
 	$(NULL)
 
-libdcs_net_0_1_la_SOURCES = \
-	$(libdcs_net_0_1_la_VALASOURCES) \
+libdcs_net_0_2_la_SOURCES = \
+	$(libdcs_net_0_2_la_VALASOURCES) \
 	$(NULL)
 
-libdcs_net_0_1_la_includes = \
+libdcs_net_0_2_la_includes = \
 	$(DEBUG_CFLAGS) \
 	-DPACKAGE_DATADIR="\"${datadir}\"" \
 	-DPACKAGE_LOCALE_DIR=\""${datadir}/locale"\" \
@@ -51,10 +47,10 @@ libdcs_net_0_1_la_includes = \
 	-I$(top_srcdir)/src/libdcs-core \
 	$(NULL)
 
-libdcs_net_0_1_la_VALAFLAGS = \
+libdcs_net_0_2_la_VALAFLAGS = \
 	-H dcs-net.h -C \
-	--library=dcs-net-0.1 \
-	--gir=Dcs-0.1.gir \
+	--library=dcs-net-0.2 \
+	--gir=Dcs-0.2.gir \
 	--vapidir=$(top_srcdir)/vapi \
 	--vapidir=$(top_srcdir)/src/libdcs-core \
 	--pkg posix \
@@ -63,17 +59,17 @@ libdcs_net_0_1_la_VALAFLAGS = \
 	--pkg json-glib-1.0 \
 	--pkg libsoup-2.4 \
 	--pkg libzmq \
-	--pkg dcs-core-0.1 \
+	--pkg dcs-core-0.2 \
 	$(NULL)
 
-libdcs_net_0_1_la_CFLAGS = \
+libdcs_net_0_2_la_CFLAGS = \
 	-DG_LOG_DOMAIN=\"libdcs-net\" \
 	-DGETTEXT_PACKAGE=\"dcs\" \
 	$(AM_CFLAGS) \
 	$(LIBDCS_CFLAGS) \
 	$(LIBDCS_NET_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
-	$(libdcs_net_0_1_la_includes) \
+	$(libdcs_net_0_2_la_includes) \
 	-Wno-deprecated-declarations \
 	-Wno-discarded-qualifiers \
 	-Wno-implicit-function-declaration \
@@ -84,12 +80,12 @@ libdcs_net_0_1_la_CFLAGS = \
 	-Wformat-nonliteral \
 	$(NULL)
 
-libdcs_net_0_1_la_LDFLAGS = \
+libdcs_net_0_2_la_LDFLAGS = \
 	$(OPTIMIZE_LDFLAGS) \
 	-version-info $(LIBDCS_NET_VERSION) \
 	$(NULL)
 
-libdcs_net_0_1_la_LIBADD = \
+libdcs_net_0_2_la_LIBADD = \
 	$(LIBDCS_LIBS) \
 	$(LIBDCS_NET_LIBS) \
 	$(NULL)
@@ -101,16 +97,16 @@ if HAVE_INTROSPECTION
 INTROSPECTION_GIRS =
 INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir) --warn-all
 INTROSPECTION_COMPILER_ARGS = \
-	-l libdcs-net-0.1.so.0 \
+	-l libdcs-net-0.2.so.0 \
 	--includedir=$(builddir)/../libdcs-core \
 	--includedir=$(srcdir)/../libdcs-core
-$(builddir)/DcsNet-0.1.gir: $(srcdir)/Dcs-0.1.gir
+$(builddir)/DcsNet-0.2.gir: $(srcdir)/Dcs-0.2.gir
 	$(AM_V_GEN)$(SED) \
 		-e 's,Dcs\.,DcsNet.,g' \
 		-e 's,namespace name="Dcs",namespace name="DcsNet",g' \
-		-e 's,<package name="dcs-net-0.1"/>,<include name="DcsCore" version="0.1"/>\n<package name="dcs-net-0.1"/>,' \
+		-e 's,<package name="dcs-net-0.2"/>,<include name="DcsCore" version="0.2"/>\n<package name="dcs-net-0.2"/>,' \
 		$< >$@
-GIRS = DcsNet-0.1.gir
+GIRS = DcsNet-0.2.gir
 
 girdir = $(datadir)/dcs/gir-1.0
 gir_DATA = $(GIRS)
@@ -122,28 +118,32 @@ CLEANFILES += $(gir_DATA) $(typelib_DATA)
 endif
 
 
-libdcs_net_0_1_vapi_DEPS = \
+libdcs_net_0_2_vapi_DEPS = \
 	posix \
 	json-glib-1.0 \
 	libsoup-2.4 \
 	libzmq
 
-dcs-net-0.1.deps: Makefile
-	$(AM_V_GEN) echo $(libdcs_net_0_1_vapi_DEPS) | tr ' ' '\n' > $@
+dcs-net-0.2.deps: Makefile
+	$(AM_V_GEN) echo $(libdcs_net_0_2_vapi_DEPS) | tr ' ' '\n' > $@
 
-VAPI_FILES = dcs-net-0.1.vapi
-DEPS_FILES = dcs-net-0.1.deps
+VAPI_FILES = dcs-net-0.2.vapi
+DEPS_FILES = dcs-net-0.2.deps
 
 vapidir = $(VAPIDIR)
 vapi_DATA = $(VAPI_FILES) $(DEPS_FILES)
-dcs-net.h dcs-net-0.1.vapi Dcs-0.1.gir: libdcs_net_0_1_la_vala.stamp
+dcs-net.h dcs-net-0.2.vapi Dcs-0.2.gir: libdcs_net_0_2_la_vala.stamp
 
 BUILT_SOURCES += \
 	dcs-net.h \
 	$(VAPI_FILES) \
 	$(DEPS_FILES) \
-	DcsNet-0.1.gir \
-	Dcs-0.1.gir \
+	DcsNet-0.2.gir \
+	Dcs-0.2.gir \
+	$(NULL)
+
+EXTRA_DIST += \
+	$(BUILT_SOURCES) \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk

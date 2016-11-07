@@ -40,40 +40,16 @@
     //public abstract signal void closed ();
 //}
 
-/**
- * Skeletal implementation of the {@link Interface} interface.
+[GenericAccessors]
+public interface Dcs.View : GLib.Object {
+
+/*
+ *    protected abstract Dcs.Model model { get; set; }
  *
- * Contains common code shared by all interface implementations.
+ *    protected void connect (owned Dcs.Model.UpdateFunc update_func) {
+ *        model.updated.connect (() => {
+ *            update_func ();
+ *        });
+ *    }
  */
-//public abstract class Dcs.AbstractView : Dcs.AbstractObject, Dcs.View {
-
-    /**
-     * {@inheritDoc}
-     */
-    //public abstract bool admin { get; set; }
-
-    /**
-     * {@inheritDoc}
-     */
-    //public abstract bool active { get; private set; }
-
-    /**
-     * {@inheritDoc}
-     */
-    //public abstract void launch ();
-
-    /**
-     * {@inheritDoc}
-     */
-    //public abstract void shutdown ();
-
-    /**
-     * {@inheritDoc}
-     */
-    //public abstract signal void opened ();
-
-    /**
-     * {@inheritDoc}
-     */
-    //public abstract signal void closed ();
-//}
+}

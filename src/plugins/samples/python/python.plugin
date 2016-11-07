@@ -1,0 +1,7 @@
+[Plugin]
+Module=python
+Loader=python3
+Name=Python Sample Plugin
+Description=Python sample plugin.
+Authors=Geoff Johnson <geoff.jay@gmail.com>
+Copyright=Copyright © 2016 Geoff Johnson

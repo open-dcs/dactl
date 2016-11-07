@@ -9,7 +9,7 @@ public class Dcs.DAQ.DeviceManager : Dcs.PluginManager {
 
         engine = Peas.Engine.get_default ();
         ext = new Dcs.DAQ.Device (zmq_service);
-        search_path = Dcs.Config.DEVICE_DIR;
+        search_path = Dcs.Build.DEVICE_DIR;
 
         init ();
         add_extension ();

@@ -8,7 +8,7 @@
 
     <!-- Application -->
     <child>
-      <object class="DcsgApplicationToolbar" id="application_toolbar">
+      <object class="DcsgToolbar" id="application_toolbar">
       </object>
 
       <packing>

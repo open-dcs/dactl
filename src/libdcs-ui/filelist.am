@@ -2,6 +2,7 @@ LIBDCS_UI_VAPI_SOURCE_FILES = \
     dcs-ui-box.vala \
     dcs-ui-ai-control.vala \
     dcs-ui-ao-control.vala \
+    dcs-ui-application.vala \
     dcs-ui-drawing.vala \
     dcs-ui-channel-matrix.vala \
     dcs-ui-channel-treeview.vala \
@@ -32,6 +33,7 @@ LIBDCS_UI_VAPI_SOURCE_FILES = \
     dcs-ui-factory.vala \
     dcs-ui-plugin-manager.vala \
     dcs-ui-window.vala \
+    dcs-ui-window-base.vala \
     dcs-ui-video-processor.vala \
     dcs-ui-widget.vala
 
@@ -43,6 +45,7 @@ libdcs_ui_la_public_sources = \
     dcs-ui-box.c \
     dcs-ui-ai-control.c \
     dcs-ui-ao-control.c \
+    dcs-ui-application.c \
     dcs-ui-drawing.c \
     dcs-ui-channel-matrix.c \
     dcs-ui-channel-treeview.c \
@@ -74,6 +77,7 @@ libdcs_ui_la_public_sources = \
     dcs-ui-plugin-manager.c \
     dcs-ui-utility.c \
     dcs-ui-window.c \
+    dcs-ui-window-base.c \
     dcs-ui-video-processor.c \
     dcs-ui-widget.c \
     dcs-ui-widget-information.c

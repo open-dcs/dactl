@@ -1,5 +1,3 @@
-include $(top_srcdir)/common.am
-
 if ENABLE_WEBKIT
 
 EXTRA_DIST = $(extensions_DATA)
@@ -16,17 +14,19 @@ libdcs_ui_extension_dom_la_vala.stamp: $(libdcs_ui_extension_dom_la_VALASOURCES)
 		--ccode \
 		&& touch $@
 
+libdcs_ui_extension_dom_la_public_sources = \
+	dcs-ui-extension-dom.c \
+	$(NULL)
+
 libdcs_ui_extension_dom_la_VALASOURCES = \
 	dcs-ui-extension-dom.vala \
 	$(NULL)
 
-EXTRA_DIST += $(libdcs_ui_extension_dom_la_VALASOURCES)
-
-nodist_libdcs_ui_extension_dom_la_SOURCES = \
-	dcs-ui-extension-dom.c \
+libdcs_ui_extension_dom_la_SOURCES = \
+	$(libdcs_ui_extension_dom_la_VALASOURCES) \
 	$(NULL)
 
-CLEANFILES = $(BUILT_SOURCES) $(nodist_libdcs_ui_extension_dom_la_SOURCES)
+CLEANFILES = $(BUILT_SOURCES)
 
 libdcs_ui_extension_dom_la_VALAFLAGS = \
 	--vapidir=$(top_srcdir)/vapi \

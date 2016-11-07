@@ -126,22 +126,22 @@ public class Dcs.CLI.Application : GLib.Application, Dcs.Application {
     /**
      * {@inheritDoc}
      */
-    public virtual Dcs.ApplicationModel model { get; set; }
+    public virtual Dcs.Model model { get; set; }
 
     /**
      * {@inheritDoc}
      */
-    public virtual Dcs.ApplicationView view { get; set; }
+    public virtual Dcs.View view { get; set; }
 
     /**
      * {@inheritDoc}
      */
-    public virtual Dcs.ApplicationController controller { get; set; }
+    public virtual Dcs.Controller controller { get; set; }
 
     /**
      * {@inheritDoc}
      */
-    public virtual Gee.ArrayList<Dcs.Plugin> plugins { get; set; }
+    public virtual Gee.ArrayList<Dcs.LegacyPlugin> plugins { get; set; }
 
     /**
      * Used when the user requests a configuration save.
@@ -168,13 +168,13 @@ public class Dcs.CLI.Application : GLib.Application, Dcs.Application {
                      flags: ApplicationFlags.HANDLES_COMMAND_LINE |
                             ApplicationFlags.HANDLES_OPEN);
 
-        plugins = new Gee.ArrayList<Dcs.Plugin> ();
+        plugins = new Gee.ArrayList<Dcs.LegacyPlugin> ();
     }
 
     /**
      * {@inheritDoc}
      */
-    public void register_plugin (Dcs.Plugin plugin) {
+    public void register_plugin (Dcs.LegacyPlugin plugin) {
         //if (plugin.has_factory) { }
     }
 
