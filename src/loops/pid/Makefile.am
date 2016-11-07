@@ -35,7 +35,7 @@ libdcs_loop_pid_la_VALAFLAGS = \
 
 libdcs_loop_pid_la_CFLAGS = \
 	-DVALA_VERSION=\""$(VALA_VERSION)"\" \
-	-DPACKAGE_DATADIR=\""$(datadir)/dcs-0.1"\" \
+	-DPACKAGE_DATADIR=\""$(datadir)/dcs-0.2"\" \
 	-DG_LOG_DOMAIN=\"pid-loop\" \
 	-DGETTEXT_PACKAGE=\"dcs\" \
 	$(LOOP_CFLAGS) \

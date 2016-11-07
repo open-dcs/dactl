@@ -4,9 +4,9 @@ if ENABLE_DOC
 
 include Makefile.sphinx
 
-docdir=$(datadir)/devhelp/references/dcs-0.1
-innerdocdir=$(datadir)/devhelp/references/dcs-0.1/dcs-0.1
-imgdir=$(datadir)/devhelp/references/dcs-0.1/dcs-0.1/img
+docdir=$(datadir)/devhelp/references/dcs-0.2
+innerdocdir=$(datadir)/devhelp/references/dcs-0.2/dcs-0.2
+imgdir=$(datadir)/devhelp/references/dcs-0.2/dcs-0.2/img
 
 core_valaflags = \
 	--pkg cld-0.3 \
@@ -32,28 +32,28 @@ net_valaflags = \
 	--pkg libzmq
 
 doc_data = \
-	dcs-0.1/*.css \
-	dcs-0.1/*.png \
+	dcs-0.2/*.css \
+	dcs-0.2/*.png \
 	$(NULL)
 
 doc_DATA = \
-	dcs-0.1/index.html \
+	dcs-0.2/index.html \
 	$(doc_data) \
 	$(NULL)
 
 innerdoc_DATA = \
-	dcs-0.1/dcs-0.1/index.htm \
-	dcs-0.1/dcs-0.1/*.html \
+	dcs-0.2/dcs-0.2/index.htm \
+	dcs-0.2/dcs-0.2/*.html \
 	$(NULL)
 
 img_DATA = \
-	dcs-0.1/dcs-0.1/*.png \
+	dcs-0.2/dcs-0.2/*.png \
 	$(NULL)
 
-$(doc_data) $(innerdoc_DATA) $(img_DATA): dcs-0.1/index.html
+$(doc_data) $(innerdoc_DATA) $(img_DATA): dcs-0.2/index.html
 
-dcs-0.1/index.html:
-	$(VALADOC) -o dcs-0.1/ --wiki ./ --target-glib=2.44 \
+dcs-0.2/index.html:
+	$(VALADOC) -o dcs-0.2/ --wiki ./ --target-glib=2.44 \
 		--force -b $(top_srcdir) \
 		$(top_srcdir)/src/libdcs-core/*.vala \
 		$(top_srcdir)/src/libdcs-ui/*.vala \
@@ -77,7 +77,7 @@ endif
 
 GITIGNOREFILES = \
 	build \
-	dcs-0.1 \
+	dcs-0.2 \
 	html \
 	$(NULL)
 
