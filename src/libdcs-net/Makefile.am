@@ -12,10 +12,6 @@ nobase_headers_DATA =
 pkgconfig_DATA = dcs-net-0.1.pc
 pkgconfigdir = $(libdir)/pkgconfig
 
-EXTRA_DIST += \
-	dcs-net-0.1.pc.in \
-	$(NULL)
-
 LIBDCS_NET_VERSION=0:1:0
 
 libdcs_net_0_1_la_public_headers = \
@@ -144,6 +140,10 @@ BUILT_SOURCES += \
 	$(DEPS_FILES) \
 	DcsNet-0.1.gir \
 	Dcs-0.1.gir \
+	$(NULL)
+
+EXTRA_DIST += \
+	$(BUILT_SOURCES) \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk

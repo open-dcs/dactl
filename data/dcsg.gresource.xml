@@ -11,9 +11,9 @@
 
   <gresource prefix="/org/opendcs/dcs/ui">
     <file compressed="true" alias="topbar.ui">ui/topbar.ui</file>
-    <file compressed="true" alias="application-menu.ui">ui/application-menu.ui</file>
-    <file compressed="true" alias="application-view.ui">ui/application-view.ui</file>
-    <file compressed="true" alias="application-toolbar.ui">ui/application-toolbar.ui</file>
+    <file compressed="true" alias="menu.ui">ui/menu.ui</file>
+    <file compressed="true" alias="window.ui">ui/window.ui</file>
+    <file compressed="true" alias="toolbar.ui">ui/toolbar.ui</file>
     <file compressed="true" alias="configuration.ui">ui/configuration.ui</file>
     <file compressed="true" alias="configuration-toolbar.ui">ui/configuration-toolbar.ui</file>
     <file compressed="true" alias="csv-export.ui">ui/csv-export.ui</file>

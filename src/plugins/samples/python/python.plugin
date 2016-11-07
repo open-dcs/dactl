@@ -1,7 +1,7 @@
 [Plugin]
-Module=pyhello
+Module=python
 Loader=python3
-Name=Python Says Hello
-Description=Says Hello from a python plugin.
+Name=Python Sample Plugin
+Description=Python sample plugin.
 Authors=Geoff Johnson <geoff.jay@gmail.com>
 Copyright=Copyright © 2016 Geoff Johnson

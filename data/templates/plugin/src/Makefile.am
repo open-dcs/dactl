@@ -7,4 +7,6 @@ plugintemplatesrc_DATA = \
 	_plugin_.gresource.xml.jnj \
 	_plugin_.plugin
 
+EXTRA_DIST = $(plugintemplatesrc_DATA)
+
 -include $(top_srcdir)/git.mk

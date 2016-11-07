@@ -3,6 +3,7 @@
  */
 public interface Dcs.Extension : GLib.Object {
 
+    public signal void requested ();
 }
 
 public class Dcs.PluginExtension : Peas.ExtensionBase, Dcs.Extension, Peas.Activatable {
@@ -27,6 +28,8 @@ public abstract class Dcs.PluginManager {
     protected string search_path = Config.PLUGIN_DIR;
 
     //public Dcs.Extension ext { protected set; public get; }
+
+    public signal void plugin_available (Dcs.Extension extension);
 
     protected virtual void init () {
 		GLib.Environment.set_variable ("PEAS_ALLOW_ALL_LOADERS", "1", true);

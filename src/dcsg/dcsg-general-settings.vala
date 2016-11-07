@@ -19,7 +19,7 @@ public class Dcsg.GeneralSettings : Gtk.Box {
 
     construct {
         app = Dcsg.Application.get_default ();
-        var model = app.model as Dcsg.ApplicationModel;
+        var model = app.model as Dcsg.Model;
         var pages = model.get_object_map (typeof (Dcs.UI.Page));
 
         entry_name.set_text (model.name);
@@ -41,7 +41,7 @@ public class Dcsg.GeneralSettings : Gtk.Box {
     }
 
     public void update_preferences () {
-        var model = app.model as Dcsg.ApplicationModel;
+        var model = app.model as Dcsg.Model;
         model.dark_theme = switch_dark_theme.get_active ();
         model.admin = switch_admin.get_active ();
         model.name = entry_name.get_text ();

@@ -1,5 +1,5 @@
 <schemalist>
-  <schema id="org.opendcs.dcs" path="/org/opendcs/dcs/" gettext-domain="dcs">
+  <schema id="org.opendcs.dcsg" path="/org/opendcs/dcsg/" gettext-domain="dcsg">
     <key name="window-size" type="ai">
       <default>[1280, 800]</default>
       <summary>Window size</summary>

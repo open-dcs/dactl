@@ -15,17 +15,19 @@ libdcs_backend_xml_la_vala.stamp: $(libdcs_backend_xml_la_VALASOURCES)
 		--ccode \
 		&& touch $@
 
+libdcs_backend_xml_la_public_sources = \
+	dcs-xml-backend.c \
+	$(NULL)
+
 libdcs_backend_xml_la_VALASOURCES = \
 	dcs-xml-backend.vala \
 	$(NULL)
 
-EXTRA_DIST += $(libdcs_backend_xml_la_VALASOURCES)
-
-nodist_libdcs_backend_xml_la_SOURCES = \
-	dcs-xml-backend.c \
+libdcs_backend_xml_la_SOURCES = \
+	$(libdcs_backend_xml_la_VALASOURCES) \
 	$(NULL)
 
-CLEANFILES = $(BUILT_SOURCES) $(nodist_libdcs_backend_xml_la_SOURCES)
+CLEANFILES = $(BUILT_SOURCES)
 
 libdcs_backend_xml_la_VALAFLAGS = \
 	$(BACKEND_VALAFLAGS) \

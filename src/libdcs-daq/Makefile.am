@@ -14,10 +14,6 @@ nobase_headers_DATA =
 pkgconfig_DATA = dcs-daq-0.1.pc
 pkgconfigdir = $(libdir)/pkgconfig
 
-EXTRA_DIST += \
-	dcs-daq-0.1.pc.in \
-	$(NULL)
-
 LIBDCS_DAQ_VERSION=0:1:0
 
 libdcs_daq_0_1_la_public_headers = \
@@ -153,6 +149,10 @@ BUILT_SOURCES += \
 	$(DEPS_FILES) \
 	DcsDAQ-0.1.gir \
 	Dcs-0.1.gir \
+	$(NULL)
+
+EXTRA_DIST += \
+	$(BUILT_SOURCES) \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk

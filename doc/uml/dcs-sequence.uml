@@ -1,0 +1,10 @@
+@startuml
+
+/' OpenDCS UML Sequence Diagram
+ '
+ ' XXX Add something.
+ '/
+
+title OpenDCS Sequence Diagram
+
+@enduml

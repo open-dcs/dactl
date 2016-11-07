@@ -20,10 +20,6 @@ nobase_headers_DATA =
 pkgconfig_DATA = dcs-ui-0.1.pc
 pkgconfigdir = $(libdir)/pkgconfig
 
-EXTRA_DIST += \
-	dcs-ui-0.1.pc.in \
-	$(NULL)
-
 LIBDCS_UI_VERSION=0:1:0
 
 gresource_file = libdcs-ui.gresource.xml
@@ -96,7 +92,8 @@ libdcs_ui_0_1_la_CFLAGS = \
 	-Wno-unused-but-set-variable \
 	-Wno-unused-label \
 	-Wno-unused-function \
-	-Wformat-nonliteral
+	-Wformat-nonliteral \
+	-Wredundant-decls
 
 libdcs_ui_0_1_la_LDFLAGS = \
 	$(OPTIMIZE_LDFLAGS) \
@@ -178,6 +175,10 @@ BUILT_SOURCES += \
 	$(DEPS_FILES) \
 	DcsUI-0.1.gir \
 	Dcs-0.1.gir \
+	$(NULL)
+
+EXTRA_DIST += \
+	$(BUILT_SOURCES) \
 	$(NULL)
 
 endif

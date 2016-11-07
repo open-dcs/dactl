@@ -5,41 +5,10 @@
  * XXX should consider adding signals where necessary in the model and only
  *     update the view when it fires a signal to improve performance.
  */
-public class Dcsg.Application : Gtk.Application, Dcs.Application {
+public class Dcsg.Application : Dcs.UI.Application {
 
     /* Application singleton */
     private static Dcsg.Application app;
-
-    public bool _admin = false;
-    /**
-     * Allow administrative functionality
-     */
-    public bool admin {
-        get { return _admin; }
-        set {
-            _admin = value;
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public virtual Dcs.ApplicationModel model { get; set; }
-
-    /**
-     * {@inheritDoc}
-     */
-    public virtual Dcs.ApplicationView view { get; set; }
-
-    /**
-     * {@inheritDoc}
-     */
-    public virtual Dcs.ApplicationController controller { get; set; }
-
-    /**
-     * {@inheritDoc}
-     */
-    public virtual Gee.ArrayList<Dcs.Plugin> plugins { get; set; }
 
     /**
      * User interface layout manager.
@@ -81,7 +50,7 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
                      flags: ApplicationFlags.HANDLES_COMMAND_LINE |
                             ApplicationFlags.HANDLES_OPEN);
 
-        plugins = new Gee.ArrayList<Dcs.Plugin> ();
+        plugins = new Gee.ArrayList<Dcs.LegacyPlugin> ();
     }
 
     /**
@@ -95,22 +64,22 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
         WebKit.WebContext.get_default ().set_web_extensions_directory (Dcs.Config.WEB_EXTENSION_DIR);
 
         debug ("Creating application model using file %s", opt_cfgfile);
-        model = new Dcsg.ApplicationModel (opt_cfgfile);
+        model = new Dcsg.Model (opt_cfgfile);
         assert (model != null);
 
         (model as Dcs.Container).print_objects (0);
         Gtk.Settings.get_default ().gtk_application_prefer_dark_theme =
-            (model as Dcsg.ApplicationModel).dark_theme;
+            (model as Dcsg.Model).dark_theme;
 
         debug ("Finished constructing the model");
 
-        view = new Dcsg.ApplicationView (model);
+        view = new Dcsg.Window (model);
         assert (view != null);
         (view as Gtk.Window).application = this;
 
         debug ("Finished constructing the view");
 
-        ux_manager = new Dcsg.UxManager ((Dcsg.ApplicationView) view);
+        ux_manager = new Dcsg.UxManager ((Dcsg.Window) view);
 
         /**
          * FIXME: This hides the window and then shows the message box
@@ -120,33 +89,20 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
          *});
          */
 
-        controller = new Dcsg.ApplicationController (
-                            (Dcsg.ApplicationModel) model,
-                            (Dcsg.ApplicationView) view);
+        controller = new Dcsg.Controller ((Dcsg.Model) model,
+                                          (Dcsg.Window) view);
         assert (controller != null);
-
         debug ("Finished constructing the controller");
-
-        /* XXX would like to move this inside of the view but doesn't work until
-         *     the application activate is performed */
-        (view as Dcsg.ApplicationView).maximize ();
-        (view as Dcsg.ApplicationView).show_all ();
-
-        (view as Gtk.ApplicationWindow).present ();
-
-        /* Load the layout from either the configuration or use the default */
-        (view as Dcsg.ApplicationView).construct_layout ();
+        (controller as Dcsg.Controller).init ();
 
         view_constructed ();
 
         connect_signals ();
         add_actions ();
 
-        lock (controller) {
-            debug ("Starting device acquisition and output tasks");
-            controller.start_acquisition ();
-            controller.start_device_output ();
-        }
+        debug ("Starting device acquisition and output tasks");
+        controller.start_acquisition ();
+        controller.start_device_output ();
 
         debug ("Application activation completed");
     }
@@ -157,7 +113,6 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
      */
     protected override void startup () {
         base.startup ();
-
         add_app_menu ();
     }
 
@@ -198,51 +153,9 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
     }
 
     private void connect_signals () {
-        model.notify["admin"].connect (() => {
-            admin = model.admin;
-            controller.admin = model.admin;
+        controller.notify["admin"].connect (() => {
+            model.admin = controller.admin;
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void register_plugin (Dcs.Plugin plugin) {
-        if (plugin.has_factory) {
-            /*Dcs.Object control;*/
-
-            /* Get the node to use from the configuration */
-            try {
-                string name = plugin.name;
-                var xpath = @"//plugin[@type=\"$name\"]";
-
-                debug ("Searching for the node at: %s", xpath);
-                Xml.Node *node = model.config.get_xml_node (xpath);
-                if (node != null) {
-                    /* Iterate through node children */
-                    for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {
-                        if (iter->name == "object") {
-                            var control = plugin.factory.make_object_from_node (iter);
-                            model.add_child (control);
-
-                            debug ("Connecting plugin control to CLD data for `%s'", plugin.name);
-                            (control as Dcs.CldAdapter).request_object.connect ((uri) => {
-                                var object = model.ctx.get_object_from_uri (uri);
-                                debug ("Offering object `%s' to `%s'",
-                                            object.id, (control as Dcs.Object).id);
-                                (control as Dcs.CldAdapter).offer_cld_object (object);
-                            });
-
-                            debug ("Attempting to add the plugin control to the layout");
-                            var parent = model.get_object ((control as Dcs.UI.PluginControl).parent_ref);
-                            (parent as Dcs.UI.Box).add_child (control);
-                        }
-                    }
-                }
-            } catch (GLib.Error e) {
-                GLib.error (e.message);
-            }
-        }
     }
 
     /**
@@ -250,7 +163,7 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
      *     if possible make the application a composite
      */
     private void add_actions () {
-        if (model.admin) {
+        if (controller.admin) {
             var admin_action = new SimpleAction ("admin", null);
             add_action (admin_action);
         }
@@ -262,23 +175,11 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
 
         /* view menu actions */
         var view_data_action = new SimpleAction ("data", null);
-        view_data_action.activate.connect (view_data_action_activated_cb);
+        view_data_action.activate.connect (view_data_activated_cb);
         this.add_action (view_data_action);
 
-        /*
-         *var view_recent_action = new SimpleAction ("recent", null);
-         *view_recent_action.activate.connect (view_recent_action_activated_cb);
-         *this.add_action (view_recent_action);
-         */
-
-        /*
-         *var view_digio_action = new SimpleAction ("digio", null);
-         *view_digio_action.activate.connect (view_digio_action_activated_cb);
-         *this.add_action (view_digio_action);
-         */
-
         var configuration_action = new SimpleAction ("configuration", null);
-        configuration_action.activate.connect (configuration_action_activated_cb);
+        configuration_action.activate.connect (configuration_activated_cb);
         this.add_action (configuration_action);
 
         var configuration_back_action = new SimpleAction ("configuration-back", null);
@@ -286,7 +187,7 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
         this.add_action (configuration_back_action);
 
         var export_action = new SimpleAction ("export", null);
-        export_action.activate.connect (export_action_activated_cb);
+        export_action.activate.connect (export_activated_cb);
         this.add_action (export_action);
 
         var export_back_action = new SimpleAction ("export-back", null);
@@ -294,7 +195,7 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
         this.add_action (export_back_action);
 
         var loader_action = new SimpleAction ("loader", null);
-        loader_action.activate.connect (loader_action_activated_cb);
+        loader_action.activate.connect (loader_activated_cb);
         this.add_action (loader_action);
 
         var loader_back_action = new SimpleAction ("loader-back", null);
@@ -337,30 +238,23 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
 
         /* Handling some of the actions at the view level to reduce the need to
          * make public a lot of widget content. */
-        (view as Dcsg.ApplicationView).add_actions ();
+        (view as Dcsg.Window).add_actions ();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public override void shutdown () {
         base.shutdown ();
 
-        lock (model) {
-            debug ("Stopping device acquisition and output tasks");
-            controller.stop_acquisition ();
-            controller.stop_device_output ();
-        }
+        debug ("Stopping device acquisition and output tasks");
+        controller.stop_acquisition ();
+        controller.stop_device_output ();
 
         /* Let someone else deal with shutting down. */
         closed ();
     }
 
-    public virtual int launch (string[] args) {
-        return (this as Gtk.Application).run (args);
-    }
-
-    /**
-     * XXX should test moving this into the Utility file so that it doesn't
-     *     need to be created in every application class
-     */
     static bool opt_admin;
     static bool opt_help;
     static string opt_cfgfile;
@@ -415,7 +309,7 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
             GLib.message ("Configuration file not provided, using %s", opt_cfgfile);
         }
 
-        admin = opt_admin;
+        controller.admin = opt_admin;
 
         /* XXX not sure if this is the correct way to use this yet */
         activate ();
@@ -487,12 +381,19 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
     }
 
     /**
+     * Action callback for admin - not sure why yet.
+     */
+    private void admin_activated_cb (SimpleAction action, Variant? parameter) {
+        debug ("Nothing yet.");
+    }
+
+    /**
      * Action callback for settings.
      */
     private void settings_activated_cb (SimpleAction action, Variant? parameter) {
         GLib.debug ("Settings: Dialog activated.");
         int x, y, wp, hp, ws, hs;
-        //(view as Dcsg.ApplicationView).layout_change_page ("settings");
+        //(view as Dcsg.Window).layout_change_page ("settings");
         (view as Gtk.Window).get_position (out x, out y);
         (view as Gtk.Window).get_size (out wp, out hp);
         var settings = new Dcsg.SettingsDialog ();
@@ -518,8 +419,8 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
     /**
      * Action callback for configuration.
      */
-    private void configuration_action_activated_cb (SimpleAction action, Variant? parameter) {
-        (view as Dcsg.ApplicationView).layout_change_page ("configuration");
+    private void configuration_activated_cb (SimpleAction action, Variant? parameter) {
+        (view as Dcsg.Window).layout_change_page ("configuration");
 
     }
 
@@ -527,49 +428,49 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
      * Action callback for going back to previous page from configuration.
      */
     private void configuration_back_activated_cb (SimpleAction action, Variant? parameter) {
-        (view as Dcsg.ApplicationView).layout_back_page ();
+        (view as Dcsg.Window).layout_back_page ();
     }
 
     /**
      * Action callback for CSV export.
      */
-    private void export_action_activated_cb (SimpleAction action, Variant? parameter) {
-        (view as Dcsg.ApplicationView).layout_change_page ("export");
+    private void export_activated_cb (SimpleAction action, Variant? parameter) {
+        (view as Dcsg.Window).layout_change_page ("export");
     }
 
     /**
      * Action callback for going back to previous page from the CSV export.
      */
     private void export_back_activated_cb (SimpleAction action, Variant? parameter) {
-        (view as Dcsg.ApplicationView).layout_back_page ();
+        (view as Dcsg.Window).layout_back_page ();
     }
 
     /**
      * Action callback for configuration loader.
      */
-    private void loader_action_activated_cb (SimpleAction action, Variant? parameter) {
-        (view as Dcsg.ApplicationView).layout_change_page ("loader");
+    private void loader_activated_cb (SimpleAction action, Variant? parameter) {
+        (view as Dcsg.Window).layout_change_page ("loader");
     }
 
     /**
      * Action callback for going back to previous page from the configuration loader.
      */
     private void loader_back_activated_cb (SimpleAction action, Variant? parameter) {
-        (view as Dcsg.ApplicationView).layout_back_page ();
+        (view as Dcsg.Window).layout_back_page ();
     }
 
     /**
      * Action callback for going to the previous available non-settings page.
      */
     private void previous_page_activated_cb (SimpleAction action, Variant? parameter) {
-        (view as Dcsg.ApplicationView).layout_previous_page ();
+        (view as Dcsg.Window).layout_previous_page ();
     }
 
     /**
      * Action callback for going to the next available non-settings page.
      */
     private void next_page_activated_cb (SimpleAction action, Variant? parameter) {
-        (view as Dcsg.ApplicationView).layout_next_page ();
+        (view as Dcsg.Window).layout_next_page ();
     }
 
     /**
@@ -637,15 +538,11 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
         action.set_state (new Variant.boolean (!active));
         /* XXX locking the model may not be necessary, from older version */
         if (!active) {
-            lock (model) {
-                controller.start_acquisition ();
-                controller.start_device_output ();
-            }
+            controller.start_acquisition ();
+            controller.start_device_output ();
         } else {
-            lock (model) {
-                controller.stop_acquisition ();
-                controller.stop_device_output ();
-            }
+            controller.stop_acquisition ();
+            controller.stop_device_output ();
         }
         this.release ();
     }
@@ -778,21 +675,7 @@ public class Dcsg.Application : Gtk.Application, Dcs.Application {
     /**
      * View menu actions.
      */
-    private void view_data_action_activated_cb (SimpleAction action, Variant? parameter) {
+    private void view_data_activated_cb (SimpleAction action, Variant? parameter) {
         GLib.debug ("View: Data viewer action activated");
     }
-
-    /*
-     *private void view_digio_action_activated_cb (SimpleAction action, Variant? parameter) {
-     *    GLib.debug ("View: Digital I/O viewer action activated");
-     *    var dialog = new Dcs.DioViewerDialog (model);
-     *}
-     */
-
-    /*
-     *private void view_recent_action_activated_cb (SimpleAction action, Variant? parameter) {
-     *    GLib.debug ("View: Recent files action activated");
-     *    var dialog = new Dcs.RecentFilesDialog ();
-     *}
-     */
 }

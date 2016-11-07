@@ -1,8 +1,12 @@
+namespace Dcs {
+    public delegate void ModelUpdatedFunc ();
+}
+
 /**
  * Main application class responsible for interfacing with data and different
  * interface types.
  */
-public class Dcs.ApplicationModel : GLib.Object, Dcs.Container {
+public class Dcs.Model : GLib.Object, Dcs.Container {
 
     private string _name = "Untitled";
     /**
@@ -81,15 +85,20 @@ public class Dcs.ApplicationModel : GLib.Object, Dcs.Container {
     public signal void log_state_changed (string log, bool state);
 
     /**
+     * Emitted whenever the object map has been updated.
+     */
+    public signal void updated ();
+
+    /**
      * Default construction.
      */
-    public ApplicationModel (string config_filename) {
+    public Model (string config_filename) {
         this.config_filename = config_filename;
 
         if (!FileUtils.test (config_filename, FileTest.EXISTS)) {
             /* XXX might be better if somehow done after gui was launched
              *     so that a dialog could be given, or use conditional
-             *     ApplicationModel construction */
+             *     Model construction */
             critical ("Configuration selection '%s' does not exist.",
                       config_filename);
         }

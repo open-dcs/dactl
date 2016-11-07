@@ -81,7 +81,7 @@ internal class Dcs.Control.Main : GLib.Object {
     }
 
     private int run (string[] args) {
-        message (_("Control Server v%s starting..."), Config.PACKAGE_VERSION);
+        message ("Control Server v%s starting...", Config.PACKAGE_VERSION);
         app.launch (args);
 
         return this.exit_code;

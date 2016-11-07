@@ -1,0 +1,9 @@
+<schemalist>
+  <schema id="org.opendcs.dcsg.plugin" gettext-domain="dcsg">
+    <key name="enabled" type="b">
+      <default>true</default>
+      <summary>Enabled</summary>
+      <description>If the plugin should be enabled</description>
+    </key>
+  </schema>
+</schemalist>

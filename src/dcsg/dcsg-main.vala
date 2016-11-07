@@ -68,7 +68,7 @@ internal class Dcsg.Main : GLib.Object {
 
         /* TODO transition to new Peas plugin manager */
         (app as Dcsg.Application).view_constructed.connect (() => {
-            plugin_manager = new Dcs.UI.PluginManager (app.view);
+            plugin_manager = new Dcs.UI.PluginManager (app);
         });
 
         plugin_loader.plugin_available.connect (on_plugin_loaded);
@@ -132,7 +132,7 @@ internal class Dcsg.Main : GLib.Object {
     }
 
     private void on_plugin_loaded (Dcs.PluginLoader plugin_loader,
-                                   Dcs.Plugin       plugin) {
+                                   Dcs.LegacyPlugin plugin) {
         if (plugin.has_factory) {
             Dcs.ApplicationFactory.register_factory (plugin.factory);
         }

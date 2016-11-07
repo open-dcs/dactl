@@ -10,7 +10,7 @@
      |     |
      |     |-> overlay = new Gtk.Overlay ();
      |     |    |
-     |     |    |-> layout = new Gtk.Stack ();
+     |     |    |-> stack = new Gtk.Stack ();
      |     |        |
      |     |        |-> settings = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 0);
      |     |        |    |
@@ -30,7 +30,7 @@
 
   -->
 
-  <template class="DcsgApplicationView" parent="GtkApplicationWindow">
+  <template class="DcsgWindow" parent="DcsUIWindowBase">
     <property name="visible">False</property>
     <property name="show-menubar">False</property>
     <property name="title" translatable="yes">OpenDCS GUI</property>
@@ -116,7 +116,7 @@
             </child>
 
             <child>
-              <object class="GtkStack" id="layout">
+              <object class="GtkStack" id="stack">
                 <property name="visible">True</property>
                 <property name="homogeneous">True</property>
                 <property name="transition-type">crossfade</property>
@@ -142,7 +142,7 @@
 
                   </object>
                   <packing>
-                    <property name="name">layout-hbox</property>
+                    <property name="name">stack-hbox</property>
                   </packing>
                 </child>
 

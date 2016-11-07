@@ -15,17 +15,19 @@ libdcs_vala_la_vala.stamp: $(libdcs_vala_la_VALASOURCES)
 		--ccode \
 		&& touch $@
 
+libdcs_vala_la_public_sources = \
+	dcs-vala-plugin.c \
+	$(NULL)
+
 libdcs_vala_la_VALASOURCES = \
 	dcs-vala-plugin.vala \
 	$(NULL)
 
-EXTRA_DIST += $(libdcs_vala_la_VALASOURCES)
-
-nodist_libdcs_vala_la_SOURCES = \
-	dcs-vala-plugin.c \
+libdcs_vala_la_SOURCES = \
+	$(libdcs_vala_la_VALASOURCES) \
 	$(NULL)
 
-CLEANFILES = $(BUILT_SOURCES) $(nodist_libdcs_vala_la_SOURCES)
+CLEANFILES = $(BUILT_SOURCES)
 
 libdcs_vala_la_VALAFLAGS = \
 	$(PLUGIN_VALAFLAGS)

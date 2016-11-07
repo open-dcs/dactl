@@ -52,7 +52,8 @@ dcsg_CFLAGS = \
 	-Wno-unused-but-set-variable \
 	-Wno-unused-label \
 	-Wno-unused-function \
-	-Wformat-nonliteral
+	-Wformat-nonliteral \
+	-Wredundant-decls
 
 dcsg_LDADD = \
 	$(DCS_CLD_DEPS_LIBS) \
@@ -86,21 +87,20 @@ BUILT_SOURCES += resources.c
 dcsg_SOURCES = \
 	$(BUILT_SOURCES) \
 	dcsg-application.vala \
-	dcsg-application-model.vala \
-	dcsg-application-view.vala \
-	dcsg-application-controller.vala \
-	dcsg-application-menu.vala \
-	dcsg-application-toolbar.vala \
 	dcsg-cmdline-config.vala \
 	dcsg-configuration-editor.vala \
 	dcsg-configuration-toolbar.vala \
+	dcsg-controller.vala \
 	dcsg-csv-export.vala \
 	dcsg-csv-export-toolbar.vala \
 	dcsg-dbus-service.vala \
 	dcsg-general-settings.vala \
+	dcsg-layout.vala \
 	dcsg-loader.vala \
 	dcsg-loader-toolbar.vala \
 	dcsg-main.vala \
+	dcsg-menu.vala \
+	dcsg-model.vala \
 	dcsg-settings-data.vala \
 	dcsg-settings-dialog.vala \
 	dcsg-settings-listbox.vala \
@@ -110,9 +110,11 @@ dcsg_SOURCES = \
 	dcsg-settings-toolbar.vala \
 	dcsg-settings-treeview.vala \
 	dcsg-sidebar.vala \
+	dcsg-toolbar.vala \
 	dcsg-topbar.vala \
 	dcsg-utility.vala \
 	dcsg-ux-manager.vala \
+	dcsg-window.vala \
 	$(NULL)
 
 MAINTAINERCLEANFILES += $(BUILT_SOURCES)

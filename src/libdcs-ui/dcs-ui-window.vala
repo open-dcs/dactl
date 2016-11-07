@@ -3,6 +3,13 @@ public enum Dcs.UI.WindowState {
     FULLSCREEN
 }
 
+public enum Dcs.UI.WindowRequest {
+    ADD,
+    REMOVE,
+    HIDE,
+    SHOW
+}
+
 [GtkTemplate (ui = "/org/opendcs/libdcs/ui/window.ui")]
 public class Dcs.UI.Window : Dcs.UI.WindowBase {
 

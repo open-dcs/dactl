@@ -1,4 +1,4 @@
-public class Dcsg.ApplicationModel : Dcs.ApplicationModel {
+public class Dcsg.Model : Dcs.Model {
 
     private string _startup_page = "pg0";
     /**
@@ -24,7 +24,7 @@ public class Dcsg.ApplicationModel : Dcs.ApplicationModel {
         }
     }
 
-    public ApplicationModel (string config_filename) {
+    public Model (string config_filename) {
         base (config_filename);
 
         startup_page = config.get_string_property ("startup-page");

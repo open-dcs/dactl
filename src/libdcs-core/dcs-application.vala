@@ -1,28 +1,40 @@
+public errordomain Dcs.ApplicationError {
+    INVALID_ADD_REQUEST,
+    INVALID_REMOVE_REQUEST
+}
+
 public interface Dcs.Application : GLib.Object {
 
     /**
      * Model used to update the view.
      */
-    public abstract Dcs.ApplicationModel model { get; set; }
+    public abstract Dcs.Model model { get; set; }
 
     /**
      * View to provide the user access to the data in the model.
      */
-    public abstract Dcs.ApplicationView view { get; set; }
+    public abstract Dcs.View view { get; set; }
 
     /**
      * Controller to update the model and perform any functionality requested
      * by the view.
      */
-    public abstract Dcs.ApplicationController controller { get; set; }
+    public abstract Dcs.Controller controller { get; set; }
 
-    public abstract Gee.ArrayList<Dcs.Plugin> plugins { get; set; }
+    /**
+     * A list of legacy plugins that are used with the PluginLoader.
+     */
+    public abstract Gee.ArrayList<Dcs.LegacyPlugin> plugins { get; set; }
 
     /**
      * Emitted when the application has been stopped.
      */
     public abstract signal void closed ();
 
+    /**
+     * The implementing application can use this to implement an options
+     * handler.
+     */
     public abstract int launch (string[] args);
 
     //public abstract void shutdown ();
@@ -40,5 +52,9 @@ public interface Dcs.Application : GLib.Object {
  *    protected abstract void _activate ();
  */
 
-    public abstract void register_plugin (Dcs.Plugin plugin);
+    /**
+     * Provided to allow the application to do post load operations like
+     * loading a configuration.
+     */
+    public abstract void register_plugin (Dcs.LegacyPlugin plugin);
 }

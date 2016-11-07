@@ -1,0 +1,9 @@
+<schemalist>
+  <schema id="org.opendcs.dcs.daq.device" gettext-domain="dcs-daq">
+    <key name="enabled" type="b">
+      <default>true</default>
+      <summary>Enabled</summary>
+      <description>If the DAQ device should be enabled</description>
+    </key>
+  </schema>
+</schemalist>

@@ -11,4 +11,6 @@ commontemplate_DATA = \
 	__Makefile.am \
 	$(templatefiles)
 
+EXTRA_DIST = $(commontemplate_DATA)
+
 -include $(top_srcdir)/git.mk
