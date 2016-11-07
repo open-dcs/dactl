@@ -2,6 +2,7 @@ LIBDCS_UI_VAPI_SOURCE_FILES = \
     dcs-ui-box.vala \
     dcs-ui-ai-control.vala \
     dcs-ui-ao-control.vala \
+    dcs-ui-application.vala \
     dcs-ui-drawing.vala \
     dcs-ui-channel-matrix.vala \
     dcs-ui-channel-treeview.vala \
@@ -44,6 +45,7 @@ libdcs_ui_la_public_sources = \
     dcs-ui-box.c \
     dcs-ui-ai-control.c \
     dcs-ui-ao-control.c \
+    dcs-ui-application.c \
     dcs-ui-drawing.c \
     dcs-ui-channel-matrix.c \
     dcs-ui-channel-treeview.c \

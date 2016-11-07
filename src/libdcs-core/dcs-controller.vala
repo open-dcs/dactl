@@ -2,17 +2,17 @@
  * The application controller in a MVC design is responsible for responding to
  * events from the view and updating the model.
  */
-public class Dcs.ApplicationController : GLib.Object {
+public abstract class Dcs.Controller : GLib.Object {
 
     /**
      * Application model to use.
      */
-    private Dcs.ApplicationModel model;
+    protected Dcs.Model model;
 
     /**
-     * Application view to use.
+     * Application view to update.
      */
-    private Dcs.ApplicationView view;
+    protected Dcs.View view;
 
     /* Control administrative functionality */
     public bool admin { get; set; default = false; }
@@ -25,8 +25,7 @@ public class Dcs.ApplicationController : GLib.Object {
     /**
      * Default construction.
      */
-    public ApplicationController (Dcs.ApplicationModel model,
-                                  Dcs.ApplicationView view) {
+    public Controller (Dcs.Model model, Dcs.View view) {
         this.model = model;
         this.view = view;
 
@@ -38,10 +37,66 @@ public class Dcs.ApplicationController : GLib.Object {
      *
      * @deprecated since CLD task addition
      */
-    ~ApplicationController () {
+    ~Controller () {
         /* Stop hardware threads. */
         stop_acquisition ();
     }
+
+    /**
+     * The controller receives requests to update the view if there have been
+     * changes to the model.
+     */
+    public abstract void update_view ();
+
+    /**
+     * Add an object to the model and view.
+     *
+     * @param object The object to add.
+     * @param path The path in the object tree to add the object at.
+     */
+    public abstract void add (owned Dcs.Object object, string path) throws GLib.Error;
+
+    /**
+     * Remove an object from the model and view.
+     *
+     * @param path The path in the object tree to remove the object from.
+     */
+    public abstract void remove (string path) throws GLib.Error;
+
+    /**
+     * Set a property within the model for ...
+     *
+     * Valid examples:
+     *
+     * {{{
+     *  // set the admin property state from the same application
+     *  controller.set ("dcs:///:admin", new Variant.boolean (true));
+     *  // set the log rate of "data-log" to 100 on a remote host "node"
+     *  controller.set ("dcs://node/logs/data-log:rate", new Variant.int (100));
+     * }}}
+     *
+     * @param uri The uri containing the object and the property to set.
+     * @param value A variant containing the value to set the property to.
+     */
+    public abstract void @set (string uri, Variant value) throws GLib.Error;
+
+    /**
+     * Get a property within the model for ...
+     *
+     * Valid examples:
+     *
+     * {{{
+     *  // get the admin property state from the same application
+     *  var value = controller.get ("dcs:///:admin");
+     *  // get the log rate of "data-log" on a remote host "node"
+     *  var value = controller.get ("dcs://node/logs/data-log:rate");
+     * }}}
+     *
+     * @param uri The uri containing the object and the property to get.
+     */
+    public abstract Variant @get (string uri) throws GLib.Error;
+
+    /* Functionality from old versions and soon to be deprecated */
 
     /**
      * Recursively goes through the object map and connects signals from
@@ -64,6 +119,8 @@ public class Dcs.ApplicationController : GLib.Object {
     /**
      * Callbacks common to all view types.
      * XXX the intention is to use a common interface later on
+     *
+     * @deprecated since adding controller set/get
      */
     protected void save_requested_cb () {
         debug ("Saving the configuration.");
@@ -78,39 +135,44 @@ public class Dcs.ApplicationController : GLib.Object {
 
     /**
      * Start the thread that handles data acquisition.
+     *
+     * @deprecated since adding controller set/get
      */
     public void start_acquisition () {
 
-        var multiplexers = model.ctx.get_object_map (typeof (Cld.Multiplexer));
-        bool using_mux = (multiplexers.size > 0);
+        /* XXX probably not necessary to lock, there for legacy reasons only */
+        lock (model) {
+            var multiplexers = model.ctx.get_object_map (typeof (Cld.Multiplexer));
+            bool using_mux = (multiplexers.size > 0);
 
-        /* Manually open all of the devices */
-        var devices = model.ctx.get_object_map (typeof (Cld.Device));
-        foreach (var device in devices.values) {
+            /* Manually open all of the devices */
+            var devices = model.ctx.get_object_map (typeof (Cld.Device));
+            foreach (var device in devices.values) {
 
-            if (!(device as Cld.ComediDevice).is_open) {
-                message ("  Opening Comedi Device: `%s'", device.id);
-                (device as Cld.ComediDevice).open ();
-                if (!(device as Cld.ComediDevice).is_open)
-                    error ("Failed to open Comedi device: `%s'", device.id);
-            }
+                if (!(device as Cld.ComediDevice).is_open) {
+                    message ("  Opening Comedi Device: `%s'", device.id);
+                    (device as Cld.ComediDevice).open ();
+                    if (!(device as Cld.ComediDevice).is_open)
+                        error ("Failed to open Comedi device: `%s'", device.id);
+                }
 
-            if (!using_mux) {
-                message ("Starting tasks for: `%s'", device.id);
-                var tasks = (device as Cld.Container).get_object_map (typeof (Cld.Task));
-                foreach (var task in tasks.values) {
-                    //if ((task as Cld.ComediTask).direction == "read") {
-                        message ("  Starting task: `%s'", task.id);
-                        (task as Cld.ComediTask).run ();
-                    //}
+                if (!using_mux) {
+                    message ("Starting tasks for: `%s'", device.id);
+                    var tasks = (device as Cld.Container).get_object_map (typeof (Cld.Task));
+                    foreach (var task in tasks.values) {
+                        //if ((task as Cld.ComediTask).direction == "read") {
+                            message ("  Starting task: `%s'", task.id);
+                            (task as Cld.ComediTask).run ();
+                        //}
+                    }
                 }
             }
-        }
 
-        if (using_mux) {
-            var acq_ctls = model.ctx.get_object_map (typeof (Cld.AcquisitionController));
-            foreach (var acq_ctl in acq_ctls.values) {
-                (acq_ctl as Cld.AcquisitionController).run ();
+            if (using_mux) {
+                var acq_ctls = model.ctx.get_object_map (typeof (Cld.AcquisitionController));
+                foreach (var acq_ctl in acq_ctls.values) {
+                    (acq_ctl as Cld.AcquisitionController).run ();
+                }
             }
         }
 
@@ -120,34 +182,39 @@ public class Dcs.ApplicationController : GLib.Object {
 
     /**
      * Stops the thread that handles data acquisition.
+     *
+     * @deprecated since adding controller set/get
      */
     public void stop_acquisition () {
 
-        var multiplexers = model.ctx.get_object_map (typeof (Cld.Multiplexer));
-        bool using_mux = (multiplexers.size > 0);
+        /* XXX probably not necessary to lock, there for legacy reasons only */
+        lock (model) {
+            var multiplexers = model.ctx.get_object_map (typeof (Cld.Multiplexer));
+            bool using_mux = (multiplexers.size > 0);
 
-        /* Manually close all of the devices */
-        var devices = model.ctx.get_object_map (typeof (Cld.Device));
-        foreach (var device in devices.values) {
+            /* Manually close all of the devices */
+            var devices = model.ctx.get_object_map (typeof (Cld.Device));
+            foreach (var device in devices.values) {
 
-            if (!using_mux) {
-                message ("Stopping tasks for: `%s'", device.id);
-                var tasks = (device as Cld.Container).get_object_map (typeof (Cld.Task));
-                foreach (var task in tasks.values) {
-                    if (task is Cld.ComediTask) {
-                        //if ((task as Cld.ComediTask).direction == "read") {
-                            message ("  Stopping task: `%s` ", task.id);
-                            (task as Cld.ComediTask).stop ();
-                        //}
+                if (!using_mux) {
+                    message ("Stopping tasks for: `%s'", device.id);
+                    var tasks = (device as Cld.Container).get_object_map (typeof (Cld.Task));
+                    foreach (var task in tasks.values) {
+                        if (task is Cld.ComediTask) {
+                            //if ((task as Cld.ComediTask).direction == "read") {
+                                message ("  Stopping task: `%s` ", task.id);
+                                (task as Cld.ComediTask).stop ();
+                            //}
+                        }
                     }
                 }
-            }
 
-            if ((device as Cld.ComediDevice).is_open) {
-                message ("Closing Comedi Device: %s", device.id);
-                (device as Cld.ComediDevice).close ();
-                if ((device as Cld.ComediDevice).is_open)
-                    error ("Failed to close Comedi device: %s", device.id);
+                if ((device as Cld.ComediDevice).is_open) {
+                    message ("Closing Comedi Device: %s", device.id);
+                    (device as Cld.ComediDevice).close ();
+                    if ((device as Cld.ComediDevice).is_open)
+                        error ("Failed to close Comedi device: %s", device.id);
+                }
             }
         }
 
@@ -157,22 +224,27 @@ public class Dcs.ApplicationController : GLib.Object {
 
     /**
      * Starts the thread that handles output channels.
+     *
+     * @deprecated since adding controller set/get
      */
     public void start_device_output () {
-        var devices = model.ctx.get_object_map (typeof (Cld.Device));
-        foreach (var device in devices.values) {
-            if (!(device as Cld.ComediDevice).is_open) {
-                message ("Opening Comedi Device: %s", device.id);
-                (device as Cld.ComediDevice).open ();
-            }
+        /* XXX probably not necessary to lock, there for legacy reasons only */
+        lock (model) {
+            var devices = model.ctx.get_object_map (typeof (Cld.Device));
+            foreach (var device in devices.values) {
+                if (!(device as Cld.ComediDevice).is_open) {
+                    message ("Opening Comedi Device: %s", device.id);
+                    (device as Cld.ComediDevice).open ();
+                }
 
-            if (!(device as Cld.ComediDevice).is_open)
-                error ("Failed to open Comedi device: %s", device.id);
+                if (!(device as Cld.ComediDevice).is_open)
+                    error ("Failed to open Comedi device: %s", device.id);
 
-            foreach (var task in (device as Cld.Container).get_objects ().values) {
-                if (task is Cld.ComediTask) {
-                    if ((task as Cld.ComediTask).direction == "write")
-                        (task as Cld.ComediTask).run ();
+                foreach (var task in (device as Cld.Container).get_objects ().values) {
+                    if (task is Cld.ComediTask) {
+                        if ((task as Cld.ComediTask).direction == "write")
+                            (task as Cld.ComediTask).run ();
+                    }
                 }
             }
         }
@@ -180,16 +252,21 @@ public class Dcs.ApplicationController : GLib.Object {
 
     /**
      * Stops the thread that handles output channels.
+     *
+     * @deprecated since adding controller set/get
      */
     public void stop_device_output () {
-        var devices = model.ctx.get_object_map (typeof (Cld.Device));
-        foreach (var device in devices.values) {
-            message ("Stopping tasks for: %s", device.id);
-            foreach (var task in (device as Cld.Container).get_objects ().values) {
-                if (task is Cld.ComediTask) {
-                    if ((task as Cld.ComediTask).direction == "write") {
-                        message ("  Stopping task: %s", task.id);
-                        (task as Cld.ComediTask).stop ();
+        /* XXX probably not necessary to lock, there for legacy reasons only */
+        lock (model) {
+            var devices = model.ctx.get_object_map (typeof (Cld.Device));
+            foreach (var device in devices.values) {
+                message ("Stopping tasks for: %s", device.id);
+                foreach (var task in (device as Cld.Container).get_objects ().values) {
+                    if (task is Cld.ComediTask) {
+                        if ((task as Cld.ComediTask).direction == "write") {
+                            message ("  Stopping task: %s", task.id);
+                            (task as Cld.ComediTask).stop ();
+                        }
                     }
                 }
             }

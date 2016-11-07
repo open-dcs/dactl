@@ -1,9 +1,3 @@
-/*
- * This file is a modified version taken from Rygel.
- */
-
-using Gee;
-
 /**
  * This class is responsible for plugin loading.
  *
@@ -19,11 +13,11 @@ public class Dcs.PluginLoader : Dcs.ModuleLoader {
 
     private delegate void ModuleInitFunc (Dcs.PluginLoader loader);
 
-    private HashMap<string, Dcs.Plugin> plugin_hash;
-    private HashSet<string> loaded_modules;
+    private Gee.HashMap<string, Dcs.LegacyPlugin> plugin_hash;
+    private Gee.HashSet<string> loaded_modules;
 
     // Signals
-    public signal void plugin_available (Dcs.Plugin plugin);
+    public signal void plugin_available (Dcs.LegacyPlugin plugin);
 
     public PluginLoader () {
         GLib.Object (base_path: get_config_path ());
@@ -36,8 +30,8 @@ public class Dcs.PluginLoader : Dcs.ModuleLoader {
             this.base_path = get_config_path ();
         }
 
-        this.plugin_hash = new HashMap<string, Dcs.Plugin> ();
-        this.loaded_modules = new HashSet<string> ();
+        this.plugin_hash = new Gee.HashMap<string, Dcs.LegacyPlugin> ();
+        this.loaded_modules = new Gee.HashSet<string> ();
     }
 
     /**
@@ -59,17 +53,17 @@ public class Dcs.PluginLoader : Dcs.ModuleLoader {
         return !enabled;
     }
 
-    public void add_plugin (Dcs.Plugin plugin) {
+    public void add_plugin (Dcs.LegacyPlugin plugin) {
         debug (_("New plugin '%s' available"), plugin.name);
         this.plugin_hash.set (plugin.name, plugin);
         this.plugin_available (plugin);
     }
 
-    public Plugin? get_plugin_by_name (string name) {
+    public Dcs.LegacyPlugin? get_plugin_by_name (string name) {
         return this.plugin_hash.get (name);
     }
 
-    public Collection<Dcs.Plugin> list_plugins () {
+    public Gee.Collection<Dcs.LegacyPlugin> list_plugins () {
         return this.plugin_hash.values;
     }
 

@@ -28,7 +28,7 @@ title OpenDCS UML
 
 left to right direction
 
-page 2x1
+'page 2x1
 
 package "Dcs" #DDDDDD {
 
@@ -107,18 +107,29 @@ package "Dcs" #DDDDDD {
         +{abstract} Object make_object_from_node (Xml.Node* node) throws GLib.Error
     }
 
+    ' TODO Needs to be written still
+    ' XXX What is a view supposed to do in an MVC?
+    interface View {
+        #Dcs.Model model
+        #void connect (Dcs.ModelUpdateFunc model_func)
+    }
+
     '
     ' Classes
     '
 
-    ' XXX Currently ApplicationController, will rename Controller
-    class Controller {
+    abstract class Controller {
+        #Dcs.Model model
+        #Dcs.View view
         +bool admin
         -- signals --
         +void acquisition_state_changed (bool state)
         ----
         +Controller (Model, View)
         -~Controller ()
+        +{abstract} void update_view ()
+        +{abstract} void add (Object object, string path)
+        +{abstract} void remove (string path)
         #void save_requested_cb ()
         +void start_acquisition ()
         +void stop_acquisition ()
@@ -158,7 +169,6 @@ package "Dcs" #DDDDDD {
         +{abstract} void unpack ()
     }
 
-    ' XXX Currently ApplicationModel, will rename Model
     class Model {
         +string name
         +bool admin
@@ -172,7 +182,7 @@ package "Dcs" #DDDDDD {
         ~Cld.Context ctx
         ~GLib.Settings settings
         -- signals --
-        +void log_state_chaged (string log, bool state)
+        +void log_state_changed (string log, bool state)
         +void updated ()
         ----
         +Model (string config_filename)
@@ -196,13 +206,6 @@ package "Dcs" #DDDDDD {
         +{static} void init (bool stdout, string? filename)
         +{static} void shutdown ()
         +{static} void increase_verbosity ()
-    }
-
-    ' TODO Needs to be written still
-    ' XXX What is a view supposed to do in an MVC?
-    class View {
-        #Dcs.Model model
-        #void connect (Dcs.ModelUpdateFunc model_func)
     }
 
     /'

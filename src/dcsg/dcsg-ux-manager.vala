@@ -30,13 +30,6 @@ public class Dcsg.UxManager : GLib.Object {
         }
     }
 
-    public void @set (string property) {
-        // XXX not sure of whether to use a generic or variant???
-    }
-
-    public void @get (string property) {
-    }
-
     /**
      * List all of the pages that are contained in the view.
      *

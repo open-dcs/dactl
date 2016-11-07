@@ -12,10 +12,6 @@ nobase_headers_DATA =
 pkgconfig_DATA = dcs-cli-0.1.pc
 pkgconfigdir = $(libdir)/pkgconfig
 
-EXTRA_DIST += \
-	dcs-cli-0.1.pc.in \
-	$(NULL)
-
 LIBDCS_CLI_VERSION=0:1:0
 
 libdcs_cli_0_1_la_public_headers = \
@@ -133,6 +129,10 @@ BUILT_SOURCES += \
 	$(DEPS_FILES) \
 	DcsCLI-0.1.gir \
 	Dcs-0.1.gir \
+	$(NULL)
+
+EXTRA_DIST += \
+	$(BUILT_SOURCES) \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk

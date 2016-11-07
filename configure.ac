@@ -687,7 +687,6 @@ AC_CONFIG_FILES([
     data/templates/plugin/src/Makefile
 
     data/gsettings/Makefile
-	data/gsettings/org.opendcs.dcs.gschema.xml
 
 	doc/Makefile
 	doc/man/Makefile

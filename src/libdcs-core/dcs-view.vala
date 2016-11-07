@@ -40,52 +40,16 @@
     //public abstract signal void closed ();
 //}
 
-/**
- * Skeletal implementation of the {@link Interface} interface.
- *
- * Contains common code shared by all interface implementations.
- */
-//public abstract class Dcs.AbstractView : Dcs.AbstractObject, Dcs.View {
-
-    /**
-     * {@inheritDoc}
-     */
-    //public abstract bool admin { get; set; }
-
-    /**
-     * {@inheritDoc}
-     */
-    //public abstract bool active { get; private set; }
-
-    /**
-     * {@inheritDoc}
-     */
-    //public abstract void launch ();
-
-    /**
-     * {@inheritDoc}
-     */
-    //public abstract void shutdown ();
-
-    /**
-     * {@inheritDoc}
-     */
-    //public abstract signal void opened ();
-
-    /**
-     * {@inheritDoc}
-     */
-    //public abstract signal void closed ();
-//}
-
 [GenericAccessors]
-public interface Dcs.ApplicationView : GLib.Object {
+public interface Dcs.View : GLib.Object {
 
-    protected abstract Dcs.ApplicationModel model { get; set; }
-
-    protected void connect (owned Dcs.ModelUpdatedFunc model_func) {
-        model.updated.connect (() => {
-            model_func ();
-        });
-    }
+/*
+ *    protected abstract Dcs.Model model { get; set; }
+ *
+ *    protected void connect (owned Dcs.Model.UpdateFunc update_func) {
+ *        model.updated.connect (() => {
+ *            update_func ();
+ *        });
+ *    }
+ */
 }

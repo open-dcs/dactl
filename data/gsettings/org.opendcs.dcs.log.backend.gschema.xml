@@ -1,0 +1,9 @@
+<schemalist>
+  <schema id="org.opendcs.dcs.log.backend" gettext-domain="dcs-log">
+    <key name="enabled" type="b">
+      <default>true</default>
+      <summary>Enabled</summary>
+      <description>If the logging backend should be enabled</description>
+    </key>
+  </schema>
+</schemalist>

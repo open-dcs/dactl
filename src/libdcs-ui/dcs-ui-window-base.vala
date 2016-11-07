@@ -4,7 +4,7 @@
  * XXX Probably unnecessary as there will probably only ever be a single class
  * that derives this.
  */
-public abstract class Dcs.UI.WindowBase : Gtk.ApplicationWindow, Dcs.ApplicationView, Dcs.Container, Dcs.Buildable, Dcs.Object {
+public abstract class Dcs.UI.WindowBase : Gtk.ApplicationWindow, Dcs.View, Dcs.Container, Dcs.Buildable, Dcs.Object {
 
     private Xml.Node* _node;
 

@@ -15,17 +15,19 @@ libdcs_device_arduino_la_vala.stamp: $(libdcs_device_arduino_la_VALASOURCES)
 		--ccode \
 		&& touch $@
 
+libdcs_device_arduino_la_public_sources = \
+	dcs-arduino-device.c \
+	$(NULL)
+
 libdcs_device_arduino_la_VALASOURCES = \
 	dcs-arduino-device.vala \
 	$(NULL)
 
-EXTRA_DIST += $(libdcs_device_arduino_la_VALASOURCES)
-
-nodist_libdcs_device_arduino_la_SOURCES = \
-	dcs-arduino-device.c \
+libdcs_device_arduino_la_SOURCES = \
+	$(libdcs_device_arduino_la_VALASOURCES) \
 	$(NULL)
 
-CLEANFILES = $(BUILT_SOURCES) $(nodist_libdcs_device_arduino_la_SOURCES)
+CLEANFILES = $(BUILT_SOURCES)
 
 libdcs_device_arduino_la_VALAFLAGS = \
 	$(DEVICE_VALAFLAGS) \

@@ -15,10 +15,6 @@ lib_LTLIBRARIES = libdcs-core-0.1.la
 pkgconfig_DATA = dcs-core-0.1.pc
 pkgconfigdir = $(libdir)/pkgconfig
 
-EXTRA_DIST += \
-	dcs-core-0.1.pc.in \
-	$(NULL)
-
 LIBDCS_CORE_VERSION=0:1:0
 
 libdcs_core_0_1_la_SOURCES = \
@@ -69,6 +65,7 @@ libdcs_core_0_1_la_CFLAGS = \
 	-Wno-unused-label \
 	-Wno-unused-function \
 	-Wformat-nonliteral \
+	-Wredundant-decls \
 	$(NULL)
 
 libdcs_core_0_1_la_LDFLAGS = \
@@ -128,11 +125,15 @@ dcs-core.h dcs-core-0.1.vapi Dcs-0.1.gir: libdcs_core_0_1_la_vala.stamp
 
 BUILT_SOURCES += \
 	dcs-core.h \
+	dcs-config.vapi \
 	$(VAPI_FILES) \
 	$(DEPS_FILES) \
-	dcs-config.vapi \
 	DcsCore-0.1.gir \
 	Dcs-0.1.gir \
+	$(NULL)
+
+EXTRA_DIST += \
+	$(BUILT_SOURCES) \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk

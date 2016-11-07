@@ -52,7 +52,8 @@ dcsg_CFLAGS = \
 	-Wno-unused-but-set-variable \
 	-Wno-unused-label \
 	-Wno-unused-function \
-	-Wformat-nonliteral
+	-Wformat-nonliteral \
+	-Wredundant-decls
 
 dcsg_LDADD = \
 	$(DCS_CLD_DEPS_LIBS) \

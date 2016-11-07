@@ -61,7 +61,7 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
     public bool fullscreen { get; set; default = false; }
 
     /* Model used to update the view */
-    public Dcs.ApplicationModel model { get; construct set; }
+    public Dcs.Model model { get; construct set; }
 
     /* Layout - XXX maybe the Window should contain the layout? */
     public Dcsg.Layout layout { get; construct set; }
@@ -121,7 +121,7 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
      * @param model Data model class that the interface uses to update itself
      * @return A new instance of an Window object
      */
-    internal Window (Dcs.ApplicationModel model) {
+    internal Window (Dcs.Model model) {
         GLib.Object (title: "Data Acquisition and Control",
                      window_position: Gtk.WindowPosition.CENTER);
 
@@ -328,7 +328,8 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
     /**
      * Action callback to set fullscreen window mode.
      */
-    private void fullscreen_action_activated_cb (SimpleAction action, Variant? parameter) {
+    private void fullscreen_action_activated_cb (SimpleAction action,
+                                                 Variant? parameter) {
         if (state == Dcs.UI.WindowState.WINDOWED) {
             (this as Gtk.Window).fullscreen ();
             state = Dcs.UI.WindowState.FULLSCREEN;
@@ -343,9 +344,9 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
     [GtkCallback]
     public bool key_pressed_cb (Gdk.EventKey event) {
         var app = Dcsg.Application.get_default ();
-        var default_modifiers = Gtk.accelerator_get_default_mod_mask ();
+        var modifiers = Gtk.accelerator_get_default_mod_mask ();
 
-        if (event.keyval == Gdk.Key.Home) {             // Home -> go to default page
+        if (event.keyval == Gdk.Key.Home) {             // Home -> go to default
             layout_change_page ((model as Dcsg.Model).startup_page);
         } else if (event.keyval == Gdk.Key.F11) {       // F11 -> fullscreen
             if (state == Dcs.UI.WindowState.WINDOWED) {
@@ -360,37 +361,28 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
             return true;
         } else if (event.keyval == Gdk.Key.F1) {        // F1 -> open help
             app.activate_action ("help", null);
-
             return true;
-        } else if (event.keyval == Gdk.Key.q &&         // CTRL = q -> quit application
-                   (event.state & default_modifiers) == Gdk.ModifierType.CONTROL_MASK) {
+        } else if (event.keyval == Gdk.Key.q &&         // CTRL + q -> quit
+                   (event.state & modifiers) == Gdk.ModifierType.CONTROL_MASK) {
             app.activate_action ("quit", null);
-
             return true;
-        } else if (event.keyval == Gdk.Key.o &&         // CTRL + o -> open loader
-                   (event.state & default_modifiers) == Gdk.ModifierType.CONTROL_MASK) {
+        } else if (event.keyval == Gdk.Key.o &&         // CTRL + o -> loader
+                   (event.state & modifiers) == Gdk.ModifierType.CONTROL_MASK) {
             layout_change_page ("loader");
-
             return true;
-        } else if (event.keyval == Gdk.Key.x &&         // CTRL + x -> open CSV export
-                   (event.state & default_modifiers) == Gdk.ModifierType.CONTROL_MASK) {
+        } else if (event.keyval == Gdk.Key.x &&         // CTRL + x -> export
+                   (event.state & modifiers) == Gdk.ModifierType.CONTROL_MASK) {
             layout_change_page ("export");
-
             return true;
         } else if (event.keyval == Gdk.Key.Left &&      // ALT + Left -> back
-                   (event.state & default_modifiers) == Gdk.ModifierType.MOD1_MASK) {
-            //topbar.click_back_button ();
+                   (event.state & modifiers) == Gdk.ModifierType.MOD1_MASK) {
             layout_previous_page ();
-
             return true;
-        } else if (event.keyval == Gdk.Key.Right &&     // ALT + Right -> forward
-                   (event.state & default_modifiers) == Gdk.ModifierType.MOD1_MASK) {
-            //topbar.click_forward_button ();
+        } else if (event.keyval == Gdk.Key.Right &&     // ALT + Right -> fwd
+                   (event.state & modifiers) == Gdk.ModifierType.MOD1_MASK) {
             layout_next_page ();
-
             return true;
         } else if (event.keyval == Gdk.Key.Escape) {    // ESC -> cancel
-            //topbar.click_cancel_button ();
             /* Hide the revealed widget settings */
             settings.set_reveal_child (false);
         }

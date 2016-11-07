@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  - Configuration file
+  - Geoff Johnson <geoff.johnson@coanda.ca>
+  - 2016-08-04
+  -->
+<dcs xmlns:ui="urn:libdcs-ui" xmlns:daq="urn:libdcs-daq" xmlns:log="urn:libdcs-log">
+
+  <property name="app">Empty Config</property>
+  <property name="admin">false</property>
+  <property name="startup-page">pg0</property>
+  <property name="dark-theme">true</property>
+
+  <!-- UI configuration -->
+  <ui:objects>
+
+    <!-- Plugin configuration -->
+    <ui:plugins>
+      <ui:plugin id="plug0" name="Vala Example Plugin"/>
+    </ui:plugins>
+    <!-- End plugin configuration -->
+
+    <ui:object id="pg0" type="page">
+      <ui:property name="index">0</ui:property>
+      <ui:property name="title">Test</ui:property>
+      <ui:property name="visible">true</ui:property>
+    </ui:object>
+
+  </ui:objects>
+  <!-- End UI configuration -->
+
+  <!-- Data acquisition configuration -->
+  <daq:objects>
+
+    <!-- Device configuration -->
+    <daq:devices>
+    </daq:devices>
+    <!-- End device configuration -->
+
+  </daq:objects>
+  <!-- End data acquisition configuration -->
+
+  <!-- Logging configuration -->
+  <log:objects>
+
+    <!-- Backend configuration -->
+    <log:backends>
+    </log:backends>
+    <!-- End backend configuration -->
+
+  </log:objects>
+  <!-- End logging configuration -->
+
+</dcs>
