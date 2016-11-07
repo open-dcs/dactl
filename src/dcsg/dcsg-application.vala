@@ -61,7 +61,7 @@ public class Dcsg.Application : Dcs.UI.Application {
 
         Gtk.Window.set_default_icon_name ("dcsg");
 
-        WebKit.WebContext.get_default ().set_web_extensions_directory (Dcs.Config.WEB_EXTENSION_DIR);
+        WebKit.WebContext.get_default ().set_web_extensions_directory (Dcs.Build.WEB_EXTENSION_DIR);
 
         debug ("Creating application model using file %s", opt_cfgfile);
         model = new Dcsg.Model (opt_cfgfile);
@@ -285,7 +285,7 @@ public class Dcsg.Application : Dcs.UI.Application {
         opt_help = false;
         opt_cfgfile = null;
 
-        var opt_context = new OptionContext (Dcs.Config.PACKAGE_NAME);
+        var opt_context = new OptionContext (Dcs.Build.PACKAGE_NAME);
         opt_context.add_main_entries (options, null);
         opt_context.set_help_enabled (false);
 
@@ -305,7 +305,7 @@ public class Dcsg.Application : Dcs.UI.Application {
         }
 
         if (opt_cfgfile == null) {
-            opt_cfgfile = Path.build_filename (Dcs.Config.DATADIR, "dcs.xml");
+            opt_cfgfile = Path.build_filename (Dcs.Build.DATADIR, "dcs.xml");
             GLib.message ("Configuration file not provided, using %s", opt_cfgfile);
         }
 
@@ -652,7 +652,7 @@ public class Dcsg.Application : Dcs.UI.Application {
          dialog.set_license_type (Gtk.License.MIT_X11);
          dialog.documenters = documenters;
          dialog.logo = logo;
-         dialog.version = Dcs.Config.PACKAGE_VERSION;
+         dialog.version = Dcs.Build.PACKAGE_VERSION;
          dialog.website = "http://open-dcs.github.io";
          dialog.website_label = "OpenDCS";
 

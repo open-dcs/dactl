@@ -9,27 +9,27 @@ innerdocdir=$(datadir)/devhelp/references/dcs-0.1/dcs-0.1
 imgdir=$(datadir)/devhelp/references/dcs-0.1/dcs-0.1/img
 
 core_valaflags = \
-	--pkg=cld-0.3 \
-	--pkg=comedi \
-	--pkg=dcs-config \
-	--pkg=gee-0.8 \
-	--pkg=gmodule-2.0 \
-	--pkg=json-glib-1.0 \
-	--pkg=libxml-2.0 \
-	--pkg=libpeas-1.0
+	--pkg cld-0.3 \
+	--pkg comedi \
+	--pkg dcs-build \
+	--pkg gee-0.8 \
+	--pkg gmodule-2.0 \
+	--pkg json-glib-1.0 \
+	--pkg libxml-2.0 \
+	--pkg libpeas-1.0
 
 ui_valaflags = \
-	--pkg=cairo \
-	--pkg=gsl \
-	--pkg=gtk+-3.0 \
-	--pkg=gtksourceview-3.0 \
-	--pkg=librsvg-2.0 \
-	--pkg=pango \
-	--pkg=webkit2gtk-4.0
+	--pkg cairo \
+	--pkg gsl \
+	--pkg gtk+-3.0 \
+	--pkg gtksourceview-3.0 \
+	--pkg librsvg-2.0 \
+	--pkg pango \
+	--pkg webkit2gtk-4.0
 
 net_valaflags = \
-	--pkg=libsoup-2.4 \
-	--pkg=libzmq
+	--pkg libsoup-2.4 \
+	--pkg libzmq
 
 doc_data = \
 	dcs-0.1/*.css \
@@ -61,8 +61,8 @@ dcs-0.1/index.html:
 		$(top_srcdir)/src/libdcs-daq/*.vala \
 		$(top_srcdir)/src/libdcs-log/*.vala \
 		$(top_srcdir)/src/libdcs-net/*.vala \
-		--pkg=linux \
-		--pkg=posix \
+		--pkg linux \
+		--pkg posix \
 		$(core_valaflags) \
 		$(ui_valaflags) \
 		$(net_valaflags) \

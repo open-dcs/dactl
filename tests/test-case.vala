@@ -22,11 +22,9 @@ public abstract class Dcs.TestCase : GLib.Object {
 		                                   adaptor.tear_down ));
 	}
 
-	public virtual void set_up () {
-	}
+	public virtual void set_up () { }
 
-	public virtual void tear_down () {
-	}
+	public virtual void tear_down () { }
 
 	public GLib.TestSuite get_suite () {
 		return this.suite;

@@ -18,7 +18,7 @@ dcs_log_VALAFLAGS = \
 	--pkg json-glib-1.0 \
 	--pkg libsoup-2.4 \
 	--pkg libzmq \
-	--pkg dcs-config \
+	--pkg dcs-build \
 	--pkg dcs-core-0.1 \
 	--pkg dcs-cli-0.1 \
 	--pkg dcs-log-0.1 \

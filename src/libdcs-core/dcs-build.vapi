@@ -3,7 +3,7 @@
  */
 
 [CCode (cheader_filename = "config.h")]
-public class Dcs.Config {
+public class Dcs.Build {
 
     /* Package information */
 

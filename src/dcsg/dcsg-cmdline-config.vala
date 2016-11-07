@@ -2,7 +2,7 @@ public errordomain Dcsg.CmdlineConfigError {
     VERSION_ONLY
 }
 
-public class Dcsg.CmdlineConfig : Dcs.AbstractConfig {
+public class Dcsg.CmdlineConfig : Dcs.Config {
 
     public Dcs.ConfigFormat format { get; set; default = Dcs.ConfigFormat.OPTIONS; }
 
@@ -39,7 +39,7 @@ public class Dcsg.CmdlineConfig : Dcs.AbstractConfig {
     public static void parse_args (ref unowned string[] args)
                                    throws CmdlineConfigError.VERSION_ONLY,
                                           OptionError {
-        var parameter_string = "- " + Dcs.Config.PACKAGE_NAME;
+        var parameter_string = "- " + Dcs.Build.PACKAGE_NAME;
         var opt_context = new OptionContext (parameter_string);
         opt_context.set_help_enabled (true);
         opt_context.set_ignore_unknown_options (true);
@@ -54,7 +54,7 @@ public class Dcsg.CmdlineConfig : Dcs.AbstractConfig {
         }
 
         if (version) {
-            stdout.printf ("%s\n", Dcs.Config.PACKAGE_STRING);
+            stdout.printf ("%s\n", Dcs.Build.PACKAGE_STRING);
 
             throw new Dcsg.CmdlineConfigError.VERSION_ONLY ("");
         }

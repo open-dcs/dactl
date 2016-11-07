@@ -25,7 +25,7 @@ public abstract class Dcs.PluginManager {
 
     protected Peas.Engine engine;
     protected Peas.ExtensionSet extensions;
-    protected string search_path = Config.PLUGIN_DIR;
+    protected string search_path = Dcs.Build.PLUGIN_DIR;
 
     //public Dcs.Extension ext { protected set; public get; }
 

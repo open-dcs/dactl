@@ -25,7 +25,7 @@ dcsg_VALAFLAGS = \
 	--pkg glib-extra \
 	--pkg gtksourceview-3.0 \
 	--pkg json-glib-1.0 \
-	--pkg dcs-config \
+	--pkg dcs-build \
 	--pkg dcs-core-0.1 \
 	--pkg dcs-ui-0.1
 

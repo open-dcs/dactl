@@ -1,9 +1,9 @@
-public class Dcs.MetaConfig : Dcs.AbstractConfig {
+public class Dcs.MetaConfig : Dcs.Config {
 
-    private Gee.ArrayList<Dcs.AbstractConfig> config_list;
+    private Gee.ArrayList<Dcs.Config> config_list;
 
     public MetaConfig () {
-        config_list = new Gee.ArrayList<Dcs.AbstractConfig> ();
+        config_list = new Gee.ArrayList<Dcs.Config> ();
     }
 
     /**

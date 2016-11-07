@@ -7,7 +7,7 @@ example_VALAFLAGS = \
 	--vapidir=$(top_srcdir)/vapi \
 	--vapidir=$(top_srcdir)/src/libdcs-core \
 	--pkg dcs-core-0.1 \
-	--pkg dcs-config
+	--pkg dcs-build
 
 example_CFLAGS = \
 	$(DEBUG_CFLAGS) \

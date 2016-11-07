@@ -44,7 +44,7 @@ libdcs_core_0_1_la_VALAFLAGS = \
 	--pkg gmodule-2.0 \
 	--pkg libxml-2.0 \
 	--pkg libpeas-1.0 \
-	--pkg dcs-config \
+	--pkg dcs-build \
 	$(DCS_CLD_DEPS_VALAFLAGS) \
 	$(NULL)
 
@@ -125,7 +125,7 @@ dcs-core.h dcs-core-0.1.vapi Dcs-0.1.gir: libdcs_core_0_1_la_vala.stamp
 
 BUILT_SOURCES += \
 	dcs-core.h \
-	dcs-config.vapi \
+	dcs-build.vapi \
 	$(VAPI_FILES) \
 	$(DEPS_FILES) \
 	DcsCore-0.1.gir \
