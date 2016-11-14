@@ -3,6 +3,9 @@ DISTCLEANFILES =
 BUILT_SOURCES =
 EXTRA_DIST =
 
+libdcsnetincdir = $(includedir)/dcs-0.2
+libdcsnetinc_HEADERS = dcs-net.h
+
 pkglibdir = $(libdir)/dcs
 pkglib_LTLIBRARIES = libdcs-net-0.2.la
 

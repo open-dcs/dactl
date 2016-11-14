@@ -96,7 +96,9 @@ public abstract class Dcs.Controller : GLib.Object {
      */
     public abstract Variant @get (string uri) throws GLib.Error;
 
-    /* Functionality from old versions and soon to be deprecated */
+    /*
+     * *** Functionality from old versions and soon to be deprecated ***
+     */
 
     /**
      * Recursively goes through the object map and connects signals from

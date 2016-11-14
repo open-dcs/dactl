@@ -479,12 +479,11 @@ public class Dcsg.Application : Dcs.UI.Application {
     private void save_activated_cb (SimpleAction action, Variant? parameter) {
         /* Warn the user if <defaults> are currently enabled */
         if (model.def_enabled) {
-            var msg = "Calibrations are set to defaults.\nDo you still want to save?";
             var dialog = new Gtk.MessageDialog (null,
                                                 Gtk.DialogFlags.MODAL,
                                                 Gtk.MessageType.QUESTION,
                                                 Gtk.ButtonsType.YES_NO,
-                                                msg);
+                                                "Calibrations are set to defaults.\nDo you still want to save?");
 
             (dialog as Gtk.Dialog).response.connect ((response_id) => {
                 switch (response_id) {
@@ -507,8 +506,7 @@ public class Dcsg.Application : Dcs.UI.Application {
                                             Gtk.DialogFlags.MODAL,
                                             Gtk.MessageType.QUESTION,
                                             Gtk.ButtonsType.YES_NO,
-                                            "Overwrite %s with application preferences?",
-                                            model.config.file_name);
+                                            "Overwrite the configuration with the current application preferences?");
 
         (dialog as Gtk.Dialog).response.connect ((response_id) => {
             switch (response_id) {

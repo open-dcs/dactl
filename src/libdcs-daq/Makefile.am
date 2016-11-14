@@ -3,7 +3,8 @@ DISTCLEANFILES =
 BUILT_SOURCES =
 EXTRA_DIST =
 
-include $(top_srcdir)/common.am
+libdcsdaqincdir = $(includedir)/dcs-0.2
+libdcsdaqinc_HEADERS = dcs-daq.h
 
 pkglibdir = $(libdir)/dcs
 pkglib_LTLIBRARIES = libdcs-daq-0.2.la

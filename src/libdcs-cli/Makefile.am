@@ -3,6 +3,9 @@ DISTCLEANFILES =
 BUILT_SOURCES =
 EXTRA_DIST =
 
+libdcscliincdir = $(includedir)/dcs-0.2
+libdcscliinc_HEADERS = dcs-cli.h
+
 pkglibdir = $(libdir)/dcs
 pkglib_LTLIBRARIES = libdcs-cli-0.2.la
 

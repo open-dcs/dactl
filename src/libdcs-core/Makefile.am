@@ -7,10 +7,10 @@ include $(top_srcdir)/common.am
 include $(srcdir)/filelist.am
 
 libdcsincdir = $(includedir)/dcs-0.2
-
 libdcsinc_HEADERS = dcs-core.h
 
-lib_LTLIBRARIES = libdcs-core-0.2.la
+pkglibdir = $(libdir)/dcs
+pkglib_LTLIBRARIES = libdcs-core-0.2.la
 
 pkgconfig_DATA = dcs-core-0.2.pc
 pkgconfigdir = $(libdir)/pkgconfig

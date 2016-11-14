@@ -3,7 +3,8 @@ DISTCLEANFILES =
 BUILT_SOURCES =
 EXTRA_DIST =
 
-include $(top_srcdir)/common.am
+libdcslogincdir = $(includedir)/dcs-0.2
+libdcsloginc_HEADERS = dcs-log.h
 
 pkglibdir = $(libdir)/dcs
 pkglib_LTLIBRARIES = libdcs-log-0.2.la

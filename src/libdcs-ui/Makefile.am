@@ -11,6 +11,9 @@ if ENABLE_UI
 
 include $(srcdir)/filelist.am
 
+libdcsuiincdir = $(includedir)/dcs-0.2
+libdcsuiinc_HEADERS = dcs-ui.h
+
 pkglibdir = $(libdir)/dcs
 pkglib_LTLIBRARIES = libdcs-ui-0.2.la
 
