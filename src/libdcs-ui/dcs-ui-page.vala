@@ -123,7 +123,7 @@ public class Dcs.UI.Page : Dcs.UI.CompositeWidget {
 
                     /* no point adding an object type that isn't recognized */
                     if (object != null) {
-                        message ("Loading object of type `%s' with id `%s'", type, object.id);
+                        debug ("Loading object of type `%s' with id `%s'", type, object.id);
                         add_child (object);
                     }
                 }
@@ -141,7 +141,7 @@ public class Dcs.UI.Page : Dcs.UI.CompositeWidget {
 
         (base as Dcs.Container).add_child (object);
         //objects.set (object.id, object);
-        GLib.message ("Attempting to add widget `%s' to page `%s'", object.id, id);
+        debug ("Attempting to add widget `%s' to page `%s'", object.id, id);
         if (object is Dcs.UI.CustomWidget)
             viewport.add (object as Dcs.UI.CustomWidget);
         else if (object is Dcs.UI.CompositeWidget)

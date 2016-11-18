@@ -303,6 +303,14 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
     /**
      * {@inheritDoc}
      */
+    public void add (owned Dcs.Object object, string path) throws GLib.Error {
+        debug (" >>> balls");
+        debug ("!!!! --- %s --- !!!!", object.id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public override void update_objects (Gee.Map<string, Dcs.Object> val) {
         _objects = val;
     }
@@ -366,6 +374,9 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
                    (event.state & modifiers) == Gdk.ModifierType.CONTROL_MASK) {
             app.activate_action ("quit", null);
             return true;
+        } else if (event.keyval == Gdk.Key.s &&         // CTRL + s -> save
+                   (event.state & modifiers) == Gdk.ModifierType.CONTROL_MASK) {
+            app.activate_action ("save", null);
         } else if (event.keyval == Gdk.Key.o &&         // CTRL + o -> loader
                    (event.state & modifiers) == Gdk.ModifierType.CONTROL_MASK) {
             layout_change_page ("loader");

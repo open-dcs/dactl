@@ -10,6 +10,20 @@ public interface Dcs.Container : GLib.Object {
     public abstract Gee.Map<string, Dcs.Object> objects { get; set; }
 
     /**
+     * Emitted whenever an object as been added.
+     *
+     * @param id the ID of the object that was added
+     */
+    public signal void object_added (string id);
+
+    /**
+     * Emitted whenever an object as been removed.
+     *
+     * @param id the ID of the object that was removed
+     */
+    public signal void object_removed (string id);
+
+    /**
      * Used by implementing classes to request a child object for addition.
      */
     public abstract signal void request_object (string id);
@@ -19,9 +33,9 @@ public interface Dcs.Container : GLib.Object {
      *
      * @param object object to add to the list
      */
-    //public abstract void add_child (Dcs.Object object);
     public virtual void add_child (Dcs.Object object) {
         objects.set (object.id, object);
+        object_added (object.id);
     }
 
     /**
@@ -32,6 +46,7 @@ public interface Dcs.Container : GLib.Object {
     public virtual void remove_child (Dcs.Object object) {
         GLib.Value value;
         objects.unset (object.id, out value);
+        object_removed (object.id);
     }
 
     /**

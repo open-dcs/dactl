@@ -96,7 +96,7 @@ GIRS = DcsCore-0.2.gir
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(GIRS)
 
-typelibdir = $(libdir)/girepository-1.0
+typelibdir = $(pkglibdir)/girepository-1.0
 typelib_DATA = $(GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)

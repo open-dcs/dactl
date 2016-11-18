@@ -43,13 +43,11 @@
 [GenericAccessors]
 public interface Dcs.View : GLib.Object {
 
-/*
- *    protected abstract Dcs.Model model { get; set; }
- *
- *    protected void connect (owned Dcs.Model.UpdateFunc update_func) {
- *        model.updated.connect (() => {
- *            update_func ();
- *        });
- *    }
- */
+    /**
+     * Add an object to the view.
+     *
+     * @param object The object to add
+     * @param path The path in the object tree to add the object at.
+     */
+    public abstract void add (owned Dcs.Object object, string path) throws GLib.Error;
 }

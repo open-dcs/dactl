@@ -65,7 +65,7 @@ public enum Dcs.UI.TraceDrawType {
  * to the left.
  */
 public class Dcs.UI.Trace : GLib.Object, Dcs.Object,
-                                               Dcs.Buildable, Dcs.UI.Drawable {
+                            Dcs.Buildable, Dcs.UI.Drawable {
 
     private Xml.Node* _node;
     /*private Dcs.UI.Drawable.XYPoint[] _raw_data;*/

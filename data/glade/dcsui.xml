@@ -1,47 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<glade-catalog version="3.14" name="dcs" library="libdcs-ui-0.1.so" depends="gtk+">
+<glade-catalog version="1.0" supports="gtkbuilder" name="libdcs-ui" library="dcs-ui-0.2" domain="libdcs" depends="gtk+" book="libdcs">
 
   <glade-widget-classes>
 
-    <glade-widget-class name="DcsSimpleWidget" generic-name="dcssimplewidget" title="OpenDCS Simple Widget"/>
+    <glade-widget-class name="DcsUISimpleWidget"
+      generic-name="simplewidget"
+      title="OpenDCS Simple Widget"/>
 
-    <glade-widget-class name="DcsCustomWidget" generic-name="dcscustomwidget" title="OpenDCS Custom Widget"/>
+    <glade-widget-class name="DcsUICustomWidget"
+      generic-name="customwidget"
+      title="OpenDCS Custom Widget"/>
 
-    <glade-widget-class name="DcsCompositeWidget" generic-name="dcscompositewidget" title="OpenDCS Composite Widget"/>
+    <glade-widget-class name="DcsUICompositeWidget"
+      generic-name="compositewidget"
+      title="OpenDCS Composite Widget"/>
 
-    <glade-widget-class name="DcsBox" generic-name="dcsbox" title="OpenDCS Box"/>
+    <glade-widget-class name="DcsUIBox"
+      generic-name="box"
+      title="OpenDCS Box"/>
 
-    <glade-widget-class name="DcsAxis" generic-name="dcsaxis" title="OpenDCS Axis"/>
+    <glade-widget-class name="DcsUIAxis"
+      generic-name="axis"
+      title="OpenDCS Axis"/>
 
-    <glade-widget-class name="DcsChart" generic-name="dcschart" title="OpenDCS Chart"/>
+    <glade-widget-class name="DcsUIChart"
+      generic-name="chart"
+      title="OpenDCS Chart"/>
 
-    <glade-widget-class name="DcsChartCanvas" generic-name="dcschartcanvas" title="OpenDCS Chart Canvas"/>
+    <glade-widget-class name="DcsUIChartCanvas"
+      generic-name="chartcanvas"
+      title="OpenDCS Chart Canvas"/>
 
-    <glade-widget-class name="DcsPolarChartCanvas" generic-name="dcspolarchartcanvas" title="OpenDCS Polar Chart Canvas"/>
+    <glade-widget-class name="DcsUIPolarChartCanvas"
+      generic-name="polarchartcanvas"
+      title="OpenDCS Polar Chart Canvas"/>
 
-    <glade-widget-class name="DcsAxis" generic-name="dcschartaxis" title="OpenDCS Axis"/>
+    <glade-widget-class name="DcsUIAxis"
+      generic-name="chartaxis"
+      title="OpenDCS Axis"/>
 
-    <glade-widget-class name="DcsStripChart" generic-name="dcsstripchart" title="OpenDCS Stipchart"/>
+    <glade-widget-class name="DcsUIStripChart"
+      generic-name="stripchart"
+      title="OpenDCS Stipchart"/>
 
-    <glade-widget-class name="DcsStripChartCanvas" generic-name="dcsstripchartcanvas" title="OpenDCS Stripchart Canvas"/>
+    <glade-widget-class name="DcsUIStripChartCanvas"
+      generic-name="stripchartcanvas"
+      title="OpenDCS Stripchart Canvas"/>
 
-    <glade-widget-class name="DcsPage" generic-name="dcspage" title="OpenDCS Page"/>
+    <glade-widget-class name="DcsUIPage"
+      generic-name="page"
+      title="OpenDCS Page"/>
 
   </glade-widget-classes>
 
-  <glade-widget-group name="dcs-widgets" title="OpenDCS Widgets">
-    <glade-widget-class-ref name="DcsSimpleWidget"/>
-    <glade-widget-class-ref name="DcsCustomWidget"/>
-    <glade-widget-class-ref name="DcsCompositeWidget"/>
-    <glade-widget-class-ref name="DcsBox"/>
-    <glade-widget-class-ref name="DcsAxis"/>
-    <glade-widget-class-ref name="DcsChart"/>
-    <glade-widget-class-ref name="DcsChartCanvas"/>
-    <glade-widget-class-ref name="DcsPolarChartCanvas"/>
-    <glade-widget-class-ref name="DcsAxis"/>
-    <glade-widget-class-ref name="DcsStripChart"/>
-    <glade-widget-class-ref name="DcsStripChartCanvas"/>
-    <glade-widget-class-ref name="DcsPage"/>
+  <glade-widget-group name="dcs" title="OpenDCS">
+    <glade-widget-class-ref name="DcsUISimpleWidget"/>
+    <glade-widget-class-ref name="DcsUICustomWidget"/>
+    <glade-widget-class-ref name="DcsUICompositeWidget"/>
+    <glade-widget-class-ref name="DcsUIBox"/>
+    <glade-widget-class-ref name="DcsUIAxis"/>
+    <glade-widget-class-ref name="DcsUIChart"/>
+    <glade-widget-class-ref name="DcsUIChartCanvas"/>
+    <glade-widget-class-ref name="DcsUIPolarChartCanvas"/>
+    <glade-widget-class-ref name="DcsUIAxis"/>
+    <glade-widget-class-ref name="DcsUIStripChart"/>
+    <glade-widget-class-ref name="DcsUIStripChartCanvas"/>
+    <glade-widget-class-ref name="DcsUIPage"/>
   </glade-widget-group>
 
 </glade-catalog>

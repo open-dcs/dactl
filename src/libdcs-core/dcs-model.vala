@@ -86,8 +86,10 @@ public class Dcs.Model : GLib.Object, Dcs.Container {
 
     /**
      * Emitted whenever the object map has been updated.
+     *
+     * @param id the ID of the object that was updated in the map
      */
-    public signal void updated ();
+    public signal void updated (string id);
 
     /**
      * Default construction.
@@ -125,6 +127,9 @@ public class Dcs.Model : GLib.Object, Dcs.Container {
             GLib.error (e.message);
         }
 
+        object_added.connect ((id) => { updated (id); });
+        object_removed.connect ((id) => { updated (id); });
+
         setup_model ();
     }
 
@@ -152,5 +157,6 @@ public class Dcs.Model : GLib.Object, Dcs.Container {
      */
     public void update_objects (Gee.Map<string, Dcs.Object> val) {
         _objects = val;
+        updated (null);
     }
 }

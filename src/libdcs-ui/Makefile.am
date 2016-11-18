@@ -134,12 +134,17 @@ $(builddir)/DcsUI-0.2.gir: $(srcdir)/Dcs-0.2.gir
 	$(AM_V_GEN)$(SED) \
 		-e 's,Dcs\.,DcsUI.,g' \
 		-e 's,namespace name="Dcs",namespace name="DcsUI",g' \
+		-e 's,DcsUI\.Application,DcsCore.Application,g' \
 		-e 's,DcsUI\.Object,DcsCore.Object,g' \
 		-e 's,DcsUI\.Buildable,DcsCore.Buildable,g' \
 		-e 's,DcsUI\.Container,DcsCore.Container,g' \
 		-e 's,DcsUI\.CldAdapter,DcsCore.CldAdapter,g' \
 		-e 's,DcsUI\.Extension,DcsCore.Extension,g' \
 		-e 's,DcsUI\.Factory,DcsCore.Factory,g' \
+		-e 's,DcsUI\.Model,DcsCore.Model,g' \
+		-e 's,DcsUI\.View,DcsCore.View,g' \
+		-e 's,DcsUI\.Controller,DcsCore.Controller,g' \
+		-e 's,DcsUI\.PluginExtension,DcsCore.PluginExtension,g' \
 		-e 's,<package name="dcs-ui-0.2"/>,<include name="DcsCore" version="0.2"/>\n<package name="dcs-ui-0.2"/>,' \
 		$< >$@
 GIRS = DcsUI-0.2.gir
@@ -147,7 +152,7 @@ GIRS = DcsUI-0.2.gir
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(GIRS)
 
-typelibdir = $(libdir)/girepository-1.0
+typelibdir = $(pkglibdir)/girepository-1.0
 typelib_DATA = $(GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)

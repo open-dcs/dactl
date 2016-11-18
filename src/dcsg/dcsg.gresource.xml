@@ -6,7 +6,7 @@
   </gresource>
 
   <gresource prefix="/org/opendcs/dcs/icons">
-    <file compressed="true" alias="dcs.svg">icons/scalable/dcs.svg</file>
+    <file compressed="true" alias="dcs.svg">../../data/icons/scalable/dcs.svg</file>
   </gresource>
 
   <gresource prefix="/org/opendcs/dcs/ui">
@@ -20,6 +20,7 @@
     <file compressed="true" alias="csv-export-toolbar.ui">ui/csv-export-toolbar.ui</file>
     <file compressed="true" alias="loader.ui">ui/loader.ui</file>
     <file compressed="true" alias="loader-toolbar.ui">ui/loader-toolbar.ui</file>
+    <file compressed="true" alias="plugin-settings.ui">ui/plugin-settings.ui</file>
     <file compressed="true" alias="sidebar.ui">ui/sidebar.ui</file>
     <file compressed="true" alias="settings-dialog.ui">ui/settings-dialog.ui</file>
     <file compressed="true" alias="settings-listbox.ui">ui/settings-listbox.ui</file>

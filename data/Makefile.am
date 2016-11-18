@@ -6,11 +6,17 @@ SUBDIRS = gsettings config glade icons mime systemd templates .
 appstream_in_files = org.opendcs.Dcs.appdata.xml.in
 appstream_XML = $(appstream_in_files:.xml.in=.xml)
 
+%.appdata.xml: %.appdata.xml.in
+	$(AM_V_GEN)$(MSGFMT) --xml --template $< -d $(top_srcdir)/po -o $@
+
 desktopdir = $(datadir)/applications
 desktop_in_in_files = org.opendcs.Dcsg.desktop.in.in
 desktop_in_files = org.opendcs.Dcsg.desktop.in
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
+
+%.desktop: %.desktop.in
+	$(AM_V_GEN)$(MSGFMT) --desktop --template $< -d $(top_srcdir)/po -o $@
 
 # D-Bus service file.
 servicedir = $(datadir)/dbus-1/services
@@ -22,12 +28,7 @@ org.opendcs.Dcs.service: org.opendcs.Dcs.service.in
 		[ -d $(@D) ] || $(mkdir_p) $(@D) ; \
 		sed -e "s|\@bindir\@|$(bindir)|" $< > $@.tmp && mv $@.tmp $@
 
-gresource_file = dcsg.gresource.xml
-resource_files = $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies $(gresource_file))
-
 EXTRA_DIST = \
-	$(gresource_file) \
-	$(resource_files) \
 	$(appstream_in_files) \
 	$(desktop_in_files) \
 	$(service_in_files) \

@@ -38,6 +38,7 @@ dcs_CFLAGS = \
 	$(DEBUG_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
 	$(dcs_includes) \
+	-fPIC \
 	-Wno-deprecated-declarations \
 	-Wno-discarded-qualifiers \
 	-Wno-implicit-function-declaration \

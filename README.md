@@ -12,7 +12,7 @@ OpenDCS is a set of services and applications for creating custom data
 acquisition and control systems in a distributed manner. The target operating
 system is Linux and its modern distribution variants.
 
-### Release 0.1
+### Release 0.2
 
 The current public release is a beta release that is a fork of
 [dactl](https://github.com/coanda/dactl) and probably won't be in a usable

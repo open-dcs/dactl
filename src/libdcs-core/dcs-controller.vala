@@ -45,8 +45,10 @@ public abstract class Dcs.Controller : GLib.Object {
     /**
      * The controller receives requests to update the view if there have been
      * changes to the model.
+     *
+     * @param id The ID of the object updated, `null' if entire map was replaced
      */
-    public abstract void update_view ();
+    public abstract void update_view (string? id);
 
     /**
      * Add an object to the model and view.
@@ -54,7 +56,8 @@ public abstract class Dcs.Controller : GLib.Object {
      * @param object The object to add.
      * @param path The path in the object tree to add the object at.
      */
-    public abstract void add (owned Dcs.Object object, string path) throws GLib.Error;
+    public abstract void add (owned Dcs.Object object, string path)
+                              throws GLib.Error;
 
     /**
      * Remove an object from the model and view.
