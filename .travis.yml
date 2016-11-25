@@ -8,8 +8,14 @@ env:
   global:
     - MAKE_CMD="make -j2"
 
+before_install:
+  - pip install --user cpp-coveralls
+
 before_script:  .ci/before_script.sh
 script:         .ci/script.sh
+
+after_success:
+  - coveralls --exclude tests --gcov-options '\-lp'
 
 addons:
   apt:

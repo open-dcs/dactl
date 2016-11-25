@@ -1,17 +1,50 @@
-public class Dcs.MetaConfig : Dcs.Config {
+public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
+
+    public string ns { get; private set; default = "dcs"; }
+
+    public Dcs.ConfigFormat format {
+        get { return get_format (); }
+        private set { format = value; }
+    }
 
     private Gee.ArrayList<Dcs.Config> config_list;
 
-    public MetaConfig () {
+    private static Once<Dcs.MetaConfig> _instance;
+
+    construct {
+        format = Dcs.ConfigFormat.MIXED;
         config_list = new Gee.ArrayList<Dcs.Config> ();
+    }
+
+    /**
+     * Instantiate singleton for configuration container.
+     *
+     * @return Instance of the configuration container.
+     */
+    public static unowned Dcs.MetaConfig get_default () {
+        return _instance.once (() => { return new Dcs.MetaConfig (); });
+    }
+
+    public string get_namespace () throws GLib.Error {
+        if (ns != "dcs") {
+            throw new Dcs.ConfigError.INVALID_NAMESPACE (_("Invalid namespace has been set"));
+        }
+        return ns;
+    }
+
+    public Dcs.ConfigFormat get_format () throws GLib.Error {
+        if (format != Dcs.ConfigFormat.MIXED) {
+            throw new Dcs.ConfigError.INVALID_FORMAT (_("Invalid format has been set"));
+        }
+        return format;
     }
 
     /**
      * {@inheritDoc}
      */
-    public override string get_string (string ns,
-                                       string key)
-                                       throws GLib.Error {
+    public string get_string (string ns,
+                              string key)
+                              throws GLib.Error {
 		string value = null;
 
         foreach (var config in config_list) {
@@ -34,9 +67,9 @@ public class Dcs.MetaConfig : Dcs.Config {
     /**
      * {@inheritDoc}
      */
-    public override Gee.ArrayList<string> get_string_list (string ns,
-                                                           string key)
-                                                           throws GLib.Error {
+    public Gee.ArrayList<string> get_string_list (string ns,
+                                                  string key)
+                                                  throws GLib.Error {
         Gee.ArrayList<string> value = null;
 
         foreach (var config in config_list) {
@@ -59,9 +92,9 @@ public class Dcs.MetaConfig : Dcs.Config {
     /**
      * {@inheritDoc}
      */
-    public override int get_int (string ns,
-                                 string key)
-                                 throws GLib.Error {
+    public int get_int (string ns,
+                        string key)
+                        throws GLib.Error {
 		int value = 0;
 		bool value_set = false;
 
@@ -86,9 +119,9 @@ public class Dcs.MetaConfig : Dcs.Config {
     /**
      * {@inheritDoc}
      */
-    public override Gee.ArrayList<int> get_int_list (string ns,
-                                                     string key)
-                                                     throws GLib.Error {
+    public Gee.ArrayList<int> get_int_list (string ns,
+                                            string key)
+                                            throws GLib.Error {
         Gee.ArrayList<int> value = null;
 
         foreach (var config in config_list) {
@@ -111,9 +144,9 @@ public class Dcs.MetaConfig : Dcs.Config {
     /**
      * {@inheritDoc}
      */
-    public override bool get_bool (string ns,
-                                   string key)
-                                   throws GLib.Error {
+    public bool get_bool (string ns,
+                          string key)
+                          throws GLib.Error {
 		bool value = false;
 		bool value_set = false;
 

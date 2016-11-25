@@ -8,7 +8,7 @@ sed -i 's/\(\[glib_required_version\]\,\s\[2\.\)46\(\.0\]\)/\140\2/' configure.a
 sed -i 's/\(\[peas_required_version\]\,\s\[1\.\)16\(\.0\]\)/\18\2/' configure.ac
 sed -i 's/\(\[json_required_version\]\,\s\[\)1\.0\(\.0\]\)/\10.16\2/' configure.ac
 
-./autogen.sh \
+CFLAGS="-g -O0 --coverage" ./autogen.sh \
     --disable-ui \
     --disable-webkit \
     --disable-vala-plugin \
