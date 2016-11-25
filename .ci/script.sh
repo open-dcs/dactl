@@ -13,4 +13,4 @@ CFLAGS="-g -O0 --coverage" ./autogen.sh \
     --disable-webkit \
     --disable-vala-plugin \
     --disable-python-plugin
-make
+make && make check

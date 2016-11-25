@@ -3,6 +3,11 @@
 set -e
 set -o pipefail
 
+wget https://launchpad.net/ubuntu/+archive/primary/+files/libsoup2.4_2.44.2-1ubuntu2.debian.tar.gz -O libsoup.tar.gz
+tar zxvf libsoup.tar.gz
+cd libsoup
+./configure --prefix=/usr
+make && sudo make install
 # TODO move into a build_deps script within .ci/common/build.sh
 git clone https://github.com/geoffjay/libcld.git
 cd libcld

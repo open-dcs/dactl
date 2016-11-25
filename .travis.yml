@@ -40,7 +40,6 @@ addons:
       - libmatheval-dev
       - libmodbus-dev
       - libpeas-dev
-      - libsoup2.4-dev
       - libsqlite3-dev
       - libvala-0.30-dev
       - libxml2-dev
