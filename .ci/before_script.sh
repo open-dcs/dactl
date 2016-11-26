@@ -6,7 +6,7 @@ set -o pipefail
 wget https://launchpad.net/libsoup/main/2.34.2/+download/libsoup-2.34.2.tar.gz
 tar zxvf libsoup-2.34.2.tar.gz
 cd libsoup-2.34.2
-./configure --prefix=/usr --without-gnome
+./configure --prefix=/usr --without-gnome --disable-tls-check
 make && sudo make install
 # TODO move into a build_deps script within .ci/common/build.sh
 git clone https://github.com/geoffjay/libcld.git
