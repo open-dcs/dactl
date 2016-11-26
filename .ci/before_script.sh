@@ -3,9 +3,9 @@
 set -e
 set -o pipefail
 
-wget https://launchpad.net/ubuntu/+archive/primary/+files/libsoup2.4_2.44.2-1ubuntu2.debian.tar.gz -O libsoup.tar.gz
-tar zxvf libsoup.tar.gz
-cd libsoup
+wget https://launchpad.net/libsoup/main/2.34.2/+download/libsoup-2.34.2.tar.gz
+tar zxvf libsoup-2.34.2.tar.gz
+cd libsoup-2.34.2
 ./configure --prefix=/usr
 make && sudo make install
 # TODO move into a build_deps script within .ci/common/build.sh
