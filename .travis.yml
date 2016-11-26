@@ -28,6 +28,7 @@ addons:
       - docbook-xsl
       - gettext
       - gobject-introspection
+      - gtk-doc-tools
       - intltool
       - libtool
       - xsltproc

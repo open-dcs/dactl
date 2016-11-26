@@ -71,6 +71,7 @@ libdcs_net_0_2_la_CFLAGS = \
 	$(AM_CFLAGS) \
 	$(LIBDCS_CFLAGS) \
 	$(LIBDCS_NET_CFLAGS) \
+	$(COVERAGE_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
 	$(libdcs_net_0_2_la_includes) \
 	-Wno-deprecated-declarations \

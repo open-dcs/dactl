@@ -1,6 +1,7 @@
 EXTRA_DIST =
 
 tests_valaflags = \
+	--vapidir=$(top_srcdir)/vapi \
 	--vapidir=$(top_srcdir)/src/libdcs-core \
 	--pkg posix \
 	--pkg gio-2.0 \
@@ -58,5 +59,41 @@ noinst_PROGRAMS = $(TESTS)
 endif
 
 check_PROGRAMS = $(TESTS)
+
+coverage-reset:
+	lcov --base-directory=$(top_srcdir) --directory $(top_srcdir) --zerocounters
+
+coverage-report:
+	lcov --directory $(top_srcdir)/src/libdcs-core \
+		--directory $(top_srcdir)/src/libdcs-cli \
+		--directory $(top_srcdir)/src/libdcs-control \
+		--directory $(top_srcdir)/src/libdcs-daq \
+		--directory $(top_srcdir)/src/libdcs-log \
+		--directory $(top_srcdir)/src/libdcs-net \
+		--directory $(top_srcdir)/src/libdcs-ui \
+		--capture \
+		--output-file $(top_builddir)/lcov.info
+
+	lcov --directory $(top_srcdir)/src/libdcs-core \
+		--directory $(top_srcdir)/src/libdcs-cli \
+		--directory $(top_srcdir)/src/libdcs-control \
+		--directory $(top_srcdir)/src/libdcs-daq \
+		--directory $(top_srcdir)/src/libdcs-log \
+		--directory $(top_srcdir)/src/libdcs-net \
+		--directory $(top_srcdir)/src/libdcs-ui \
+		--output-file $(top_builddir)/lcov.info \
+		--remove $(top_builddir)/lcov.info \
+		/usr/include/\*
+
+	$(mkdir_p) $(top_builddir)/tests/coverage
+	git_commit=`GIT_DIR=$(top_srcdir)/.git git log -1 --pretty=format:%h 2>/dev/null`;\
+	genhtml --title "@PACKAGE_STRING@ $$git_commit" \
+		--output-directory $(top_builddir)/tests/coverage $(top_builddir)/lcov.info
+	@echo
+	@echo 'lcov report can be found in:'
+	@echo 'file://@abs_top_builddir@/tests/coverage/index.html'
+	@echo
+
+.PHONY: coverage-report
 
 -include $(top_srcdir)/git.mk

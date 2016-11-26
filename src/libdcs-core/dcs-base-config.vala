@@ -9,6 +9,8 @@ public class Dcs.BaseConfig : Dcs.Config, GLib.Object {
 
     protected Dcs.ConfigFormat format;
 
+    protected string @namespace;
+
     public virtual string get_namespace () throws GLib.Error {
         throw new ConfigError.NO_VALUE_SET (_("No value available"));
     }

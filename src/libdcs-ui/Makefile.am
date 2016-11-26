@@ -86,6 +86,7 @@ libdcs_ui_0_2_la_CFLAGS = \
 	$(LIBDCS_CORE_CFLAGS) \
 	$(LIBDCS_UI_CFLAGS) \
 	$(DCS_CLD_DEPS_CFLAGS) \
+	$(COVERAGE_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
 	$(libdcs_ui_0_2_la_includes) \
 	-Wno-deprecated-declarations \

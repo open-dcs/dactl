@@ -74,6 +74,7 @@ libdcs_log_0_2_la_CFLAGS = \
 	$(LIBDCS_CFLAGS) \
 	$(LIBDCS_LOG_CFLAGS) \
 	$(LIBDCS_NET_CFLAGS) \
+	$(COVERAGE_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
 	$(DEBUG_CFLAGS) \
 	$(libdcs_log_0_2_la_includes) \

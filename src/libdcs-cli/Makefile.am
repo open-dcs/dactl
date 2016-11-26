@@ -62,6 +62,7 @@ libdcs_cli_0_2_la_CFLAGS = \
 	$(AM_CFLAGS) \
 	$(LIBDCS_CFLAGS) \
 	$(LIBDCS_CLI_CFLAGS) \
+	$(COVERAGE_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
 	$(DEBUG_CFLAGS) \
 	$(libdcs_cli_0_2_la_includes) \

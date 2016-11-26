@@ -76,6 +76,7 @@ libdcs_daq_0_2_la_CFLAGS = \
 	$(LIBDCS_CFLAGS) \
 	$(LIBDCS_DAQ_CFLAGS) \
 	$(LIBDCS_NET_CFLAGS) \
+	$(COVERAGE_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
 	$(libdcs_daq_0_2_la_includes) \
 	-Wno-deprecated-declarations \

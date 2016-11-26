@@ -75,6 +75,7 @@ libdcs_control_0_2_la_CFLAGS = \
 	$(LIBDCS_CONTROL_CFLAGS) \
 	$(LIBDCS_NET_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
+	$(COVERAGE_CFLAGS) \
 	$(DEBUG_CFLAGS) \
 	$(libdcs_control_0_2_la_includes) \
 	-Wno-deprecated-declarations \

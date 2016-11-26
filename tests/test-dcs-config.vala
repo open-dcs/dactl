@@ -64,6 +64,14 @@ public class Dcs.Test.Config : Dcs.BaseConfig {
         return format;
     }
 
+    public void set_namespace (string @namespace) {
+        this.@namespace = @namespace;
+    }
+
+    public override string get_namespace () throws GLib.Error {
+        return @namespace;
+    }
+
     public override string get_string (string ns,
                                        string key) throws GLib.Error {
         string val = null;
@@ -388,6 +396,7 @@ public class Dcs.ConfigTests : Dcs.ConfigTestsBase {
     public ConfigTests () {
         base (class_name);
         add_test (@"[$class_name] Test format property", test_format);
+        add_test (@"[$class_name] Test namespace property", test_namespace);
         add_test (@"[$class_name] Test command line args", test_load_cmdline);
         add_test (@"[$class_name] Test loading INI file", test_load_ini);
         add_test (@"[$class_name] Test loading INI data", test_load_ini_data);
@@ -415,6 +424,11 @@ public class Dcs.ConfigTests : Dcs.ConfigTestsBase {
         assert_true (test_config.get_format () == Dcs.ConfigFormat.JSON);
         (test_config as Dcs.Test.Config).set_format (Dcs.ConfigFormat.XML);
         assert_true (test_config.get_format () == Dcs.ConfigFormat.XML);
+    }
+
+    private void test_namespace () {
+        (test_config as Dcs.Test.Config).set_namespace ("dcs");
+        assert_true (test_config.get_namespace () == "dcs");
     }
 
     private void test_load_cmdline () {
