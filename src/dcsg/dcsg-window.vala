@@ -5,26 +5,6 @@
 [GtkTemplate (ui = "/org/opendcs/dcs/ui/window.ui")]
 public class Dcsg.Window : Dcs.UI.WindowBase {
 
-    private string _xml = """
-    """;
-
-    private string _xsd = """
-    """;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xsd {
-        get { return _xsd; }
-    }
-
     /**
      * {@inheritDoc}
      */

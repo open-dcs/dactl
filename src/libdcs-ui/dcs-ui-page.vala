@@ -4,35 +4,9 @@
 [GtkTemplate (ui = "/org/opendcs/libdcs/ui/page.ui")]
 public class Dcs.UI.Page : Dcs.UI.CompositeWidget {
 
-    private string _xml = """
-        <object id=\"ai-ctl0\" type=\"ai\" ref=\"cld://ai0\"/>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     public int index { get; set; default = 0; }
 
     public string title { get; set; default = "Page"; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}

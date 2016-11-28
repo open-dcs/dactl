@@ -16,16 +16,6 @@ public abstract class Dcs.UI.WindowBase : Gtk.ApplicationWindow, Dcs.View, Dcs.C
     /**
      * {@inheritDoc}
      */
-    protected abstract string xml { get; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected abstract string xsd { get; }
-
-    /**
-     * {@inheritDoc}
-     */
     protected virtual Xml.Node* node {
         get {
             return _node;
@@ -56,6 +46,14 @@ public abstract class Dcs.UI.WindowBase : Gtk.ApplicationWindow, Dcs.View, Dcs.C
      * {@inheritDoc}
      */
     public abstract void update_objects (Gee.Map<string, Dcs.Object> val);
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual void add (owned Dcs.Object object, string path)
+                             throws GLib.Error {
+        throw new Dcs.ViewError.INVALID_VIEW_REQUEST ("Add method was not added.");
+    }
 
     /**
      * Generic UI object request method.

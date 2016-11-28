@@ -12,16 +12,6 @@ public abstract class Dcs.UI.WebKitWidget : WebKit.WebView, Dcs.UI.Widget, Dcs.C
     /**
      * {@inheritDoc}
      */
-    protected abstract string xml { get; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected abstract string xsd { get; }
-
-    /**
-     * {@inheritDoc}
-     */
     protected virtual Xml.Node* node {
         get {
             return _node;

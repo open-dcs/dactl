@@ -6,18 +6,6 @@ public class Dcs.UI.VideoProcessor : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
 
     private Gee.Map<string, Dcs.Object> _objects;
 
-    private string _xml = """
-        <object id=\"vid-proc0\" type=\"vid\" ref=\"cld://vid0\"/>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     //public string ch_ref { get; set; }
 
     //private weak Cld.Channel _channel;
@@ -33,20 +21,6 @@ public class Dcs.UI.VideoProcessor : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
     //}
 
     //private bool channel_isset { get; private set; default = false; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}

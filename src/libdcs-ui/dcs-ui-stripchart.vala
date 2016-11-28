@@ -5,36 +5,10 @@ public class Dcs.UI.StripChartTrace : GLib.Object, Dcs.Object, Dcs.Buildable {
 
     private Xml.Node* _node;
 
-    private string _xml = """
-        <object id=\"ai-ctl0\" type=\"ai\" ref=\"cld://ai0\"/>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     /**
      * {@inheritDoc}
      */
     public string id { get; set; default = "trace0"; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected virtual string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected virtual string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}
@@ -709,18 +683,6 @@ private class Dcs.UI.StripChartCanvas : Dcs.UI.Canvas {
 [GtkTemplate (ui = "/org/opendcs/libdcs/ui/stripchart.ui")]
 public class Dcs.UI.StripChart : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
 
-    private string _xml = """
-        <object id=\"chart0\" type=\"stripchart\"/>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     /* Global variable that holds the maximum window size of all the traces */
     private int window_size_max = 0;
     /* Global variable that holds the mainimum stride of all the traces */
@@ -730,20 +692,6 @@ public class Dcs.UI.StripChart : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
     bool once = false;
 
     private Gee.Map<string, Dcs.Object> _objects;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}

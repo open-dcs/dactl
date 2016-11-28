@@ -13,41 +13,7 @@ public class Dcs.UI.PolarChart : Dcs.UI.CompositeWidget {
 
     private Xml.Node* _node;
 
-    private string _xml = """
-        <ui:object id=\"chart0\" type=\"polar-chart\"/>
-          <ui:property name=\"title\">Chart 0</ui:property>
-          <ui:property name=\"height-min\">100</ui:property>
-          <ui:property name=\"width-min\">100</ui:property>
-          <ui:property name=\"expand\">true</ui:property>
-          <ui:property name=\"fill\">true</ui:property>
-          <ui:property name=\"show-title\">true</ui:property>
-          <ui:property name=\"show-grid\">true</ui:property>
-          <ui:property name=\"show-grid-border\">true</ui:property>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     private Gee.Map<string, Dcs.Object> _objects;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}

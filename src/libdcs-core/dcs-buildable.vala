@@ -3,10 +3,6 @@
  */
 public interface Dcs.Buildable : GLib.Object {
 
-    protected abstract string xml { get; }
-
-    protected abstract string xsd { get; }
-
     protected abstract Xml.Node* node { get; set; }
 
     public static unowned string get_xml_default () {

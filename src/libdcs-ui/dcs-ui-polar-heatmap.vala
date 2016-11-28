@@ -27,55 +27,6 @@ public class Dcs.UI.PolarHeatMap : GLib.Object, Dcs.Object, Dcs.Container,
      * {@inheritDoc}
      */
     public string id { get; set; default = "heatmap0"; }
-    /* compute grid */
-
-    private string _xml = """
-        <ui:object id=\"surf1-0\" type=\"surface\" ttype=\"heatmap\">
-            <ui:property name=\"min-color\">rgb(256,0,0)</ui:property>
-            <ui:property name=\"max-color\">rgb(0,0,256)</ui:property>
-            <ui:property name=\"magnitude-min\">-10</ui:property>
-            <ui:property name=\"magnitude-max\">10</ui:property>
-            <ui:property name=\"angle-min\">-10</ui:property>
-            <ui:property name=\"angle-max\">10</ui:property>
-            <ui:property name=\"zmin\">-10</ui:property>
-            <ui:property name=\"zmax\">10</ui:property>
-            <ui:property name=\"interpolation-type\">none</ui:property>
-            <ui:property name=\"rings\">4</ui:property>
-            <ui:property name=\"sectors\">4</ui:property>
-
-            <ui:object id=\"hmap-0\" type=\"heatmap\">
-                <ui:property name=\"min-color\">rgba(256,0,0,1)</ui:property>
-                <ui:property name=\"max-color\">rgba(0,0,256,1)</ui:property>
-                <ui:property name=\"min\">-10</ui:property>
-                <ui:property name=\"max\">10</ui:property>
-                <ui:property name=\"interpolation-type\">none</ui:property>
-                <ui:property name=\"grid-rings\">4</ui:property>
-                <ui:property name=\"grid-sectors\">4</ui:property>
-                <ui:object id=\"ary-0" type="channel-matrix\">
-
-                    <ui:object id=\"pg1chart0tr0ary0p00\" type=\"channel-matrix-element\">
-                        <ui:property name=\"x\">0.900</ui:property>
-                        <ui:property name=\"y\">1.00</ui:property>
-                        <ui:property name=\"chref\">/daqctl0/dev0/ai00</ui:property>
-                    </ui:object>
-
-                    <ui:object id=\"pg1chart0tr0ary0p01\" type=\"channel-matrix-element\">
-                        <ui:property name=\"x\">1.00</ui:property>
-                        <ui:property name=\"y\">2.00</ui:property>
-                        <ui:property name=\"chref\">/daqctl0/dev0/ai01</ui:property>
-                    </ui:object>
-                </ui:object>
-            </ui:object>
-        </ui:object>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
 
     /**
      * {@inheritDoc}
@@ -83,20 +34,6 @@ public class Dcs.UI.PolarHeatMap : GLib.Object, Dcs.Object, Dcs.Container,
     public Gee.Map<string, Dcs.Object> objects {
         get { return _objects; }
         set { update_objects (value); }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected string xsd {
-        get { return _xsd; }
     }
 
     /**

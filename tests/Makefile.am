@@ -61,26 +61,14 @@ endif
 check_PROGRAMS = $(TESTS)
 
 coverage-reset:
-	lcov --base-directory=$(top_srcdir) --directory $(top_srcdir) --zerocounters
+	lcov --directory $(top_srcdir) --zerocounters
 
 coverage-report:
-	lcov --directory $(top_srcdir)/src/libdcs-core \
-		--directory $(top_srcdir)/src/libdcs-cli \
-		--directory $(top_srcdir)/src/libdcs-control \
-		--directory $(top_srcdir)/src/libdcs-daq \
-		--directory $(top_srcdir)/src/libdcs-log \
-		--directory $(top_srcdir)/src/libdcs-net \
-		--directory $(top_srcdir)/src/libdcs-ui \
+	lcov --directory $(top_srcdir) \
 		--capture \
 		--output-file $(top_builddir)/lcov.info
 
-	lcov --directory $(top_srcdir)/src/libdcs-core \
-		--directory $(top_srcdir)/src/libdcs-cli \
-		--directory $(top_srcdir)/src/libdcs-control \
-		--directory $(top_srcdir)/src/libdcs-daq \
-		--directory $(top_srcdir)/src/libdcs-log \
-		--directory $(top_srcdir)/src/libdcs-net \
-		--directory $(top_srcdir)/src/libdcs-ui \
+	lcov --directory $(top_srcdir) \
 		--output-file $(top_builddir)/lcov.info \
 		--remove $(top_builddir)/lcov.info \
 		/usr/include/\*

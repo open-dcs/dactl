@@ -9,32 +9,6 @@ public class Dcs.UI.RichContent : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
 
     private Gee.Map<string, Dcs.Object> _objects;
 
-    private string _xml = """
-        <object id=\"rc-ctl0\" type=\"rc\"/>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xsd {
-        get { return _xsd; }
-    }
-
     /**
      * {@inheritDoc}
      */

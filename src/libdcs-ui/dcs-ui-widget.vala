@@ -220,16 +220,6 @@ public abstract class Dcs.UI.SimpleWidget : Gtk.Box, Dcs.UI.Widget, Dcs.Buildabl
     /**
      * {@inheritDoc}
      */
-    protected abstract string xml { get; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected abstract string xsd { get; }
-
-    /**
-     * {@inheritDoc}
-     */
     protected virtual Xml.Node* node {
         get {
             return _node;
@@ -263,16 +253,6 @@ public abstract class Dcs.UI.CustomWidget : Gtk.DrawingArea, Dcs.UI.Widget, Dcs.
      * {@inheritDoc}
      */
     public virtual string id { get; set; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected abstract string xml { get; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected abstract string xsd { get; }
 
     /**
      * {@inheritDoc}
@@ -312,16 +292,6 @@ public abstract class Dcs.UI.CompositeWidget : Gtk.Box, Dcs.UI.Widget, Dcs.Conta
     public virtual string id { get; set; }
 
     public bool fill { get; set; default = true; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected abstract string xml { get; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected abstract string xsd { get; }
 
     /**
      * {@inheritDoc}

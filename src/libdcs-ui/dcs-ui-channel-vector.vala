@@ -2,18 +2,6 @@ public class Dcs.UI.ChannelVectorElement : GLib.Object, Dcs.Object, Dcs.Buildabl
 
     private Xml.Node* _node;
 
-    private string _xml = """
-        <ui:object id=\"pg1chart0tr0cv0p00\" type=\"channel-vector-element\" xvalue=\"1.000\" chref=\"/udp00\"/>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     /* the uri of the referenced channel */
     public string chref;
 
@@ -24,20 +12,6 @@ public class Dcs.UI.ChannelVectorElement : GLib.Object, Dcs.Object, Dcs.Buildabl
      * {@inheritDoc}
      */
     public string id { get; set; default = "trace0"; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}

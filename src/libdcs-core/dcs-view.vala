@@ -1,3 +1,7 @@
+public errordomain Dcs.ViewError {
+    INVALID_VIEW_REQUEST
+}
+
 /**
  * A common interface for different types of user interfaces.
  *
