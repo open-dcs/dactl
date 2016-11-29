@@ -49,31 +49,38 @@ public class Dcs.BaseConfig : Dcs.Config, GLib.Object {
         throw new ConfigError.NO_VALUE_SET (_("No value available"));
     }
 
-/*
- *    public abstract float get_float (string ns,
- *                                     string key) throws GLib.Error;
- *
- *    public abstract double get_double (string ns,
- *                                       string key) throws GLib.Error;
- *
- *    public abstract void set_string (string ns,
- *                                     string key,
- *                                     string value) throws GLib.Error;
- *
- *    public abstract void set_int (string ns,
- *                                  string key,
- *                                  int value) throws GLib.Error;
- *
- *    public abstract void set_bool (string ns,
- *                                   string key,
- *                                   bool value) throws GLib.Error;
- *
- *    public abstract void set_float (string ns,
- *                                    string key,
- *                                    float value) throws GLib.Error;
- *
- *    public abstract void set_double (string ns,
- *                                     string key,
- *                                     double value) throws GLib.Error;
- */
+    public virtual float get_float (string ns,
+                                    string key) throws GLib.Error {
+        throw new ConfigError.NO_VALUE_SET (_("No value available"));
+	}
+
+    public virtual double get_double (string ns,
+                                      string key) throws GLib.Error {
+        throw new ConfigError.NO_VALUE_SET (_("No value available"));
+	}
+
+    public virtual void set_string (string ns,
+                                    string key,
+                                    string value) throws GLib.Error {
+        throw new ConfigError.NO_VALUE_SET (_("No value available"));
+	}
+
+    public virtual void set_int (string ns,
+                                 string key,
+                                 int value) throws GLib.Error {
+        throw new ConfigError.NO_VALUE_SET (_("No value available"));
+	}
+
+    public virtual void set_bool (string ns,
+                                  string key,
+                                  bool value) throws GLib.Error {
+        throw new ConfigError.NO_VALUE_SET (_("No value available"));
+	}
+
+    public virtual void set_double (string ns,
+                                    string key,
+                                    double value) throws GLib.Error {
+        throw new ConfigError.NO_VALUE_SET (_("No value available"));
+	}
+
 }

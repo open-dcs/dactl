@@ -56,10 +56,4 @@ public interface Dcs.Object : GLib.Object {
 
         return result;
     }
-
-    /**
-     * Get the nickname of the object.
-     * Used to clean up the output in the application configurations.
-     */
-    //public virtual
 }

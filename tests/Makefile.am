@@ -47,6 +47,8 @@ test_dcs_core_SOURCES = \
 	test-dcs-core.vala \
 	test-dcs-object.vala \
 	test-dcs-config.vala \
+	test-dcs-dataseries.vala \
+	test-dcs-point.vala \
 	$(NULL)
 
 test_dcs_core_VALAFLAGS = $(tests_valaflags)
@@ -83,5 +85,9 @@ coverage-report:
 	@echo
 
 .PHONY: coverage-report
+
+GITIGNOREFILES = \
+	coverage \
+	$(NULL)
 
 -include $(top_srcdir)/git.mk

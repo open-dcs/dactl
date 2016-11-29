@@ -1,6 +1,7 @@
 public errordomain Dcs.ConfigError {
     FILE_NOT_FOUND,
     NO_VALUE_SET,
+    NO_VALUE_FOUND,
     VALUE_OUT_OF_RANGE,
     INVALID_FORMAT,
     INVALID_NAMESPACE,
@@ -93,31 +94,37 @@ public interface Dcs.Config : GLib.Object {
                                    string key)
                                    throws GLib.Error;
 
-/*
- *    public abstract float get_float (string ns,
- *                                     string key) throws GLib.Error;
- *
- *    public abstract double get_double (string ns,
- *                                       string key) throws GLib.Error;
- *
- *    public abstract void set_string (string ns,
- *                                     string key,
- *                                     string value) throws GLib.Error;
- *
- *    public abstract void set_int (string ns,
- *                                  string key,
- *                                  int value) throws GLib.Error;
- *
- *    public abstract void set_bool (string ns,
- *                                   string key,
- *                                   bool value) throws GLib.Error;
- *
- *    public abstract void set_float (string ns,
- *                                    string key,
- *                                    float value) throws GLib.Error;
- *
- *    public abstract void set_double (string ns,
- *                                     string key,
- *                                     double value) throws GLib.Error;
- */
+    /**
+     * TODO fill me in
+     */
+    public abstract double get_double (string ns,
+                                       string key) throws GLib.Error;
+
+    /**
+     * TODO fill me in
+     */
+    public abstract void set_string (string ns,
+                                     string key,
+                                     string value) throws GLib.Error;
+
+    /**
+     * TODO fill me in
+     */
+    public abstract void set_int (string ns,
+                                  string key,
+                                  int value) throws GLib.Error;
+
+    /**
+     * TODO fill me in
+     */
+    public abstract void set_bool (string ns,
+                                   string key,
+                                   bool value) throws GLib.Error;
+
+    /**
+     * TODO fill me in
+     */
+    public abstract void set_double (string ns,
+                                     string key,
+                                     double value) throws GLib.Error;
 }

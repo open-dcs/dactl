@@ -167,4 +167,90 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
             throw new Dcs.ConfigError.NO_VALUE_SET (_("No value available"));
 		}
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public double get_double (string ns,
+                              string key)
+                              throws GLib.Error {
+        double value = 0.0;
+        bool value_set = false;
+
+        foreach (var config in config_list) {
+            try {
+                value = config.get_double (ns, key);
+            } catch (Dcs.ConfigError e) {
+                if (!(e is Dcs.ConfigError.NO_VALUE_SET)) {
+                    throw e;
+                }
+            }
+        }
+
+        if (value_set) {
+            return value;
+        } else {
+            throw new Dcs.ConfigError.NO_VALUE_SET (_("No value available"));
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void set_string (string ns,
+                            string key,
+                            string value) throws GLib.Error {
+        foreach (var config in config_list) {
+            try {
+                config.set_string (ns, key, value);
+            } catch (Dcs.ConfigError e) {
+                throw e;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void set_int (string ns,
+                         string key,
+                         int value) throws GLib.Error {
+        foreach (var config in config_list) {
+            try {
+                config.set_int (ns, key, value);
+            } catch (Dcs.ConfigError e) {
+                throw e;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void set_bool (string ns,
+                          string key,
+                          bool value) throws GLib.Error {
+        foreach (var config in config_list) {
+            try {
+                config.set_bool (ns, key, value);
+            } catch (Dcs.ConfigError e) {
+                throw e;
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void set_double (string ns,
+                            string key,
+                            double value) throws GLib.Error {
+        foreach (var config in config_list) {
+            try {
+                config.set_double (ns, key, value);
+            } catch (Dcs.ConfigError e) {
+                throw e;
+            }
+        }
+    }
 }

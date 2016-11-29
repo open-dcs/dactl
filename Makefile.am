@@ -114,6 +114,7 @@ valgrind:
 if ENABLE_COVERAGE
 coverage:
 	$(MAKE) -C tests coverage-reset
+	$(MAKE) check
 	$(MAKE) -C tests coverage-report
 else
 coverage:

@@ -11,11 +11,11 @@ public interface Dcs.Buildable : GLib.Object {
 
     public static unowned string get_xsd_default () {
         return """
-                <xs:element name="object">
-                  <xs:attribute name="id" type="xs:string" use="required"/>
-                  <xs:attribute name="type" type="xs:string" use="required"/>
-                </xs:element>
-               """;
+          <xs:element name="object">
+            <xs:attribute name="id" type="xs:string" use="required"/>
+            <xs:attribute name="type" type="xs:string" use="required"/>
+          </xs:element>
+        """;
     }
 
     /**
