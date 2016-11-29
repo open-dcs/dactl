@@ -52,11 +52,15 @@ public class Dcs.PointTests : Dcs.PointTestsBase {
     public void test_simple_point () {
         assert (simple_point.x == 1.0);
         assert (simple_point.y == 2.0);
+        var type = typeof (Dcs.SimplePoint);
+        assert (type.name () == "DcsSimplePoint");
     }
 
     public void test_triple_point () {
         assert (triple_point.a == 1.0);
         assert (triple_point.b == 2.0);
         assert (triple_point.c == 3.0);
+        var type = typeof (Dcs.TriplePoint);
+        assert (type.name () == "DcsTriplePoint");
     }
 }
