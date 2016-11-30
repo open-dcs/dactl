@@ -46,6 +46,7 @@ libdcs_cli_0_2_la_includes = \
 
 libdcs_cli_0_2_la_VALAFLAGS = \
 	-H dcs-cli.h -C \
+	$(COVERAGE_VALAFLAGS) \
 	--library=dcs-cli-0.2 \
 	--gir=Dcs-0.2.gir \
 	--vapidir=$(top_srcdir)/vapi \
@@ -83,6 +84,7 @@ libdcs_cli_0_2_la_LDFLAGS = \
 libdcs_cli_0_2_la_LIBADD = \
 	$(LIBDCS_LIBS) \
 	$(LIBDCS_CLI_LIBS) \
+	$(COVERAGE_LIBS) \
 	$(NULL)
 
 

@@ -51,6 +51,7 @@ libdcs_daq_0_2_la_includes = \
 
 libdcs_daq_0_2_la_VALAFLAGS = \
 	-H dcs-daq.h -C \
+	$(COVERAGE_VALAFLAGS) \
 	--library=dcs-daq-0.2 \
 	--gir=Dcs-0.2.gir \
 	--vapidir=$(top_srcdir)/vapi \
@@ -98,6 +99,7 @@ libdcs_daq_0_2_la_LIBADD = \
 	$(LIBDCS_LIBS) \
 	$(LIBDCS_DAQ_LIBS) \
 	$(LIBDCS_NET_LIBS) \
+	$(COVERAGE_LIBS) \
 	$(NULL)
 
 

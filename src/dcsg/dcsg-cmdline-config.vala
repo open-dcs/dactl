@@ -2,9 +2,7 @@ public errordomain Dcsg.CmdlineConfigError {
     VERSION_ONLY
 }
 
-public class Dcsg.CmdlineConfig : Dcs.Config, GLib.Object {
-
-    public Dcs.ConfigFormat format { get; set; default = Dcs.ConfigFormat.OPTIONS; }
+public class Dcsg.CmdlineConfig : Dcs.BaseConfig {
 
     private static bool version;
 
@@ -76,37 +74,11 @@ public class Dcsg.CmdlineConfig : Dcs.Config, GLib.Object {
         return config_file;
     }
 
-    public Dcs.ConfigFormat get_format () throws GLib.Error {
-        return format;
+    public override Dcs.ConfigFormat get_format () throws GLib.Error {
+        return Dcs.ConfigFormat.OPTIONS;
     }
 
-    public string get_namespace () throws GLib.Error {
+    public override string get_namespace () throws GLib.Error {
         return "dcsg";
-    }
-
-    public string get_string (string ns,
-                              string key) throws GLib.Error {
-        throw new Dcs.ConfigError.NO_VALUE_SET (_("No value available"));
-    }
-
-    public Gee.ArrayList<string> get_string_list (string ns,
-                                                  string key)
-                                                  throws GLib.Error {
-        throw new Dcs.ConfigError.NO_VALUE_SET (_("No value available"));
-    }
-
-    public int get_int (string ns,
-                        string key) throws GLib.Error {
-        throw new Dcs.ConfigError.NO_VALUE_SET (_("No value available"));
-    }
-
-    public Gee.ArrayList<int> get_int_list (string ns,
-                                            string key)
-                                            throws GLib.Error {
-        throw new Dcs.ConfigError.NO_VALUE_SET (_("No value available"));
-    }
-
-    public bool get_bool (string ns, string key) throws GLib.Error {
-        throw new Dcs.ConfigError.NO_VALUE_SET (_("No value available"));
     }
 }

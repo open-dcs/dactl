@@ -1,6 +1,7 @@
 EXTRA_DIST =
 
 tests_valaflags = \
+	$(COVERAGE_VALAFLAGS) \
 	--vapidir=$(top_srcdir)/vapi \
 	--vapidir=$(top_srcdir)/src/libdcs-core \
 	--pkg posix \
@@ -14,11 +15,13 @@ tests_valaflags = \
 tests_cflags = \
 	$(DEBUG_CFLAGS) \
 	$(LIBDCS_CORE_CFLAGS) \
+	$(COVERAGE_CFLAGS) \
 	-I$(top_srcdir)/src/libdcs-core \
 	$(NULL)
 
 tests_libs = \
 	$(LIBDCS_CORE_LIBS) \
+	$(COVERAGE_LIBS) \
 	$(top_builddir)/src/libdcs-core/libdcs-core-0.2.la \
 	$(NULL)
 
@@ -73,7 +76,7 @@ coverage-report:
 	lcov --directory $(top_srcdir) \
 		--output-file $(top_builddir)/lcov.info \
 		--remove $(top_builddir)/lcov.info \
-		/usr/include/\*
+		"/usr/include/*"
 
 	$(mkdir_p) $(top_builddir)/tests/coverage
 	git_commit=`GIT_DIR=$(top_srcdir)/.git git log -1 --pretty=format:%h 2>/dev/null`;\
@@ -87,6 +90,7 @@ coverage-report:
 .PHONY: coverage-report
 
 GITIGNOREFILES = \
+	$(top_builddir)/lcov.info \
 	coverage \
 	$(NULL)
 

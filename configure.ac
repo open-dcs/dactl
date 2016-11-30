@@ -171,10 +171,9 @@ AM_CONDITIONAL(ENABLE_COVERAGE, [test "x$enable_coverage" = "xyes"])
 AS_IF([test "x$enable_coverage" != "xno"],[
        AC_PATH_PROG(LCOV,[lcov])
        AC_PATH_PROG(GENHTML,[genhtml])
-       #AC_SUBST(COVERAGE_LIBS,["-lgcov"])
-       #AC_SUBST(COVERAGE_CFLAGS,["-fprofile-arcs -ftest-coverage"])
-       #AC_SUBST(COVERAGE_VALAFLAGS,["-g"])
-       AC_SUBST(COVERAGE_CFLAGS,["-g -O0 --coverage"])
+       AC_SUBST(COVERAGE_LIBS,["-lgcov"])
+       AC_SUBST(COVERAGE_CFLAGS,["-g -O0 -fprofile-arcs -ftest-coverage"])
+       AC_SUBST(COVERAGE_VALAFLAGS,["-g"])
     ])
 
 

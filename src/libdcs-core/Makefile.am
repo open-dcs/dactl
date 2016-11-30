@@ -31,6 +31,7 @@ libdcs_core_0_2_la_includes = \
 
 libdcs_core_0_2_la_VALAFLAGS = \
 	-H dcs-core.h -C \
+	$(COVERAGE_VALAFLAGS) \
 	--library=dcs-core-0.2 \
 	--gir=Dcs-0.2.gir \
 	--vapidir=$(top_srcdir)/vapi \
@@ -80,6 +81,7 @@ libdcs_core_0_2_la_LIBADD = \
 	$(LIBDCS_LIBS) \
 	$(LIBDCS_CORE_LIBS) \
 	$(DCS_CLD_DEPS_LIBS) \
+	$(COVERAGE_LIBS) \
 	$(NULL)
 
 if HAVE_INTROSPECTION

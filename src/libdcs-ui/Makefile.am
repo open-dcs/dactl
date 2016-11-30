@@ -57,6 +57,7 @@ libdcs_ui_0_2_la_VALAFLAGS = \
 	--target-glib=2.44 \
 	--thread \
 	-H dcs-ui.h -C \
+	$(COVERAGE_VALAFLAGS) \
 	--library=dcs-ui-0.2 \
 	--gir=Dcs-0.2.gir \
 	--gresources $(gresource_file) \
@@ -107,7 +108,8 @@ libdcs_ui_0_2_la_LDFLAGS = \
 libdcs_ui_0_2_la_LIBADD = \
 	$(LIBDCS_CORE_LIBS) \
 	$(LIBDCS_UI_LIBS) \
-	$(DCS_CLD_DEPS_LIBS)
+	$(DCS_CLD_DEPS_LIBS) \
+	$(COVERAGE_LIBS)
 
 
 if ENABLE_WEBKIT
