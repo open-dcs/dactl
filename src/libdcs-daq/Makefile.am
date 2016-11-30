@@ -51,7 +51,6 @@ libdcs_daq_0_2_la_includes = \
 
 libdcs_daq_0_2_la_VALAFLAGS = \
 	-H dcs-daq.h -C \
-	$(COVERAGE_VALAFLAGS) \
 	--library=dcs-daq-0.2 \
 	--gir=Dcs-0.2.gir \
 	--vapidir=$(top_srcdir)/vapi \
@@ -67,6 +66,7 @@ libdcs_daq_0_2_la_VALAFLAGS = \
 	--pkg dcs-core-0.2 \
 	--pkg dcs-net-0.2 \
 	--pkg dcs-build \
+	$(COVERAGE_VALAFLAGS) \
 	$(NULL)
 
 libdcs_daq_0_2_la_CFLAGS = \

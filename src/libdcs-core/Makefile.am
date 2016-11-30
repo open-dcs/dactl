@@ -31,7 +31,6 @@ libdcs_core_0_2_la_includes = \
 
 libdcs_core_0_2_la_VALAFLAGS = \
 	-H dcs-core.h -C \
-	$(COVERAGE_VALAFLAGS) \
 	--library=dcs-core-0.2 \
 	--gir=Dcs-0.2.gir \
 	--vapidir=$(top_srcdir)/vapi \
@@ -47,6 +46,7 @@ libdcs_core_0_2_la_VALAFLAGS = \
 	--pkg libpeas-1.0 \
 	--pkg dcs-build \
 	$(DCS_CLD_DEPS_VALAFLAGS) \
+	$(COVERAGE_VALAFLAGS) \
 	$(NULL)
 
 libdcs_core_0_2_la_CFLAGS = \

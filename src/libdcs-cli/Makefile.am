@@ -46,7 +46,6 @@ libdcs_cli_0_2_la_includes = \
 
 libdcs_cli_0_2_la_VALAFLAGS = \
 	-H dcs-cli.h -C \
-	$(COVERAGE_VALAFLAGS) \
 	--library=dcs-cli-0.2 \
 	--gir=Dcs-0.2.gir \
 	--vapidir=$(top_srcdir)/vapi \
@@ -55,6 +54,7 @@ libdcs_cli_0_2_la_VALAFLAGS = \
 	--pkg gio-2.0 \
 	--pkg gee-0.8 \
 	--pkg dcs-core-0.2 \
+	$(COVERAGE_VALAFLAGS) \
 	$(NULL)
 
 libdcs_cli_0_2_la_CFLAGS = \

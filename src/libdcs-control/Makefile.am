@@ -49,7 +49,6 @@ libdcs_control_0_2_la_includes = \
 
 libdcs_control_0_2_la_VALAFLAGS = \
 	-H dcs-control.h -C \
-	$(COVERAGE_VALAFLAGS) \
 	--library=dcs-control-0.2 \
 	--gir=Dcs-0.2.gir \
 	--vapidir=$(top_srcdir)/vapi \
@@ -65,6 +64,7 @@ libdcs_control_0_2_la_VALAFLAGS = \
 	--pkg dcs-core-0.2 \
 	--pkg dcs-net-0.2 \
 	--pkg dcs-build \
+	$(COVERAGE_VALAFLAGS) \
 	$(NULL)
 
 libdcs_control_0_2_la_CFLAGS = \

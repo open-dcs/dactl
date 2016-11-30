@@ -57,7 +57,6 @@ libdcs_ui_0_2_la_VALAFLAGS = \
 	--target-glib=2.44 \
 	--thread \
 	-H dcs-ui.h -C \
-	$(COVERAGE_VALAFLAGS) \
 	--library=dcs-ui-0.2 \
 	--gir=Dcs-0.2.gir \
 	--gresources $(gresource_file) \
@@ -77,7 +76,8 @@ libdcs_ui_0_2_la_VALAFLAGS = \
 	--pkg librsvg-2.0 \
 	--pkg dcs-core-0.2 \
 	--pkg dcs-build \
-	$(DCS_CLD_DEPS_VALAFLAGS)
+	$(DCS_CLD_DEPS_VALAFLAGS) \
+	$(COVERAGE_VALAFLAGS)
 
 libdcs_ui_0_2_la_CFLAGS = \
 	-DWEB_EXTENSION_DIR=\""$(extensiondir)"\" \

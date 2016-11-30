@@ -52,7 +52,6 @@ libdcs_net_0_2_la_includes = \
 
 libdcs_net_0_2_la_VALAFLAGS = \
 	-H dcs-net.h -C \
-	$(COVERAGE_VALAFLAGS) \
 	--library=dcs-net-0.2 \
 	--gir=Dcs-0.2.gir \
 	--vapidir=$(top_srcdir)/vapi \
@@ -64,6 +63,7 @@ libdcs_net_0_2_la_VALAFLAGS = \
 	--pkg libsoup-2.4 \
 	--pkg libzmq \
 	--pkg dcs-core-0.2 \
+	$(COVERAGE_VALAFLAGS) \
 	$(NULL)
 
 libdcs_net_0_2_la_CFLAGS = \
