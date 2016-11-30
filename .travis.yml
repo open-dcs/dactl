@@ -23,6 +23,7 @@ addons:
       - intltool
       - libtool
       - xsltproc
+      - lcov
       - libcomedi-dev
       - libgee-0.8-dev
       - libglib2.0-dev
