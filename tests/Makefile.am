@@ -1,7 +1,7 @@
 EXTRA_DIST =
 
 tests_valaflags = \
-	$(COVERAGE_VALAFLAGS) \
+	--vapidir=. \
 	--vapidir=$(top_srcdir)/vapi \
 	--vapidir=$(top_srcdir)/src/libdcs-core \
 	--pkg posix \
@@ -10,6 +10,8 @@ tests_valaflags = \
 	--pkg json-glib-1.0 \
 	--pkg dcs-build \
 	--pkg dcs-core-0.2 \
+	--pkg test-build \
+	$(COVERAGE_VALAFLAGS) \
 	$(NULL)
 
 tests_cflags = \
@@ -17,6 +19,7 @@ tests_cflags = \
 	$(LIBDCS_CORE_CFLAGS) \
 	$(COVERAGE_CFLAGS) \
 	-I$(top_srcdir)/src/libdcs-core \
+	-DCONFIG_DIR=\""../tests/config/"\" \
 	$(NULL)
 
 tests_libs = \
@@ -52,6 +55,8 @@ test_dcs_core_SOURCES = \
 	test-dcs-config.vala \
 	test-dcs-dataseries.vala \
 	test-dcs-point.vala \
+	core/test-cmdline-config.vala \
+	core/test-config.vala \
 	$(NULL)
 
 test_dcs_core_VALAFLAGS = $(tests_valaflags)
@@ -64,6 +69,10 @@ noinst_PROGRAMS = $(TESTS)
 endif
 
 check_PROGRAMS = $(TESTS)
+
+test:
+	@echo Running Unit Tests && \
+	../build/autotools/tap-test test-dcs-core -k --tap
 
 coverage-reset:
 	lcov --directory $(top_srcdir) --zerocounters

@@ -1,0 +1,12 @@
+{
+  "dcs": {
+    "properties": {
+      "sprop": "string",
+      "slprop": ["string","string"],
+      "iprop": 1,
+      "ilprop": [1,1],
+      "bprop": true,
+      "dprop": 1.0
+    }
+  }
+}

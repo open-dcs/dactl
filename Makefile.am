@@ -111,6 +111,9 @@ valgrind:
 	PATH=$(top_builddir)/src/dcsg:$(PATH) \
 	$(LIBTOOL) --mode=execute gdb -ex run --args src/dcsg/dcsg -vvv -f tests/config/blank.xml
 
+test:
+	$(MAKE) -C tests test
+
 if ENABLE_COVERAGE
 coverage:
 	$(MAKE) -C tests coverage-reset

@@ -7,6 +7,7 @@ public errordomain Dcs.ConfigError {
     INVALID_NAMESPACE,
     INVALID_KEY,
     INVALID_XPATH_EXPR,
+    PROPERTY_TYPE,
     XML_DOCUMENT_EMPTY
 }
 
@@ -15,7 +16,8 @@ public enum Dcs.ConfigFormat {
     INI,
     JSON,
     XML,
-    MIXED;
+    MIXED,
+    INVALID;
 
     public bool is_valid () {
         switch (this) {
@@ -24,6 +26,7 @@ public enum Dcs.ConfigFormat {
             case JSON:    return true;
             case XML:     return true;
             case MIXED:   return true;
+            case INVALID:
             default:      return false;
         }
     }
@@ -48,6 +51,48 @@ public interface Dcs.Config : GLib.Object {
      * Emitted when a custom setting has changed.
      */
     public signal void setting_changed (string ns, string key);
+
+    /**
+     * Check if the type of the property in the class given matches the desired
+     * type provided.
+     *
+     * XXX Should this just return a boolean instead of throwing errors?
+     *
+     * @param class_type Class to check property existence and type correctness
+     * @param check_type Type of the property to check against
+     * @param property Name of the property to check
+     */
+    public static void check_property_type (GLib.Type class_type,
+                                            GLib.Type check_type,
+                                            string property) throws GLib.Error {
+        var ocl = (GLib.ObjectClass) class_type.class_ref ();
+        unowned GLib.ParamSpec? spec = ocl.find_property (property);
+
+        if (spec == null) {
+            throw new Dcs.ConfigError.INVALID_KEY ("No property with that name");
+        } else if (spec.value_type != check_type) {
+            throw new Dcs.ConfigError.PROPERTY_TYPE (
+                "The wrong type was requested for the property");
+        }
+    }
+
+    /**
+     * Dump the configuration to the file stream provided. Used for
+     * debugging purposes.
+     *
+     * @param stream Output stream to write to.
+     */
+    public virtual void dump (GLib.FileStream stream) {
+        var type = get_type ();
+        stream.write (type.name ().data);
+        stream.write ({ 13, 10 });
+        var ocl = (GLib.ObjectClass) type.class_ref ();
+        foreach (var spec in ocl.list_properties ()) {
+            //GLib.Value value;
+            //@get (spec.get_name (), out value);
+            stream.write (spec.get_name ().data);
+        }
+    }
 
     /**
      * TODO fill me in

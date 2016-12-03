@@ -1,13 +1,12 @@
 public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
 
-    public string ns { get; private set; default = "dcs"; }
+    private string @namespace { get; private set; default = "dcs"; }
 
-    public Dcs.ConfigFormat format {
-        get { return get_format (); }
-        private set { format = value; }
-    }
+    private Dcs.ConfigFormat format = Dcs.ConfigFormat.MIXED;
 
-    private Gee.ArrayList<Dcs.Config> config_list;
+    private static Gee.ArrayList<Dcs.Config> config_list;
+
+    private static Dcs.MetaConfig meta_config;
 
     private static Once<Dcs.MetaConfig> _instance;
 
@@ -22,14 +21,33 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
      * @return Instance of the configuration container.
      */
     public static unowned Dcs.MetaConfig get_default () {
-        return _instance.once (() => { return new Dcs.MetaConfig (); });
+        return _instance.once (() => {
+            meta_config = new Dcs.MetaConfig ();
+            return meta_config;
+        });
+    }
+
+    public static void register_config (Dcs.Config config) {
+        if (Dcs.MetaConfig.config_list == null) {
+            Dcs.MetaConfig.config_list = new Gee.ArrayList<Dcs.Config> ();
+        }
+
+        config_list.add (config);
+
+        if (_instance.status == OnceStatus.READY) {
+            meta_config.connect_signals (config);
+        }
+    }
+
+    private void connect_signals (Dcs.Config config) {
+        /* TODO connect signals from each config here */
     }
 
     public string get_namespace () throws GLib.Error {
-        if (ns != "dcs") {
+        if (@namespace != "dcs") {
             throw new Dcs.ConfigError.INVALID_NAMESPACE (_("Invalid namespace has been set"));
         }
-        return ns;
+        return @namespace;
     }
 
     public Dcs.ConfigFormat get_format () throws GLib.Error {
@@ -51,7 +69,8 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
             try {
                 value = config.get_string (ns, key);
             } catch (Dcs.ConfigError e) {
-                if (!(e is Dcs.ConfigError.NO_VALUE_SET)) {
+                if (!(e is Dcs.ConfigError.NO_VALUE_SET
+                    || e is Dcs.ConfigError.INVALID_KEY)) {
                     throw e;
                 }
             }
@@ -76,7 +95,8 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
             try {
                 value = config.get_string_list (ns, key);
             } catch (Dcs.ConfigError e) {
-                if (!(e is Dcs.ConfigError.NO_VALUE_SET)) {
+                if (!(e is Dcs.ConfigError.NO_VALUE_SET
+                    || e is Dcs.ConfigError.INVALID_KEY)) {
                     throw e;
                 }
             }
@@ -103,7 +123,8 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
                 value = config.get_int (ns, key);
                 value_set = true;
             } catch (Dcs.ConfigError e) {
-                if (!(e is Dcs.ConfigError.NO_VALUE_SET)) {
+                if (!(e is Dcs.ConfigError.NO_VALUE_SET
+                    || e is Dcs.ConfigError.INVALID_KEY)) {
                     throw e;
                 }
             }
@@ -128,7 +149,8 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
             try {
                 value = config.get_int_list (ns, key);
             } catch (Dcs.ConfigError e) {
-                if (!(e is Dcs.ConfigError.NO_VALUE_SET)) {
+                if (!(e is Dcs.ConfigError.NO_VALUE_SET
+                    || e is Dcs.ConfigError.INVALID_KEY)) {
                     throw e;
                 }
             }
@@ -155,7 +177,8 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
                 value = config.get_bool (ns, key);
                 value_set = true;
             } catch (Dcs.ConfigError e) {
-                if (!(e is Dcs.ConfigError.NO_VALUE_SET)) {
+                if (!(e is Dcs.ConfigError.NO_VALUE_SET
+                    || e is Dcs.ConfigError.INVALID_KEY)) {
                     throw e;
                 }
             }
@@ -181,7 +204,8 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
             try {
                 value = config.get_double (ns, key);
             } catch (Dcs.ConfigError e) {
-                if (!(e is Dcs.ConfigError.NO_VALUE_SET)) {
+                if (!(e is Dcs.ConfigError.NO_VALUE_SET
+                    || e is Dcs.ConfigError.INVALID_KEY)) {
                     throw e;
                 }
             }

@@ -11,6 +11,10 @@ public class Dcs.BaseConfig : Dcs.Config, GLib.Object {
 
     protected string @namespace;
 
+    public virtual void dump (GLib.FileStream stream) {
+        /* TODO ??? */
+    }
+
     public virtual string get_namespace () throws GLib.Error {
         throw new ConfigError.NO_VALUE_SET (_("No value available"));
     }
@@ -49,38 +53,32 @@ public class Dcs.BaseConfig : Dcs.Config, GLib.Object {
         throw new ConfigError.NO_VALUE_SET (_("No value available"));
     }
 
-    public virtual float get_float (string ns,
-                                    string key) throws GLib.Error {
-        throw new ConfigError.NO_VALUE_SET (_("No value available"));
-	}
-
     public virtual double get_double (string ns,
                                       string key) throws GLib.Error {
         throw new ConfigError.NO_VALUE_SET (_("No value available"));
-	}
+    }
 
     public virtual void set_string (string ns,
                                     string key,
                                     string value) throws GLib.Error {
         throw new ConfigError.NO_VALUE_SET (_("No value available"));
-	}
+    }
 
     public virtual void set_int (string ns,
                                  string key,
                                  int value) throws GLib.Error {
         throw new ConfigError.NO_VALUE_SET (_("No value available"));
-	}
+    }
 
     public virtual void set_bool (string ns,
                                   string key,
                                   bool value) throws GLib.Error {
         throw new ConfigError.NO_VALUE_SET (_("No value available"));
-	}
+    }
 
     public virtual void set_double (string ns,
                                     string key,
                                     double value) throws GLib.Error {
         throw new ConfigError.NO_VALUE_SET (_("No value available"));
-	}
-
+    }
 }

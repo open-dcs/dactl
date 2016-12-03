@@ -468,6 +468,8 @@ AC_ARG_ENABLE([tests],
                              [Enable always building tests during 'make all' [default=yes]]),
               [enable_tests=$enableval], [enable_tests=yes])
 AM_CONDITIONAL(ENABLE_TESTS, [test "$enable_tests" = "yes"])
+AS_IF([test "x$enable_tests" != xno],
+      [AC_SUBST([CONFIG_DIR])])
 
 
 dnl ***********************************************************************
@@ -478,7 +480,6 @@ AC_ARG_ENABLE(doc,
 		[Enable documentation generation]), enable_doc=$enableval,
 	enable_doc=no)
 AM_CONDITIONAL(ENABLE_DOC, test x$enable_doc = xyes)
-
 AS_IF([test "x$enable_doc" != xno],
 	[AC_PATH_PROG([VALADOC], [valadoc], :)
 	 AC_SUBST(VALADOC)
