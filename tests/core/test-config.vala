@@ -142,9 +142,13 @@ public class Dcs.Test.Config : Dcs.BaseConfig {
                 stream.write (str.data);
                 break;
             case Dcs.ConfigFormat.JSON:
-                var str = Json.to_string (json, true);
-                stream.write (str.data);
-                stream.write ({ 10, 13 });
+                if (Json.MAJOR_VERSION == 1 && Json.MINOR_VERSION >= 2) {
+                    var str = Json.to_string (json, true);
+                    stream.write (str.data);
+                    stream.write ({ 10, 13 });
+                } else {
+                    stream.puts ("Version of json-glib is too old.\n");
+                }
                 break;
             case Dcs.ConfigFormat.XML:
                 string str;
