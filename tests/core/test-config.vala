@@ -1,7 +1,7 @@
 /**
  * Mock object to instantiate an abstract class for testing.
  */
-public class Dcs.Test.Config : Dcs.BaseConfig {
+public class Dcs.Test.Config : Dcs.AbstractConfig {
 
     private KeyFile ini;
 

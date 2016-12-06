@@ -2,7 +2,7 @@ public errordomain Dcsg.CmdlineConfigError {
     VERSION_ONLY
 }
 
-public class Dcsg.CmdlineConfig : Dcs.BaseConfig {
+public class Dcsg.CmdlineConfig : Dcs.AbstractConfig {
 
     private static bool version;
 

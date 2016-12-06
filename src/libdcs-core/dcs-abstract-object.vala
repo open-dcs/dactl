@@ -1,4 +1,4 @@
-public abstract class Dcs.BaseObject : GLib.Object, Dcs.Object, Dcs.Serializable {
+public abstract class Dcs.AbstractObject : GLib.Object, Dcs.Object, Dcs.Serializable {
 
     public string id { get; set; }
 

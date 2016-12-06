@@ -53,10 +53,12 @@ test_dcs_core_SOURCES = \
 	test-dcs-core.vala \
 	test-dcs-object.vala \
 	test-dcs-config.vala \
+	test-dcs-container.vala \
 	test-dcs-dataseries.vala \
 	test-dcs-point.vala \
 	core/test-cmdline-config.vala \
 	core/test-config.vala \
+	core/test-container.vala \
 	$(NULL)
 
 test_dcs_core_VALAFLAGS = $(tests_valaflags)

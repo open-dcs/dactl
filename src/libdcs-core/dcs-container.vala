@@ -1,3 +1,7 @@
+public errordomain Dcs.ContainerError {
+    OBJECT_NOT_FOUND
+}
+
 /**
  * A common interface inherited by any object that has its own list of sub
  * objects.
@@ -8,6 +12,33 @@ public interface Dcs.Container : GLib.Object {
      * The map collection of the objects that belong to the container.
      */
     public abstract Gee.Map<string, Dcs.Object> objects { get; set; }
+
+    /**
+     * Retrieve the object for a given ID.
+     *
+     * @param id ID of the object to return
+     * @return The object if found, null otherwise
+     */
+    public abstract new Dcs.Object? get (string id)
+                                         throws GLib.Error;
+
+    /**
+     * Update an object for a given ID, add if it does not exist already.
+     *
+     * @param id ID of the object to update
+     */
+    public abstract new void set (string id, Dcs.Object object)
+                                  throws GLib.Error;
+
+    /**
+     * Remove an object from the list.
+     *
+     * @param object The object to remove
+     */
+    /*
+     *public abstract void @delete (Dcs.Object object)
+     *                              throws GLib.Error;
+     */
 
     /**
      * Emitted whenever an object as been added.
@@ -25,8 +56,10 @@ public interface Dcs.Container : GLib.Object {
 
     /**
      * Used by implementing classes to request a child object for addition.
+     *
+     * @param id the ID of the object that was requested
      */
-    public abstract signal void request_object (string id);
+    public signal void request_object (string id);
 
     /**
      * Add a object to the array list of objects
@@ -54,6 +87,7 @@ public interface Dcs.Container : GLib.Object {
      *
      * @param val List of objects to replace the existing one
      */
+    [Version (deprecated = true, deprecated_since = "0.2")]
     public abstract void update_objects (Gee.Map<string, Dcs.Object> val);
 
     /**

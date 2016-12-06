@@ -1,7 +1,7 @@
 /**
  * Mock object of command line option based configurations for testing.
  */
-public class Dcs.Test.CmdlineConfig : Dcs.BaseConfig {
+public class Dcs.Test.CmdlineConfig : Dcs.AbstractConfig {
 
     private static bool _test_a = false;
     private static bool _test_b = false;

@@ -1,5 +1,11 @@
+public errordomain Dcs.BuildableError {
+    INVALID_BUILD
+}
+
 /**
  * A common interface for buildable objects.
+ *
+ * TODO Refactor this class out, it doesn't do anything.
  */
 public interface Dcs.Buildable : GLib.Object {
 
@@ -23,5 +29,6 @@ public interface Dcs.Buildable : GLib.Object {
      *
      * @param node XML node to construction the object from
      */
-    internal abstract void build_from_xml_node (Xml.Node *node);
+    internal abstract void build_from_xml_node (Xml.Node* node)
+                                                throws GLib.Error;
 }

@@ -5,7 +5,7 @@
  *     errors masks cases where the implementing class hasn't provided an
  *     overriding method.
  */
-public class Dcs.BaseConfig : Dcs.Config, GLib.Object {
+public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
 
     protected Dcs.ConfigFormat format;
 

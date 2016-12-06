@@ -43,8 +43,11 @@ src/dcsg/ui/widget-settings.ui
 src/dcsg/ui/window.ui
 src/libdcs-cli/dcs-cli-factory.c
 src/libdcs-control/dcs-control-factory.c
+src/libdcs-core/dcs-abstract-buildable.c
+src/libdcs-core/dcs-abstract-config.c
+src/libdcs-core/dcs-abstract-container.c
+src/libdcs-core/dcs-abstract-object.c
 src/libdcs-core/dcs-application-factory.c
-src/libdcs-core/dcs-base-config.c
 src/libdcs-core/dcs-meta-config.c
 src/libdcs-core/dcs-module-loader.c
 src/libdcs-core/dcs-plugin-information.c

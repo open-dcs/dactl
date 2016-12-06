@@ -1,7 +1,7 @@
 /**
- * Dummy class to instantiate an interface for testing.
+ * Mock class to instantiate an interface for testing.
  */
-public class Dcs.Test.Object : Dcs.BaseObject {
+public class Dcs.Test.Object : Dcs.AbstractObject {
 
     public Object (string id) {
         this.id = id;

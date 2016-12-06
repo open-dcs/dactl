@@ -3,7 +3,7 @@
  *
  * XXX TBD Consider a way to clock out the data at a even pace to prevent th
  */
-public class Dcs.DataSeries : Dcs.BaseObject, Dcs.Buildable, Dcs.CldAdapter {
+public class Dcs.DataSeries : Dcs.AbstractObject, Dcs.Buildable, Dcs.CldAdapter {
 
     private Xml.Node* _node;
     private int _buffer_size;

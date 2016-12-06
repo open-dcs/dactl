@@ -139,19 +139,19 @@ DcsLogControl .stop-button {
 
 .destructive-action.button {
     text-shadow: 0 1px @destructive_action_button_shadow;
-    icon-shadow: 0 1px @destructive_action_button_shadow;
+    -gtk-icon-shadow: 0 1px @destructive_action_button_shadow;
 }
 
 .destructive-action.button:active,
 .destructive-action.button:hover:active {
     text-shadow: 0 1px shade(@destructive_action_button_shadow, 1.15);
-    icon-shadow: 0 1px shade(@destructive_action_button_shadow, 1.15);
+    -gtk-icon-shadow: 0 1px shade(@destructive_action_button_shadow, 1.15);
 }
 
 .destructive-action.button:backdrop {
     background-image: none;
     text-shadow: none;
-    icon-shadow: none;
+    -gtk-icon-shadow: none;
     color: @theme_unfocused_text_color;
 }
 /***************************/
@@ -217,7 +217,7 @@ DcsLogControl .stop-button {
                                      to (darker (@dcs_selected_color)));
 }
 
-.dcs-continue:insensitive {
+.dcs-continue:disabled {
     background-image: none;
 }
 
@@ -254,7 +254,7 @@ DcsLogControl .stop-button {
     border-radius: 0 0 15px 15px;
 }
 
-.dcs-menu-row:prelight, .dcs-menu-row:focus {
+.dcs-menu-row:hover, .dcs-menu-row:focus {
     background-color: shade (@dcs_bg2_color, 1.2);
 }
 
@@ -272,7 +272,7 @@ DcsLogControl .stop-button {
 
 .dcs-empty-image {
     color: #2e3436;
-    icon-shadow: 0 -1px rgba(0,0,0,0.5);
+    -gtk-icon-shadow: 0 -1px rgba(0,0,0,0.5);
 }
 
 .dcs-empty-details-label {
