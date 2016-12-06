@@ -52,6 +52,17 @@ public class Dcs.Test.CmdlineConfig : Dcs.BaseConfig {
         }
     }
 
+    public override void dump (GLib.FileStream stream) {
+        var str = "";
+        str += "Test A:\t\t%s\n".printf ((test_a) ? "true" : "false");
+        str += "Test B:\t\t%s\n".printf ((test_b) ? "true" : "false");
+        str += "Test C:\t\t%s\n".printf ((test_c) ? "true" : "false");
+        str += "Test str:\t%s\n".printf (test_string);
+        str += "Test int:\t%d\n".printf (test_int);
+        str += "Test dbl:\t%f\n".printf (test_double);
+        stream.write (str.data);
+    }
+
     public void set_format (Dcs.ConfigFormat fmt) {
         if (fmt.is_valid ()) {
             format = fmt;

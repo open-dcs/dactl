@@ -9,14 +9,17 @@ public class Dcs.BaseConfig : Dcs.Config, GLib.Object {
 
     protected Dcs.ConfigFormat format;
 
-    protected string @namespace;
+    protected string @namespace = "dcs";
 
     public virtual void dump (GLib.FileStream stream) {
         /* TODO ??? */
     }
 
     public virtual string get_namespace () throws GLib.Error {
-        throw new ConfigError.NO_VALUE_SET (_("No value available"));
+        if (@namespace == null) {
+            throw new ConfigError.NO_VALUE_SET (_("No value available"));
+        }
+        return @namespace;
     }
 
     public virtual Dcs.ConfigFormat get_format () throws GLib.Error {

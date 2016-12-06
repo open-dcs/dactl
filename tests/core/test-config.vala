@@ -24,7 +24,11 @@ public class Dcs.Test.Config : Dcs.BaseConfig {
                 load_json_data (data);
                 break;
             case Dcs.ConfigFormat.XML:
-                load_xml_data (data);
+                try {
+                    load_xml_data (data);
+                } catch (GLib.Error e) {
+                    throw e;
+                }
                 break;
             default:
                 throw new Dcs.ConfigError.INVALID_FORMAT ("Invalid format provided");
@@ -61,7 +65,7 @@ public class Dcs.Test.Config : Dcs.BaseConfig {
         json = parser.get_root ();
     }
 
-    private void load_xml_data (string data) {
+    private void load_xml_data (string data) throws GLib.Error {
         if (xml != null) {
             xml = null;
         }
@@ -69,7 +73,13 @@ public class Dcs.Test.Config : Dcs.BaseConfig {
         Xml.Doc *doc = Xml.Parser.parse_memory (data, data.length);
         Xml.XPath.Context *ctx = new Xml.XPath.Context (doc);
         ctx->register_ns ("dcs", "urn:libdcs");
-        xml = doc->get_root_element ();
+        //xml = doc->get_root_element ();
+        Xml.XPath.Object *obj = ctx->eval_expression ("/dcs");
+        if (obj == null) {
+            throw new Dcs.ConfigError.INVALID_XPATH_EXPR (
+                "The XPath expression \"/dcs\" didn't work.");
+        }
+        xml = obj->nodesetval->item (0);
     }
 
     /**
@@ -153,7 +163,7 @@ public class Dcs.Test.Config : Dcs.BaseConfig {
             case Dcs.ConfigFormat.XML:
                 string str;
                 Xml.Doc *doc = new Xml.Doc ();
-                doc->set_root_element (json);
+                doc->set_root_element (xml);
                 doc->dump (stream);
                 break;
             default:

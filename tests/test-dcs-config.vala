@@ -29,6 +29,10 @@ public class Dcs.ConfigTests : Dcs.ConfigTestsBase {
         add_test (@"[$class_name] Test loading XML data", test_load_xml_data);
     }
 
+    /**
+     * XXX This is wrong, each test should create the data needed at each
+     *     setup, using singletons when you don't need to is lame.
+     */
     public override void set_up () {
         config = new Dcs.Test.Config ();
         cmdline_config = Dcs.Test.CmdlineConfig.get_default ();
@@ -93,15 +97,34 @@ public class Dcs.ConfigTests : Dcs.ConfigTestsBase {
         /* Load a default config to use */
         var filename = Path.build_filename (Dcs.Test.Build.CONFIG_DIR, "test-config.xml");
         (config as Dcs.Test.Config).load_file (filename, Dcs.ConfigFormat.XML);
-        config.dump (stdout);
         Dcs.MetaConfig.register_config (config);
         Dcs.MetaConfig.register_config (cmdline_config);
+        /* Purely just to provide coverage */
+        var stream = GLib.FileStream.open ("/dev/null", "w");
+        meta_config.dump (stream);
         try {
             assert (meta_config.get_format () == Dcs.ConfigFormat.MIXED);
             /* Test a cmdline config property */
             assert (meta_config.get_bool ("dcs", "test-a") == true);
             /* Test a base config property */
-            assert (meta_config.get_string ("dcs", "sprop") == "string");
+            meta_config.set_string ("dcs", "sprop", "meta");
+            assert (meta_config.get_string ("dcs", "sprop") == "meta");
+            var slist = meta_config.get_string_list ("dcs", "slprop");
+            assert (slist != null);
+            foreach (var item in slist) {
+                assert (item == "string");
+            }
+            meta_config.set_int ("dcs", "iprop", 99);
+            assert (meta_config.get_int ("dcs", "iprop") == 99);
+            var ilist = meta_config.get_int_list ("dcs", "ilprop");
+            assert (ilist != null);
+            foreach (var item in ilist) {
+                assert (item == 1);
+            }
+            meta_config.set_bool ("dcs", "bprop", false);
+            assert (meta_config.get_bool ("dcs", "bprop") == false);
+            meta_config.set_double ("dcs", "dprop", 99.9);
+            assert (meta_config.get_double ("dcs", "dprop") == 99.9);
         } catch (GLib.Error e) {
             debug (e.message);
             if (e is Dcs.ConfigError) {

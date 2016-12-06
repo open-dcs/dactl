@@ -72,7 +72,7 @@ check_PROGRAMS = $(TESTS)
 
 test:
 	@echo Running Unit Tests && \
-	../build/autotools/tap-test test-dcs-core -k --tap
+	../build/autotools/tap-test ./test-dcs-core -k --tap
 
 coverage-reset:
 	lcov --directory $(top_srcdir) --zerocounters
@@ -85,7 +85,8 @@ coverage-report:
 	lcov --directory $(top_srcdir) \
 		--output-file $(top_builddir)/lcov.info \
 		--remove $(top_builddir)/lcov.info \
-		"/usr/*" "*.c" "*.h" "*.vapi"
+		"/usr/*" "*.c" "*.h" "*.vapi" \
+		"src/libdcs-core/dcs-log.vala"
 
 	$(mkdir_p) $(top_builddir)/tests/coverage
 	git_commit=`GIT_DIR=$(top_srcdir)/.git git log -1 --pretty=format:%h 2>/dev/null`;\
