@@ -1,8 +1,5 @@
 /**
  * Window base class to use with buildable child windows.
- *
- * XXX Probably unnecessary as there will probably only ever be a single class
- * that derives this.
  */
 public abstract class Dcs.UI.WindowBase : Gtk.ApplicationWindow, Dcs.View, Dcs.Container, Dcs.Buildable, Dcs.Object {
 

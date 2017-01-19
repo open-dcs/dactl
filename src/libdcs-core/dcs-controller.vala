@@ -81,7 +81,7 @@ public abstract class Dcs.Controller : GLib.Object {
      * @param uri The uri containing the object and the property to set.
      * @param value A variant containing the value to set the property to.
      */
-    public abstract void @set (string uri, Variant value) throws GLib.Error;
+    public abstract new void set (string uri, Variant value) throws GLib.Error;
 
     /**
      * Get a property within the model for ...
@@ -97,7 +97,7 @@ public abstract class Dcs.Controller : GLib.Object {
      *
      * @param uri The uri containing the object and the property to get.
      */
-    public abstract Variant @get (string uri) throws GLib.Error;
+    public abstract new Variant get (string uri) throws GLib.Error;
 
     /*
      * *** Functionality from old versions and soon to be deprecated ***

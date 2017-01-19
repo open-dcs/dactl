@@ -42,7 +42,7 @@ public class Dcs.UI.Factory : GLib.Object, Dcs.Factory {
      * {@inheritDoc}
      */
     public Dcs.Object make_object (Type type)
-                                     throws GLib.Error {
+                                   throws GLib.Error {
         Dcs.Object object = null;
 
         switch (type.name ()) {
@@ -68,6 +68,8 @@ public class Dcs.UI.Factory : GLib.Object, Dcs.Factory {
             case "DcsUIVideoProcessor":         break;
             case "DcsUIRichContent":            break;
             case "DcsUIWindow":                 break;
+            case "DcsUIFooCanvas":              break;
+            case "DcsUIFooPage":                break;
             default:
                 throw new Dcs.FactoryError.TYPE_NOT_FOUND (
                     _("The type requested is not a known Dcs type"));
@@ -80,7 +82,7 @@ public class Dcs.UI.Factory : GLib.Object, Dcs.Factory {
      * {@inheritDoc}
      */
     public Dcs.Object make_object_from_node (Xml.Node *node)
-                                               throws GLib.Error {
+                                             throws GLib.Error {
         Dcs.Object object = null;
 
         if (node->type == Xml.ElementType.ELEMENT_NODE &&
@@ -110,6 +112,8 @@ public class Dcs.UI.Factory : GLib.Object, Dcs.Factory {
                     case "video":               return make_video_processor (node);
                     case "rich-content":        return make_rich_content (node);
                     case "window":              return make_window (node);
+                    case "foo-canvas":          return make_foo_canvas (node);
+                    case "foo-page":            return make_foo_page (node);
                     default:
                         throw new Dcs.FactoryError.TYPE_NOT_FOUND (
                             _("The type requested is not a known Dcs type"));
@@ -124,6 +128,7 @@ public class Dcs.UI.Factory : GLib.Object, Dcs.Factory {
      * XXX not really sure about whether or not this should let the objects
      *     construct themselves or if the actual property assignment should
      *     happen here
+     * XXX should these returned owned objects?
      */
 
     private Dcs.Object make_ai (Xml.Node *node) {
@@ -212,5 +217,13 @@ public class Dcs.UI.Factory : GLib.Object, Dcs.Factory {
 
     private Dcs.Object make_window (Xml.Node *node) {
         return new Dcs.UI.Window.from_xml_node (node);
+    }
+
+    private Dcs.Object make_foo_canvas (Xml.Node *node) {
+        return new Dcs.UI.FooCanvas.from_xml_node (node);
+    }
+
+    private Dcs.Object make_foo_page (Xml.Node *node) {
+        return new Dcs.UI.FooPage.from_xml_node (node);
     }
 }

@@ -89,7 +89,7 @@ public class Dcs.Model : GLib.Object, Dcs.Container {
      *
      * @param id the ID of the object that was updated in the map
      */
-    public signal void updated (string id);
+    public signal void updated (string? id);
 
     /**
      * Default construction.
@@ -110,21 +110,16 @@ public class Dcs.Model : GLib.Object, Dcs.Container {
 
         var factory = Dcs.ApplicationFactory.get_default ();
 
-        /* Get the nodeset to use from the configuration */
         try {
-            Xml.Node *node = config.get_xml_node ("/dcs/ui:objects/ui:object");
-            objects = factory.make_object_map (node);
-        } catch (Dcs.FactoryError e) {
-            GLib.error (e.message);
-        }
-
-        /* Load the CLD specific configuration and builder */
-        try {
-            Xml.Node *node = config.get_xml_node ("/dcs/cld:objects");
-            xml = new Cld.XmlConfig.from_node (node);
+            /* Get the nodeset to use from the configuration */
+            Xml.Node *dcs_node = config.get_xml_node ("/dcs/ui:objects/ui:object");
+            objects = factory.make_object_map (dcs_node);
+            /* Load the CLD specific configuration and builder */
+            Xml.Node *cld_node = config.get_xml_node ("/dcs/cld:objects");
+            xml = new Cld.XmlConfig.from_node (cld_node);
             ctx = new Cld.Context.from_config (xml);
-        } catch (Dcs.ConfigError e) {
-            GLib.error (e.message);
+        } catch (GLib.Error e) {
+            error (e.message);
         }
 
         object_added.connect ((id) => { updated (id); });

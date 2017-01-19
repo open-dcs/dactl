@@ -48,11 +48,15 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
      */
     public virtual void dump (GLib.FileStream stream) {
         foreach (var config in config_list) {
-            var type = config.get_type ();
-            var str = "*** ( %s - %s ) ***\n".printf (
-                type.name (), config.get_namespace ());
-            stream.puts (str);
-            config.dump (stream);
+            try {
+                var type = config.get_type ();
+                var str = "*** ( %s - %s ) ***\n".printf (
+                    type.name (), config.get_namespace ());
+                stream.puts (str);
+                config.dump (stream);
+            } catch (GLib.Error e) {
+                debug (e.message);
+            }
         }
     }
 

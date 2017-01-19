@@ -166,15 +166,27 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
      */
     public void construct_layout () {
 
-        /* Currently only pages can be added to the notebook */
-        var pages = model.get_object_map (typeof (Dcs.UI.Page));
-        if (pages.size == 0) {
-            layout_add_page (new Dcs.UI.Page ());
-        } else {
-            foreach (var page in pages.values) {
-                message ("Constructing layout for page `%s'", page.id);
+        /* Currently only pages can be added to the layout */
+        var cfg_pages = model.get_object_map (typeof (Dcs.UI.Page));
+        if (cfg_pages.size != 0) {
+            foreach (var page in cfg_pages.values) {
+                debug ("Constructing layout for page `%s'", page.id);
                 layout_add_page (page as Dcs.UI.Page);
             }
+        }
+
+        /* XXX Testing new page widgets */
+        var foo_pages = model.get_object_map (typeof (Dcs.UI.FooPage));
+        if (foo_pages.size != 0) {
+            foreach (var page in foo_pages.values) {
+                debug ("Constructing layout for foo page `%s'", page.id);
+                layout_add_foo_page (page as Dcs.UI.FooPage);
+            }
+        }
+
+        if (cfg_pages.size == 0 && foo_pages.size == 0) {
+            debug ("Adding default window because none were configured");
+            layout_add_page (new Dcs.UI.Page ());
         }
 
         stack.show_all ();
@@ -190,10 +202,16 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
     }
 
     public void layout_add_page (Dcs.UI.Page page) {
-        message ("Adding page `%s' with title `%s'", page.id, page.title);
+        debug ("Adding page `%s' with title `%s'", page.id, page.title);
         stack.add_titled (page, page.id, page.title);
         pages += page.id;
+        model.add_child (page);
+    }
 
+    public void layout_add_foo_page (Dcs.UI.FooPage page) {
+        debug ("Adding foo page `%s' with title `%s'", page.id, page.title);
+        stack.add_titled (page.widget, page.id, page.title);
+        pages += page.id;
         model.add_child (page);
     }
 

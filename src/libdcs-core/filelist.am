@@ -13,12 +13,15 @@ LIBDCS_CORE_VAPI_SOURCE_FILES = \
     dcs-controller.vala \
     dcs-dataseries.vala \
     dcs-dbus-interface.vala \
+    dcs-edge.vala \
     dcs-factory.vala \
+    dcs-graph.vala \
     dcs-log.vala \
     dcs-message.vala \
     dcs-meta-config.vala \
     dcs-model.vala \
     dcs-module-loader.vala \
+    dcs-node.vala \
     dcs-object.vala \
     dcs-plugin.vala \
     dcs-plugin-loader.vala \

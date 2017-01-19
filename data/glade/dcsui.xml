@@ -51,6 +51,14 @@
       generic-name="page"
       title="OpenDCS Page"/>
 
+    <glade-widget-class name="DcsUIFooWidget"
+      generic-name="foowidget"
+      title="OpenDCS Foo Widget"/>
+
+    <glade-widget-class name="DcsUIFooPageWidget"
+      generic-name="foopage"
+      title="OpenDCS Foo Page"/>
+
   </glade-widget-classes>
 
   <glade-widget-group name="dcs" title="OpenDCS">
@@ -66,6 +74,8 @@
     <glade-widget-class-ref name="DcsUIStripChart"/>
     <glade-widget-class-ref name="DcsUIStripChartCanvas"/>
     <glade-widget-class-ref name="DcsUIPage"/>
+    <glade-widget-class-ref name="DcsUIFooWidget"/>
+    <glade-widget-class-ref name="DcsUIFooPageWidget"/>
   </glade-widget-group>
 
 </glade-catalog>

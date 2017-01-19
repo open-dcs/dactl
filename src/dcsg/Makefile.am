@@ -42,8 +42,8 @@ dcsg_includes = \
 	-I$(top_srcdir)/src/libdcs-ui
 
 dcsg_CFLAGS = \
-	-DG_LOG_DOMAIN=\"dcs\" \
-	-DGETTEXT_PACKAGE=\"dcs\" \
+	-DG_LOG_DOMAIN=\"dcsg\" \
+	-DGETTEXT_PACKAGE=\"dcsg\" \
 	$(DCS_CLD_DEPS_CFLAGS) \
 	$(LIBDCS_CORE_CFLAGS) \
 	$(LIBDCS_UI_CFLAGS) \

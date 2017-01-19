@@ -67,7 +67,11 @@ public class Dcs.DataSeries : Dcs.AbstractObject, Dcs.Buildable, Dcs.CldAdapter 
     }
 
     public DataSeries.from_xml_node (Xml.Node *node) {
-        build_from_xml_node (node);
+        try {
+            build_from_xml_node (node);
+        } catch (GLib.Error e) {
+            critical (e.message);
+        }
     }
 
     /**
