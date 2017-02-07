@@ -2,8 +2,8 @@
  * Base class that can be used for configuration implementations.
  *
  * XXX This only exists to have something to use in unit tests for now. Throwing
- *     errors masks cases where the implementing class hasn't provided an
- *     overriding method.
+ * errors masks cases where the implementing class hasn't provided an
+ * overriding method.
  */
 public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
 

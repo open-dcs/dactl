@@ -7,4 +7,10 @@
 
 title OpenDCS Sequence Diagram
 
+actor Operator
+
+title OpenDCS Login
+
+
+
 @enduml

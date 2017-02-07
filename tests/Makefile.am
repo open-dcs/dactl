@@ -106,8 +106,10 @@ coverage-report:
 .PHONY: coverage-report
 
 GITIGNOREFILES = \
-	$(top_builddir)/lcov.info \
+	$(top_srcdir)/lcov.info \
 	coverage \
+	**/*.gcno \
+	**/*.gcda \
 	$(NULL)
 
 -include $(top_srcdir)/git.mk
