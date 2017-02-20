@@ -97,6 +97,7 @@ public class Dcs.ConfigTests : Dcs.ConfigTestsBase {
         /* Load a default config to use */
         var filename = Path.build_filename (Dcs.Test.Build.CONFIG_DIR, "test-config.xml");
         (config as Dcs.Test.Config).load_file (filename, Dcs.ConfigFormat.XML);
+        //config.dump (stdout);
         Dcs.MetaConfig.register_config (config);
         Dcs.MetaConfig.register_config (cmdline_config);
         /* Purely just to provide coverage */
