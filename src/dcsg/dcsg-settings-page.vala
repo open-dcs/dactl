@@ -143,20 +143,22 @@ public class Dcsg.ControlSettings : Dcsg.CldSettingsPage {
     }
 }
 
-public class Dcsg.PluginSettings : Dcsg.CldSettingsPage {
-    construct {
-        var module_map = cld_ctx.get_object_map_from_uri (typeof (Cld.Module));
-        foreach (var module in module_map.values) {
-            (treeview as Dcsg.CldSettingsTreeView).generate (module, 0);
-            if (data == null)
-                data = new Dcsg.CldSettingsData.from_object (module);
-            else
-                data.copy_settings (module);
-        }
-
-        show_all ();
-    }
-}
+/*
+ *public class Dcsg.PluginSettings : Dcsg.CldSettingsPage {
+ *    construct {
+ *        var module_map = cld_ctx.get_object_map_from_uri (typeof (Cld.Module));
+ *        foreach (var module in module_map.values) {
+ *            (treeview as Dcsg.CldSettingsTreeView).generate (module, 0);
+ *            if (data == null)
+ *                data = new Dcsg.CldSettingsData.from_object (module);
+ *            else
+ *                data.copy_settings (module);
+ *        }
+ *
+ *        show_all ();
+ *    }
+ *}
+ */
 
 public class Dcsg.WidgetSettings : Dcsg.NativeSettingsPage {
     construct {

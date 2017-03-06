@@ -19,18 +19,6 @@ public enum Dcs.UI.GridFlag {
 
     //private Xml.Node* _node;
 
-    //private string _xml = """
-        //<object id=\"ai-ctl0\" type=\"ai\" ref=\"cld://ai0\"/>
-    //""";
-
-    //private string _xsd = """
-        //<xs:element name="object">
-          //<xs:attribute name="id" type="xs:string" use="required"/>
-          //<xs:attribute name="type" type="xs:string" use="required"/>
-          //<xs:attribute name="ref" type="xs:string" use="required"/>
-        //</xs:element>
-    //""";
-
     /**
      * {@inheritDoc}
      */
@@ -47,20 +35,6 @@ public enum Dcs.UI.GridFlag {
      * {@inheritDoc}
      */
     //public string id { get; set; default = "cell0"; }
-
-    /**
-     * {@inheritDoc}
-     */
-    //protected virtual string xml {
-        //get { return _xml; }
-    //}
-
-    /**
-     * {@inheritDoc}
-     */
-    //protected virtual string xsd {
-        //get { return _xsd; }
-    //}
 
     //public int row { get; set; default = 0; }
 
@@ -134,18 +108,6 @@ public enum Dcs.UI.GridFlag {
 
     //private Xml.Node* _node;
 
-    //private string _xml = """
-        //<object id=\"ai-ctl0\" type=\"ai\" ref=\"cld://ai0\"/>
-    //""";
-
-    //private string _xsd = """
-        //<xs:element name="object">
-          //<xs:attribute name="id" type="xs:string" use="required"/>
-          //<xs:attribute name="type" type="xs:string" use="required"/>
-          //<xs:attribute name="ref" type="xs:string" use="required"/>
-        //</xs:element>
-    //""";
-
     /**
      * {@inheritDoc}
      */
@@ -162,20 +124,6 @@ public enum Dcs.UI.GridFlag {
      * {@inheritDoc}
      */
     //public string id { get; set; default = "grid0"; }
-
-    /**
-     * {@inheritDoc}
-     */
-    //protected virtual string xml {
-        //get { return _xml; }
-    //}
-
-    /**
-     * {@inheritDoc}
-     */
-    //protected virtual string xsd {
-        //get { return _xsd; }
-    //}
 
     /**
      * {@inheritDoc}

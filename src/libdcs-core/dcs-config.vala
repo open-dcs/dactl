@@ -1,9 +1,14 @@
 public errordomain Dcs.ConfigError {
     FILE_NOT_FOUND,
     NO_VALUE_SET,
+    NO_VALUE_FOUND,
     VALUE_OUT_OF_RANGE,
+    INVALID_FORMAT,
+    INVALID_NAMESPACE,
     INVALID_KEY,
     INVALID_XPATH_EXPR,
+    PROPERTY_TYPE,
+    UNSUPPORTED_FORMAT,
     XML_DOCUMENT_EMPTY
 }
 
@@ -11,19 +16,32 @@ public enum Dcs.ConfigFormat {
     OPTIONS,
     INI,
     JSON,
-    XML
+    XML,
+    MIXED,
+    INVALID;
+
+    public bool is_valid () {
+        switch (this) {
+            case OPTIONS: return true;
+            case INI:     return true;
+            case JSON:    return true;
+            case XML:     return true;
+            case MIXED:   return true;
+            case INVALID:
+            default:      return false;
+        }
+    }
 }
 
 public enum Dcs.ConfigEntry {
-    NAME
+    NAMESPACE,
+    FORMAT
 }
 
 /**
- * Interface for handling Dcs configuration.
+ * Interface for handling DCS configurations.
  */
-public abstract class Dcs.Config : GLib.Object {
-
-    public virtual Dcs.ConfigFormat format { get; set; }
+public interface Dcs.Config : GLib.Object {
 
     /**
      * Emitted when any known configuration setting has changed.
@@ -36,121 +54,123 @@ public abstract class Dcs.Config : GLib.Object {
     public signal void setting_changed (string ns, string key);
 
     /**
-     * Emitted when configuration data has been loaded.
+     * Check if the type of the property in the class given matches the desired
+     * type provided.
+     *
+     * XXX Should this just return a boolean instead of throwing errors?
+     *
+     * @param class_type Class to check property existence and type correctness
+     * @param check_type Type of the property to check against
+     * @param property Name of the property to check
      */
-    public signal void config_loaded ();
+    public static void check_property_type (GLib.Type class_type,
+                                            GLib.Type check_type,
+                                            string property) throws GLib.Error {
+        var ocl = (GLib.ObjectClass) class_type.class_ref ();
+        unowned GLib.ParamSpec? spec = ocl.find_property (property);
+
+        if (spec == null) {
+            throw new Dcs.ConfigError.INVALID_KEY ("No property with that name");
+        } else if (spec.value_type != check_type) {
+            throw new Dcs.ConfigError.PROPERTY_TYPE (
+                "The wrong type was requested for the property");
+        }
+    }
 
     /**
-     * Load a configuration file using the data provided.
+     * Dump the configuration to the file stream provided. Used for
+     * debugging purposes.
+     *
+     * @param stream Output stream to write to.
      */
-    public virtual void load_data (string data,
-                                   Dcs.ConfigFormat format)
-                                   throws GLib.Error {
-        config_loaded ();
+    public virtual void dump (GLib.FileStream stream) {
+        var type = get_type ();
+        stream.write (type.name ().data);
+        stream.write ({ 13, 10 });
+        var ocl = (GLib.ObjectClass) type.class_ref ();
+        foreach (var spec in ocl.list_properties ()) {
+            //GLib.Value value;
+            //@get (spec.get_name (), out value);
+            stream.write (spec.get_name ().data);
+        }
     }
 
     /**
      * TODO fill me in
      */
-    public virtual string get_string (string ns,
-                                      string key)
-                                      throws GLib.Error {
-		string value = null;
-
-        if (value != null) {
-            return value;
-        } else {
-            throw new ConfigError.NO_VALUE_SET (_("No value available"));
-		}
-    }
+    public abstract string get_namespace () throws GLib.Error;
 
     /**
      * TODO fill me in
      */
-    public virtual Gee.ArrayList<string> get_string_list (string ns,
-                                                          string key)
-                                                          throws GLib.Error {
-        Gee.ArrayList<string> value = null;
-
-        if (value != null) {
-            return value;
-        } else {
-            throw new ConfigError.NO_VALUE_SET (_("No value available"));
-		}
-    }
+    public abstract Dcs.ConfigFormat get_format () throws GLib.Error;
 
     /**
      * TODO fill me in
      */
-    public virtual int get_int (string ns,
-                                string key)
-                                throws GLib.Error {
-		int value = 0;
-		bool value_set = false;
-
-        if (value_set) {
-            return value;
-        } else {
-            throw new ConfigError.NO_VALUE_SET (_("No value available"));
-		}
-    }
+    public abstract string get_string (string ns,
+                                       string key)
+                                       throws GLib.Error;
 
     /**
      * TODO fill me in
      */
-    public virtual Gee.ArrayList<int> get_int_list (string ns,
-                                                    string key)
-                                                    throws GLib.Error {
-        Gee.ArrayList<int> value = null;
-
-        if (value != null) {
-            return value;
-        } else {
-            throw new ConfigError.NO_VALUE_SET (_("No value available"));
-		}
-    }
+    public abstract Gee.ArrayList<string> get_string_list (string ns,
+                                                           string key)
+                                                           throws GLib.Error;
 
     /**
      * TODO fill me in
      */
-    public virtual bool get_bool (string ns,
-                                  string key)
-                                  throws GLib.Error {
-		bool value = false;
-		bool value_set = false;
+    public abstract int get_int (string ns,
+                                 string key)
+                                 throws GLib.Error;
 
-        if (value_set) {
-            return value;
-        } else {
-            throw new ConfigError.NO_VALUE_SET (_("No value available"));
-		}
-    }
+    /**
+     * TODO fill me in
+     */
+    public abstract Gee.ArrayList<int> get_int_list (string ns,
+                                                     string key)
+                                                     throws GLib.Error;
 
-/*
- *    public abstract float get_float (string ns,
- *                                     string key) throws GLib.Error;
- *
- *    public abstract double get_double (string ns,
- *                                       string key) throws GLib.Error;
- *
- *    public abstract void set_string (string ns,
- *                                     string key,
- *                                     string value) throws GLib.Error;
- *
- *    public abstract void set_int (string ns,
- *                                  string key,
- *                                  int value) throws GLib.Error;
- *
- *    public abstract void set_bool (string ns,
- *                                   string key,
- *                                   bool value) throws GLib.Error;
- *
- *    public abstract void set_float (string ns,
- *                                    string key,
- *                                    float value) throws GLib.Error;
- *
- *    public abstract void set_double (string ns,
- *                                     string key,
- *                                     double value) throws GLib.Error;
- */
+    /**
+     * TODO fill me in
+     */
+    public abstract bool get_bool (string ns,
+                                   string key)
+                                   throws GLib.Error;
+
+    /**
+     * TODO fill me in
+     */
+    public abstract double get_double (string ns,
+                                       string key) throws GLib.Error;
+
+    /**
+     * TODO fill me in
+     */
+    public abstract void set_string (string ns,
+                                     string key,
+                                     string value) throws GLib.Error;
+
+    /**
+     * TODO fill me in
+     */
+    public abstract void set_int (string ns,
+                                  string key,
+                                  int value) throws GLib.Error;
+
+    /**
+     * TODO fill me in
+     */
+    public abstract void set_bool (string ns,
+                                   string key,
+                                   bool value) throws GLib.Error;
+
+    /**
+     * TODO fill me in
+     */
+    public abstract void set_double (string ns,
+                                     string key,
+                                     double value) throws GLib.Error;
 }

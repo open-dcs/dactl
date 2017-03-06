@@ -44,7 +44,7 @@ internal class Dcsg.Main : GLib.Object {
     private static int PLUGIN_TIMEOUT = 5;
 
     private Dcs.Application app;
-    private Dcs.ApplicationFactory factory;
+    private Dcs.MetaFactory factory;
     private Dcs.PluginLoader plugin_loader;
     private Dcs.SysLog log;
 
@@ -59,7 +59,7 @@ internal class Dcsg.Main : GLib.Object {
         log = Dcs.SysLog.get_default ();
         log.init (true, null);
 
-        factory = Dcs.ApplicationFactory.get_default ();
+        factory = Dcs.MetaFactory.get_default ();
         plugin_loader = new Dcs.PluginLoader ();
 
         exit_code = 0;
@@ -134,7 +134,7 @@ internal class Dcsg.Main : GLib.Object {
     private void on_plugin_loaded (Dcs.PluginLoader plugin_loader,
                                    Dcs.LegacyPlugin plugin) {
         if (plugin.has_factory) {
-            Dcs.ApplicationFactory.register_factory (plugin.factory);
+            Dcs.MetaFactory.register_factory (plugin.factory);
         }
 
         app.plugins.add (plugin);
@@ -154,7 +154,7 @@ internal class Dcsg.Main : GLib.Object {
 
     private static void register_default_factories () {
         var ui_factory = Dcs.UI.Factory.get_default ();
-        Dcs.ApplicationFactory.register_factory (ui_factory);
+        Dcs.MetaFactory.register_factory (ui_factory);
     }
 
     private static int main (string[] args) {

@@ -3,6 +3,7 @@
 # OpenDCS - Distributed Control System Components
 [![Documentation Status](https://readthedocs.org/projects/dactl/badge/?version=latest)](https://readthedocs.org/projects/dactl/?badge=latest)
 [![Build Status](https://travis-ci.org/open-dcs/dcs.svg)](https://travis-ci.org/open-dcs/dcs)
+[![Coverage Status](https://coveralls.io/repos/github/open-dcs/dcs/badge.svg?branch=master)](https://coveralls.io/github/open-dcs/dcs?branch=master)
 
 For the website associated with this project visit [here][gh-pages].
 
@@ -12,7 +13,7 @@ OpenDCS is a set of services and applications for creating custom data
 acquisition and control systems in a distributed manner. The target operating
 system is Linux and its modern distribution variants.
 
-### Release 0.1
+### Release 0.2
 
 The current public release is a beta release that is a fork of
 [dactl](https://github.com/coanda/dactl) and probably won't be in a usable

@@ -5,26 +5,6 @@
 [GtkTemplate (ui = "/org/opendcs/dcs/ui/window.ui")]
 public class Dcsg.Window : Dcs.UI.WindowBase {
 
-    private string _xml = """
-    """;
-
-    private string _xsd = """
-    """;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xsd {
-        get { return _xsd; }
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -61,7 +41,7 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
     public bool fullscreen { get; set; default = false; }
 
     /* Model used to update the view */
-    public Dcs.Model model { get; construct set; }
+    public Dcs.App.Model model { get; construct set; }
 
     /* Layout - XXX maybe the Window should contain the layout? */
     public Dcsg.Layout layout { get; construct set; }
@@ -121,7 +101,7 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
      * @param model Data model class that the interface uses to update itself
      * @return A new instance of an Window object
      */
-    internal Window (Dcs.Model model) {
+    internal Window (Dcs.App.Model model) {
         GLib.Object (title: "Data Acquisition and Control",
                      window_position: Gtk.WindowPosition.CENTER);
 
@@ -186,15 +166,27 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
      */
     public void construct_layout () {
 
-        /* Currently only pages can be added to the notebook */
-        var pages = model.get_object_map (typeof (Dcs.UI.Page));
-        if (pages.size == 0) {
-            layout_add_page (new Dcs.UI.Page ());
-        } else {
-            foreach (var page in pages.values) {
-                message ("Constructing layout for page `%s'", page.id);
+        /* Currently only pages can be added to the layout */
+        var cfg_pages = model.get_object_map (typeof (Dcs.UI.Page));
+        if (cfg_pages.size != 0) {
+            foreach (var page in cfg_pages.values) {
+                debug ("Constructing layout for page `%s'", page.id);
                 layout_add_page (page as Dcs.UI.Page);
             }
+        }
+
+        /* XXX Testing new page widgets */
+        var foo_pages = model.get_object_map (typeof (Dcs.UI.FooPage));
+        if (foo_pages.size != 0) {
+            foreach (var page in foo_pages.values) {
+                debug ("Constructing layout for foo page `%s'", page.id);
+                layout_add_foo_page (page as Dcs.UI.FooPage);
+            }
+        }
+
+        if (cfg_pages.size == 0 && foo_pages.size == 0) {
+            debug ("Adding default window because none were configured");
+            layout_add_page (new Dcs.UI.Page ());
         }
 
         stack.show_all ();
@@ -210,10 +202,16 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
     }
 
     public void layout_add_page (Dcs.UI.Page page) {
-        message ("Adding page `%s' with title `%s'", page.id, page.title);
+        debug ("Adding page `%s' with title `%s'", page.id, page.title);
         stack.add_titled (page, page.id, page.title);
         pages += page.id;
+        model.add_child (page);
+    }
 
+    public void layout_add_foo_page (Dcs.UI.FooPage page) {
+        debug ("Adding foo page `%s' with title `%s'", page.id, page.title);
+        stack.add_titled (page.widget, page.id, page.title);
+        pages += page.id;
         model.add_child (page);
     }
 
@@ -303,6 +301,14 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
     /**
      * {@inheritDoc}
      */
+    public void add (owned Dcs.Object object, string path) throws GLib.Error {
+        debug (" >>> balls");
+        debug ("!!!! --- %s --- !!!!", object.id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public override void update_objects (Gee.Map<string, Dcs.Object> val) {
         _objects = val;
     }
@@ -366,6 +372,9 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
                    (event.state & modifiers) == Gdk.ModifierType.CONTROL_MASK) {
             app.activate_action ("quit", null);
             return true;
+        } else if (event.keyval == Gdk.Key.s &&         // CTRL + s -> save
+                   (event.state & modifiers) == Gdk.ModifierType.CONTROL_MASK) {
+            app.activate_action ("save", null);
         } else if (event.keyval == Gdk.Key.o &&         // CTRL + o -> loader
                    (event.state & modifiers) == Gdk.ModifierType.CONTROL_MASK) {
             layout_change_page ("loader");

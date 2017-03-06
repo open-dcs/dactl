@@ -1,0 +1,31 @@
+{
+  "dcs": {
+    "properties": {
+      "sprop": "string",
+      "slprop": ["string","string"],
+      "iprop": 1,
+      "ilprop": [1,1],
+      "bprop": true,
+      "dprop": 1.0
+    },
+    "objects": {
+      "ctr0": {
+        "type": "container",
+        "properties": {
+          "sprop": "string-prop"
+        },
+        "objects": {
+          "obj0": {
+            "type": "object",
+            "properties": {
+              "iprop": "int-prop"
+            },
+            "references": [
+              "dcs:///ctr0/obj1"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -7,18 +7,6 @@ public class Dcs.UI.PnidElement : GLib.Object, Dcs.Object, Dcs.Buildable {
 
     private Xml.Node* _node;
 
-    private string _xml = """
-        <object id=\"ai-ctl0\" type=\"ai\" ref=\"cld://ai0\"/>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     /**
      * {@inheritDoc}
      */
@@ -37,20 +25,6 @@ public class Dcs.UI.PnidElement : GLib.Object, Dcs.Object, Dcs.Buildable {
      * {@inheritDoc}
      */
     public string id { get; set; default = "txt0"; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected virtual string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected virtual string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * The sensor reference that this text field wants to display.
@@ -371,20 +345,6 @@ public class Dcs.UI.Pnid : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
     """;
 
     private Gee.Map<string, Dcs.Object> _objects;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}

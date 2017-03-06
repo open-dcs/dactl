@@ -1,0 +1,14 @@
+coverage:
+    ignore:
+        - src/dcs/.*
+        - src/dcs-control/.*
+        - src/dcs-daq/.*
+        - src/dcs-log/.*
+        - src/dcs-plugin/.*
+        - src/dcsg/.*
+        - backends/.*
+        - devices/.*
+        - loops/.*
+        - plugins/.*
+        - examples/.*
+        - tests/.*

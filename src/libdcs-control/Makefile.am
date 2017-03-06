@@ -3,7 +3,8 @@ DISTCLEANFILES =
 BUILT_SOURCES =
 EXTRA_DIST =
 
-include $(top_srcdir)/common.am
+libdcscontrolincdir = $(includedir)/dcs-0.2
+libdcscontrolinc_HEADERS = dcs-control.h
 
 pkglibdir = $(libdir)/dcs
 pkglib_LTLIBRARIES = libdcs-control-0.2.la
@@ -63,6 +64,7 @@ libdcs_control_0_2_la_VALAFLAGS = \
 	--pkg dcs-core-0.2 \
 	--pkg dcs-net-0.2 \
 	--pkg dcs-build \
+	$(COVERAGE_VALAFLAGS) \
 	$(NULL)
 
 libdcs_control_0_2_la_CFLAGS = \
@@ -74,6 +76,7 @@ libdcs_control_0_2_la_CFLAGS = \
 	$(LIBDCS_CONTROL_CFLAGS) \
 	$(LIBDCS_NET_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
+	$(COVERAGE_CFLAGS) \
 	$(DEBUG_CFLAGS) \
 	$(libdcs_control_0_2_la_includes) \
 	-Wno-deprecated-declarations \
@@ -94,6 +97,7 @@ libdcs_control_0_2_la_LIBADD = \
 	$(LIBDCS_LIBS) \
 	$(LIBDCS_CONTROL_LIBS) \
 	$(LIBDCS_NET_LIBS) \
+	$(COVERAGE_LIBS) \
 	$(NULL)
 
 

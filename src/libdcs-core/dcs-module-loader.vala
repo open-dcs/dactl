@@ -10,6 +10,8 @@
  * load_module_from_file() which is called when the walker encounters a
  * dynamic module file.
  */
+
+[Version (deprecated = true, deprecated_since = "0.2", replacement = "")]
 public abstract class Dcs.ModuleLoader : GLib.Object {
     private static const string LOADER_ATTRIBUTES =
                             FileAttribute.STANDARD_NAME + "," +

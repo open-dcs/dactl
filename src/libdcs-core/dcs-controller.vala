@@ -2,17 +2,17 @@
  * The application controller in a MVC design is responsible for responding to
  * events from the view and updating the model.
  */
-public abstract class Dcs.Controller : GLib.Object {
+public abstract class Dcs.App.Controller : GLib.Object {
 
     /**
      * Application model to use.
      */
-    protected Dcs.Model model;
+    protected Dcs.App.Model model;
 
     /**
      * Application view to update.
      */
-    protected Dcs.View view;
+    protected Dcs.App.View view;
 
     /* Control administrative functionality */
     public bool admin { get; set; default = false; }
@@ -25,7 +25,7 @@ public abstract class Dcs.Controller : GLib.Object {
     /**
      * Default construction.
      */
-    public Controller (Dcs.Model model, Dcs.View view) {
+    public Controller (Dcs.App.Model model, Dcs.App.View view) {
         this.model = model;
         this.view = view;
 
@@ -45,8 +45,10 @@ public abstract class Dcs.Controller : GLib.Object {
     /**
      * The controller receives requests to update the view if there have been
      * changes to the model.
+     *
+     * @param id The ID of the object updated, `null' if entire map was replaced
      */
-    public abstract void update_view ();
+    public abstract void update_view (string? id);
 
     /**
      * Add an object to the model and view.
@@ -54,7 +56,8 @@ public abstract class Dcs.Controller : GLib.Object {
      * @param object The object to add.
      * @param path The path in the object tree to add the object at.
      */
-    public abstract void add (owned Dcs.Object object, string path) throws GLib.Error;
+    public abstract void add (owned Dcs.Object object, string path)
+                              throws GLib.Error;
 
     /**
      * Remove an object from the model and view.
@@ -78,7 +81,7 @@ public abstract class Dcs.Controller : GLib.Object {
      * @param uri The uri containing the object and the property to set.
      * @param value A variant containing the value to set the property to.
      */
-    public abstract void @set (string uri, Variant value) throws GLib.Error;
+    public abstract new void set (string uri, Variant value) throws GLib.Error;
 
     /**
      * Get a property within the model for ...
@@ -94,9 +97,11 @@ public abstract class Dcs.Controller : GLib.Object {
      *
      * @param uri The uri containing the object and the property to get.
      */
-    public abstract Variant @get (string uri) throws GLib.Error;
+    public abstract new Variant get (string uri) throws GLib.Error;
 
-    /* Functionality from old versions and soon to be deprecated */
+    /*
+     * *** Functionality from old versions and soon to be deprecated ***
+     */
 
     /**
      * Recursively goes through the object map and connects signals from

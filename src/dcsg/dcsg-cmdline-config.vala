@@ -2,9 +2,7 @@ public errordomain Dcsg.CmdlineConfigError {
     VERSION_ONLY
 }
 
-public class Dcsg.CmdlineConfig : Dcs.Config {
-
-    public Dcs.ConfigFormat format { get; set; default = Dcs.ConfigFormat.OPTIONS; }
+public class Dcsg.CmdlineConfig : Dcs.AbstractConfig {
 
     private static bool version;
 
@@ -21,11 +19,11 @@ public class Dcsg.CmdlineConfig : Dcs.Config {
         { "version", 0, 0, OptionArg.NONE, ref version,
           "Display version number", null },
         { "plugin-path", 'u', 0, OptionArg.STRING, ref plugin_path,
-          N_ ("Plugin Path"), "PLUGIN_PATH" },
+          N_("Plugin Path"), "PLUGIN_PATH" },
         { "config", 'c', 0, OptionArg.FILENAME, ref config_file,
-          N_ ("Use configuration file instead of user configuration"), "FILE" },
+          N_("Use configuration file instead of user configuration"), "FILE" },
         { "replace", 'r', 0, OptionArg.NONE, ref replace,
-          N_ ("Replace currently running instance of dcsg"), null },
+          N_("Replace currently running instance of dcsg"), null },
         { null }
     };
 
@@ -62,7 +60,7 @@ public class Dcsg.CmdlineConfig : Dcs.Config {
 
     public string get_plugin_path () throws GLib.Error {
         if (plugin_path == null) {
-            throw new Dcs.ConfigError.NO_VALUE_SET ("No value available");
+            throw new Dcs.ConfigError.NO_VALUE_SET (_("No value available"));
         }
 
         return plugin_path;
@@ -74,5 +72,13 @@ public class Dcsg.CmdlineConfig : Dcs.Config {
         }
 
         return config_file;
+    }
+
+    public override Dcs.ConfigFormat get_format () throws GLib.Error {
+        return Dcs.ConfigFormat.OPTIONS;
+    }
+
+    public override string get_namespace () throws GLib.Error {
+        return "dcsg";
     }
 }

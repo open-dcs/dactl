@@ -9,7 +9,10 @@ include $(top_srcdir)/common.am
 
 bin_PROGRAMS = dcsg
 
-gresource_file = $(top_srcdir)/data/dcsg.gresource.xml
+gresource_file = dcsg.gresource.xml
+resource_files = $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies $(gresource_file))
+resources.c: $(gresource_file) $(resource_files)
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=. --generate-source $<
 
 dcsg_VALAFLAGS = \
 	-H $(srcdir)/libdcsg.h -C -c \
@@ -25,6 +28,7 @@ dcsg_VALAFLAGS = \
 	--pkg glib-extra \
 	--pkg gtksourceview-3.0 \
 	--pkg json-glib-1.0 \
+	--pkg libpeas-gtk-1.0 \
 	--pkg dcs-build \
 	--pkg dcs-core-0.2 \
 	--pkg dcs-ui-0.2
@@ -38,13 +42,14 @@ dcsg_includes = \
 	-I$(top_srcdir)/src/libdcs-ui
 
 dcsg_CFLAGS = \
-	-DG_LOG_DOMAIN=\"dcs\" \
-	-DGETTEXT_PACKAGE=\"dcs\" \
+	-DG_LOG_DOMAIN=\"dcsg\" \
+	-DGETTEXT_PACKAGE=\"dcsg\" \
 	$(DCS_CLD_DEPS_CFLAGS) \
 	$(LIBDCS_CORE_CFLAGS) \
 	$(LIBDCS_UI_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
 	$(dcsg_includes) \
+	-fPIC \
 	-Wno-deprecated-declarations \
 	-Wno-discarded-qualifiers \
 	-Wno-implicit-function-declaration \
@@ -78,10 +83,6 @@ dcsg_headers = \
 	libdcsg.h \
 	$(NULL)
 
-resource_files = $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir=$(top_srcdir)/data $(gresource_file))
-resources.c: $(gresource_file) $(resource_files)
-	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(top_srcdir)/data --generate-source $<
-
 BUILT_SOURCES += resources.c
 
 dcsg_SOURCES = \
@@ -101,6 +102,7 @@ dcsg_SOURCES = \
 	dcsg-main.vala \
 	dcsg-menu.vala \
 	dcsg-model.vala \
+	dcsg-plugin-settings.vala \
 	dcsg-settings-data.vala \
 	dcsg-settings-dialog.vala \
 	dcsg-settings-listbox.vala \

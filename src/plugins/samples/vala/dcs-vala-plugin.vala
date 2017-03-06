@@ -1,7 +1,8 @@
 /**
  * Sample plugin using libpeas.
  */
-public class Dcs.Sample.Plugin : Peas.ExtensionBase, Peas.Activatable, PeasGtk.Configurable {
+public class Dcs.Sample.Plugin : Peas.ExtensionBase, Peas.Activatable {
+//public class Dcs.Sample.Plugin : Dcs.UI.Plugin, PeasGtk.Configurable {
 
     private Dcs.UI.Plugin plugin;
 
@@ -9,30 +10,12 @@ public class Dcs.Sample.Plugin : Peas.ExtensionBase, Peas.Activatable, PeasGtk.C
 
     public Plugin (Dcs.Application app) {
         debug ("UI Plugin constructor");
+        //base (app);
     }
 
     public void activate () {
         debug ("Sample Vala plugin activated.");
         plugin = (Dcs.UI.Plugin) object;
-        plugin.requested.connect (plugin_requested_cb);
-        // XXX just here for testing
-        plugin.requested ();
-    }
-
-    public void deactivate () {
-        debug ("Sample vala plugin deactivated.");
-    }
-
-    public void update_state () {
-        debug ("Sample vala plugin update state");
-    }
-
-    public Gtk.Widget create_configure_widget () {
-        var label = new Gtk.Label ("Sample plugin configuration.");
-        return label;
-    }
-
-    public void plugin_requested_cb () {
         var app = plugin.app;
 
         var box0 = new Dcs.UI.Box ();
@@ -60,10 +43,43 @@ public class Dcs.Sample.Plugin : Peas.ExtensionBase, Peas.Activatable, PeasGtk.C
             app.controller.add (page, "/win1");
             app.controller.add (box1, "/win1/pg1");
             app.controller.add (rc1, "/win1/pg1/plugbox1");
-            app.controller.update_view ();
+            app.controller.update_view (null);
         } catch (Dcs.ApplicationError e) {
             critical (e.message);
         }
+    }
+
+    public void deactivate () {
+        debug ("Sample vala plugin deactivated.");
+        var app = plugin.app;
+
+        try {
+            app.controller.remove ("/win0/pg0/plugbox0/rc0");
+            app.controller.remove ("/win0/pg0/plugbox0");
+
+            app.controller.remove ("/win1/pg1/plugbox1/rc1");
+            app.controller.remove ("/win1/pg1/plugbox1");
+            app.controller.remove ("/win1/pg1");
+            app.controller.remove ("/win1");
+        } catch (Dcs.ApplicationError e) {
+            critical (e.message);
+        }
+    }
+
+    public void update_state () {
+        debug ("Sample vala plugin update state");
+    }
+}
+
+public class Dcs.Sample.PluginConfig : Peas.ExtensionBase, PeasGtk.Configurable {
+
+    public PluginConfig () {
+        GLib.Object ();
+    }
+
+    public Gtk.Widget create_configure_widget () {
+        var label = new Gtk.Label ("Sample plugin configuration.");
+        return label;
     }
 }
 
@@ -73,5 +89,5 @@ public void peas_register_types (GLib.TypeModule module) {
     objmodule.register_extension_type (typeof (Peas.Activatable),
                                        typeof (Dcs.Sample.Plugin));
     objmodule.register_extension_type (typeof (PeasGtk.Configurable),
-                                       typeof (Dcs.Sample.Plugin));
+                                       typeof (Dcs.Sample.PluginConfig));
 }

@@ -1,7 +1,7 @@
 /**
  * Interface for plugins that are to be used as a backend for logging data.
  */
-public interface Dcs.Log.Backend : GLib.Object {
+public interface Dcs.Log.Backend : Dcs.Plugin {
 
     /**
      * Opens a connection to the file/database/key-value store that's

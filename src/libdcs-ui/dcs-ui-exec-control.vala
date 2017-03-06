@@ -1,36 +1,10 @@
 [GtkTemplate (ui = "/org/opendcs/libdcs/ui/exec-control.ui")]
 public class Dcs.UI.ExecControl : Dcs.UI.CompositeWidget {
 
-    private string _xml = """
-        <object id=\"ai-ctl0\" type=\"ai\" ref=\"cld://ai0\"/>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     [GtkChild]
     private Gtk.Entry entry_command;
 
     private Gee.Map<string, Dcs.Object> _objects;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}

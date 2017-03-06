@@ -4,18 +4,6 @@
 [GtkTemplate (ui = "/org/opendcs/libdcs/ui/box.ui")]
 public class Dcs.UI.Box : Dcs.UI.CompositeWidget {
 
-    private string _xml = """
-        <object id=\"ai-ctl0\" type=\"ai\" ref=\"cld://ai0\"/>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     //private Dcs.UI.Orientation _orientation = Dcs.UI.Orientation.HORIZONTAL;
 
     //public int spacing { get; set; default = 0; }
@@ -33,20 +21,6 @@ public class Dcs.UI.Box : Dcs.UI.CompositeWidget {
     //public bool homogeneous { get; set; default = false; }
 
     private Gee.Map<string, Dcs.Object> _objects;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}

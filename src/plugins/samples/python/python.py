@@ -10,8 +10,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('Peas', '1.0')
 gi.require_version('PeasGtk', '1.0')
-gi.require_version('DcsCore', '0.1')
-gi.require_version('DcsUI', '0.1')
+gi.require_version('DcsCore', '0.2')
+gi.require_version('DcsUI', '0.2')
 from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import Peas
@@ -19,31 +19,44 @@ from gi.repository import PeasGtk
 from gi.repository import DcsCore
 from gi.repository import DcsUI
 
+from pprint import pprint
+
 LABEL_STRING="Python Plugin Sample"
 
-class PythonPlugin(GObject.Object, Peas.Activatable):
+class PythonPlugin(Peas.ExtensionBase, Peas.Activatable):
     __gtype_name__ = 'PythonPlugin'
 
-    # view = GObject.Property(type=DcsCore.ApplicationView)
     object = GObject.property(type=GObject.Object)
 
     def do_activate(self):
+        app = self.object.get_app()
+        controller = app.get_controller()
         print("PythonPlugin.do_activate")
-        self.button = Gtk.Button(label="Quit")
-        self.button.connect("clicked", Gtk.main_quit)
-        self.app = self.object.app
-        self.app.controller.add(self.button, "/win0/pg0")
-        self.button.show()
-        # window._python_label = Gtk.Label()
-        # window._python_label.set_text(LABEL_STRING)
-        # window._python_label.show()
-        # window.get_child().pack_start(window._python_label, True, True, 0)
+        window = DcsUI.UIWindow()
+        # window.id = "win2"
+        window.set_property("id", "win2")
+        # win_dump = dir(window)
+        # pprint(win_dump)
+        page = DcsUI.UIPage()
+        page.set_property("id", "pg2")
+        box = DcsUI.UIBox()
+        box.set_property("id", "plugbox2")
+        rc = DcsUI.UIRichContent()
+        rc.set_property("id", "rc2")
+        rc.set_property("uri", "https://www.google.ca")
+        controller.add(window, "/")
+        controller.add(page, "/win2")
+        controller.add(box, "/win2/pg2")
+        controller.add(rc, "/win2/pg2/plugbox2")
 
     def do_deactivate(self):
+        app = self.object.get_app()
+        controller = app.get_controller()
         print("PythonPlugin.do_deactivate")
-        self.app.remove("/win0/pg0/box0")
-        # window.get_child().remove(window._python_label)
-        # window._python_label.destroy()
+        controller.remove("/win2/pg2/plugbox2/rc2")
+        controller.remove("/win2/pg2/plugbox2")
+        controller.remove("/win2/pg2")
+        controller.remove("/win2")
 
     def do_update_state(self):
         print("PythonPlugin.do_update_state")

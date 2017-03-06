@@ -2,22 +2,6 @@ public class Dcs.UI.ChannelMatrixElement : GLib.Object, Dcs.Object, Dcs.Buildabl
 
     private Xml.Node* _node;
 
-    private string _xml = """
-        <ui:object id=\"pg1chart0tr0ary0p00\" type=\"channel-matrix-element\">
-          <ui:property name=\"a\">0.900</ui:property>
-          <ui:property name=\"b\">1.00</ui:property>
-          <ui:property name=\"chref\">/daqctl0/dev0/ai00</ui:property>
-        </ui:object>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     /* the uri of the referenced channel */
     private string _chref;
     public string chref {
@@ -44,20 +28,6 @@ public class Dcs.UI.ChannelMatrixElement : GLib.Object, Dcs.Object, Dcs.Buildabl
      * {@inheritDoc}
      */
     public string id { get; set; default = "trace0"; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}

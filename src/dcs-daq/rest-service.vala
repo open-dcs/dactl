@@ -32,6 +32,15 @@ public class Dcs.DAQ.RestService : Dcs.Net.RestService {
         add_handler ("/task",     route_task);
         add_handler ("/tasks",    route_tasks);
 
+        // XXX idea discussed for having plugins that provide their own
+        // configuration pages as a route
+        /*
+         *foreach (var plugin in plugins) {
+         *    add_handler ("/config/device/" + plugin.id, plugin.route_config);
+         *    http://10.0.0.10/config/device/dev0
+         *}
+         */
+
         /*
          *add_routes (routes);
          */

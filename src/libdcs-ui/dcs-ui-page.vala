@@ -4,35 +4,9 @@
 [GtkTemplate (ui = "/org/opendcs/libdcs/ui/page.ui")]
 public class Dcs.UI.Page : Dcs.UI.CompositeWidget {
 
-    private string _xml = """
-        <object id=\"ai-ctl0\" type=\"ai\" ref=\"cld://ai0\"/>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     public int index { get; set; default = 0; }
 
     public string title { get; set; default = "Page"; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}
@@ -123,7 +97,7 @@ public class Dcs.UI.Page : Dcs.UI.CompositeWidget {
 
                     /* no point adding an object type that isn't recognized */
                     if (object != null) {
-                        message ("Loading object of type `%s' with id `%s'", type, object.id);
+                        debug ("Loading object of type `%s' with id `%s'", type, object.id);
                         add_child (object);
                     }
                 }
@@ -141,7 +115,7 @@ public class Dcs.UI.Page : Dcs.UI.CompositeWidget {
 
         (base as Dcs.Container).add_child (object);
         //objects.set (object.id, object);
-        GLib.message ("Attempting to add widget `%s' to page `%s'", object.id, id);
+        debug ("Attempting to add widget `%s' to page `%s'", object.id, id);
         if (object is Dcs.UI.CustomWidget)
             viewport.add (object as Dcs.UI.CustomWidget);
         else if (object is Dcs.UI.CompositeWidget)

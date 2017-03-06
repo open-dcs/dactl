@@ -3,13 +3,13 @@
  *
  * XXX TBD Consider a way to clock out the data at a even pace to prevent th
  */
-public class Dcs.DataSeries : GLib.Object, Dcs.Object, Dcs.Buildable, Dcs.CldAdapter {
+public class Dcs.DataSeries : Dcs.AbstractObject, Dcs.Buildable, Dcs.CldAdapter {
 
     private Xml.Node* _node;
     private int _buffer_size;
     private int _stride = 1;
-    private Dcs.SimplePoint [] data;
-    private Dcs.SimplePoint [] array;
+    private Dcs.SimplePoint[] data;
+    private Dcs.SimplePoint[] array;
     private weak Cld.Channel _channel;
     private int64 then;
     private int start = 0;
@@ -36,44 +36,12 @@ public class Dcs.DataSeries : GLib.Object, Dcs.Object, Dcs.Buildable, Dcs.CldAda
         }
     }
 
-    private string _xml = """
-        <ui:object id=\"ds-0\" type=\"dataseries\"/>
-          <ui:property name=\"buffer-size\">1000</ui:property>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     /**
      * The number of channel data samples between buffer entries
      */
     public int stride {
-        get {return _stride; }
+        get { return _stride; }
         private set { _stride = value; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public string id { get; set; default = "trace0"; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected string xsd {
-        get { return _xsd; }
     }
 
     /**
@@ -93,11 +61,17 @@ public class Dcs.DataSeries : GLib.Object, Dcs.Object, Dcs.Buildable, Dcs.CldAda
      */
     protected bool satisfied { get; set; default = false; }
 
+
     construct {
+        id = "trace0";
     }
 
     public DataSeries.from_xml_node (Xml.Node *node) {
-        build_from_xml_node (node);
+        try {
+            build_from_xml_node (node);
+        } catch (GLib.Error e) {
+            critical (e.message);
+        }
     }
 
     /**
@@ -118,9 +92,9 @@ public class Dcs.DataSeries : GLib.Object, Dcs.Object, Dcs.Buildable, Dcs.CldAda
                             buffer_size = int.parse (iter->get_content ());
                             /* create an empty slot */
                             var point = Dcs.SimplePoint () {
-                                            x = double.NAN,
-                                            y = double.NAN
-                                        };
+                                x = double.NAN,
+                                y = double.NAN
+                            };
                             data += point;
                             break;
                         case "stride":
@@ -176,7 +150,7 @@ public class Dcs.DataSeries : GLib.Object, Dcs.Object, Dcs.Buildable, Dcs.CldAda
                     start ++;
                     if (start == buffer_size)
                         start = 0;
-                    data [end] = point;
+                    data[end] = point;
                 }
             }
             end++;
@@ -196,9 +170,9 @@ public class Dcs.DataSeries : GLib.Object, Dcs.Object, Dcs.Buildable, Dcs.CldAda
 
                 if (array.length < data.length) {
                     array += data [j];
-                    array [i] = data [j];
+                    array[i] = data[j];
                 } else {
-                    array [i] = data [j];
+                    array[i] = data[j];
                 }
 
             }

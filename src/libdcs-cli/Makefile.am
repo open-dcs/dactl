@@ -3,6 +3,9 @@ DISTCLEANFILES =
 BUILT_SOURCES =
 EXTRA_DIST =
 
+libdcscliincdir = $(includedir)/dcs-0.2
+libdcscliinc_HEADERS = dcs-cli.h
+
 pkglibdir = $(libdir)/dcs
 pkglib_LTLIBRARIES = libdcs-cli-0.2.la
 
@@ -50,7 +53,9 @@ libdcs_cli_0_2_la_VALAFLAGS = \
 	--pkg posix \
 	--pkg gio-2.0 \
 	--pkg gee-0.8 \
+	--pkg json-glib-1.0 \
 	--pkg dcs-core-0.2 \
+	$(COVERAGE_VALAFLAGS) \
 	$(NULL)
 
 libdcs_cli_0_2_la_CFLAGS = \
@@ -59,6 +64,7 @@ libdcs_cli_0_2_la_CFLAGS = \
 	$(AM_CFLAGS) \
 	$(LIBDCS_CFLAGS) \
 	$(LIBDCS_CLI_CFLAGS) \
+	$(COVERAGE_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
 	$(DEBUG_CFLAGS) \
 	$(libdcs_cli_0_2_la_includes) \
@@ -79,6 +85,7 @@ libdcs_cli_0_2_la_LDFLAGS = \
 libdcs_cli_0_2_la_LIBADD = \
 	$(LIBDCS_LIBS) \
 	$(LIBDCS_CLI_LIBS) \
+	$(COVERAGE_LIBS) \
 	$(NULL)
 
 

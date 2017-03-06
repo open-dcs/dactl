@@ -378,6 +378,10 @@ package "Dcs" #DDDDDD {
         '
 
         '
+        ' Classes
+        '
+
+        '
         ' Associations
         '
 
@@ -394,6 +398,10 @@ package "Dcs" #DDDDDD {
 
         '
         ' Interfaces
+        '
+
+        '
+        ' Classes
         '
 
         '
@@ -415,6 +423,40 @@ package "Dcs" #DDDDDD {
         ' Interfaces
         '
 
+        interface Signal {
+            -- properties --
+            +string tag
+            +string desc
+            +string alias
+        }
+
+        '
+        ' Classes
+        '
+
+        class Range {
+            -- properties --
+            +float min
+            +float max
+            -- methods --
+            +float clamp (float value)
+        }
+
+        class AnalogInput {
+            -- properties --
+            +Range range
+            +uint number
+            +uint8 resolution
+            ~uint raw
+            ~float value
+            -- methods --
+            +void update_from_raw (uint raw)
+            +void update (float value)
+            -- get/set --
+            +uint get_raw ()
+            +float get_value ()
+        }
+
         '
         ' Associations
         '
@@ -422,6 +464,18 @@ package "Dcs" #DDDDDD {
         '
         ' Notes
         '
+
+        note top of Range
+            Write as a compact class. Also, consider that this should be inside
+            of the Dcs namespace and not within DAQ.
+        end note
+
+        note top of AnalogInput
+            The method <i>update_from_raw</i> should throw an exception if no
+            range or resolution have been configured. Should also consider that
+            only one update method exists and expects raw, and just use the
+            value setter for updating the floating point value.
+        end note
     }
 
     package "Log" {
@@ -432,6 +486,10 @@ package "Dcs" #DDDDDD {
 
         '
         ' Interfaces
+        '
+
+        '
+        ' Classes
         '
 
         '
@@ -451,6 +509,10 @@ package "Dcs" #DDDDDD {
 
         '
         ' Interfaces
+        '
+
+        '
+        ' Classes
         '
 
         '

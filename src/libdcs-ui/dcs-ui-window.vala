@@ -13,29 +13,7 @@ public enum Dcs.UI.WindowRequest {
 [GtkTemplate (ui = "/org/opendcs/libdcs/ui/window.ui")]
 public class Dcs.UI.Window : Dcs.UI.WindowBase {
 
-    private string _xml = """
-    """;
-
-    private string _xsd = """
-    """;
-
     public int index { get; set; default = 0; }
-
-    //public string title { get; set; default = "Window"; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}

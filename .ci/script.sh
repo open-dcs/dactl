@@ -9,8 +9,11 @@ sed -i 's/\(\[peas_required_version\]\,\s\[1\.\)16\(\.0\]\)/\18\2/' configure.ac
 sed -i 's/\(\[json_required_version\]\,\s\[\)1\.0\(\.0\]\)/\10.16\2/' configure.ac
 
 ./autogen.sh \
+    --enable-debug \
+    --enable-optimizations \
+    --enable-coverage \
     --disable-ui \
     --disable-webkit \
     --disable-vala-plugin \
     --disable-python-plugin
-make
+make && make coverage

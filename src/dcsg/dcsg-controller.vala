@@ -1,4 +1,4 @@
-public class Dcsg.Controller : Dcs.Controller {
+public class Dcsg.Controller : Dcs.App.Controller {
 
     public Controller (Dcsg.Model model, Dcsg.Window view) {
         base (model, view);
@@ -7,6 +7,10 @@ public class Dcsg.Controller : Dcs.Controller {
         app.save_requested.connect (save_requested_cb);
         app.closed.connect (() => {
             (app as GLib.Application).quit ();
+        });
+
+        model.updated.connect ((id) => {
+            update_view (id);
         });
     }
 
@@ -23,8 +27,22 @@ public class Dcsg.Controller : Dcs.Controller {
     /**
      * {@inheritDoc}
      */
-    public override void update_view () {
+    public override void update_view (string? id) {
         (view as Gtk.Widget).show_all ();
+        /*
+         *debug (" >>> id == %s", id);
+         *if (id != null) {
+         *    debug (" >>> add >>> id == %s", id);
+         *    var object = model.get_object (id);
+         *    if (object != null) {
+         *        debug (" >>> add >>> id == %s", id);
+         *        view.add (object, "/test");
+         *    } else {
+         *        //view.remove ("/test");
+         *        debug (" >>> remove >>> id == %s", id);
+         *    }
+         *}
+         */
     }
 
     /**
@@ -36,14 +54,13 @@ public class Dcsg.Controller : Dcs.Controller {
             if (object is Dcs.UI.Page) {
                 (view as Dcsg.Window).layout_add_page (object as Dcs.UI.Page);
             } else if (object is Dcs.UI.Window) {
+                debug (" <<<< add window with id %s >>>>", object.id);
                 (view as Dcsg.Window).add_window (object as Dcs.UI.Window);
             }
         } else {
             var tokens = path.split ("/");
             var id = tokens[tokens.length - 1];
             var parent = model.get_object (id);
-
-            debug (" <<<< %s >>>>", id);
 
             if (parent == null) {
                 throw new Dcs.ApplicationError.INVALID_ADD_REQUEST (
@@ -54,13 +71,13 @@ public class Dcsg.Controller : Dcs.Controller {
             if (parent is Dcs.Container) {
                 if (parent is Dcs.UI.Window) {
                     (parent as Dcs.UI.Window).add_child (object);
-                    debug (" <<<< add %s to window >>>>", object.id);
+                    debug (" <<<< add %s to window (%s) >>>>", object.id, id);
                 } else if (parent is Dcs.UI.Page) {
                     (parent as Dcs.UI.Page).add_child (object);
-                    debug (" <<<< add %s to page >>>>", object.id);
+                    debug (" <<<< add %s to page (%s) >>>>", object.id, id);
                 } else if (parent is Dcs.UI.Box) {
                     (parent as Dcs.UI.Box).add_child (object);
-                    debug (" <<<< add %s to box >>>>", object.id);
+                    debug (" <<<< add %s to box (%s) >>>>", object.id, id);
                 }
                 (parent as Gtk.Widget).show_all ();
             } else {

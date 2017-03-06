@@ -65,7 +65,7 @@ public enum Dcs.UI.TraceDrawType {
  * to the left.
  */
 public class Dcs.UI.Trace : GLib.Object, Dcs.Object,
-                                               Dcs.Buildable, Dcs.UI.Drawable {
+                            Dcs.Buildable, Dcs.UI.Drawable {
 
     private Xml.Node* _node;
     /*private Dcs.UI.Drawable.XYPoint[] _raw_data;*/
@@ -78,36 +78,6 @@ public class Dcs.UI.Trace : GLib.Object, Dcs.Object,
     protected int width = 100;
     protected int height = 100;
     public bool highlight { get; set; default = false; }
-
-    private string _xml = """
-        <ui:object id=\"trace-0\" type=\"chart-trace\" ttype=\"xy\"/>
-          <ui:property name=\"points\">100</ui:property>
-          <ui:property name=\"draw-type\">line</ui:property>
-          <ui:property name=\"line-weight\">1</ui:property>
-          <ui:property name=\"color\">red</ui:property>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}

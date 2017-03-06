@@ -11,6 +11,9 @@ if ENABLE_UI
 
 include $(srcdir)/filelist.am
 
+libdcsuiincdir = $(includedir)/dcs-0.2
+libdcsuiinc_HEADERS = dcs-ui.h
+
 pkglibdir = $(libdir)/dcs
 pkglib_LTLIBRARIES = libdcs-ui-0.2.la
 
@@ -73,7 +76,8 @@ libdcs_ui_0_2_la_VALAFLAGS = \
 	--pkg librsvg-2.0 \
 	--pkg dcs-core-0.2 \
 	--pkg dcs-build \
-	$(DCS_CLD_DEPS_VALAFLAGS)
+	$(DCS_CLD_DEPS_VALAFLAGS) \
+	$(COVERAGE_VALAFLAGS)
 
 libdcs_ui_0_2_la_CFLAGS = \
 	-DWEB_EXTENSION_DIR=\""$(extensiondir)"\" \
@@ -83,6 +87,7 @@ libdcs_ui_0_2_la_CFLAGS = \
 	$(LIBDCS_CORE_CFLAGS) \
 	$(LIBDCS_UI_CFLAGS) \
 	$(DCS_CLD_DEPS_CFLAGS) \
+	$(COVERAGE_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
 	$(libdcs_ui_0_2_la_includes) \
 	-Wno-deprecated-declarations \
@@ -103,7 +108,8 @@ libdcs_ui_0_2_la_LDFLAGS = \
 libdcs_ui_0_2_la_LIBADD = \
 	$(LIBDCS_CORE_LIBS) \
 	$(LIBDCS_UI_LIBS) \
-	$(DCS_CLD_DEPS_LIBS)
+	$(DCS_CLD_DEPS_LIBS) \
+	$(COVERAGE_LIBS)
 
 
 if ENABLE_WEBKIT
@@ -131,12 +137,17 @@ $(builddir)/DcsUI-0.2.gir: $(srcdir)/Dcs-0.2.gir
 	$(AM_V_GEN)$(SED) \
 		-e 's,Dcs\.,DcsUI.,g' \
 		-e 's,namespace name="Dcs",namespace name="DcsUI",g' \
+		-e 's,DcsUI\.Application,DcsCore.Application,g' \
 		-e 's,DcsUI\.Object,DcsCore.Object,g' \
 		-e 's,DcsUI\.Buildable,DcsCore.Buildable,g' \
 		-e 's,DcsUI\.Container,DcsCore.Container,g' \
 		-e 's,DcsUI\.CldAdapter,DcsCore.CldAdapter,g' \
 		-e 's,DcsUI\.Extension,DcsCore.Extension,g' \
 		-e 's,DcsUI\.Factory,DcsCore.Factory,g' \
+		-e 's,DcsUI\.Model,DcsCore.Model,g' \
+		-e 's,DcsUI\.View,DcsCore.View,g' \
+		-e 's,DcsUI\.Controller,DcsCore.Controller,g' \
+		-e 's,DcsUI\.PluginExtension,DcsCore.PluginExtension,g' \
 		-e 's,<package name="dcs-ui-0.2"/>,<include name="DcsCore" version="0.2"/>\n<package name="dcs-ui-0.2"/>,' \
 		$< >$@
 GIRS = DcsUI-0.2.gir
@@ -144,7 +155,7 @@ GIRS = DcsUI-0.2.gir
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(GIRS)
 
-typelibdir = $(libdir)/girepository-1.0
+typelibdir = $(pkglibdir)/girepository-1.0
 typelib_DATA = $(GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)

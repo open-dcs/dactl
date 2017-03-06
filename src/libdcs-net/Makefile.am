@@ -3,6 +3,9 @@ DISTCLEANFILES =
 BUILT_SOURCES =
 EXTRA_DIST =
 
+libdcsnetincdir = $(includedir)/dcs-0.2
+libdcsnetinc_HEADERS = dcs-net.h
+
 pkglibdir = $(libdir)/dcs
 pkglib_LTLIBRARIES = libdcs-net-0.2.la
 
@@ -60,6 +63,7 @@ libdcs_net_0_2_la_VALAFLAGS = \
 	--pkg libsoup-2.4 \
 	--pkg libzmq \
 	--pkg dcs-core-0.2 \
+	$(COVERAGE_VALAFLAGS) \
 	$(NULL)
 
 libdcs_net_0_2_la_CFLAGS = \
@@ -68,6 +72,7 @@ libdcs_net_0_2_la_CFLAGS = \
 	$(AM_CFLAGS) \
 	$(LIBDCS_CFLAGS) \
 	$(LIBDCS_NET_CFLAGS) \
+	$(COVERAGE_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
 	$(libdcs_net_0_2_la_includes) \
 	-Wno-deprecated-declarations \
@@ -88,6 +93,7 @@ libdcs_net_0_2_la_LDFLAGS = \
 libdcs_net_0_2_la_LIBADD = \
 	$(LIBDCS_LIBS) \
 	$(LIBDCS_NET_LIBS) \
+	$(COVERAGE_LIBS) \
 	$(NULL)
 
 

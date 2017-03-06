@@ -1,4 +1,4 @@
-public class Dcs.UI.Plugin : GLib.Object, Dcs.Extension {
+public class Dcs.UI.Plugin : Dcs.PluginExtension {
 
     public Dcs.Application app { get; construct set; }
 

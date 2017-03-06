@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  - Configuration file
+  - Geoff Johnson <geoff.johnson@coanda.ca>
+  - 2016-12-20
+  -->
+<dcs xmlns:core="urn:libdcs-core">
+
+  <!-- Common application properties -->
+  <property name="app">Test Config</property>
+  <property name="admin">false</property>
+
+  <!-- Start core configuration -->
+
+  <!-- Create objects -->
+  <core:objects>
+    <core:object id="ds0" type="data-series">
+      <core:property name="buffer-size">100</core:property>
+      <core:property name="stride">10</core:property>
+    </core:object>
+    <core:object id="ds1" type="data-series">
+      <core:property name="buffer-size">100</core:property>
+      <core:property name="stride">10</core:property>
+    </core:object>
+  </core:objects>
+
+  <!-- Map object relationships -->
+  <core:maps>
+    <core:object id="graph0" type="graph">
+      <core:object id="node0" type="node">
+        <core:property name="object-ref">dcs:///core/objects/ds0</core:property>
+      </core:object>
+      <core:object id="node1" type="node">
+        <core:property name="object-ref">dcs:///core/objects/ds1</core:property>
+      </core:object>
+      <core:object id="edge0" type="edge">
+        <core:property name="node-ref">dcs:///core/maps/graph0/nodes/node0</core:property>
+        <core:property name="node-ref">dcs:///core/maps/graph0/nodes/node1</core:property>
+      </core:object>
+    </core:object>
+  </core:maps>
+
+  <!-- End core configuration -->
+
+</dcs>

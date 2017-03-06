@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<dcs xmlns:daq="urn:libdcs-daq" xmlns:net="urn:libdcs-net">
+  <property name="sprop">string</property>
+  <property name="slprop">string,string</property>
+  <property name="iprop">1</property>
+  <property name="ilprop">1,1</property>
+  <property name="bprop">true</property>
+  <property name="dprop">1.0</property>
+
+  <object id="gc0" type="generic-container">
+    <object id="go0" type="generic-object">
+      <object id="gc0-go0" type="generic-container">
+        <object id="gc0-go0-go0" type="generic-object"/>
+      </object>
+    </object>
+  </object>
+</dcs>

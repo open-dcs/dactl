@@ -1,18 +1,6 @@
 [GtkTemplate (ui = "/org/opendcs/libdcs/ui/pid-control.ui")]
 public class Dcs.UI.PidControl : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
 
-    private string _xml = """
-        <object id=\"ai-ctl0\" type=\"ai\" ref=\"cld://ai0\"/>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     [GtkChild]
     private Gtk.Stack content;
 
@@ -102,20 +90,6 @@ public class Dcs.UI.PidControl : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
     }
 
     private bool pid_isset { get; private set; default = false; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}

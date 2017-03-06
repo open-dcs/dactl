@@ -155,7 +155,26 @@ AC_ARG_ENABLE(mime,
               enable_mime=no)
 AS_IF([test "x$enable_mime" = "xyes"],[enable_mime=yes ENABLE_MIME=1],[ENABLE_MIME=0])
 AC_SUBST(ENABLE_MIME)
-AM_CONDITIONAL(ENABLE_MIME, test "x$enable_mime" = "xyes")
+AM_CONDITIONAL(ENABLE_MIME, [test "x$enable_mime" = "xyes"])
+
+
+dnl ***********************************************************************
+dnl Setup Coverage
+dnl ***********************************************************************
+AC_ARG_ENABLE(coverage,
+              AS_HELP_STRING([--enable-coverage=@<:@no/yes@:>@],
+                             [generate coverage output @<:@default=no@:>@]),
+              ,
+              enable_coverage=no)
+AS_IF([test "x$enable_coverage" = "xyes"],[enable_coverage=yes ENABLE_COVERAGE=1],[ENABLE_COVERAGE=0])
+AM_CONDITIONAL(ENABLE_COVERAGE, [test "x$enable_coverage" = "xyes"])
+AS_IF([test "x$enable_coverage" != "xno"],[
+       AC_PATH_PROG(LCOV,[lcov])
+       AC_PATH_PROG(GENHTML,[genhtml])
+       AC_SUBST(COVERAGE_LIBS,["-lgcov"])
+       AC_SUBST(COVERAGE_CFLAGS,["-g -O0 -fprofile-arcs -ftest-coverage"])
+       AC_SUBST(COVERAGE_VALAFLAGS,["-g"])
+    ])
 
 
 dnl ***********************************************************************
@@ -204,15 +223,17 @@ m4_define([glib_required_version], [2.46.0])
 m4_define([json_required_version], [1.0.0])
 m4_define([libxml_required_version], [2.9.0])
 m4_define([peas_required_version], [1.16.0])
-m4_define([soup_required_version], [2.4.0])
+m4_define([soup_required_version], [2.48.0])
 m4_define([zmq_required_version], [3.2.0])
 
 PKG_CHECK_MODULES(LIBDCS_CORE, [gio-2.0 >= glib_required_version
+                                json-glib-1.0 >= json_required_version
                                 gee-0.8 >= gee_required_version
                                 libxml-2.0 >= libxml_required_version
                                 libpeas-1.0 >= peas_required_version
                                 cld-0.3 >= cld_required_version])
 PKG_CHECK_MODULES(LIBDCS_CLI, [glib-2.0 >= glib_required_version
+                               json-glib-1.0 >= json_required_version
                                gee-0.8 >= gee_required_version
                                libxml-2.0 >= libxml_required_version
                                libpeas-1.0 >= peas_required_version
@@ -261,7 +282,7 @@ AS_IF([test "x$try_cld" = "xyes"],
           AC_MSG_WARN([CLD support will not be built.])
         ])])
 
-AM_CONDITIONAL(USE_CLD, test "x$HAVE_CLD" = "xyes")
+AM_CONDITIONAL(USE_CLD, [test "x$HAVE_CLD" = "xyes"])
 
 
 dnl ***********************************************************************
@@ -447,7 +468,9 @@ AC_ARG_ENABLE([tests],
               AS_HELP_STRING([--enable-tests],
                              [Enable always building tests during 'make all' [default=yes]]),
               [enable_tests=$enableval], [enable_tests=yes])
-AM_CONDITIONAL([ENABLE_TESTS], test "$enable_tests" = "yes")
+AM_CONDITIONAL(ENABLE_TESTS, [test "$enable_tests" = "yes"])
+AS_IF([test "x$enable_tests" != xno],
+      [AC_SUBST([CONFIG_DIR])])
 
 
 dnl ***********************************************************************
@@ -458,7 +481,6 @@ AC_ARG_ENABLE(doc,
 		[Enable documentation generation]), enable_doc=$enableval,
 	enable_doc=no)
 AM_CONDITIONAL(ENABLE_DOC, test x$enable_doc = xyes)
-
 AS_IF([test "x$enable_doc" != xno],
 	[AC_PATH_PROG([VALADOC], [valadoc], :)
 	 AC_SUBST(VALADOC)

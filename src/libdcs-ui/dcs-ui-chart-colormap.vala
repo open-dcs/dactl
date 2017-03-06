@@ -2,18 +2,6 @@ protected class Dcs.UI.ColorMap : Dcs.UI.Canvas, Dcs.Buildable, Dcs.Object {
 
     private Xml.Node* _node;
 
-    private string _xml = """
-        <object id=\"ai-ctl0\" type=\"ai\" ref=\"cld://ai0\"/>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     /**
      * {@inheritDoc}
      */
@@ -108,20 +96,6 @@ protected class Dcs.UI.ColorMap : Dcs.UI.Canvas, Dcs.Buildable, Dcs.Object {
     public signal void range_changed (double min, double max);
 
     public signal void label_changed (string label);
-
-    /**
-     * {@inheritDoc}
-     */
-    protected string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected string xsd {
-        get { return _xsd; }
-    }
 
     construct {
 

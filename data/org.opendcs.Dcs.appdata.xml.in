@@ -4,8 +4,8 @@
   <id>org.opendcs.Dcsg.desktop</id>
   <metadata_license>CC0</metadata_license>
   <project_license>GPL-3.0+ and GPL-2.0+ and LGPL-3.0+ and LGPL-2.0+ and MIT</project_license>
-  <_name>OpenDCS</_name>
-  <_summary>Distributed Control System Components</_summary>
+  <name>OpenDCS</name>
+  <summary>Distributed Control System Components</summary>
 
   <description>
     <_p>
@@ -34,7 +34,7 @@
     </screenshot>
   </screenshots>
 
-  <url type="homepage">https://github.com/open-dcs/dcs</url>
+  <url type="homepage">https://open-dcs.github.io</url>
   <url type="bugtracker">https://github.com/open-dcs/dcs/issues</url>
   <project_group>GNOME</project_group>
 

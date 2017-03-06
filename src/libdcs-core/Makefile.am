@@ -7,10 +7,10 @@ include $(top_srcdir)/common.am
 include $(srcdir)/filelist.am
 
 libdcsincdir = $(includedir)/dcs-0.2
-
 libdcsinc_HEADERS = dcs-core.h
 
-lib_LTLIBRARIES = libdcs-core-0.2.la
+pkglibdir = $(libdir)/dcs
+pkglib_LTLIBRARIES = libdcs-core-0.2.la
 
 pkgconfig_DATA = dcs-core-0.2.pc
 pkgconfigdir = $(libdir)/pkgconfig
@@ -39,13 +39,15 @@ libdcs_core_0_2_la_VALAFLAGS = \
 	--pkg linux \
 	--pkg cld-0.3 \
 	--pkg comedi \
-	--pkg gee-0.8 \
 	--pkg gio-2.0 \
+	--pkg gee-0.8 \
+	--pkg json-glib-1.0 \
 	--pkg gmodule-2.0 \
 	--pkg libxml-2.0 \
 	--pkg libpeas-1.0 \
 	--pkg dcs-build \
 	$(DCS_CLD_DEPS_VALAFLAGS) \
+	$(COVERAGE_VALAFLAGS) \
 	$(NULL)
 
 libdcs_core_0_2_la_CFLAGS = \
@@ -55,6 +57,7 @@ libdcs_core_0_2_la_CFLAGS = \
 	$(LIBDCS_CFLAGS) \
 	$(LIBDCS_CORE_CFLAGS) \
 	$(DCS_CLD_DEPS_CFLAGS) \
+	$(COVERAGE_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
 	$(libdcs_core_0_2_la_includes) \
 	-Wno-deprecated-declarations \
@@ -79,6 +82,7 @@ libdcs_core_0_2_la_LIBADD = \
 	$(LIBDCS_LIBS) \
 	$(LIBDCS_CORE_LIBS) \
 	$(DCS_CLD_DEPS_LIBS) \
+	$(COVERAGE_LIBS) \
 	$(NULL)
 
 if HAVE_INTROSPECTION
@@ -96,7 +100,7 @@ GIRS = DcsCore-0.2.gir
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(GIRS)
 
-typelibdir = $(libdir)/girepository-1.0
+typelibdir = $(pkglibdir)/girepository-1.0
 typelib_DATA = $(GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)

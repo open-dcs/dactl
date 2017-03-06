@@ -6,7 +6,7 @@ namespace Dcs {
  * Main application class responsible for interfacing with data and different
  * interface types.
  */
-public class Dcs.Model : GLib.Object, Dcs.Container {
+public class Dcs.App.Model : GLib.Object, Dcs.Container {
 
     private string _name = "Untitled";
     /**
@@ -69,7 +69,7 @@ public class Dcs.Model : GLib.Object, Dcs.Container {
     public bool verbose { get; set; default = false; }
 
     /* Application data */
-    public Dcs.ApplicationConfig config { get; private set; }
+    public Dcs.LegacyConfig config { get; private set; }
 
     /* CLD data */
     public Cld.XmlConfig xml { get; private set; }
@@ -86,8 +86,10 @@ public class Dcs.Model : GLib.Object, Dcs.Container {
 
     /**
      * Emitted whenever the object map has been updated.
+     *
+     * @param id the ID of the object that was updated in the map
      */
-    public signal void updated ();
+    public signal void updated (string? id);
 
     /**
      * Default construction.
@@ -104,26 +106,24 @@ public class Dcs.Model : GLib.Object, Dcs.Container {
         }
 
         /* Load the entire application configuration file */
-        config = new Dcs.ApplicationConfig (this.config_filename);
+        config = new Dcs.LegacyConfig (this.config_filename);
 
-        var factory = Dcs.ApplicationFactory.get_default ();
+        var factory = Dcs.MetaFactory.get_default ();
 
-        /* Get the nodeset to use from the configuration */
         try {
-            Xml.Node *node = config.get_xml_node ("/dcs/ui:objects/ui:object");
-            objects = factory.make_object_map (node);
-        } catch (Dcs.FactoryError e) {
-            GLib.error (e.message);
-        }
-
-        /* Load the CLD specific configuration and builder */
-        try {
-            Xml.Node *node = config.get_xml_node ("/dcs/cld:objects");
-            xml = new Cld.XmlConfig.from_node (node);
+            /* Get the nodeset to use from the configuration */
+            Xml.Node *dcs_node = config.get_xml_node ("/dcs/ui:objects/ui:object");
+            objects = factory.make_object_map (dcs_node);
+            /* Load the CLD specific configuration and builder */
+            Xml.Node *cld_node = config.get_xml_node ("/dcs/cld:objects");
+            xml = new Cld.XmlConfig.from_node (cld_node);
             ctx = new Cld.Context.from_config (xml);
-        } catch (Dcs.ConfigError e) {
-            GLib.error (e.message);
+        } catch (GLib.Error e) {
+            error (e.message);
         }
+
+        object_added.connect ((id) => { updated (id); });
+        object_removed.connect ((id) => { updated (id); });
 
         setup_model ();
     }
@@ -152,5 +152,6 @@ public class Dcs.Model : GLib.Object, Dcs.Container {
      */
     public void update_objects (Gee.Map<string, Dcs.Object> val) {
         _objects = val;
+        updated (null);
     }
 }

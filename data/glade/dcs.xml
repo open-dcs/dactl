@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glade-catalog version="1.0" supports="gtkbuilder" name="libdcs" library="dcs-core-0.2" domain="libdcs" depends="gtk+" book="libdcs">
+
+  <glade-widget-classes>
+
+    <glade-widget-class name="DcsBuildable"
+      generic-name="buildable"
+      title="OpenDCS Buildable"/>
+
+  </glade-widget-classes>
+
+  <glade-widget-group name="dcs" title="OpenDCS">
+    <glade-widget-class-ref name="DcsBuildable"/>
+  </glade-widget-group>
+
+</glade-catalog>

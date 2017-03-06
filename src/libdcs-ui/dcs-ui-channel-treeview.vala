@@ -2,18 +2,6 @@ public class Dcs.UI.ChannelTreeEntry : GLib.Object, Dcs.Object, Dcs.Buildable {
 
     private Xml.Node* _node;
 
-    private string _xml = """
-        <object id=\"ai-ctl0\" type=\"ai\" ref=\"cld://ai0\"/>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     /**
      * {@inheritDoc}
      */
@@ -51,20 +39,6 @@ public class Dcs.UI.ChannelTreeEntry : GLib.Object, Dcs.Object, Dcs.Buildable {
     public double value { get; private set; }
 
     public bool channel_isset { get; private set; default = false; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected virtual string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected virtual string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * Default construction.
@@ -105,18 +79,6 @@ public class Dcs.UI.ChannelTreeCategory : GLib.Object, Dcs.Object, Dcs.Buildable
 
     private Xml.Node* _node;
 
-    private string _xml = """
-        <object id=\"ai-ctl0\" type=\"ai\" ref=\"cld://ai0\"/>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     /**
      * {@inheritDoc}
      */
@@ -133,20 +95,6 @@ public class Dcs.UI.ChannelTreeCategory : GLib.Object, Dcs.Object, Dcs.Buildable
      * {@inheritDoc}
      */
     public string id { get; set; default = "category0"; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected virtual string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected virtual string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}
@@ -250,33 +198,7 @@ public class Dcs.UI.ChannelTreeView : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
         }
     }
 
-    private string _xml = """
-        <object id=\"ai-ctl0\" type=\"ai\" ref=\"cld://ai0\"/>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     private Gee.Map<string, Dcs.Object> _objects;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}

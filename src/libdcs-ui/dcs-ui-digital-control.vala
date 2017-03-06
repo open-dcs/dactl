@@ -10,18 +10,6 @@ public class Dcs.UI.DigitalControl : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
     [GtkChild]
     private Gtk.ToggleButton togglebutton;
 
-    private string _xml = """
-        <object id=\"d-ctl0\" type=\"digital\" ref=\"cld://do00\"/>
-    """;
-
-    private string _xsd = """
-        <xs:element name="object">
-          <xs:attribute name="id" type="xs:string" use="required"/>
-          <xs:attribute name="type" type="xs:string" use="required"/>
-          <xs:attribute name="ref" type="xs:string" use="required"/>
-        </xs:element>
-    """;
-
     public string ch_ref { get; set; }
 
     private weak Cld.DChannel _channel;
@@ -39,20 +27,6 @@ public class Dcs.UI.DigitalControl : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
     private bool channel_isset { get; private set; default = false; }
 
     private Gee.Map<string, Dcs.Object> _objects;
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xml {
-        get { return _xml; }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected override string xsd {
-        get { return _xsd; }
-    }
 
     /**
      * {@inheritDoc}

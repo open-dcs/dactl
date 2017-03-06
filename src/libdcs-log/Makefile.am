@@ -3,7 +3,8 @@ DISTCLEANFILES =
 BUILT_SOURCES =
 EXTRA_DIST =
 
-include $(top_srcdir)/common.am
+libdcslogincdir = $(includedir)/dcs-0.2
+libdcsloginc_HEADERS = dcs-log.h
 
 pkglibdir = $(libdir)/dcs
 pkglib_LTLIBRARIES = libdcs-log-0.2.la
@@ -63,6 +64,7 @@ libdcs_log_0_2_la_VALAFLAGS = \
 	--pkg dcs-core-0.2 \
 	--pkg dcs-net-0.2 \
 	--pkg dcs-build \
+	$(COVERAGE_VALAFLAGS) \
 	$(NULL)
 
 libdcs_log_0_2_la_CFLAGS = \
@@ -73,6 +75,7 @@ libdcs_log_0_2_la_CFLAGS = \
 	$(LIBDCS_CFLAGS) \
 	$(LIBDCS_LOG_CFLAGS) \
 	$(LIBDCS_NET_CFLAGS) \
+	$(COVERAGE_CFLAGS) \
 	$(OPTIMIZE_CFLAGS) \
 	$(DEBUG_CFLAGS) \
 	$(libdcs_log_0_2_la_includes) \
@@ -94,6 +97,7 @@ libdcs_log_0_2_la_LIBADD = \
 	$(LIBDCS_LIBS) \
 	$(LIBDCS_LOG_LIBS) \
 	$(LIBDCS_NET_LIBS) \
+	$(COVERAGE_LIBS) \
 	$(NULL)
 
 

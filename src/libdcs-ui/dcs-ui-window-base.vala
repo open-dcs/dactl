@@ -1,10 +1,7 @@
 /**
  * Window base class to use with buildable child windows.
- *
- * XXX Probably unnecessary as there will probably only ever be a single class
- * that derives this.
  */
-public abstract class Dcs.UI.WindowBase : Gtk.ApplicationWindow, Dcs.View, Dcs.Container, Dcs.Buildable, Dcs.Object {
+public abstract class Dcs.UI.WindowBase : Gtk.ApplicationWindow, Dcs.App.View, Dcs.Container, Dcs.Buildable, Dcs.Object {
 
     private Xml.Node* _node;
 
@@ -12,16 +9,6 @@ public abstract class Dcs.UI.WindowBase : Gtk.ApplicationWindow, Dcs.View, Dcs.C
      * {@inheritDoc}
      */
     public virtual string id { get; set; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected abstract string xml { get; }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected abstract string xsd { get; }
 
     /**
      * {@inheritDoc}
@@ -56,6 +43,14 @@ public abstract class Dcs.UI.WindowBase : Gtk.ApplicationWindow, Dcs.View, Dcs.C
      * {@inheritDoc}
      */
     public abstract void update_objects (Gee.Map<string, Dcs.Object> val);
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual void add (owned Dcs.Object object, string path)
+                             throws GLib.Error {
+        throw new Dcs.ViewError.INVALID_VIEW_REQUEST ("Add method was not added.");
+    }
 
     /**
      * Generic UI object request method.

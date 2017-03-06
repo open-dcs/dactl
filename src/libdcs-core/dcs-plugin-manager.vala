@@ -3,15 +3,28 @@
  */
 public interface Dcs.Extension : GLib.Object {
 
-    public signal void requested ();
+    public signal void enabled ();
+    public signal void disabled ();
+
+    public void enable () {
+        enabled ();
+    }
+
+    public void disable () {
+        disabled ();
+    }
 }
 
 public class Dcs.PluginExtension : Peas.ExtensionBase, Dcs.Extension, Peas.Activatable {
+
+    public bool is_enabled { get; private set; }
 
     public GLib.Object object { construct; owned get; }
 
     public void activate () {
         message ("Extension added");
+        enabled.connect (() => { is_enabled = true; });
+        disabled.connect (() => { is_enabled = false; });
     }
 
     public void deactivate () {

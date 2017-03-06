@@ -126,17 +126,17 @@ public class Dcs.CLI.Application : GLib.Application, Dcs.Application {
     /**
      * {@inheritDoc}
      */
-    public virtual Dcs.Model model { get; set; }
+    public virtual Dcs.App.Model model { get; set; }
 
     /**
      * {@inheritDoc}
      */
-    public virtual Dcs.View view { get; set; }
+    public virtual Dcs.App.View view { get; set; }
 
     /**
      * {@inheritDoc}
      */
-    public virtual Dcs.Controller controller { get; set; }
+    public virtual Dcs.App.Controller controller { get; set; }
 
     /**
      * {@inheritDoc}
