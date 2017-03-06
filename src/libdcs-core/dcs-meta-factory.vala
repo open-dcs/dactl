@@ -1,10 +1,10 @@
 /**
  * Class use to build objects from configuration data.
  */
-public class Dcs.ApplicationFactory : GLib.Object, Dcs.Factory {
+public class Dcs.MetaFactory : GLib.Object, Dcs.Factory {
 
     /* Factory singleton */
-    private static Dcs.ApplicationFactory app_factory;
+    private static Dcs.MetaFactory app_factory;
 
     private static Gee.ArrayList<Dcs.Factory> factories;
 
@@ -12,13 +12,13 @@ public class Dcs.ApplicationFactory : GLib.Object, Dcs.Factory {
      * Retrieves the singleton for the class creating it first if it's not
      * already available.
      */
-    public static Dcs.ApplicationFactory get_default () {
+    public static Dcs.MetaFactory get_default () {
         if (factories == null) {
             factories = new Gee.ArrayList<Dcs.Factory> ();
         }
 
         if (app_factory == null) {
-            app_factory = new Dcs.ApplicationFactory ();
+            app_factory = new Dcs.MetaFactory ();
         }
 
         return app_factory;
@@ -42,7 +42,7 @@ public class Dcs.ApplicationFactory : GLib.Object, Dcs.Factory {
          *        receive just the root node and then parse out the namespaces
          *        for each factory.
          */
-        foreach (var factory in Dcs.ApplicationFactory.factories) {
+        foreach (var factory in Dcs.MetaFactory.factories) {
             var map = factory.make_object_map (node);
             objects.set_all (map);
         }
@@ -83,7 +83,7 @@ public class Dcs.ApplicationFactory : GLib.Object, Dcs.Factory {
                                    throws GLib.Error {
         Dcs.Object object = null;
 
-        foreach (var factory in Dcs.ApplicationFactory.factories) {
+        foreach (var factory in Dcs.MetaFactory.factories) {
             try {
                 object = factory.make_object (type);
             } catch (GLib.Error e) {
@@ -113,7 +113,7 @@ public class Dcs.ApplicationFactory : GLib.Object, Dcs.Factory {
                                              throws GLib.Error {
         Dcs.Object object = null;
 
-        foreach (var factory in Dcs.ApplicationFactory.factories) {
+        foreach (var factory in Dcs.MetaFactory.factories) {
             try {
                 object = factory.make_object_from_node (node);
             } catch (GLib.Error e) {

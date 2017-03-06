@@ -2,7 +2,8 @@
  * Configuration data that loads XML configuration and is used to retrieve user
  * defined settings.
  */
-public class Dcs.ApplicationConfig : GLib.Object {
+[Version (deprecated = true, deprecated_since = "0.2", replacement = "Config")]
+public class Dcs.LegacyConfig : GLib.Object {
 
     public string file_name { get; set; default = "dcs.xml"; }
 
@@ -21,7 +22,7 @@ public class Dcs.ApplicationConfig : GLib.Object {
      * Default construction, don't really see the point of multiple constructors
      * at this stage.
      */
-    public ApplicationConfig (string file_name) {
+    public LegacyConfig (string file_name) {
         this.file_name = file_name;
         try {
             load_document ();

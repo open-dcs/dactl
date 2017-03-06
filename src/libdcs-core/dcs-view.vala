@@ -45,7 +45,7 @@ public errordomain Dcs.ViewError {
 //}
 
 [GenericAccessors]
-public interface Dcs.View : GLib.Object {
+public interface Dcs.App.View : GLib.Object {
 
     /**
      * Add an object to the view.

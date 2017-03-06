@@ -59,6 +59,8 @@ test_dcs_core_SOURCES = \
 	test-dcs-graph.vala \
 	test-dcs-node.vala \
 	test-dcs-point.vala \
+	test-dcs-factory.vala \
+	test-dcs-meta-factory.vala \
 	core/test-cmdline-config.vala \
 	core/test-config.vala \
 	core/test-container.vala \

@@ -1,4 +1,4 @@
-public class Dcsg.Model : Dcs.Model {
+public class Dcsg.Model : Dcs.App.Model {
 
     private string _startup_page = "pg0";
     /**

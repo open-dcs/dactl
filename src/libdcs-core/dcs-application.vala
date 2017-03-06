@@ -8,18 +8,18 @@ public interface Dcs.Application : GLib.Object {
     /**
      * Model used to update the view.
      */
-    public abstract Dcs.Model model { get; set; }
+    public abstract Dcs.App.Model model { get; set; }
 
     /**
      * View to provide the user access to the data in the model.
      */
-    public abstract Dcs.View view { get; set; }
+    public abstract Dcs.App.View view { get; set; }
 
     /**
      * Controller to update the model and perform any functionality requested
      * by the view.
      */
-    public abstract Dcs.Controller controller { get; set; }
+    public abstract Dcs.App.Controller controller { get; set; }
 
     /**
      * A list of legacy plugins that are used with the PluginLoader.

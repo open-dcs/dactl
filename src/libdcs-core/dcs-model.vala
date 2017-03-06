@@ -6,7 +6,7 @@ namespace Dcs {
  * Main application class responsible for interfacing with data and different
  * interface types.
  */
-public class Dcs.Model : GLib.Object, Dcs.Container {
+public class Dcs.App.Model : GLib.Object, Dcs.Container {
 
     private string _name = "Untitled";
     /**
@@ -69,7 +69,7 @@ public class Dcs.Model : GLib.Object, Dcs.Container {
     public bool verbose { get; set; default = false; }
 
     /* Application data */
-    public Dcs.ApplicationConfig config { get; private set; }
+    public Dcs.LegacyConfig config { get; private set; }
 
     /* CLD data */
     public Cld.XmlConfig xml { get; private set; }
@@ -106,9 +106,9 @@ public class Dcs.Model : GLib.Object, Dcs.Container {
         }
 
         /* Load the entire application configuration file */
-        config = new Dcs.ApplicationConfig (this.config_filename);
+        config = new Dcs.LegacyConfig (this.config_filename);
 
-        var factory = Dcs.ApplicationFactory.get_default ();
+        var factory = Dcs.MetaFactory.get_default ();
 
         try {
             /* Get the nodeset to use from the configuration */

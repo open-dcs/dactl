@@ -2,17 +2,17 @@
  * The application controller in a MVC design is responsible for responding to
  * events from the view and updating the model.
  */
-public abstract class Dcs.Controller : GLib.Object {
+public abstract class Dcs.App.Controller : GLib.Object {
 
     /**
      * Application model to use.
      */
-    protected Dcs.Model model;
+    protected Dcs.App.Model model;
 
     /**
      * Application view to update.
      */
-    protected Dcs.View view;
+    protected Dcs.App.View view;
 
     /* Control administrative functionality */
     public bool admin { get; set; default = false; }
@@ -25,7 +25,7 @@ public abstract class Dcs.Controller : GLib.Object {
     /**
      * Default construction.
      */
-    public Controller (Dcs.Model model, Dcs.View view) {
+    public Controller (Dcs.App.Model model, Dcs.App.View view) {
         this.model = model;
         this.view = view;
 

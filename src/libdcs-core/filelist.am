@@ -4,8 +4,6 @@ LIBDCS_CORE_VAPI_SOURCE_FILES = \
     dcs-abstract-container.vala \
     dcs-abstract-object.vala \
     dcs-application.vala \
-    dcs-application-config.vala \
-    dcs-application-factory.vala \
     dcs-buildable.vala \
     dcs-cld-adapter.vala \
     dcs-config.vala \
@@ -17,9 +15,12 @@ LIBDCS_CORE_VAPI_SOURCE_FILES = \
     dcs-edge.vala \
     dcs-factory.vala \
     dcs-graph.vala \
+    dcs-legacy-config.vala \
+    dcs-legacy-plugin.vala \
     dcs-log.vala \
     dcs-message.vala \
     dcs-meta-config.vala \
+    dcs-meta-factory.vala \
     dcs-model.vala \
     dcs-module-loader.vala \
     dcs-node.vala \

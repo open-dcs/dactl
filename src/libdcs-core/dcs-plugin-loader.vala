@@ -9,6 +9,8 @@
  * module can then add plugins to Dcs by calling the
  * dcs_plugin_loader_add_plugin() function.
  */
+
+[Version (deprecated = true, deprecated_since = "0.2", replacement = "")]
 public class Dcs.PluginLoader : Dcs.ModuleLoader {
 
     private delegate void ModuleInitFunc (Dcs.PluginLoader loader);

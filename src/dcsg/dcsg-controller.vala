@@ -1,4 +1,4 @@
-public class Dcsg.Controller : Dcs.Controller {
+public class Dcsg.Controller : Dcs.App.Controller {
 
     public Controller (Dcsg.Model model, Dcsg.Window view) {
         base (model, view);
