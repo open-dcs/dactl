@@ -1,4 +1,4 @@
-public class Dcs.Test.Node : Dcs.Node, Dcs.AbstractBuildable { }
+public class Dcs.Test.Node : Dcs.Node { }
 
 public abstract class Dcs.NodeTestsBase : Dcs.TestCase {
 

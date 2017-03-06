@@ -233,6 +233,7 @@ PKG_CHECK_MODULES(LIBDCS_CORE, [gio-2.0 >= glib_required_version
                                 libpeas-1.0 >= peas_required_version
                                 cld-0.3 >= cld_required_version])
 PKG_CHECK_MODULES(LIBDCS_CLI, [glib-2.0 >= glib_required_version
+                               json-glib-1.0 >= json_required_version
                                gee-0.8 >= gee_required_version
                                libxml-2.0 >= libxml_required_version
                                libpeas-1.0 >= peas_required_version

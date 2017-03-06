@@ -8,6 +8,7 @@ public errordomain Dcs.ConfigError {
     INVALID_KEY,
     INVALID_XPATH_EXPR,
     PROPERTY_TYPE,
+    UNSUPPORTED_FORMAT,
     XML_DOCUMENT_EMPTY
 }
 

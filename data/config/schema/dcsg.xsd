@@ -28,9 +28,6 @@
     <xs:complexType>
     </xs:complexType>
 
-    <!-- Cld data model configuration -->
-    <xs:complexType>
-    </xs:complexType>
   </xs:element>
 
 </xs:schema>

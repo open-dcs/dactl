@@ -9,6 +9,12 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
 
     private Xml.Node *xml;
 
+    private Gee.ArrayList<Dcs.ConfigNode> nodeset;
+
+    construct {
+        nodeset = new Gee.ArrayList<Dcs.ConfigNode> ();
+    }
+
     /**
      * XXX In a class that actually implements this functionality this should
      *     be a constructor with a .from_data (...).

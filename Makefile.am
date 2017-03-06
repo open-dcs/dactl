@@ -119,6 +119,11 @@ coverage:
 	$(MAKE) -C tests coverage-reset
 	$(MAKE) check
 	$(MAKE) -C tests coverage-report
+
+GITIGNOREFILES += \
+	lcov.info \
+	gmon.out \
+	$(NULL)
 else
 coverage:
 	@echo "The project has not been configured for coverage, check that you have gcov, lcov."

@@ -106,7 +106,7 @@ coverage-report:
 .PHONY: coverage-report
 
 GITIGNOREFILES = \
-	$(top_srcdir)/lcov.info \
+	lcov.info \
 	coverage \
 	**/*.gcno \
 	**/*.gcda \

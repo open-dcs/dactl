@@ -6,4 +6,12 @@
   <property name="ilprop">1,1</property>
   <property name="bprop">true</property>
   <property name="dprop">1.0</property>
+
+  <object id="gc0" type="generic-container">
+    <object id="go0" type="generic-object">
+      <object id="gc0-go0" type="generic-container">
+        <object id="gc0-go0-go0" type="generic-object"/>
+      </object>
+    </object>
+  </object>
 </dcs>

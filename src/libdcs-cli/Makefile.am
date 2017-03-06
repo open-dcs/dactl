@@ -53,6 +53,7 @@ libdcs_cli_0_2_la_VALAFLAGS = \
 	--pkg posix \
 	--pkg gio-2.0 \
 	--pkg gee-0.8 \
+	--pkg json-glib-1.0 \
 	--pkg dcs-core-0.2 \
 	$(COVERAGE_VALAFLAGS) \
 	$(NULL)
