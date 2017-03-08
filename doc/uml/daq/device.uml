@@ -1,0 +1,13 @@
+/'
+ '  UML include file for Device class
+ '/
+
+@startuml
+class Device {
+!ifdef SHOW_CONTENT
+    +ZmqService zmq_service
+    --creation method--
+    +Device (ZmqService zmq_service)
+!endif
+}
+@enduml

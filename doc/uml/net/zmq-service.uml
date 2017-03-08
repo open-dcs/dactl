@@ -1,0 +1,26 @@
+/'
+ '  UML include file for ZmqService class
+ '/
+
+@startuml
+abstract class ZmqService {
+!ifdef SHOW_CONTENT
+    +int port { construct set; get; }
+    +ZmqTransport transport { construct set; get; }
+    +string address { construct set; get; }
+    --creation methods--
+    +ZmqService ()
+    +ZmqService.with_conn_info (ZmqTransport transport, string address, int port)
+    ----
+    #void zmq_init () throws ZmqError
+    +{abstract}abstract void run ()
+    #{abstract}abstract async void listen () throws ThreadError
+    +string to_string ()
+    --signals--
+    +signal void data_published (uint8[] data)
+    --fields--
+    #Context context
+    #Socket publisher
+!endif
+}
+@enduml

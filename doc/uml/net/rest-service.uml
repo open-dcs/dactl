@@ -1,0 +1,13 @@
+/'
+ '  UML include file for RestService class
+ '/
+
+@startuml
+abstract class RestService {
+!ifdef SHOW_CONTENT
+        +int port
+        ----
+        +void add_routes (RouteEntry[] routes)
+!endif
+}
+@enduml

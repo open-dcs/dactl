@@ -1,0 +1,25 @@
+/'
+ ' UML include file for Container interface
+ '/
+
+@startuml
+interface Container {
+!ifdef SHOW_CONTENT
+    +{abstract} Gee.Map<string, Object> objects
+    -- signals --
+    +signal void object_added (string id)
+    +signal void object_removed (string id)
+    +void request_object (string id)
+    ----
+    +{abstract} abstract Object? @get (string id) throws Error
+    +{abstract} abstract void @set (string id, Object object) throws Error
+    +virtual void add_child (Object object)
+    +virtual void remove_child (Object object)
+    +virtual Object? get_object (string id)
+    +virtual Gee.Map<string, Object> get_object_map (GLib.Type type)
+    +virtual Gee.Map<string, Object> get_children (GLib.Type type)
+    +virtual void sort_objects ()
+    +virtual void print_objects (int depth)
+!endif
+}
+@enduml

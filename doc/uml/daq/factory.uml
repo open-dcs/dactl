@@ -1,0 +1,16 @@
+/'
+ '  UML include file for DAQ.Factory class
+ '/
+
+@startuml
+class DAQ.Factory {
+!ifdef SHOW_CONTENT
+    +{static}static weak Factory get_default ()
+    ----
+    +TreeMap<string, Dcs.Object> make_object_map (unowned Node* node)
+    +Object make_object (Type type) throws Error
+    +Object make_object_from_node (unowned Node* node) throws Error
+!endif
+}
+@enduml
+

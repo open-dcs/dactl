@@ -1,0 +1,15 @@
+/'
+ '  UML include file for BackendManager class
+ '/
+
+@startuml
+class BackendManager {
+!ifdef SHOW_CONTENT
+    +BackendProxy ext
+    --creation methods--
+    +BackendManager (ZmqClient zmq_client)
+    ----
+    #overrride void add_extension ()
+!endif
+}
+@enduml

@@ -1,0 +1,12 @@
+/'
+ ' UML include file for Node
+ '/
+
+@startuml
+abstract class Node {
+!ifdef SHOW_CONTENT
+    #protected virtual Map<string,weak Node> references { public get; }
+    +virtual Node parent { get; }
+!endif
+}
+@enduml

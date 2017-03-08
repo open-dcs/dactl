@@ -28,13 +28,13 @@ title OpenDCS UML
 
 ' Control layout
 left to right direction
-'page 2x1
+'page 4x1
 
 ' Control output
 !define SHOW_CONTENT
-!define SHOW_ENUMS
-!define SHOW_GLIB_ASSOC
-!define SHOW_GTK_ASSOC
+'!define SHOW_ENUM
+'!define SHOW_GLIB_ASSOC
+'!define SHOW_GTK_ASSOC
 
 package "Dcs" #DDDDDD {
 
@@ -49,57 +49,6 @@ package "Dcs" #DDDDDD {
     ' Interfaces
     '
 
-    interface Object {
-        +{abstract} string id
-        +virtual bool equal (Object a, Object b)
-        +virtual int compare (Object a)
-        +virtual string to_string ()
-    }
-
-    interface Buildable {
-        #{abstract} string xml  ' need to deprecate these
-        #{abstract} string xsd  '  "
-        +{abstract} {static} Xml.Node* node
-        +{static} unowned string get_xml_default ()
-        +{static} unowned string get_xsd_default ()
-        ~{abstract} void build_from_xml_node (Xml.Node* node)
-    }
-
-    interface CldAdapter {
-        #{abstract} bool satisfied
-        -- signals --
-        +void request_object (string id)
-        ----
-        +{abstract} void offer_cld_object (Object object)
-        +virtual async void nap (uint interval, int priority)
-        #{abstract} async void request_data ()
-    }
-
-    !include core/config.uml
-
-    interface Container {
-        +{abstract} Gee.Map<string, Object> objects
-        -- signals --
-        +{abstract} void request_object (string id)
-        ----
-        +virtual void add_child (Object object)
-        +virtual void remove_child (Object object)
-        +virtual Object? get_object (string id)
-        +virtual Gee.Map<string, Object> get_object_map (GLib.Type type)
-        +virtual Gee.Map<string, Object> get_children (GLib.Type type)
-        +virtual void sort_objects ()
-        +virtual void print_objects (int depth)
-    }
-
-    interface Factory {
-        -- signals --
-        +void build_complete ()
-        ----
-        +{abstract} Gee.TreeMap<string, Object> make_object_map (Xml.Node* node)
-        +{abstract} Object make_object (GLib.Type type) throws GLib.Error
-        +{abstract} Object make_object_from_node (Xml.Node* node) throws GLib.Error
-    }
-
     ' TODO Needs to be written still
     ' XXX What is a view supposed to do in an MVC?
     interface View {
@@ -107,12 +56,41 @@ package "Dcs" #DDDDDD {
         #void connect (Dcs.ModelUpdateFunc model_func)
     }
 
+    !include core/config.uml
+    !include core/application.uml
+    !include core/buildable.uml
+    !include core/cld-adapter.uml
+    !include core/container.uml
+    !include core/dbus-interface.uml
+    !include core/factory.uml
+    !include core/object.uml
+    !include core/plugin.uml
+    !include core/ref-container.uml
+    !include core/serializable.uml
+
     '
     ' Classes
     '
 
+    !include core/abstract-buildable.uml
     !include core/abstract-config.uml
+    !include core/abstract-container.uml
+    !include core/abstract-object.uml
     !include core/config-node.uml
+    !include core/dataseries.uml
+    !include core/legacy-config.uml
+    !include core/legacy-plugin.uml
+    !include core/syslog.uml
+    !include core/message.uml
+    !include core/meta-config.uml
+    !include core/meta-factory.uml
+    !include core/module-loader.uml
+    !include core/node.uml
+    !include core/plugin-information.uml
+    !include core/plugin-loader.uml
+    !include core/plugin-extension.uml
+    !include core/plugin-manager.uml
+    !include core/point.uml
 
     abstract class Controller {
         #Dcs.Model model
@@ -131,38 +109,6 @@ package "Dcs" #DDDDDD {
         +void stop_acquisition ()
         +void start_device_output ()
         +void stop_device_output ()
-    }
-
-    class DataSeries {
-        +string ch_ref
-        +Cld.Channel channel
-        +int buffer_size
-        +int stride
-        +string id
-        #string xml
-        #string xsd
-        #virtual Xml.Node* node
-        #bool satisfied
-        ~void build_from_xml_node
-        +void offer_cld_object (Cld.Object object)
-        #async void request_data ()
-        +SimplePoint[] to_array ()
-    }
-
-    class DBusInterface {
-        +const string SERVICE_NAME
-        +const string OBJECT_PATH
-        +{abstract} void shutdown () throws GLib.IOError
-    }
-
-    class Message {
-        +Message()
-        +Message.alert ()
-        +Message.error ()
-        +Message.info ()
-        +Message.warning ()
-        +{abstract} void pack ()
-        +{abstract} void unpack ()
     }
 
     class Model {
@@ -190,20 +136,6 @@ package "Dcs" #DDDDDD {
         +GLib.Settings get_settings ()
     }
 
-    class Point <<compact>> {
-        +double x
-        +double y
-        +Point (double x, double y)
-    }
-
-    class SysLog {
-        +{static} int verbosity
-        +{static} unowned SysLog get_default ()
-        +{static} void init (bool stdout, string? filename)
-        +{static} void shutdown ()
-        +{static} void increase_verbosity ()
-    }
-
     /'
      'box Delegates {
      '    +void ModelUpdateFunc ()
@@ -214,15 +146,32 @@ package "Dcs" #DDDDDD {
     ' Associations
     '
 
+    AbstractBuildable --|> AbstractObject
+    AbstractBuildable ..|> Buildable
     AbstractConfig ..|> Config
+    AbstractContainer --|> AbstractBuildable
+    AbstractContainer ..|> Container
+    AbstractObject ..|> Object
+    AbstractObject ..|> Serializable
     ConfigNode ..|> Config
+    DataSeries --|> AbstractObject
     DataSeries ..|> Object
     DataSeries ..|> Buildable
     DataSeries ..|> CldAdapter
+    MetaConfig ..|> Config
+    MetaFactory ..|> Factory
     Model ..|> Container
+    Node --|> AbstractContainer
+    Node ..|> RefContainer
+    PluginExtension ..|> Extension
+    PluginExtension --|> Peas.ExtensionBase
+    PluginExtension --|> Peas.Activatable
+    PluginLoader --|> ModuleLoader
 
     !ifdef SHOW_GLIB_ASSOC
     AbstractConfig --|> GLib.Object
+    AbstractObject --|> GLib.Object
+    Application --|> GLib.Object
     Buildable --|> GLib.Object
     CldAdapter --|> GLib.Object
     Config --|> GLib.Object
@@ -232,10 +181,18 @@ package "Dcs" #DDDDDD {
     DataSeries --|> GLib.Object
     DBusInterface --|> GLib.Object
     Factory --|> GLib.Object
+    LegacyConfig --|> GLib.Object
+    LegacyPlugin --|> GLib.Object
     Message --|> GLib.Object
+    MetaConfig --|> GLib.Object
+    MetaFactory --|> GLib.Object
     Model --|> GLib.Object
+    ModuleLoader --|> GLib.Object
     Object --|> GLib.Object
+    Plugin --|> GLib.Object
+    PluginInformation --|> GLib.Object
     Point --|> GLib.Object
+    RefContainer --|> GLib.Object
     SysLog --|> GLib.Object
     View --|> GLib.Object
     !endif
@@ -263,119 +220,127 @@ package "Dcs" #DDDDDD {
         as well that are more specific to the scope.
     end note
 
-    package "UI" {
-
-        '
-        ' Enumerations
-        '
-
-        enum Orientation {
-            HORIZONTAL,
-            VERTICAL
-        }
-
-        enum PositionType {
-            LEFT,
-            RIGHT,
-            TOP,
-            BOTTOM
-        }
-
-        enum PolarAxisType {
-            MAGNITUDE,
-            ANGLE
-        }
-
-        enum ColorGradientType {
-            RGB,
-            HSV
-        }
+    package "App" {
 
         '
         ' Interfaces
         '
 
-        interface Widget {
-            -- properties --
-            +{abstract} bool fill
-        }
+        !include core/app-view.uml
 
         '
         ' Classes
         '
 
-        abstract class Canvas {
-            +virtual string id
-        }
-
-        abstract class SimpleWidget {
-            +virtual string id
-            +{abstract} string xml
-            +{abstract} string xsd
-            #virtual Xml.Node* node
-            +bool fill
-            +{abstract} void build_from_xml_node (Xml.Node* node)
-            #{abstract} void update_node ()
-        }
-
-        abstract class CustomWidget {
-            +virtual string id
-            +{abstract} string xml
-            +{abstract} string xsd
-            #virtual Xml.Node* node
-            +bool fill
-            +{abstract} void build_from_xml_node (Xml.Node* node)
-            #{abstract} void update_node ()
-        }
-
-        abstract class CompositeWidget {
-            +virtual string id
-            +{abstract} string xml
-            +{abstract} string xsd
-            #virtual Xml.Node* node
-            +bool fill
-            +{abstract} Gee.Map<string, Object> objects
-            +{abstract} void build_from_xml_node (Xml.Node* node)
-            #{abstract} void update_objects (Gee.Map<string, Object> val)
-        }
+        !include core/app-controller.uml
+        !include core/app-model.uml
 
         '
         ' Associations
         '
 
-        Canvas ..|> Object
-        SimpleWidget ..|> Widget
-        SimpleWidget ..|> Buildable
-        SimpleWidget ..|> Object
-        CustomWidget ..|> Widget
-        CustomWidget ..|> Buildable
-        CustomWidget ..|> Object
-        CompositeWidget ..|> Widget
-        CompositeWidget ..|> Container
-        CompositeWidget ..|> Buildable
-        CompositeWidget ..|> Object
+        Model..|> Container
 
         !ifdef SHOW_GLIB_ASSOC
-        Widget --|> GLib.Object
-        !endif
-
-        !ifdef SHOW_GTK_ASSOC
-        Canvas --|> Gtk.DrawingArea
-        SimpleWidget --|> Gtk.Box
-        CustomWidget --|> Gtk.DrawingArea
-        CompositeWidget --|> Gtk.Box
+        Controller --|> GLib.Object
+        Model --|> GLib.Object
+        View --|> GLib.Object
         !endif
 
         '
         ' Notes
         '
-
-        note top of CompositeWidget
-            This is just a simple widget that implements Container.
-            Could probably just simplify it down to
-            "Dcs.UI.CompositeWidget : Dcs.UI.SimpleWidget, Dcs.Container"
-        end note
     }
+
+/'
+ '    package "UI" {
+ '
+ '        '
+ '        ' Enumerations
+ '        '
+ '
+ '        !include ui/enums.uml
+ '
+ '        '
+ '        ' Interfaces
+ '        '
+ '
+ '        interface Widget {
+ '            -- properties --
+ '            +{abstract} bool fill
+ '        }
+ '
+ '        '
+ '        ' Classes
+ '        '
+ '
+ '        abstract class Canvas {
+ '            +virtual string id
+ '        }
+ '
+ '        abstract class SimpleWidget {
+ '            +virtual string id
+ '            +{abstract} string xml
+ '            +{abstract} string xsd
+ '            #virtual Xml.Node* node
+ '            +bool fill
+ '            +{abstract} void build_from_xml_node (Xml.Node* node)
+ '            #{abstract} void update_node ()
+ '        }
+ '
+ '        abstract class CustomWidget {
+ '            +virtual string id
+ '            +{abstract} string xml
+ '            +{abstract} string xsd
+ '            #virtual Xml.Node* node
+ '            +bool fill
+ '            +{abstract} void build_from_xml_node (Xml.Node* node)
+ '            #{abstract} void update_node ()
+ '        }
+ '
+ '        abstract class CompositeWidget {
+ '            +virtual string id
+ '            +{abstract} string xml
+ '            +{abstract} string xsd
+ '            #virtual Xml.Node* node
+ '            +bool fill
+ '            +{abstract} Gee.Map<string, Object> objects
+ '            +{abstract} void build_from_xml_node (Xml.Node* node)
+ '            #{abstract} void update_objects (Gee.Map<string, Object> val)
+ '        }
+ '
+ '        '
+ '        ' Associations
+ '        '
+ '
+ '        Widget --|> GLib.Object
+ '        Canvas --|> Gtk.DrawingArea
+ '        Canvas ..|> Object
+ '        SimpleWidget --|> Gtk.Box
+ '        SimpleWidget ..|> Widget
+ '        SimpleWidget ..|> Buildable
+ '        SimpleWidget ..|> Object
+ '        CustomWidget --|> Gtk.DrawingArea
+ '        CustomWidget ..|> Widget
+ '        CustomWidget ..|> Buildable
+ '        CustomWidget ..|> Object
+ '        CompositeWidget --|> Gtk.Box
+ '        CompositeWidget ..|> Widget
+ '        CompositeWidget ..|> Container
+ '        CompositeWidget ..|> Buildable
+ '        CompositeWidget ..|> Object
+ '
+ '        '
+ '        ' Notes
+ '        '
+ '
+ '        note top of CompositeWidget
+ '            This is just a simple widget that implements Container.
+ '            Could probably just simplify it down to
+ '            "Dcs.UI.CompositeWidget : Dcs.UI.SimpleWidget, Dcs.Container"
+ '        end note
+ '    }
+ '/
 
     package "CLI" {
 
@@ -391,9 +356,18 @@ package "Dcs" #DDDDDD {
         ' Classes
         '
 
+        !include cli/application.uml
+        !include cli/factory.uml
+
         '
         ' Associations
         '
+        '
+
+        CLI.Factory --|> GLib.Object
+        CLI.Application --|> GLib.Application
+        CLI.Application ..|> Application
+        CLI.Factory ..|> Factory
 
         '
         ' Notes
@@ -432,60 +406,29 @@ package "Dcs" #DDDDDD {
         '
         ' Interfaces
         '
-
-        interface Signal {
-            -- properties --
-            +string tag
-            +string desc
-            +string alias
-        }
+        !include daq/channel.uml
 
         '
         ' Classes
         '
 
-        class Range {
-            -- properties --
-            +float min
-            +float max
-            -- methods --
-            +float clamp (float value)
-        }
-
-        class AnalogInput {
-            -- properties --
-            +Range range
-            +uint number
-            +uint8 resolution
-            ~uint raw
-            ~float value
-            -- methods --
-            +void update_from_raw (uint raw)
-            +void update (float value)
-            -- get/set --
-            +uint get_raw ()
-            +float get_value ()
-        }
+        !include daq/device-manager.uml
+        !include daq/device.uml
+        !include daq/factory.uml
 
         '
         ' Associations
         '
 
+        /'Device --|> GLib.Object'/
+        /'DAQ.Factory --> GLib.Object'/
+        Channel ..|> Object
+        DeviceManager --|> PluginManager
+        DAQ.Factory ..|> Factory
+
         '
         ' Notes
         '
-
-        note top of Range
-            Write as a compact class. Also, consider that this should be inside
-            of the Dcs namespace and not within DAQ.
-        end note
-
-        note top of AnalogInput
-            The method <i>update_from_raw</i> should throw an exception if no
-            range or resolution have been configured. Should also consider that
-            only one update method exists and expects raw, and just use the
-            value setter for updating the floating point value.
-        end note
     }
 
     package "Log" {
@@ -498,13 +441,27 @@ package "Dcs" #DDDDDD {
         ' Interfaces
         '
 
+        !include log/backend.uml
+
         '
         ' Classes
         '
 
+        !include log/backend-manager.uml
+        !include log/backend-proxy.uml
+        !include log/factory.uml
+
         '
         ' Associations
         '
+
+        /'
+         'BackendProxy --|> GLib.Object
+         'Log.Factory --|> GLib.Object
+         '/
+        Backend ..|> Plugin
+        BackendManager --|> PluginManager
+        Log.Factory ..|> Factory
 
         '
         ' Notes
@@ -517,6 +474,8 @@ package "Dcs" #DDDDDD {
         ' Enumerations
         '
 
+        !include net/enums.uml
+
         '
         ' Interfaces
         '
@@ -525,9 +484,22 @@ package "Dcs" #DDDDDD {
         ' Classes
         '
 
+        !include net/factory.uml
+        !include net/rest-service.uml
+        !include net/zmq-client.uml
+        !include net/zmq-service.uml
+
         '
         ' Associations
         '
+
+        /'
+         'Net.Factory --|> GLib.Object
+         'ZmqClient --|> GLib.Object
+         'ZmqService --|> GLib.Object
+         '/
+        Net.Factory ..|> Factory
+        RestService --|> Soup.Server
 
         '
         ' Notes

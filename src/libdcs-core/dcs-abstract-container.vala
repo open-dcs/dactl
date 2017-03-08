@@ -11,9 +11,8 @@ public abstract class Dcs.AbstractContainer : Dcs.AbstractBuildable,
      * @param id ID of the object to return
      * @return The object if found, null otherwise
      */
-    public virtual new Dcs.Object? get (string id)
-                                        throws GLib.Error {
-        Dcs.Object? result = null;
+    public virtual Dcs.Object @get (string id) {
+        Dcs.Object result = null;
 
         if (objects.has_key (id)) {
             result = objects.get (id);
@@ -25,11 +24,6 @@ public abstract class Dcs.AbstractContainer : Dcs.AbstractBuildable,
             }
         }
 
-        if (result == null) {
-            throw new Dcs.ContainerError.OBJECT_NOT_FOUND (
-                "The requested object with ID `%s' was not found", id);
-        }
-
         return result;
     }
 
@@ -38,9 +32,8 @@ public abstract class Dcs.AbstractContainer : Dcs.AbstractBuildable,
      *
      * @param id ID of the object to update
      */
-    public virtual new void set (string id, Dcs.Object object)
-                                 throws GLib.Error {
-        throw new Dcs.ContainerError.OBJECT_NOT_FOUND ("Not implemented");
+    public virtual void @set (string id, Dcs.Object object) {
+        // ...
     }
 
     /**

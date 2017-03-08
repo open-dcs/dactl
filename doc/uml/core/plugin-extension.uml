@@ -1,0 +1,16 @@
+/'
+ '  UML include file for PluginExtension
+ '/
+
+@startuml
+class PluginExtension {
+!ifdef SHOW_CONTENT
+    +bool is_enabled { get; }
+    +Dcs.Object object { construct; owned get; }
+    ----
+    +void activate ()
+    +void deactivate ()
+    +void update_state
+!endif
+}
+@enduml

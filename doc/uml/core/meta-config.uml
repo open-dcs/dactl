@@ -1,23 +1,14 @@
 /'
- ' UML include file for Dcs.ConfigNode class.
+ '  UML include file for MetaConfig
  '/
 
 @startuml
-
-class ConfigNode {
+class MetaConfig {
 !ifdef SHOW_CONTENT
-    -- signals --
-    +void property_edited (string property)
-    -- properties --
-    ~ConfigNode parent
-    -- methods --
-    +ConfigNode (string obj_type, ConfigFormat format)
-    +ConfigNode.from_xml (Xml.Node* node)
-    +ConfigNode.from_json (Json.Node node)
-    .. get/set ..
-    +ConfigNode get_parent ()
-    +string get_obj_type ()
+    +{static} static MetaConfig get_default ()
+    +{static} static void register_config (Config config)
     ----
+    +virtual void dump (FileStream stream)
     +string get_namespace () throws Error
     +ConfigFormat get_format () throws Error
     +string get_string (string ns, string key) throws Error
@@ -32,5 +23,4 @@ class ConfigNode {
     +void set_double (string ns, string key, double value) throws Error
 !endif
 }
-
 @enduml

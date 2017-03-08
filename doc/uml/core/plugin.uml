@@ -1,0 +1,12 @@
+/'
+ '  UML include file for Plugin interface
+ '/
+
+@startuml
+    interface Plugin {
+!ifdef SHOW_CONTENT
+
+!endif
+    }
+
+@enduml

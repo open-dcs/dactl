@@ -1,0 +1,35 @@
+/'
+ '  UML include file for Net enums
+ '/
+
+@startuml
+!ifdef SHOW_ENUM
+/'
+ 'struct RouteEntry {
+ '    +unowned string? path
+ '    +RouteArg arg
+ '    +void* arg_data
+ '    +unowned string description
+ '}
+ '/
+
+enum ZmqTransport {
+    INPROC
+    IPC
+    TCP
+    PGM
+    ----
+    +{static}static ZmqTransport parse (string value)
+    +string to_string ()
+}
+
+enum RouteArg {
+    NONE
+    CALLBACK
+}
+
+enum ZmqError {
+    INIT
+}
+!endif
+@enduml

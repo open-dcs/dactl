@@ -1,0 +1,13 @@
+/'
+ '  UML include file for BackendProxy class
+ '/
+
+@startml
+class BackendProxy {
+!ifdef SHOW_CONTENT
+    +ZmqClient zmq_client
+    --creation methods--
+    +BackendProxy (ZmqClient zmq_client)
+!endif
+}
+@enduml
