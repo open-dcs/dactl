@@ -14,8 +14,8 @@ public class Dcs.ContainerTests : Dcs.ContainerTestsBase {
         add_test ("[DcsContainer] Test add a child object", test_add_child);
         add_test ("[DcsContainer] Test remove a child object", test_remove_child);
         add_test ("[DcsContainer] Test return a child object", test_get_object);
-        /*XXX get_object_map fails to recurse*/
-        /*add_test ("[DcsContainer] Test return a map of child objects", test_get_object_map);*/
+        /* XXX get_object_map fails to recurse */
+        //add_test ("[DcsContainer] Test return a map of child objects", test_get_object_map);
         add_test ("[DcsContainer] Test return all children of a type", test_get_children);
         add_test ("[DcsContainer] Test return a sorted list of child objects", test_sort_objects);
     }

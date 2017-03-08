@@ -19,16 +19,14 @@ public interface Dcs.Container : GLib.Object {
      * @param id ID of the object to return
      * @return The object if found, null otherwise
      */
-    public abstract new Dcs.Object? get (string id)
-                                         throws GLib.Error;
+    public abstract Dcs.Object @get (string id);
 
     /**
      * Update an object for a given ID, add if it does not exist already.
      *
      * @param id ID of the object to update
      */
-    public abstract new void set (string id, Dcs.Object object)
-                                  throws GLib.Error;
+    public abstract void @set (string id, Dcs.Object object);
 
     /**
      * Remove an object from the list.
