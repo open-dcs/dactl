@@ -1,0 +1,26 @@
+/'
+ '  UML include file for App.Model
+ '/
+
+@startuml
+class Model {
+!ifdef SHOW_CONTENT
+    +string name
+    +bool admin
+    +bool def_enabled
+    +Map<string,Object> objects
+    +string config_filename
+    +bool active
+    +bool verbose
+    +LegacyConfig config
+    +XmlConfig xml
+    +Context ctx
+    +Settings settings
+    ----
+    +update_objects (Map<string, Dcs.Object> val)
+    --signals--
+    +signal void log_state_changed (string log, bool state
+    +signal void updated (string? id)
+!endif
+}
+@enduml

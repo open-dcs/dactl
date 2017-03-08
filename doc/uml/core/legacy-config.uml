@@ -1,0 +1,30 @@
+/'
+ '  UML include file for LegacyConfig class
+ '/
+
+@startuml
+class LegacyConfig {
+!ifdef SHOW_CONTENT
+    +public string file_name
+    +public bool loaded
+    ----
+    +void save ()
+    +unowned Node* get_xml_node (string xpath) throws ConfigError
+    +unowned NodeSet* get_xml_nodeset (string xpath) throws ConfigError
+    +void print_xml_node (string xpath) throws ConfigError
+    +bool get_boolean_property (string property)
+    +string get_string_property (string property)
+    +int get_int_property (string property)
+    +double get_double_property (string property)
+    +double get_float_property (string property)
+    +void set_boolean_property (string property, bool value)
+    +void set_string_property (string property, string value)
+    +void set_int_property (string property, int value)
+    +void set_double_property (string property, double value)
+    +void set_float_property (string property, float value)
+    +void set_xml_node (string xpath, unowned Node* node)
+    --signals--
+    +signal void property_changed (string property)
+!endif
+}
+@enduml

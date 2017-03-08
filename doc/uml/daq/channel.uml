@@ -1,0 +1,10 @@
+/'
+ '  UML include file for Channel interface
+ '/
+
+@startuml
+interface Channel {
+!ifdef SHOW_CONTENT
+!endif
+}
+@enduml

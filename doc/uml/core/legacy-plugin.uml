@@ -1,0 +1,21 @@
+/'
+ '  UML include file for LegacyPlugin class
+ '/
+
+@startuml
+class LegacyPlugin {
+!ifdef SHOW_CONTENT
+    +PluginCapabilities capabilities
+    +string name
+    +string title
+    +string description
+    +bool active
+    +virtual bool has_factory
+    +Factory factory
+    --creation--
+    +LegacyPlugin (string name, string? title, string? description = null, PluginCapabilities capabilities = NONE)
+    ----
+    +override void constructed ()
+!endif
+}
+@enduml

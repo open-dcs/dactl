@@ -1,0 +1,10 @@
+/'
+ '  UML include file for Message
+ '/
+
+@startuml
+class Message {
+!ifdef SHOW_CONTENT
+!endif
+}
+@enduml

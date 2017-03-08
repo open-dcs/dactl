@@ -1,0 +1,15 @@
+/'
+ '  UML include file for AbstractContainer
+ '/
+
+@startuml
+abstract class AbstractContainer {
+!ifdef SHOW_CONTENT
+   +Map<string,Object> objects
+   ----
+   +virtual Object? @get (string id) throws Error
+   +virtual void @set (string id, Object object) throws Error
+   +virtual void update_objects (Map<string, Object> val)
+!endif
+}
+@enduml

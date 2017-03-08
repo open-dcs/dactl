@@ -1,0 +1,16 @@
+/'
+ '  UML include file for DeviceManager class
+ '/
+
+@startuml
+class DeviceManager {
+!ifdef SHOW_CONTENT
+    +Device ext
+    --creation--
+    +DeviceManager (ZmqService zmq_service)
+    ----
+    #override void add_extension ()
+!endif
+}
+@enduml
+

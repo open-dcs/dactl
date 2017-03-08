@@ -1,4 +1,9 @@
-!ifdef SHOW_ENUMS
+/'
+ ' UML include file for enums
+ '/
+@startuml
+
+!ifdef SHOW_ENUM
 enum ConfigFormat {
     OPTIONS,
     INI,
@@ -11,6 +16,12 @@ enum ConfigFormat {
 enum ConfigEntry {
     NAMESPACE,
     FORMAT
+}
+
+enum PluginCapabilities {
+    NONE
+    CLD_OBJECT
+    DIAGNOSTICS
 }
 
 enum FactoryError {
@@ -28,4 +39,59 @@ enum MessageType {
     INFO,
     WARNING
 }
+
+'
+' Error domains
+'
+
+enum ApplicationError {
+    INVALID_ADD_REQUEST
+    INVALID_REMOVE_REQUEST
+}
+
+enum BuildableError {
+    INVALID_BUIILD
+}
+
+enum ConfigError {
+    FILE_NOT_FOUND
+    NO_VALUE_SET
+    NO_VALUE_FOUND
+    VALUE_OUT_OF_RANGE
+    INVALID_FORMAT
+    INVALID_NAMESPACE
+    INVALID_KEY
+    INVALID_XPATH_EXPR
+    PROPERTY_TYPE
+    UNSUPPORTED_FORMAT
+    XML_DOCUMENT_EMPTY
+}
+
+enum ContainerError {
+    OBJECT_NOT_FOUND
+}
+
+enum FactoryError {
+    TYPE_NOT_FOUND
+}
+
+enum MessageError {
+    INVALID_DATA
+}
+
+enum PluginError {
+    NO_CONFIGURABLE_SETTINGS
+    CONTROL_NOT_AVAILABLE
+}
+
+enum SerializationError {
+    INVALID_CONTENT
+    INVALID_TYPE
+}
+
+enum ViewError {
+    INVALID_VIEW_REQUEST
+}
 !endif
+
+@enduml

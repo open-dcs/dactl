@@ -1,14 +1,14 @@
 /'
- ' UML include file for Dcs.Config class.
+ '  UML inlude file for AbstractConfig class
  '/
 
 @startuml
-
 abstract class AbstractConfig {
 !ifdef SHOW_CONTENT
     #ConfigFormat format
     #string namespace
     -- methods --
+    +virtual void dump (FileStream stream)
     +virtual string get_namespace () throws GLib.Error
     +virtual ConfigFormat get_format () throws GLib.Error
     +virtual string get_string (string ns, string key) throws GLib.Error
@@ -25,5 +25,4 @@ abstract class AbstractConfig {
     +virtual void set_double (string ns, string key, double value) throws GLib.Error
 !endif
 }
-
 @enduml

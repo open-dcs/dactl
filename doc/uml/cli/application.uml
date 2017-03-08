@@ -1,0 +1,28 @@
+/'
+ '  UML include file for CLI.Application
+ '/
+
+@startuml
+class CLI.Application {
+!ifdef SHOW_CONTENT
+    +{static}static Command[] all ()
+    +{static}static Command parse ()
+    +string to_string ()
+    +string description ()
+!endif
+}
+
+enum CLI.Application.Command {
+    NONE
+    CLD
+    CONFIG
+    CONTROL
+    HELP
+    LIST
+    LOG
+    READ
+    WRITE
+    QUIT
+}
+
+@enduml

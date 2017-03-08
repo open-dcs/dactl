@@ -1,0 +1,19 @@
+/'
+ '  UML include file for ModuleLoader class (deprecated)
+ '/
+
+@startuml
+abstract class ModuleLoader {
+!ifdef SHOW_CONTENT
+    +string base_path
+    --creation--
+    +ModuleLoader (string path)
+    ----
+    +override void constructed ()
+    +void load_modules ()
+    +void load_modules_sync (Cancellable? cancellable = null)
+    #{abstract}abstract bool load_module_from_file (File file)
+    #{abstract}abstract bool load_module_from_info (PluginInformation info)
+!endif
+}
+@enduml

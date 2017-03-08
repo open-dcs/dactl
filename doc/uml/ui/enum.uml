@@ -1,0 +1,29 @@
+/'
+ '  UML include file for Dcs enums
+ '/
+
+@startuml
+!ifdef SHOW_CONTENT
+        enum Orientation {
+            HORIZONTAL,
+            VERTICAL
+        }
+
+        enum PositionType {
+            LEFT,
+            RIGHT,
+            TOP,
+            BOTTOM
+        }
+
+        enum PolarAxisType {
+            MAGNITUDE,
+            ANGLE
+        }
+
+        enum ColorGradientType {
+            RGB,
+            HSV
+        }
+!endif
+@enduml

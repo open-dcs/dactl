@@ -1,0 +1,23 @@
+/'
+ '  UML include file for DataSeries
+ '/
+
+@startuml
+class DataSeries {
+!ifdef SHOW_CONTENT
+    +string ch_ref
+    +Cld.Channel channel
+    +int buffer_size
+    +int stride
+    +string id
+    #virtual virtual unowned Xml.Node* node
+    --creation methods--
+    +DataSeries.from_xml_node (unowned Xml.Node* node)
+    +DataSeries ()
+    ----
+    +void offer_cld_object (Cld.Object object)
+    #async void request_data ()
+    +SimplePoint[] to_array ()
+!endif
+}
+@enduml
