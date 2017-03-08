@@ -206,14 +206,17 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
             case Dcs.ConfigFormat.JSON:
                 var json_obj = json.get_object ();
                 var dcs = json_obj.get_member (ns);
-                var obj = dcs.get_object ();
-                var prop = obj.get_member ("properties");
-                var prop_obj = prop.get_object ();
-                var sprop = prop_obj.get_member (key);
-                var type = sprop.get_value_type ();
-                if (type.is_a (typeof (string))) {
-                    val = prop_obj.get_string_member (key);
-                }
+                /*
+                 *var obj = dcs.get_object ();
+                 *var prop = obj.get_member ("properties");
+                 *var prop_obj = prop.get_object ();
+                 *var sprop = prop_obj.get_member (key);
+                 *var type = sprop.get_value_type ();
+                 *if (type.is_a (typeof (string))) {
+                 *    val = prop_obj.get_string_member (key);
+                 *}
+                 */
+                val = Dcs.Config.json_get_string (dcs, key);
                 break;
             case Dcs.ConfigFormat.XML:
                 for (Xml.Node *iter = xml->children; iter != null; iter = iter->next) {
@@ -253,20 +256,23 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
             case Dcs.ConfigFormat.JSON:
                 var json_obj = json.get_object ();
                 var dcs = json_obj.get_member (ns);
-                var obj = dcs.get_object ();
-                var prop = obj.get_member ("properties");
-                var prop_obj = prop.get_object ();
-                var arr = prop_obj.get_array_member (key);
-                var list = arr.get_elements ();
-                foreach (var item in list) {
-                    var type = item.get_value_type ();
-                    if (type.is_a (typeof (string))) {
-                        if (val == null) {
-                            val = new Gee.ArrayList<string> ();
-                        }
-                        val.add (item.get_string ());
-                    }
-                }
+                /*
+                 *var obj = dcs.get_object ();
+                 *var prop = obj.get_member ("properties");
+                 *var prop_obj = prop.get_object ();
+                 *var arr = prop_obj.get_array_member (key);
+                 *var list = arr.get_elements ();
+                 *foreach (var item in list) {
+                 *    var type = item.get_value_type ();
+                 *    if (type.is_a (typeof (string))) {
+                 *        if (val == null) {
+                 *            val = new Gee.ArrayList<string> ();
+                 *        }
+                 *        val.add (item.get_string ());
+                 *    }
+                 *}
+                 */
+                val = Dcs.Config.json_get_string_list (dcs, key);
                 break;
             case Dcs.ConfigFormat.XML:
                 for (Xml.Node *iter = xml->children; iter != null; iter = iter->next) {
@@ -310,14 +316,24 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
             case Dcs.ConfigFormat.JSON:
                 var json_obj = json.get_object ();
                 var dcs = json_obj.get_member (ns);
-                var obj = dcs.get_object ();
-                var prop = obj.get_member ("properties");
-                var prop_obj = prop.get_object ();
-                var iprop = prop_obj.get_member (key);
-                var type = iprop.get_value_type ();
-                if (type.is_a (typeof (int64))) {
-                    val = (int) prop_obj.get_int_member (key);
+                /*
+                 *var obj = dcs.get_object ();
+                 *var prop = obj.get_member ("properties");
+                 *var prop_obj = prop.get_object ();
+                 *var iprop = prop_obj.get_member (key);
+                 *var type = iprop.get_value_type ();
+                 *if (type.is_a (typeof (int64))) {
+                 *    val = (int) prop_obj.get_int_member (key);
+                 *    unavailable = false;
+                 *}
+                 */
+                try {
+                    val = Dcs.Config.json_get_int (dcs, key);
                     unavailable = false;
+                } catch (GLib.Error e) {
+                    if (e is Dcs.ConfigError) {
+                        throw e;
+                    }
                 }
                 break;
             case Dcs.ConfigFormat.XML:
@@ -359,20 +375,23 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
             case Dcs.ConfigFormat.JSON:
                 var json_obj = json.get_object ();
                 var dcs = json_obj.get_member (ns);
-                var obj = dcs.get_object ();
-                var prop = obj.get_member ("properties");
-                var prop_obj = prop.get_object ();
-                var arr = prop_obj.get_array_member (key);
-                var list = arr.get_elements ();
-                foreach (var item in list) {
-                    var type = item.get_value_type ();
-                    if (type.is_a (typeof (int64))) {
-                        if (val == null) {
-                            val = new Gee.ArrayList<int> ();
-                        }
-                        val.add ((int) item.get_int ());
-                    }
-                }
+                /*
+                 *var obj = dcs.get_object ();
+                 *var prop = obj.get_member ("properties");
+                 *var prop_obj = prop.get_object ();
+                 *var arr = prop_obj.get_array_member (key);
+                 *var list = arr.get_elements ();
+                 *foreach (var item in list) {
+                 *    var type = item.get_value_type ();
+                 *    if (type.is_a (typeof (int64))) {
+                 *        if (val == null) {
+                 *            val = new Gee.ArrayList<int> ();
+                 *        }
+                 *        val.add ((int) item.get_int ());
+                 *    }
+                 *}
+                 */
+                val = Dcs.Config.json_get_int_list (dcs, key);
                 break;
             case Dcs.ConfigFormat.XML:
                 for (Xml.Node *iter = xml->children; iter != null; iter = iter->next) {
@@ -416,14 +435,24 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
             case Dcs.ConfigFormat.JSON:
                 var json_obj = json.get_object ();
                 var dcs = json_obj.get_member (ns);
-                var obj = dcs.get_object ();
-                var prop = obj.get_member ("properties");
-                var prop_obj = prop.get_object ();
-                var bprop = prop_obj.get_member (key);
-                var type = bprop.get_value_type ();
-                if (type.is_a (typeof (bool))) {
-                    val = prop_obj.get_boolean_member (key);
+                /*
+                 *var obj = dcs.get_object ();
+                 *var prop = obj.get_member ("properties");
+                 *var prop_obj = prop.get_object ();
+                 *var bprop = prop_obj.get_member (key);
+                 *var type = bprop.get_value_type ();
+                 *if (type.is_a (typeof (bool))) {
+                 *    val = prop_obj.get_boolean_member (key);
+                 *    unavailable = false;
+                 *}
+                 */
+                try {
+                    val = Dcs.Config.json_get_bool (dcs, key);
                     unavailable = false;
+                } catch (GLib.Error e) {
+                    if (e is Dcs.ConfigError) {
+                        throw e;
+                    }
                 }
                 break;
             case Dcs.ConfigFormat.XML:
@@ -464,14 +493,24 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
             case Dcs.ConfigFormat.JSON:
                 var json_obj = json.get_object ();
                 var dcs = json_obj.get_member (ns);
-                var obj = dcs.get_object ();
-                var prop = obj.get_member ("properties");
-                var prop_obj = prop.get_object ();
-                var bprop = prop_obj.get_member (key);
-                var type = bprop.get_value_type ();
-                if (type.is_a (typeof (double))) {
-                    val = prop_obj.get_double_member (key);
+                /*
+                 *var obj = dcs.get_object ();
+                 *var prop = obj.get_member ("properties");
+                 *var prop_obj = prop.get_object ();
+                 *var dprop = prop_obj.get_member (key);
+                 *var type = dprop.get_value_type ();
+                 *if (type.is_a (typeof (double))) {
+                 *    val = prop_obj.get_double_member (key);
+                 *    unavailable = false;
+                 *}
+                 */
+                try {
+                    val = Dcs.Config.json_get_double (dcs, key);
                     unavailable = false;
+                } catch (GLib.Error e) {
+                    if (e is Dcs.ConfigError) {
+                        throw e;
+                    }
                 }
                 break;
             case Dcs.ConfigFormat.XML:

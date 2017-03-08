@@ -69,6 +69,7 @@ libdcs_ui_0_2_la_VALAFLAGS = \
 	--pkg gtk+-3.0 \
 	--pkg gtksourceview-3.0 \
 	--pkg cld-0.3 \
+	--pkg json-glib-1.0 \
 	--pkg libxml-2.0 \
 	--pkg libpeas-1.0 \
 	--pkg libpeas-gtk-1.0 \

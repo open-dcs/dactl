@@ -1,10 +1,8 @@
-if ENABLE_DOC
+if ENABLE_UML
 
 uml_UML = \
 	dcs-activity.uml \
 	dcs-class.uml \
-	dcs-class-factory.uml \
-	dcs-class-meta-factory.uml \
 	dcs-component.uml \
 	dcs-sequence.uml \
 	dcs-state.uml \

@@ -26,9 +26,15 @@
 
 title OpenDCS UML
 
+' Control layout
 left to right direction
-
 'page 2x1
+
+' Control output
+!define SHOW_CONTENT
+!define SHOW_ENUMS
+!define SHOW_GLIB_ASSOC
+!define SHOW_GTK_ASSOC
 
 package "Dcs" #DDDDDD {
 
@@ -37,22 +43,7 @@ package "Dcs" #DDDDDD {
     '
     ' Enumerations
     '
-
-    enum FactoryError {
-        TYPE_NOT_FOUND
-    }
-
-    enum LogLevel {
-        LEVEL_TRACE
-    }
-
-    enum MessageType {
-        UNKNOWN,
-        ALERT,
-        ERROR,
-        INFO,
-        WARNING
-    }
+    !include core/enums.uml
 
     '
     ' Interfaces
@@ -83,6 +74,8 @@ package "Dcs" #DDDDDD {
         +virtual async void nap (uint interval, int priority)
         #{abstract} async void request_data ()
     }
+
+    !include core/config.uml
 
     interface Container {
         +{abstract} Gee.Map<string, Object> objects
@@ -117,6 +110,9 @@ package "Dcs" #DDDDDD {
     '
     ' Classes
     '
+
+    !include core/abstract-config.uml
+    !include core/config-node.uml
 
     abstract class Controller {
         #Dcs.Model model
@@ -218,23 +214,31 @@ package "Dcs" #DDDDDD {
     ' Associations
     '
 
-    Object --|> GLib.Object
-    Buildable --|> GLib.Object
-    CldAdapter --|> GLib.Object
-    Container --|> GLib.Object
-    Controller --|> GLib.Object
-    DataSeries --|> GLib.Object
+    AbstractConfig ..|> Config
+    ConfigNode ..|> Config
     DataSeries ..|> Object
     DataSeries ..|> Buildable
     DataSeries ..|> CldAdapter
+    Model ..|> Container
+
+    !ifdef SHOW_GLIB_ASSOC
+    AbstractConfig --|> GLib.Object
+    Buildable --|> GLib.Object
+    CldAdapter --|> GLib.Object
+    Config --|> GLib.Object
+    ConfigNode --|> GLib.Object
+    Container --|> GLib.Object
+    Controller --|> GLib.Object
+    DataSeries --|> GLib.Object
     DBusInterface --|> GLib.Object
     Factory --|> GLib.Object
     Message --|> GLib.Object
     Model --|> GLib.Object
-    Model ..|> Container
+    Object --|> GLib.Object
     Point --|> GLib.Object
     SysLog --|> GLib.Object
     View --|> GLib.Object
+    !endif
 
     '
     ' Notes
@@ -339,22 +343,28 @@ package "Dcs" #DDDDDD {
         ' Associations
         '
 
-        Widget --|> GLib.Object
-        Canvas --|> Gtk.DrawingArea
         Canvas ..|> Object
-        SimpleWidget --|> Gtk.Box
         SimpleWidget ..|> Widget
         SimpleWidget ..|> Buildable
         SimpleWidget ..|> Object
-        CustomWidget --|> Gtk.DrawingArea
         CustomWidget ..|> Widget
         CustomWidget ..|> Buildable
         CustomWidget ..|> Object
-        CompositeWidget --|> Gtk.Box
         CompositeWidget ..|> Widget
         CompositeWidget ..|> Container
         CompositeWidget ..|> Buildable
         CompositeWidget ..|> Object
+
+        !ifdef SHOW_GLIB_ASSOC
+        Widget --|> GLib.Object
+        !endif
+
+        !ifdef SHOW_GTK_ASSOC
+        Canvas --|> Gtk.DrawingArea
+        SimpleWidget --|> Gtk.Box
+        CustomWidget --|> Gtk.DrawingArea
+        CompositeWidget --|> Gtk.Box
+        !endif
 
         '
         ' Notes

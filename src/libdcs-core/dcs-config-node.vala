@@ -1,22 +1,34 @@
-public class Dcs.ConfigNode : GLib.Object, Dcs.Config {
+/**
+ * Configuration node to use as part of the objects data in a tree.
+ */
+public class Dcs.ConfigNode : Dcs.Config, GLib.Object {
+
+    private string @namespace = "dcs";
 
     private Dcs.ConfigFormat format;
 
-    public Dcs.ConfigNode parent { get; private set; default = null; }
+    private Json.Node json;
+
+    private Xml.Node *xml;
 
     private Gee.ArrayList<Dcs.ConfigNode> children;
 
-/*
- *    public Gee.ArrayList<GLib.Variant> properties;
- *
- *    public string type { get; private set; }
- */
+    /**
+     * Parent node in the tree.
+     */
+    public Dcs.ConfigNode parent { get; internal set; default = null; }
+
+    /**
+     * Type of object data held by this node.
+     */
+    public string obj_type { get; private set; }
 
     /**
      * Default constructor.
      */
-    public ConfigNode () {
-        format = Dcs.ConfigFormat.XML;
+    public ConfigNode (string obj_type, Dcs.ConfigFormat format) {
+        this.obj_type = obj_type;
+        this.format = format;
     }
 
     /**
@@ -24,6 +36,7 @@ public class Dcs.ConfigNode : GLib.Object, Dcs.Config {
      */
     public ConfigNode.from_xml (Xml.Node* node) {
         format = Dcs.ConfigFormat.XML;
+        xml = node;
     }
 
     /**
@@ -31,20 +44,14 @@ public class Dcs.ConfigNode : GLib.Object, Dcs.Config {
      */
     public ConfigNode.from_json (Json.Node node) {
         format = Dcs.ConfigFormat.JSON;
-    }
-
-    /**
-     * Construct using INI group from a KeyFile.
-     */
-    public ConfigNode.from_ini (string group) {
-        format = Dcs.ConfigFormat.INI;
+        json = node;
     }
 
     /**
      * {@inheritDoc}
      */
     public string get_namespace () throws GLib.Error {
-        return "//dcs//";
+        return @namespace;
     }
 
     /**
@@ -57,26 +64,34 @@ public class Dcs.ConfigNode : GLib.Object, Dcs.Config {
     /**
      * {@inheritDoc}
      */
-    public string get_string (string ns, string key) throws GLib.Error {
-        string? value = null;
+    public string get_string (string ns,
+                              string key) throws GLib.Error {
+        string val = null;
+
         switch (format) {
-            case Dcs.ConfigFormat.XML:
-                break;
             case Dcs.ConfigFormat.JSON:
+                val = Dcs.Config.json_get_string (json, key);
                 break;
-            case Dcs.ConfigFormat.INI:
+            case Dcs.ConfigFormat.XML:
+                for (Xml.Node *iter = xml->children; iter != null; iter = iter->next) {
+                    if (iter->name == "property") {
+                        if (iter->get_prop ("name") == key) {
+                            val = iter->get_content ();
+                        }
+                    }
+                }
                 break;
             default:
                 throw new Dcs.ConfigError.INVALID_FORMAT (
                     "The node data is in an invalid format");
         }
 
-        if (value == null) {
+        if (val == null) {
             throw new Dcs.ConfigError.NO_VALUE_FOUND (
                 "No property was found with key " + key);
         }
 
-        return value;
+        return val;
     }
 
     /**
@@ -85,7 +100,25 @@ public class Dcs.ConfigNode : GLib.Object, Dcs.Config {
     public Gee.ArrayList<string> get_string_list (string ns,
                                                   string key)
                                                   throws GLib.Error {
-        return null;
+        Gee.ArrayList<string> val = null;
+
+        switch (format) {
+            case Dcs.ConfigFormat.JSON:
+                val = Dcs.Config.json_get_string_list (json, key);
+                break;
+            case Dcs.ConfigFormat.XML:
+                break;
+            default:
+                throw new Dcs.ConfigError.INVALID_FORMAT (
+                    "The node data is in an invalid format");
+        }
+
+        if (val == null) {
+            throw new Dcs.ConfigError.NO_VALUE_SET (
+                "No property was found with key " + key);
+        }
+
+        return val;
     }
 
     /**
@@ -94,7 +127,33 @@ public class Dcs.ConfigNode : GLib.Object, Dcs.Config {
     public int get_int (string ns,
                         string key)
                         throws GLib.Error {
-        return -1;
+        int val = 0;
+        bool unavailable = true;
+
+        switch (format) {
+            case Dcs.ConfigFormat.JSON:
+                try {
+                    val = Dcs.Config.json_get_int (json, key);
+                    unavailable = false;
+                } catch (GLib.Error e) {
+                    if (e is Dcs.ConfigError) {
+                        throw e;
+                    }
+                }
+                break;
+            case Dcs.ConfigFormat.XML:
+                break;
+            default:
+                throw new Dcs.ConfigError.INVALID_FORMAT (
+                    "The node data is in an invalid format");
+        }
+
+        if (unavailable) {
+            throw new Dcs.ConfigError.NO_VALUE_SET (
+                "No property was found with key " + key);
+        }
+
+        return val;
     }
 
     /**
@@ -103,7 +162,24 @@ public class Dcs.ConfigNode : GLib.Object, Dcs.Config {
     public Gee.ArrayList<int> get_int_list (string ns,
                                             string key)
                                             throws GLib.Error {
-        return null;
+        Gee.ArrayList<int> val = null;
+
+        switch (format) {
+            case Dcs.ConfigFormat.JSON:
+                break;
+            case Dcs.ConfigFormat.XML:
+                break;
+            default:
+                throw new Dcs.ConfigError.INVALID_FORMAT (
+                    "The node data is in an invalid format");
+        }
+
+        if (val == null) {
+            throw new Dcs.ConfigError.NO_VALUE_SET (
+                "No property was found with key " + key);
+        }
+
+        return val;
     }
 
     /**
@@ -112,7 +188,25 @@ public class Dcs.ConfigNode : GLib.Object, Dcs.Config {
     public bool get_bool (string ns,
                           string key)
                           throws GLib.Error {
-        return false;
+        bool val = false;
+        bool unavailable = true;
+
+        switch (format) {
+            case Dcs.ConfigFormat.JSON:
+                break;
+            case Dcs.ConfigFormat.XML:
+                break;
+            default:
+                throw new Dcs.ConfigError.INVALID_FORMAT (
+                    "The node data is in an invalid format");
+        }
+
+        if (unavailable) {
+            throw new Dcs.ConfigError.NO_VALUE_SET (
+                "No property was found with key " + key);
+        }
+
+        return val;
     }
 
     /**
@@ -120,7 +214,25 @@ public class Dcs.ConfigNode : GLib.Object, Dcs.Config {
      */
     public double get_double (string ns,
                               string key) throws GLib.Error {
-        return -1.0;
+        double val = 0.0;
+        bool unavailable = true;
+
+        switch (format) {
+            case Dcs.ConfigFormat.JSON:
+                break;
+            case Dcs.ConfigFormat.XML:
+                break;
+            default:
+                throw new Dcs.ConfigError.INVALID_FORMAT (
+                    "The node data is in an invalid format");
+        }
+
+        if (unavailable) {
+            throw new Dcs.ConfigError.NO_VALUE_SET (
+                "No property was found with key " + key);
+        }
+
+        return val;
     }
 
     /**

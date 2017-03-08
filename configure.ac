@@ -477,18 +477,29 @@ dnl ***********************************************************************
 dnl Support for valadoc Documentation Engine
 dnl ***********************************************************************
 AC_ARG_ENABLE(doc,
-	AS_HELP_STRING([--enable-doc],
-		[Enable documentation generation]), enable_doc=$enableval,
-	enable_doc=no)
-AM_CONDITIONAL(ENABLE_DOC, test x$enable_doc = xyes)
+              AS_HELP_STRING([--enable-doc],
+                             [Enable documentation generation]),
+              [enable_doc=$enableval], [enable_doc=no])
+AM_CONDITIONAL(ENABLE_DOC, [test x$enable_doc = xyes])
 AS_IF([test "x$enable_doc" != xno],
-	[AC_PATH_PROG([VALADOC], [valadoc], :)
-	 AC_SUBST(VALADOC)
-	 AS_IF([test "$VALADOC" = :],
-           [AC_MSG_ERROR([valadoc not found])])
-	 AC_PATH_PROG([PLANTUML], [plantuml], :)
-     AC_SUBST(PLANTUML)
-	 AS_IF([test "$PLANTUML" = :],
+      [AC_PATH_PROG([VALADOC], [valadoc], :)
+       AC_SUBST(VALADOC)
+       AS_IF([test "$VALADOC" = :],
+             [AC_MSG_ERROR([valadoc not found])])])
+
+
+dnl ***********************************************************************
+dnl Support for PlantUML Documentation
+dnl ***********************************************************************
+AC_ARG_ENABLE(uml,
+              AS_HELP_STRING([--enable-uml],
+                             [Enable PlantUML documentation generation]),
+              [enable_uml=$enableval], [enable_uml=no])
+AM_CONDITIONAL(ENABLE_UML, [test x$enable_uml = xyes])
+AS_IF([test "x$enable_uml" != xno],
+      [AC_PATH_PROG([PLANTUML], [plantuml], :)
+       AC_SUBST(PLANTUML)
+       AS_IF([test "$PLANTUML" = :],
            [AC_MSG_ERROR([plantuml not found])])])
 
 
