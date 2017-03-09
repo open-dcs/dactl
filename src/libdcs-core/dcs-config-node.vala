@@ -166,6 +166,7 @@ public class Dcs.ConfigNode : Dcs.Config, GLib.Object {
 
         switch (format) {
             case Dcs.ConfigFormat.JSON:
+                val = Dcs.Config.json_get_int_list (json, key);
                 break;
             case Dcs.ConfigFormat.XML:
                 break;
@@ -193,6 +194,8 @@ public class Dcs.ConfigNode : Dcs.Config, GLib.Object {
 
         switch (format) {
             case Dcs.ConfigFormat.JSON:
+                val = Dcs.Config.json_get_bool (json, key);
+                unavailable = false;
                 break;
             case Dcs.ConfigFormat.XML:
                 break;
@@ -219,6 +222,7 @@ public class Dcs.ConfigNode : Dcs.Config, GLib.Object {
 
         switch (format) {
             case Dcs.ConfigFormat.JSON:
+                val = Dcs.Config.json_get_double (json, key);
                 break;
             case Dcs.ConfigFormat.XML:
                 break;
