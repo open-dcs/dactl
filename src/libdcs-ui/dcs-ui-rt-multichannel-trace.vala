@@ -31,16 +31,16 @@ public class Dcs.UI.RTMultiChannelTrace : Dcs.UI.Trace, Dcs.Container {
         this.line_weight = line_weight;
         this.color = color;
 
-        this.node = new Xml.Node (ns, id);
-        node->new_prop ("id", id);
-        node->new_prop ("type", "trace");
-        node->new_prop ("ttype", "multichannel");
+        this.config_node = new Xml.Node (ns, id);
+        config_node->new_prop ("id", id);
+        config_node->new_prop ("type", "trace");
+        config_node->new_prop ("ttype", "multichannel");
 
         Xml.Node* color_node = new Xml.Node (ns, "property");
         color_node->new_prop ("name", "color");
         color_node->add_content (color.to_string ());
 
-        node->add_child (color_node);
+        config_node->add_child (color_node);
     }
 
     /**
@@ -57,7 +57,7 @@ public class Dcs.UI.RTMultiChannelTrace : Dcs.UI.Trace, Dcs.Container {
     internal void build_from_xml_node (Xml.Node *node) {
         if (node->type == Xml.ElementType.ELEMENT_NODE &&
             node->type != Xml.ElementType.COMMENT_NODE) {
-            this.node = node;
+            this.config_node = node;
             id = node->get_prop ("id");
             /* Iterate through node children */
             for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {

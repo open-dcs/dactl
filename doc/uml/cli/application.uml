@@ -12,6 +12,7 @@ class CLI.Application {
 !endif
 }
 
+!ifdef SHOW_ENUM
 enum CLI.Application.Command {
     NONE
     CLD
@@ -24,5 +25,6 @@ enum CLI.Application.Command {
     WRITE
     QUIT
 }
+!endif
 
 @enduml

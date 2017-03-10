@@ -31,7 +31,7 @@ left to right direction
 'page 4x1
 
 ' Control output
-!define SHOW_CONTENT
+'!define SHOW_CONTENT
 '!define SHOW_ENUM
 '!define SHOW_GLIB_ASSOC
 '!define SHOW_GTK_ASSOC
@@ -48,13 +48,6 @@ package "Dcs" #DDDDDD {
     '
     ' Interfaces
     '
-
-    ' TODO Needs to be written still
-    ' XXX What is a view supposed to do in an MVC?
-    interface View {
-        #Dcs.Model model
-        #void connect (Dcs.ModelUpdateFunc model_func)
-    }
 
     !include core/config.uml
     !include core/application.uml
@@ -92,50 +85,6 @@ package "Dcs" #DDDDDD {
     !include core/plugin-manager.uml
     !include core/point.uml
 
-    abstract class Controller {
-        #Dcs.Model model
-        #Dcs.View view
-        +bool admin
-        -- signals --
-        +void acquisition_state_changed (bool state)
-        ----
-        +Controller (Model, View)
-        -~Controller ()
-        +{abstract} void update_view ()
-        +{abstract} void add (Object object, string path)
-        +{abstract} void remove (string path)
-        #void save_requested_cb ()
-        +void start_acquisition ()
-        +void stop_acquisition ()
-        +void start_device_output ()
-        +void stop_device_output ()
-    }
-
-    class Model {
-        +string name
-        +bool admin
-        +bool def_enabled
-        +Gee.Map<string, Object> objects
-        +string config_filename
-        +bool active
-        +bool verbose
-        ~ApplicationConfig config
-        ~Cld.XmlConfig xml
-        ~Cld.Context ctx
-        ~GLib.Settings settings
-        -- signals --
-        +void log_state_changed (string log, bool state)
-        +void updated ()
-        ----
-        +Model (string config_filename)
-        +void update_objects (Gee.Map<string, Object> val)
-        .. get/set ..
-        +ApplicationConfig get_config ()
-        +Cld.XmlConfig get_xml ()
-        +Cld.Context get_ctx ()
-        +GLib.Settings get_settings ()
-    }
-
     /'
      'box Delegates {
      '    +void ModelUpdateFunc ()
@@ -160,12 +109,14 @@ package "Dcs" #DDDDDD {
     DataSeries ..|> CldAdapter
     MetaConfig ..|> Config
     MetaFactory ..|> Factory
-    Model ..|> Container
-    Node --|> AbstractContainer
+    Node --|> Gee.TreeMap
+    Node ..|> Buildable
+    Node ..|> Serializable
+    Node ..|> Object
     Node ..|> RefContainer
     PluginExtension ..|> Extension
     PluginExtension --|> Peas.ExtensionBase
-    PluginExtension --|> Peas.Activatable
+    PluginExtension ..|> Peas.Activatable
     PluginLoader --|> ModuleLoader
 
     !ifdef SHOW_GLIB_ASSOC
@@ -176,7 +127,6 @@ package "Dcs" #DDDDDD {
     CldAdapter --|> GLib.Object
     Config --|> GLib.Object
     Container --|> GLib.Object
-    Controller --|> GLib.Object
     DataSeries --|> GLib.Object
     DBusInterface --|> GLib.Object
     Factory --|> GLib.Object
@@ -185,7 +135,6 @@ package "Dcs" #DDDDDD {
     Message --|> GLib.Object
     MetaConfig --|> GLib.Object
     MetaFactory --|> GLib.Object
-    Model --|> GLib.Object
     ModuleLoader --|> GLib.Object
     Object --|> GLib.Object
     Plugin --|> GLib.Object
@@ -193,7 +142,6 @@ package "Dcs" #DDDDDD {
     Point --|> GLib.Object
     RefContainer --|> GLib.Object
     SysLog --|> GLib.Object
-    View --|> GLib.Object
     !endif
 
     '

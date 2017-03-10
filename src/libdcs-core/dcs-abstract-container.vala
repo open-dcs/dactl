@@ -3,7 +3,7 @@ public abstract class Dcs.AbstractContainer : Dcs.AbstractBuildable,
     /**
      * The map collection of the objects that belong to the container.
      */
-    public Gee.Map<string, Dcs.Object> objects { get; set; }
+    public abstract Gee.Map<string, Dcs.Object> objects { get; set; }
 
     /**
      * Retrieve the object for a given ID.

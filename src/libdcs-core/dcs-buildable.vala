@@ -1,5 +1,5 @@
 public errordomain Dcs.BuildableError {
-    INVALID_BUILD
+    INVALID_BUILD,
 }
 
 /**
@@ -9,7 +9,7 @@ public errordomain Dcs.BuildableError {
  */
 public interface Dcs.Buildable : GLib.Object {
 
-    protected abstract Xml.Node* node { get; set; }
+    protected abstract Xml.Node* config_node { get; set; }
 
     public static unowned string get_xml_default () {
         return "<object type=\"buildable\"/>";

@@ -5,7 +5,7 @@ public abstract class Dcs.UI.FooObject : GLib.Object,
 
     public virtual string id { get; set; }
 
-    protected virtual Xml.Node* node { get; set; }
+    protected virtual Xml.Node* config_node { get; set; }
 
     public virtual Gee.Map<string, Dcs.Object> objects { get; set; }
 

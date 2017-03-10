@@ -6,8 +6,6 @@
 interface RefContainer {
 !ifdef SHOW_CONTENT
     +#{abstract} abstract Map<string, weak Node> references
-    ----
-    +virtual add (Node @ref)
 !endif
 }
 @enduml

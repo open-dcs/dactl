@@ -67,7 +67,7 @@ public enum Dcs.UI.TraceDrawType {
 public class Dcs.UI.Trace : GLib.Object, Dcs.Object,
                             Dcs.Buildable, Dcs.UI.Drawable {
 
-    private Xml.Node* _node;
+    private Xml.Node* _config_node;
     /*private Dcs.UI.Drawable.XYPoint[] _raw_data;*/
     private Dcs.SimplePoint[] _raw_data;
     protected Gee.List<Dcs.Point> _pixel_data;
@@ -82,12 +82,12 @@ public class Dcs.UI.Trace : GLib.Object, Dcs.Object,
     /**
      * {@inheritDoc}
      */
-    protected virtual Xml.Node* node {
+    protected virtual Xml.Node* config_node {
         get {
-            return _node;
+            return _config_node;
         }
         set {
-            _node = value;
+            _config_node = value;
         }
     }
 
@@ -184,7 +184,7 @@ public class Dcs.UI.Trace : GLib.Object, Dcs.Object,
         if (node->type == Xml.ElementType.ELEMENT_NODE &&
             node->type != Xml.ElementType.COMMENT_NODE) {
             id = node->get_prop ("id");
-            this.node = node;
+            this.config_node = node;
 
             /* Iterate through node children */
             for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {
@@ -232,10 +232,10 @@ public class Dcs.UI.Trace : GLib.Object, Dcs.Object,
      * {@inheritDoc}
      */
     protected void update_node () {
-        if (node->type == Xml.ElementType.ELEMENT_NODE &&
-            node->type != Xml.ElementType.COMMENT_NODE) {
+        if (config_node->type == Xml.ElementType.ELEMENT_NODE &&
+            config_node->type != Xml.ElementType.COMMENT_NODE) {
             /* iterate through node children */
-            for (Xml.Node *iter = node->children;
+            for (Xml.Node *iter = config_node->children;
                  iter != null;
                  iter = iter->next) {
                 if (iter->name == "property") {

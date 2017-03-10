@@ -8,7 +8,8 @@ example_VALAFLAGS = \
 	--vapidir=$(top_srcdir)/src/libdcs-core \
 	--pkg json-glib-1.0 \
 	--pkg dcs-core-0.2 \
-	--pkg dcs-build
+	--pkg dcs-build \
+	--pkg json-glib-1.0
 
 example_CFLAGS = \
 	$(DEBUG_CFLAGS) \

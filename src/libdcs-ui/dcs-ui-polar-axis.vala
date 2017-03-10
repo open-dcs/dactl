@@ -9,17 +9,17 @@ public class Dcs.UI.PolarAxis : GLib.Object, Dcs.Buildable, Dcs.Object {
      */
     public virtual string id { get; set; }
 
-    private Xml.Node* _node;
+    private Xml.Node* _config_node;
 
     /**
      * {@inheritDoc}
      */
-    protected virtual Xml.Node* node {
+    protected virtual Xml.Node* config_node {
         get {
-            return _node;
+            return _config_node;
         }
         set {
-            _node = value;
+            _config_node = value;
         }
     }
 
@@ -162,7 +162,7 @@ public class Dcs.UI.PolarAxis : GLib.Object, Dcs.Buildable, Dcs.Object {
 
         string value;
 
-        this.node = node;
+        this.config_node = node;
 
         if (node->type == Xml.ElementType.ELEMENT_NODE &&
             node->type != Xml.ElementType.COMMENT_NODE) {
@@ -251,10 +251,10 @@ public class Dcs.UI.PolarAxis : GLib.Object, Dcs.Buildable, Dcs.Object {
      * Update the XML Node for this object.
      */
     protected void update_node () {
-        if (node->type == Xml.ElementType.ELEMENT_NODE &&
-            node->type != Xml.ElementType.COMMENT_NODE) {
+        if (config_node->type == Xml.ElementType.ELEMENT_NODE &&
+            config_node->type != Xml.ElementType.COMMENT_NODE) {
             /* iterate through node children */
-            for (Xml.Node *iter = node->children;
+            for (Xml.Node *iter = config_node->children;
                  iter != null;
                  iter = iter->next) {
                 if (iter->name == "property") {

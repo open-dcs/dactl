@@ -1,16 +1,16 @@
 public class Dcs.UI.ChannelTreeEntry : GLib.Object, Dcs.Object, Dcs.Buildable {
 
-    private Xml.Node* _node;
+    private Xml.Node* _config_node;
 
     /**
      * {@inheritDoc}
      */
-    protected virtual Xml.Node* node {
+    protected virtual Xml.Node* config_node {
         get {
-            return _node;
+            return _config_node;
         }
         set {
-            _node = value;
+            _config_node = value;
         }
     }
 
@@ -77,17 +77,17 @@ public class Dcs.UI.ChannelTreeEntry : GLib.Object, Dcs.Object, Dcs.Buildable {
 
 public class Dcs.UI.ChannelTreeCategory : GLib.Object, Dcs.Object, Dcs.Buildable, Dcs.Container {
 
-    private Xml.Node* _node;
+    private Xml.Node* _config_node;
 
     /**
      * {@inheritDoc}
      */
-    protected virtual Xml.Node* node {
+    protected virtual Xml.Node* config_node {
         get {
-            return _node;
+            return _config_node;
         }
         set {
-            _node = value;
+            _config_node = value;
         }
     }
 

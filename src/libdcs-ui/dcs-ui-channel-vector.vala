@@ -1,6 +1,6 @@
 public class Dcs.UI.ChannelVectorElement : GLib.Object, Dcs.Object, Dcs.Buildable {
 
-    private Xml.Node* _node;
+    private Xml.Node* _config_node;
 
     /* the uri of the referenced channel */
     public string chref;
@@ -16,12 +16,12 @@ public class Dcs.UI.ChannelVectorElement : GLib.Object, Dcs.Object, Dcs.Buildabl
     /**
      * {@inheritDoc}
      */
-    protected virtual Xml.Node* node {
+    protected virtual Xml.Node* config_node {
         get {
-            return _node;
+            return _config_node;
         }
         set {
-            _node = value;
+            _config_node = value;
         }
     }
 
@@ -35,7 +35,7 @@ public class Dcs.UI.ChannelVectorElement : GLib.Object, Dcs.Object, Dcs.Buildabl
     internal void build_from_xml_node (Xml.Node *node) {
         if (node->type == Xml.ElementType.ELEMENT_NODE &&
             node->type != Xml.ElementType.COMMENT_NODE) {
-            this.node = node;
+            this.config_node = node;
             id = node->get_prop ("id");
             chref = node->get_prop ("chref");
             xvalue = double.parse (node->get_prop ("xvalue"));
@@ -52,7 +52,7 @@ public class Dcs.UI.ChannelVector : GLib.Object, Dcs.Object,
 
     private Gee.Map<string, Dcs.Object> _objects;
 
-    private Xml.Node* _node;
+    private Xml.Node* _config_node;
 
     private string _xml = """
         <ui:object id=\"pg1chart0tr0cv0\" type=\"channel-vector\">
@@ -119,12 +119,12 @@ public class Dcs.UI.ChannelVector : GLib.Object, Dcs.Object,
     /**
      * {@inheritDoc}
      */
-    protected virtual Xml.Node* node {
+    protected virtual Xml.Node* config_node {
         get {
-            return _node;
+            return _config_node;
         }
         set {
-            _node = value;
+            _config_node = value;
         }
     }
 
@@ -149,7 +149,7 @@ public class Dcs.UI.ChannelVector : GLib.Object, Dcs.Object,
     internal void build_from_xml_node (Xml.Node *node) {
         if (node->type == Xml.ElementType.ELEMENT_NODE &&
             node->type != Xml.ElementType.COMMENT_NODE) {
-            this.node = node;
+            this.config_node = node;
             id = node->get_prop ("id");
             /* Iterate through node children */
             for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {

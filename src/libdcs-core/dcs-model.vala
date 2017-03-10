@@ -146,10 +146,10 @@ public class Dcs.Model : GLib.Object, Dcs.Container {
     private void config_property_changed_cb (string property) {
         //message ("Property '%s' was changed.\n", property);
     }
-
     /**
      * {@inheritDoc}
      */
+    [Version (deprecated = true, deprecated_since = "0.2")]
     public void update_objects (Gee.Map<string, Dcs.Object> val) {
         _objects = val;
         updated (null);

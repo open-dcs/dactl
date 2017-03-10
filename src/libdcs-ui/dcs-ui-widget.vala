@@ -197,7 +197,7 @@ public interface Dcs.UI.Widget : GLib.Object {
  */
 public abstract class Dcs.UI.Canvas : Gtk.DrawingArea, Dcs.Object {
 
-    private Xml.Node* _node;
+    private Xml.Node* _config_node;
 
     /**
      * {@inheritDoc}
@@ -210,7 +210,7 @@ public abstract class Dcs.UI.Canvas : Gtk.DrawingArea, Dcs.Object {
  */
 public abstract class Dcs.UI.SimpleWidget : Gtk.Box, Dcs.UI.Widget, Dcs.Buildable, Dcs.Object {
 
-    private Xml.Node* _node;
+    private Xml.Node* _config_node;
 
     /**
      * {@inheritDoc}
@@ -220,12 +220,12 @@ public abstract class Dcs.UI.SimpleWidget : Gtk.Box, Dcs.UI.Widget, Dcs.Buildabl
     /**
      * {@inheritDoc}
      */
-    protected virtual Xml.Node* node {
+    protected virtual Xml.Node* config_node {
         get {
-            return _node;
+            return _config_node;
         }
         set {
-            _node = value;
+            _config_node = value;
         }
     }
 
@@ -247,7 +247,7 @@ public abstract class Dcs.UI.SimpleWidget : Gtk.Box, Dcs.UI.Widget, Dcs.Buildabl
  */
 public abstract class Dcs.UI.CustomWidget : Gtk.DrawingArea, Dcs.UI.Widget, Dcs.Buildable, Dcs.Object {
 
-    private Xml.Node* _node;
+    private Xml.Node* _config_node;
 
     /**
      * {@inheritDoc}
@@ -257,12 +257,12 @@ public abstract class Dcs.UI.CustomWidget : Gtk.DrawingArea, Dcs.UI.Widget, Dcs.
     /**
      * {@inheritDoc}
      */
-    protected virtual Xml.Node* node {
+    protected virtual Xml.Node* config_node {
         get {
-            return _node;
+            return _config_node;
         }
         set {
-            _node = value;
+            _config_node = value;
         }
     }
 
@@ -284,7 +284,7 @@ public abstract class Dcs.UI.CustomWidget : Gtk.DrawingArea, Dcs.UI.Widget, Dcs.
  */
 public abstract class Dcs.UI.CompositeWidget : Gtk.Box, Dcs.UI.Widget, Dcs.Container, Dcs.Buildable, Dcs.Object {
 
-    private Xml.Node* _node;
+    private Xml.Node* _config_node;
 
     /**
      * {@inheritDoc}
@@ -296,12 +296,12 @@ public abstract class Dcs.UI.CompositeWidget : Gtk.Box, Dcs.UI.Widget, Dcs.Conta
     /**
      * {@inheritDoc}
      */
-    protected virtual Xml.Node* node {
+    protected virtual Xml.Node* config_node {
         get {
-            return _node;
+            return _config_node;
         }
         set {
-            _node = value;
+            _config_node = value;
         }
     }
 

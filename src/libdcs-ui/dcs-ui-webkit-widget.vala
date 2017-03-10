@@ -1,6 +1,6 @@
 public abstract class Dcs.UI.WebKitWidget : WebKit.WebView, Dcs.UI.Widget, Dcs.Container, Dcs.Buildable, Dcs.Object {
 
-    private Xml.Node* _node;
+    private Xml.Node* _config_node;
 
     /**
      * {@inheritDoc}
@@ -12,12 +12,12 @@ public abstract class Dcs.UI.WebKitWidget : WebKit.WebView, Dcs.UI.Widget, Dcs.C
     /**
      * {@inheritDoc}
      */
-    protected virtual Xml.Node* node {
+    protected virtual Xml.Node* config_node {
         get {
-            return _node;
+            return _config_node;
         }
         set {
-            _node = value;
+            _config_node = value;
         }
     }
 
