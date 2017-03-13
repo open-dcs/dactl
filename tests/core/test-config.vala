@@ -9,10 +9,10 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
 
     private Xml.Node *xml;
 
-    private Gee.ArrayList<Dcs.ConfigNode> nodeset;
+    private Gee.ArrayList<Dcs.ConfigNode> nodes;
 
     construct {
-        nodeset = new Gee.ArrayList<Dcs.ConfigNode> ();
+        nodes = new Gee.ArrayList<Dcs.ConfigNode> ();
     }
 
     /**
@@ -38,7 +38,6 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 break;
             default:
                 throw new Dcs.ConfigError.INVALID_FORMAT ("Invalid format provided");
-                break;
         }
     }
 
@@ -107,7 +106,6 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 break;
             default:
                 throw new Dcs.ConfigError.INVALID_FORMAT ("Invalid format provided");
-                break;
         }
     }
 
@@ -167,7 +165,6 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 }
                 break;
             case Dcs.ConfigFormat.XML:
-                string str;
                 Xml.Doc *doc = new Xml.Doc ();
                 doc->set_root_element (xml);
                 doc->dump (stream);
@@ -205,11 +202,11 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 break;
             case Dcs.ConfigFormat.JSON:
                 var json_obj = json.get_object ();
-                var dcs = json_obj.get_member (ns);
-                val = Dcs.Config.json_get_string (dcs, key);
+                var node = json_obj.get_member (ns);
+                val = Dcs.AbstractConfig.json_get_string (node, key);
                 break;
             case Dcs.ConfigFormat.XML:
-                val = Dcs.Config.xml_get_string (xml, key);
+                val = Dcs.AbstractConfig.xml_get_string (xml, key);
                 break;
             default:
                 throw new Dcs.ConfigError.INVALID_FORMAT ("Invalid format provided");
@@ -239,11 +236,11 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 break;
             case Dcs.ConfigFormat.JSON:
                 var json_obj = json.get_object ();
-                var dcs = json_obj.get_member (ns);
-                val = Dcs.Config.json_get_string_list (dcs, key);
+                var node = json_obj.get_member (ns);
+                val = Dcs.AbstractConfig.json_get_string_list (node, key);
                 break;
             case Dcs.ConfigFormat.XML:
-                val = Dcs.Config.xml_get_string_list (xml, key);
+                val = Dcs.AbstractConfig.xml_get_string_list (xml, key);
                 break;
             default:
                 throw new Dcs.ConfigError.INVALID_FORMAT ("Invalid format provided");
@@ -271,9 +268,9 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 break;
             case Dcs.ConfigFormat.JSON:
                 var json_obj = json.get_object ();
-                var dcs = json_obj.get_member (ns);
+                var node = json_obj.get_member (ns);
                 try {
-                    val = Dcs.Config.json_get_int (dcs, key);
+                    val = Dcs.AbstractConfig.json_get_int (node, key);
                     unavailable = false;
                 } catch (GLib.Error e) {
                     if (e is Dcs.ConfigError) {
@@ -283,7 +280,7 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 break;
             case Dcs.ConfigFormat.XML:
                 try {
-                    val = Dcs.Config.xml_get_int (xml, key);
+                    val = Dcs.AbstractConfig.xml_get_int (xml, key);
                     unavailable = false;
                 } catch (GLib.Error e) {
                     if (e is Dcs.ConfigError) {
@@ -319,11 +316,11 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 break;
             case Dcs.ConfigFormat.JSON:
                 var json_obj = json.get_object ();
-                var dcs = json_obj.get_member (ns);
-                val = Dcs.Config.json_get_int_list (dcs, key);
+                var node = json_obj.get_member (ns);
+                val = Dcs.AbstractConfig.json_get_int_list (node, key);
                 break;
             case Dcs.ConfigFormat.XML:
-                val = Dcs.Config.xml_get_int_list (xml, key);
+                val = Dcs.AbstractConfig.xml_get_int_list (xml, key);
                 break;
             default:
                 throw new Dcs.ConfigError.INVALID_FORMAT ("Invalid format provided");
@@ -351,9 +348,9 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 break;
             case Dcs.ConfigFormat.JSON:
                 var json_obj = json.get_object ();
-                var dcs = json_obj.get_member (ns);
+                var node = json_obj.get_member (ns);
                 try {
-                    val = Dcs.Config.json_get_bool (dcs, key);
+                    val = Dcs.AbstractConfig.json_get_bool (node, key);
                     unavailable = false;
                 } catch (GLib.Error e) {
                     if (e is Dcs.ConfigError) {
@@ -363,7 +360,7 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 break;
             case Dcs.ConfigFormat.XML:
                 try {
-                    val = Dcs.Config.xml_get_bool (xml, key);
+                    val = Dcs.AbstractConfig.xml_get_bool (xml, key);
                     unavailable = false;
                 } catch (GLib.Error e) {
                     if (e is Dcs.ConfigError) {
@@ -398,9 +395,9 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 break;
             case Dcs.ConfigFormat.JSON:
                 var json_obj = json.get_object ();
-                var dcs = json_obj.get_member (ns);
+                var node = json_obj.get_member (ns);
                 try {
-                    val = Dcs.Config.json_get_double (dcs, key);
+                    val = Dcs.AbstractConfig.json_get_double (node, key);
                     unavailable = false;
                 } catch (GLib.Error e) {
                     if (e is Dcs.ConfigError) {
@@ -410,7 +407,7 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 break;
             case Dcs.ConfigFormat.XML:
                 try {
-                    val = Dcs.Config.xml_get_double (xml, key);
+                    val = Dcs.AbstractConfig.xml_get_double (xml, key);
                     unavailable = false;
                 } catch (GLib.Error e) {
                     if (e is Dcs.ConfigError) {
@@ -442,20 +439,11 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 break;
             case Dcs.ConfigFormat.JSON:
                 var json_obj = json.get_object ();
-                var dcs = json_obj.get_member (ns);
-                var obj = dcs.get_object ();
-                var prop = obj.get_member ("properties");
-                var prop_obj = prop.get_object ();
-                prop_obj.set_string_member (key, value);
+                var node = json_obj.get_member (ns);
+                Dcs.AbstractConfig.json_set_string (node, key, value);
                 break;
             case Dcs.ConfigFormat.XML:
-                for (Xml.Node *iter = xml->children; iter != null; iter = iter->next) {
-                    if (iter->name == "property") {
-                        if (iter->get_prop ("name") == key) {
-                            iter->set_content (value);
-                        }
-                    }
-                }
+                Dcs.AbstractConfig.xml_set_string (xml, key, value);
                 break;
             default:
                 throw new Dcs.ConfigError.INVALID_FORMAT ("Invalid format provided");
@@ -475,20 +463,11 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 break;
             case Dcs.ConfigFormat.JSON:
                 var json_obj = json.get_object ();
-                var dcs = json_obj.get_member (ns);
-                var obj = dcs.get_object ();
-                var prop = obj.get_member ("properties");
-                var prop_obj = prop.get_object ();
-                prop_obj.set_int_member (key, (int64) value);
+                var node = json_obj.get_member (ns);
+                Dcs.AbstractConfig.json_set_int (node, key, value);
                 break;
             case Dcs.ConfigFormat.XML:
-                for (Xml.Node *iter = xml->children; iter != null; iter = iter->next) {
-                    if (iter->name == "property") {
-                        if (iter->get_prop ("name") == key) {
-                            iter->set_content (value.to_string ());
-                        }
-                    }
-                }
+                Dcs.AbstractConfig.xml_set_int (xml, key, value);
                 break;
             default:
                 throw new Dcs.ConfigError.INVALID_FORMAT ("Invalid format provided");
@@ -508,20 +487,11 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 break;
             case Dcs.ConfigFormat.JSON:
                 var json_obj = json.get_object ();
-                var dcs = json_obj.get_member (ns);
-                var obj = dcs.get_object ();
-                var prop = obj.get_member ("properties");
-                var prop_obj = prop.get_object ();
-                prop_obj.set_boolean_member (key, value);
+                var node = json_obj.get_member (ns);
+                Dcs.AbstractConfig.json_set_bool (node, key, value);
                 break;
             case Dcs.ConfigFormat.XML:
-                for (Xml.Node *iter = xml->children; iter != null; iter = iter->next) {
-                    if (iter->name == "property") {
-                        if (iter->get_prop ("name") == key) {
-                            iter->set_content (value.to_string ());
-                        }
-                    }
-                }
+                Dcs.AbstractConfig.xml_set_bool (xml, key, value);
                 break;
             default:
                 throw new Dcs.ConfigError.INVALID_FORMAT ("Invalid format provided");
@@ -541,20 +511,11 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 break;
             case Dcs.ConfigFormat.JSON:
                 var json_obj = json.get_object ();
-                var dcs = json_obj.get_member (ns);
-                var obj = dcs.get_object ();
-                var prop = obj.get_member ("properties");
-                var prop_obj = prop.get_object ();
-                prop_obj.set_double_member (key, value);
+                var node = json_obj.get_member (ns);
+                Dcs.AbstractConfig.json_set_double (node, key, value);
                 break;
             case Dcs.ConfigFormat.XML:
-                for (Xml.Node *iter = xml->children; iter != null; iter = iter->next) {
-                    if (iter->name == "property") {
-                        if (iter->get_prop ("name") == key) {
-                            iter->set_content (value.to_string ());
-                        }
-                    }
-                }
+                Dcs.AbstractConfig.xml_set_double (xml, key, value);
                 break;
             default:
                 throw new Dcs.ConfigError.INVALID_FORMAT ("Invalid format provided");
