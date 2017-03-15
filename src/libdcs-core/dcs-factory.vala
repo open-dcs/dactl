@@ -1,5 +1,7 @@
 public errordomain Dcs.FactoryError {
-    TYPE_NOT_FOUND
+    INVALID_FORMAT,
+    TYPE_NOT_FOUND,
+    UNABLE_TO_PROCESS
 }
 
 public interface Dcs.Factory : GLib.Object {
@@ -14,7 +16,18 @@ public interface Dcs.Factory : GLib.Object {
      *
      * @param node XML content to use for building application objects from
      */
+    [Version (deprecated = true, deprecated_since = "0.2", replacement = "create_from_data")]
     public abstract Gee.TreeMap<string, Dcs.Object> make_object_map (Xml.Node *node);
+
+    /**
+     * Recursively constructs a node tree from a string
+     *
+     * XXX TBD This will take Dcs.ConfigNode as a parameter
+     */
+    public virtual Dcs.Node? build () throws Dcs.FactoryError {
+
+        return null;
+    }
 
     /**
      * Constructs an object of the type provided using the default build
@@ -23,6 +36,7 @@ public interface Dcs.Factory : GLib.Object {
      * @param type Class type to construct.
      * @return Resulting object constructed with associated default settings
      */
+    [Version (deprecated = true, deprecated_since = "0.2", replacement = "make_node")]
     public abstract Dcs.Object make_object (Type type)
                                             throws GLib.Error;
 

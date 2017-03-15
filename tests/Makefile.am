@@ -66,6 +66,7 @@ test_dcs_core_SOURCES = \
 	core/test-config.vala \
 	core/test-container.vala \
 	core/test-graph.vala \
+	core/test-factory.vala \
 	core/test-node.vala \
 	$(NULL)
 
