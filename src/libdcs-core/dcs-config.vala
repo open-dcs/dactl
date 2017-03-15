@@ -6,6 +6,7 @@ public errordomain Dcs.ConfigError {
     INVALID_FORMAT,
     INVALID_NAMESPACE,
     INVALID_KEY,
+    INVALID_PATH,
     INVALID_XPATH_EXPR,
     PROPERTY_TYPE,
     UNSUPPORTED_FORMAT,
@@ -198,6 +199,19 @@ public interface Dcs.Config : GLib.Object {
     public abstract double get_double (string ns,
                                        string key) throws GLib.Error;
 
+	/**
+     * Retrieve a configuration node.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Node ID to return value for with optional path prefix.
+     *
+     * @return Configuration node value at `key'.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
+     */
+    public abstract Dcs.Config get_node (string ns,
+                                         string key) throws GLib.Error;
+
     /**
      * TODO fill me in
      *
@@ -245,4 +259,19 @@ public interface Dcs.Config : GLib.Object {
     public abstract void set_double (string ns,
                                      string key,
                                      double value) throws GLib.Error;
+
+    /**
+     * Update the configuration node with the one provided if it exists already,
+     * add this as a new one if it doesn't, or delete one if it exists and
+     * `value' is null.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Configuration node ID to set with an optional path prefix.
+     * @param value Node to create/update/delete.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
+     */
+    public abstract void set_node (string ns,
+                                   string key,
+                                   Dcs.Config? value) throws GLib.Error;
 }

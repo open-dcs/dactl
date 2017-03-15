@@ -62,6 +62,49 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     }
 
     /**
+     * Setting the format converts the node content from one type to another.
+     *
+     * @param format The format to convert to.
+     *
+     * @throws Dcs.ConfigError Configuration error, see {@link Dcs.ConfigError}.
+     */
+    public void set_format (Dcs.ConfigFormat format) throws GLib.Error {
+        if (this.format == format) {
+            /* Nothing to do */
+            return;
+        }
+
+        switch (format) {
+            case Dcs.ConfigFormat.JSON:
+                debug ("Converting node to JSON -- doesn't work yet");
+                // create new node
+                // if properties found in current node
+                //   create properties object
+                //   foreach property in current node properties
+                //     add property to properties
+                // if object(s) found in current node
+                //   foreach object in objects
+                //     add object
+                break;
+            case Dcs.ConfigFormat.XML:
+                debug ("Converting node to XML -- doesn't work yet");
+                // create new node
+                // if properties found in current node
+                //   foreach property in current node properties
+                //     add property node
+                // if object(s) found in current node
+                //   foreach object in objects
+                //     add object
+                break;
+            default:
+                throw new Dcs.ConfigError.UNSUPPORTED_FORMAT (
+                    "Destination format for conversion is not supported");
+        }
+
+        config_changed (Dcs.ConfigEntry.FORMAT);
+    }
+
+    /**
      * {@inheritDoc}
      */
     public override string get_string (string ns,
@@ -248,6 +291,75 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
         return val;
     }
 
+    private bool is_valid_path (string path) {
+        /*
+         * consider stripping prefixes:
+         *  dcs:///
+         *  dcs://localhost[:port]/
+         *  dcs://<hostname([\.\w*])*>[:port]/
+         *  dcs://<IP address>[:port]/
+         *
+         * valid:
+         *  obj0
+         *  /obj0
+         *  /ctr0/obj0
+         *
+         * not valid:
+         *  /
+         *  ctr0/obj0
+         */
+
+        if (path == null) {
+            return false;
+        } else if (path == "") {
+            return false;
+        } else if (path.contains ("/") && (path.get_char (0) != '/')) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public override Dcs.Config get_node (string ns,
+                                         string key) throws GLib.Error {
+        Dcs.Config val = null;
+
+        if (!is_valid_path (key)) {
+            throw new Dcs.ConfigError.INVALID_PATH (
+                "An invalid path was provided");
+        }
+
+        if (children != null) {
+            foreach (var node in children) {
+                /*
+                 *if (key == node.get_namespace ()) {
+                 *    return node;
+                 *}
+                 */
+            }
+        }
+
+        /*
+         *if () {
+         *    try {
+         *    } catch () {
+         *    }
+         *}
+         */
+
+        /*
+         *if (val == null) {
+         *    throw new Dcs.ConfigError.NO_VALUE_SET (
+         *        "No property was found with key " + key);
+         *}
+         */
+
+        return val;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -321,6 +433,16 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
             default:
                 throw new Dcs.ConfigError.INVALID_FORMAT (
                     "The node data is in an invalid format");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public override void set_node (string ns,
+                                   string key,
+                                   Dcs.Config? value) throws GLib.Error {
+        switch (format) {
         }
     }
 }

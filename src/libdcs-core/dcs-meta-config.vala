@@ -1,4 +1,4 @@
-public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
+public class Dcs.MetaConfig : Dcs.AbstractConfig {
 
     private string @namespace { get; private set; default = "dcs"; }
 
@@ -46,7 +46,7 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
-    public virtual void dump (GLib.FileStream stream) {
+    public override void dump (GLib.FileStream stream) {
         foreach (var config in config_list) {
             try {
                 var type = config.get_type ();
@@ -60,14 +60,14 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
         }
     }
 
-    public string get_namespace () throws GLib.Error {
+    public override string get_namespace () throws GLib.Error {
         if (@namespace != "dcs") {
             throw new Dcs.ConfigError.INVALID_NAMESPACE (_("Invalid namespace has been set"));
         }
         return @namespace;
     }
 
-    public Dcs.ConfigFormat get_format () throws GLib.Error {
+    public override Dcs.ConfigFormat get_format () throws GLib.Error {
         if (format != Dcs.ConfigFormat.MIXED) {
             throw new Dcs.ConfigError.INVALID_FORMAT (_("Invalid format has been set"));
         }
@@ -77,9 +77,9 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
-    public string get_string (string ns,
-                              string key)
-                              throws GLib.Error {
+    public override string get_string (string ns,
+                                       string key)
+                                       throws GLib.Error {
 		string value = null;
 
         foreach (var config in config_list) {
@@ -103,9 +103,9 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
-    public Gee.ArrayList<string> get_string_list (string ns,
-                                                  string key)
-                                                  throws GLib.Error {
+    public override Gee.ArrayList<string> get_string_list (string ns,
+                                                           string key)
+                                                           throws GLib.Error {
         Gee.ArrayList<string> value = null;
 
         foreach (var config in config_list) {
@@ -129,9 +129,9 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
-    public int get_int (string ns,
-                        string key)
-                        throws GLib.Error {
+    public override int get_int (string ns,
+                                 string key)
+                                 throws GLib.Error {
 		int value = 0;
 		bool value_set = false;
 
@@ -157,9 +157,9 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
-    public Gee.ArrayList<int> get_int_list (string ns,
-                                            string key)
-                                            throws GLib.Error {
+    public override Gee.ArrayList<int> get_int_list (string ns,
+                                                     string key)
+                                                     throws GLib.Error {
         Gee.ArrayList<int> value = null;
 
         foreach (var config in config_list) {
@@ -183,9 +183,9 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
-    public bool get_bool (string ns,
-                          string key)
-                          throws GLib.Error {
+    public override bool get_bool (string ns,
+                                   string key)
+                                   throws GLib.Error {
 		bool value = false;
 		bool value_set = false;
 
@@ -211,9 +211,9 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
-    public double get_double (string ns,
-                              string key)
-                              throws GLib.Error {
+    public override double get_double (string ns,
+                                       string key)
+                                       throws GLib.Error {
         double value = 0.0;
         bool value_set = false;
 
@@ -239,9 +239,9 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
-    public void set_string (string ns,
-                            string key,
-                            string value) throws GLib.Error {
+    public override void set_string (string ns,
+                                     string key,
+                                     string value) throws GLib.Error {
         foreach (var config in config_list) {
             try {
                 config.set_string (ns, key, value);
@@ -257,9 +257,9 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
-    public void set_int (string ns,
-                         string key,
-                         int value) throws GLib.Error {
+    public override void set_int (string ns,
+                                  string key,
+                                  int value) throws GLib.Error {
         foreach (var config in config_list) {
             try {
                 config.set_int (ns, key, value);
@@ -275,9 +275,9 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
-    public void set_bool (string ns,
-                          string key,
-                          bool value) throws GLib.Error {
+    public override void set_bool (string ns,
+                                   string key,
+                                   bool value) throws GLib.Error {
         foreach (var config in config_list) {
             try {
                 config.set_bool (ns, key, value);
@@ -293,9 +293,9 @@ public class Dcs.MetaConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
-    public void set_double (string ns,
-                            string key,
-                            double value) throws GLib.Error {
+    public override void set_double (string ns,
+                                     string key,
+                                     double value) throws GLib.Error {
         foreach (var config in config_list) {
             try {
                 config.set_double (ns, key, value);

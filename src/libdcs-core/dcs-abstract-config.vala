@@ -91,6 +91,14 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
+    public virtual Dcs.Config get_node (string ns,
+                                        string key) throws GLib.Error {
+        throw new ConfigError.NO_VALUE_SET (_("No value available"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public virtual void set_string (string ns,
                                     string key,
                                     string value) throws GLib.Error {
@@ -123,6 +131,24 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
                                     double value) throws GLib.Error {
         throw new ConfigError.NO_VALUE_SET (_("No value available"));
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual void set_node (string ns,
+                                  string key,
+                                  Dcs.Config? value) throws GLib.Error {
+        throw new ConfigError.NO_VALUE_SET (_("No value available"));
+    }
+
+    /**
+     * TODO Make all of the json_/xml_ get/set methods below internal. It is
+     * apparently possible to do this and still have them accessible to other
+     * libraries by generating an internal header and vapi.
+     *
+     * XXX Alternatively these could end up in objects for Dcs.Config.Json
+     * and Dcs.Config.Xml in dcs-config-util.vala, or something similar to that.
+     */
 
     /**
      * TODO fill me in
