@@ -13,6 +13,10 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
 
     private Gee.ArrayList<Dcs.ConfigNode> children;
 
+    private Gee.HashMap<string, Variant> properties;
+
+    private Gee.ArrayList<string> references;
+
     /**
      * Parent node in the tree.
      */
@@ -22,6 +26,12 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
      * Type of object data held by this node.
      */
     public string obj_type { get; private set; }
+
+    construct {
+        children = new Gee.ArrayList<Dcs.ConfigNode> ();
+        properties = new Gee.HashMap<string, Variant> ();
+        references = new Gee.ArrayList<string> ();
+    }
 
     /**
      * Default constructor.
@@ -37,6 +47,22 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     public ConfigNode.from_xml (Xml.Node* node) {
         format = Dcs.ConfigFormat.XML;
         xml = node;
+
+        @namespace = node->get_prop ("id");
+        obj_type = node->get_prop ("type");
+
+        for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {
+            if (iter->name == "property") {
+                properties.@set (iter->get_prop ("name"),
+                                 new Variant.string(iter->get_content ()));
+            } else if (iter->name == "reference") {
+                references.add (iter->get_prop ("path"));
+            } else if (iter->name == "object") {
+                var child = new ConfigNode.from_xml (iter);
+                child.parent = this;
+                children.add (child);
+            }
+        }
     }
 
     /**
@@ -45,6 +71,71 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     public ConfigNode.from_json (Json.Node node) {
         format = Dcs.ConfigFormat.JSON;
         json = node;
+
+        var obj = node.get_object ();
+        @namespace = obj.get_members ().nth_data (0);
+        var data = obj.get_object_member (@namespace);
+        obj_type = data.get_string_member ("type");
+
+        var props = data.get_object_member ("properties");
+        /*
+         *foreach (var prop in props.get_elements ()) {
+         *    properties.@set ();
+         *}
+         */
+
+        var refs = data.get_array_member ("references").get_elements ();
+        foreach (var @ref in refs) {
+            references.add (@ref.get_string ());
+        }
+
+        if (data.has_member ("objects")) {
+            var objs = data.get_object_member ("objects");
+            foreach (var name in objs.get_members ()) {
+                var builder = new Json.Builder ();
+                builder.begin_object ();
+                builder.set_member_name (name);
+                builder.add_value (objs.get_member (name));
+                builder.end_object ();
+
+                stdout.printf ("%s\n", Json.to_string (builder.get_root (), true));
+
+                var child = new ConfigNode.from_json (builder.get_root ());
+                child.parent = this;
+                children.add (child);
+            }
+        }
+    }
+
+    /**
+     * Dump node content to a string.
+     */
+    public string to_string () {
+        string val = "";
+
+        val += "Node (id: %s, type: %s)\n".printf (@namespace, obj_type);
+        val += "------------------------------------\n\n";
+
+        val += " Properties:\n\n";
+        foreach (var prop in properties.keys) {
+            val += "  • %s\t%s\n".printf (prop, properties.@get (prop).get_string ());
+        }
+
+        if (references.size > 0) {
+            val += "\n References:\n\n";
+            foreach (var @ref in references) {
+                val += "  • %s\n".printf (@ref);
+            }
+        }
+
+        if (children.size > 0) {
+            val += "\n Children:\n\n";
+            foreach (var node in children) {
+                val += "  • %s\n".printf (node.get_namespace ());
+            }
+        }
+
+        return val;
     }
 
     /**
