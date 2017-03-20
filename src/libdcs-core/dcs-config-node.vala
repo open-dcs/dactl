@@ -7,9 +7,9 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
 
     private Dcs.ConfigFormat format;
 
-    private Json.Node json;
+    private Json.Node json { internal get; private set; }
 
-    private Xml.Node *xml;
+    private Xml.Node *xml { internal get; private set; }
 
     private Gee.ArrayList<Dcs.ConfigNode> children;
 
@@ -43,6 +43,21 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
 
     /**
      * Construct using an XML node.
+     *
+     * Configuration node data defined using XML must be in the form:
+     *
+     * {{{
+     * <object id="foo" type="foo-object">
+     *   <property name="foo-prop-a">1</property>
+     *   <property name="foo-prop-b">1.0</property>
+     *   <property name="foo-prop-c">true</property>
+     *   <property name="foo-prop-d">string</property>
+     *   <reference path="/path/to/ref"/>
+     *   <object id="bar" type="bar-object">
+     *     <!-- and so on -->
+     *   </object>
+     * </object>
+     * }}}
      */
     public ConfigNode.from_xml (Xml.Node* node) {
         format = Dcs.ConfigFormat.XML;
@@ -53,8 +68,25 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
 
         for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {
             if (iter->name == "property") {
-                properties.@set (iter->get_prop ("name"),
-                                 new Variant.string(iter->get_content ()));
+                var value = iter->get_content ();
+                var key = iter->get_prop ("name");
+                var int_regex = new Regex ("^[-+]?[0-9]+$",
+                                           RegexCompileFlags.CASELESS);
+                var double_regex = new Regex ("^[-+]?[0-9]*\\.?[0-9]+$",
+                                              RegexCompileFlags.CASELESS);
+                var bool_regex = new Regex ("^(true|false)$",
+                                            RegexCompileFlags.CASELESS);
+
+                if (int_regex.match (value)) {
+                    properties.@set (key, new Variant.int64 (int64.parse (value)));
+                } else if (double_regex.match (value)) {
+                    properties.@set (key, new Variant.double (double.parse (value)));
+                } else if (bool_regex.match (value)) {
+                    properties.@set (key, new Variant.boolean (bool.parse (value)));
+                } else {
+                    /* If it isn`t an int, double, or boolean it`s a string */
+                    properties.@set (key, new Variant.string (value));
+                }
             } else if (iter->name == "reference") {
                 references.add (iter->get_prop ("path"));
             } else if (iter->name == "object") {
@@ -67,6 +99,49 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
 
     /**
      * Construct using a JSON object.
+     *
+     * Configuration node data defined using JSON must be in the form:
+     *
+     * {{{
+     * {
+     *   "foo0": {
+     *     "type": "foo-node",
+     *     "properties": {
+     *       "val-a": 1,
+     *       "val-b": "one",
+     *       "val-c": true,
+     *       "val-d": 1.0
+     *     },
+     *     "references": [
+     *       "/foo1", "/foo2"
+     *     ],
+     *     "objects": {
+     *       "bar0": {
+     *         "type": "bar-node",
+     *         "properties": {
+     *           "val-a": 2,
+     *           "val-b": "two",
+     *           "val-c": false
+     *         },
+     *         "references": [
+     *           "../bar1"
+     *         ]
+     *       },
+     *       "bar1": {
+     *         "type": "bar-node",
+     *         "properties": {
+     *           "val-a": 2,
+     *           "val-b": "two",
+     *           "val-c": false
+     *         },
+     *         "references": [
+     *           "../bar0"
+     *         ]
+     *       }
+     *     }
+     *   }
+     * }
+     * }}}
      */
     public ConfigNode.from_json (Json.Node node) {
         format = Dcs.ConfigFormat.JSON;
@@ -77,16 +152,28 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
         var data = obj.get_object_member (@namespace);
         obj_type = data.get_string_member ("type");
 
-        var props = data.get_object_member ("properties");
-        /*
-         *foreach (var prop in props.get_elements ()) {
-         *    properties.@set ();
-         *}
-         */
+        if (data.has_member ("properties")) {
+            var props = data.get_object_member ("properties");
+            foreach (var name in props.get_members ()) {
+                var member = props.get_member (name);
+                var type = member.get_value_type ();
+                if (type.is_a (typeof (string))) {
+                    properties.@set (name, new Variant.string (member.get_string ()));
+                } else if (type.is_a (typeof (int64))) {
+                    properties.@set (name, new Variant.int64 (member.get_int ()));
+                } else if (type.is_a (typeof (bool))) {
+                    properties.@set (name, new Variant.boolean (member.get_boolean ()));
+                } else if (type.is_a (typeof (double))) {
+                    properties.@set (name, new Variant.double (member.get_double ()));
+                }
+            }
+        }
 
-        var refs = data.get_array_member ("references").get_elements ();
-        foreach (var @ref in refs) {
-            references.add (@ref.get_string ());
+        if (data.has_member ("references")) {
+            var refs = data.get_array_member ("references").get_elements ();
+            foreach (var @ref in refs) {
+                references.add (@ref.get_string ());
+            }
         }
 
         if (data.has_member ("objects")) {
@@ -97,8 +184,6 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
                 builder.set_member_name (name);
                 builder.add_value (objs.get_member (name));
                 builder.end_object ();
-
-                stdout.printf ("%s\n", Json.to_string (builder.get_root (), true));
 
                 var child = new ConfigNode.from_json (builder.get_root ());
                 child.parent = this;
@@ -117,8 +202,19 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
         val += "------------------------------------\n\n";
 
         val += " Properties:\n\n";
-        foreach (var prop in properties.keys) {
-            val += "  • %s\t%s\n".printf (prop, properties.@get (prop).get_string ());
+        foreach (var key in properties.keys) {
+            var value = "";
+            var prop = properties.@get (key);
+            if (prop.is_of_type (VariantType.STRING)) {
+                value = "%s".printf (prop.get_string ());
+            } else if (prop.is_of_type (VariantType.INT64)) {
+                value = "%d".printf ((int) prop.get_int64 ());
+            } else if (prop.is_of_type (VariantType.BOOLEAN)) {
+                value = "%s".printf (prop.get_boolean ().to_string ());
+            } else if (prop.is_of_type (VariantType.DOUBLE)) {
+                value = "%f".printf (prop.get_double ());
+            }
+            val += "  • %s\t%s\n".printf (key, value);
         }
 
         if (references.size > 0) {
@@ -136,6 +232,16 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
         }
 
         return val;
+    }
+
+    public void print_json () {
+        stdout.printf (Json.to_string (json, true));
+    }
+
+    public void print_xml () {
+        var doc = new Xml.Doc ();
+        doc.set_root_element (xml);
+        doc.dump (stdout);
     }
 
     /**
@@ -167,7 +273,6 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
 
         switch (format) {
             case Dcs.ConfigFormat.JSON:
-                debug ("Converting node to JSON -- doesn't work yet");
                 // create new node
                 // if properties found in current node
                 //   create properties object
@@ -176,6 +281,64 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
                 // if object(s) found in current node
                 //   foreach object in objects
                 //     add object
+                var builder = new Json.Builder ();
+
+                builder.begin_object ();
+                builder.set_member_name (@namespace);
+                builder.begin_object ();
+                builder.set_member_name ("type");
+                builder.add_string_value (obj_type);
+
+                /* Add the properties object */
+                if (properties.size > 0) {
+                    builder.set_member_name ("properties");
+                    builder.begin_object ();
+                    foreach (var key in properties.keys) {
+                        var prop = properties.@get (key);
+                        builder.set_member_name (key);
+                        if (prop.is_of_type (VariantType.STRING)) {
+                            builder.add_string_value (prop.get_string ());
+                        } else if (prop.is_of_type (VariantType.INT64)) {
+                            builder.add_int_value (prop.get_int64 ());
+                        } else if (prop.is_of_type (VariantType.BOOLEAN)) {
+                            builder.add_boolean_value (prop.get_boolean ());
+                        } else if (prop.is_of_type (VariantType.DOUBLE)) {
+                            builder.add_double_value (prop.get_double ());
+                        }
+                    }
+                    builder.end_object ();
+                }
+
+                /* Add the references list */
+                if (references.size > 0) {
+                    builder.set_member_name ("references");
+                    builder.begin_array ();
+                    foreach (var @ref in references) {
+                        builder.add_string_value (@ref);
+                    }
+                    builder.end_array ();
+                }
+
+                /* Add the objects object */
+                if (children.size > 0) {
+                    builder.set_member_name ("objects");
+                    builder.begin_object ();
+                    foreach (var child in children) {
+                        child.set_format (format);
+                        builder.set_member_name (child.get_namespace ());
+                        var obj = child.json.get_object ();
+                        builder.add_value (obj.get_member (child.get_namespace ()));
+                    }
+                    builder.end_object ();
+                }
+
+                builder.end_object ();
+                builder.end_object ();
+
+                if (json != null) {
+                    json = null;
+                }
+                json = builder.get_root ();
                 break;
             case Dcs.ConfigFormat.XML:
                 debug ("Converting node to XML -- doesn't work yet");
@@ -186,6 +349,58 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
                 // if object(s) found in current node
                 //   foreach object in objects
                 //     add object
+                var doc = new Xml.Doc ();
+
+                var obj = doc.new_node (null, "object", null);
+                obj->new_prop ("id", @namespace);
+                obj->new_prop ("type", obj_type);
+
+                /* Add the properties object */
+                if (properties.size > 0) {
+                    foreach (var key in properties.keys) {
+                        var node = doc.new_node (null, "property", null);
+                        node->new_prop ("name", key);
+                        var value = "";
+                        var prop = properties.@get (key);
+                        if (prop.is_of_type (VariantType.STRING)) {
+                            value = prop.get_string ();
+                        } else if (prop.is_of_type (VariantType.INT64)) {
+                            value = prop.get_int64 ().to_string ();
+                        } else if (prop.is_of_type (VariantType.BOOLEAN)) {
+                            value = prop.get_boolean ().to_string ();
+                        } else if (prop.is_of_type (VariantType.DOUBLE)) {
+                            value = prop.get_double ().to_string ();
+                        }
+                        node->set_content (value);
+                        obj->add_child (node);
+                    }
+                }
+
+                /* Add the references list */
+                if (references.size > 0) {
+                    foreach (var @ref in references) {
+                        var node = doc.new_node (null, "reference", null);
+                        node->new_prop ("path", @ref);
+                        obj->add_child (node);
+                    }
+                }
+
+                /* Add the objects object */
+                if (children.size > 0) {
+                    foreach (var child in children) {
+                        child.set_format (format);
+                        //var node = doc.new_node (null, "object", null);
+                        obj->add_child (child.xml);
+                    }
+                }
+
+                //doc.set_root_element (obj);
+
+                if (xml != null) {
+                    xml = null;
+                }
+                //xml = doc.get_root_element ();
+                xml = obj;
                 break;
             default:
                 throw new Dcs.ConfigError.UNSUPPORTED_FORMAT (
