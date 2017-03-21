@@ -201,9 +201,7 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 val = ini.get_string (ns, key);
                 break;
             case Dcs.ConfigFormat.JSON:
-                var json_obj = json.get_object ();
-                var node = json_obj.get_member (ns);
-                val = Dcs.AbstractConfig.json_get_string (node, key);
+                val = Dcs.AbstractConfig.json_get_string (json, key);
                 break;
             case Dcs.ConfigFormat.XML:
                 val = Dcs.AbstractConfig.xml_get_string (xml, key);
@@ -235,9 +233,7 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 }
                 break;
             case Dcs.ConfigFormat.JSON:
-                var json_obj = json.get_object ();
-                var node = json_obj.get_member (ns);
-                val = Dcs.AbstractConfig.json_get_string_list (node, key);
+                val = Dcs.AbstractConfig.json_get_string_list (json, key);
                 break;
             case Dcs.ConfigFormat.XML:
                 val = Dcs.AbstractConfig.xml_get_string_list (xml, key);
@@ -267,10 +263,8 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 } catch (GLib.Error e) { }
                 break;
             case Dcs.ConfigFormat.JSON:
-                var json_obj = json.get_object ();
-                var node = json_obj.get_member (ns);
                 try {
-                    val = Dcs.AbstractConfig.json_get_int (node, key);
+                    val = Dcs.AbstractConfig.json_get_int (json, key);
                     unavailable = false;
                 } catch (GLib.Error e) {
                     if (e is Dcs.ConfigError) {
@@ -315,9 +309,7 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 }
                 break;
             case Dcs.ConfigFormat.JSON:
-                var json_obj = json.get_object ();
-                var node = json_obj.get_member (ns);
-                val = Dcs.AbstractConfig.json_get_int_list (node, key);
+                val = Dcs.AbstractConfig.json_get_int_list (json, key);
                 break;
             case Dcs.ConfigFormat.XML:
                 val = Dcs.AbstractConfig.xml_get_int_list (xml, key);
@@ -347,10 +339,8 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 } catch (GLib.Error e) { }
                 break;
             case Dcs.ConfigFormat.JSON:
-                var json_obj = json.get_object ();
-                var node = json_obj.get_member (ns);
                 try {
-                    val = Dcs.AbstractConfig.json_get_bool (node, key);
+                    val = Dcs.AbstractConfig.json_get_bool (json, key);
                     unavailable = false;
                 } catch (GLib.Error e) {
                     if (e is Dcs.ConfigError) {
@@ -394,10 +384,8 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 } catch (GLib.Error e) { }
                 break;
             case Dcs.ConfigFormat.JSON:
-                var json_obj = json.get_object ();
-                var node = json_obj.get_member (ns);
                 try {
-                    val = Dcs.AbstractConfig.json_get_double (node, key);
+                    val = Dcs.AbstractConfig.json_get_double (json, key);
                     unavailable = false;
                 } catch (GLib.Error e) {
                     if (e is Dcs.ConfigError) {
@@ -438,9 +426,7 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 }
                 break;
             case Dcs.ConfigFormat.JSON:
-                var json_obj = json.get_object ();
-                var node = json_obj.get_member (ns);
-                Dcs.AbstractConfig.json_set_string (node, key, value);
+                Dcs.AbstractConfig.json_set_string (json, key, value);
                 break;
             case Dcs.ConfigFormat.XML:
                 Dcs.AbstractConfig.xml_set_string (xml, key, value);
@@ -462,9 +448,7 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 }
                 break;
             case Dcs.ConfigFormat.JSON:
-                var json_obj = json.get_object ();
-                var node = json_obj.get_member (ns);
-                Dcs.AbstractConfig.json_set_int (node, key, value);
+                Dcs.AbstractConfig.json_set_int (json, key, value);
                 break;
             case Dcs.ConfigFormat.XML:
                 Dcs.AbstractConfig.xml_set_int (xml, key, value);
@@ -486,9 +470,7 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 }
                 break;
             case Dcs.ConfigFormat.JSON:
-                var json_obj = json.get_object ();
-                var node = json_obj.get_member (ns);
-                Dcs.AbstractConfig.json_set_bool (node, key, value);
+                Dcs.AbstractConfig.json_set_bool (json, key, value);
                 break;
             case Dcs.ConfigFormat.XML:
                 Dcs.AbstractConfig.xml_set_bool (xml, key, value);
@@ -510,9 +492,7 @@ public class Dcs.Test.Config : Dcs.AbstractConfig {
                 }
                 break;
             case Dcs.ConfigFormat.JSON:
-                var json_obj = json.get_object ();
-                var node = json_obj.get_member (ns);
-                Dcs.AbstractConfig.json_set_double (node, key, value);
+                Dcs.AbstractConfig.json_set_double (json, key, value);
                 break;
             case Dcs.ConfigFormat.XML:
                 Dcs.AbstractConfig.xml_set_double (xml, key, value);

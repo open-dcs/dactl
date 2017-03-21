@@ -206,13 +206,13 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
             var value = "";
             var prop = properties.@get (key);
             if (prop.is_of_type (VariantType.STRING)) {
-                value = "%s".printf (prop.get_string ());
+                value = prop.get_string ();
             } else if (prop.is_of_type (VariantType.INT64)) {
-                value = "%d".printf ((int) prop.get_int64 ());
+                value = ((int) prop.get_int64 ()).to_string ();
             } else if (prop.is_of_type (VariantType.BOOLEAN)) {
-                value = "%s".printf (prop.get_boolean ().to_string ());
+                value = prop.get_boolean ().to_string ();
             } else if (prop.is_of_type (VariantType.DOUBLE)) {
-                value = "%f".printf (prop.get_double ());
+                value = prop.get_double ().to_string ();
             }
             val += "  • %s\t%s\n".printf (key, value);
         }
@@ -273,14 +273,6 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
 
         switch (format) {
             case Dcs.ConfigFormat.JSON:
-                // create new node
-                // if properties found in current node
-                //   create properties object
-                //   foreach property in current node properties
-                //     add property to properties
-                // if object(s) found in current node
-                //   foreach object in objects
-                //     add object
                 var builder = new Json.Builder ();
 
                 builder.begin_object ();
@@ -341,14 +333,6 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
                 json = builder.get_root ();
                 break;
             case Dcs.ConfigFormat.XML:
-                debug ("Converting node to XML -- doesn't work yet");
-                // create new node
-                // if properties found in current node
-                //   foreach property in current node properties
-                //     add property node
-                // if object(s) found in current node
-                //   foreach object in objects
-                //     add object
                 var doc = new Xml.Doc ();
 
                 var obj = doc.new_node (null, "object", null);
@@ -389,17 +373,13 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
                 if (children.size > 0) {
                     foreach (var child in children) {
                         child.set_format (format);
-                        //var node = doc.new_node (null, "object", null);
                         obj->add_child (child.xml);
                     }
                 }
 
-                //doc.set_root_element (obj);
-
                 if (xml != null) {
                     xml = null;
                 }
-                //xml = doc.get_root_element ();
                 xml = obj;
                 break;
             default:
@@ -415,26 +395,13 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
      */
     public override string get_string (string ns,
                                        string key) throws GLib.Error {
-        string val = null;
-
-        switch (format) {
-            case Dcs.ConfigFormat.JSON:
-                val = Dcs.AbstractConfig.json_get_string (json, key);
-                break;
-            case Dcs.ConfigFormat.XML:
-                val = Dcs.AbstractConfig.xml_get_string (xml, key);
-                break;
-            default:
-                throw new Dcs.ConfigError.INVALID_FORMAT (
-                    "The node data is in an invalid format");
-        }
-
-        if (val == null) {
+        var prop = properties.@get (key);
+        if (prop.is_of_type (VariantType.STRING)) {
+            return prop.get_string ();
+        } else {
             throw new Dcs.ConfigError.NO_VALUE_FOUND (
                 "No property was found with key " + key);
         }
-
-        return val;
     }
 
     /**
@@ -471,41 +438,13 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     public override int get_int (string ns,
                                  string key)
                                  throws GLib.Error {
-        int val = 0;
-        bool unavailable = true;
-
-        switch (format) {
-            case Dcs.ConfigFormat.JSON:
-                try {
-                    val = Dcs.AbstractConfig.json_get_int (json, key);
-                    unavailable = false;
-                } catch (GLib.Error e) {
-                    if (e is Dcs.ConfigError) {
-                        throw e;
-                    }
-                }
-                break;
-            case Dcs.ConfigFormat.XML:
-                try {
-                    val = Dcs.AbstractConfig.xml_get_int (xml, key);
-                    unavailable = false;
-                } catch (GLib.Error e) {
-                    if (e is Dcs.ConfigError) {
-                        throw e;
-                    }
-                }
-                break;
-            default:
-                throw new Dcs.ConfigError.INVALID_FORMAT (
-                    "The node data is in an invalid format");
-        }
-
-        if (unavailable) {
-            throw new Dcs.ConfigError.NO_VALUE_SET (
+        var prop = properties.@get (key);
+        if (prop.is_of_type (VariantType.INT64)) {
+            return (int) prop.get_int64 ();
+        } else {
+            throw new Dcs.ConfigError.NO_VALUE_FOUND (
                 "No property was found with key " + key);
         }
-
-        return val;
     }
 
     /**
@@ -542,29 +481,13 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     public override bool get_bool (string ns,
                                    string key)
                                    throws GLib.Error {
-        bool val = false;
-        bool unavailable = true;
-
-        switch (format) {
-            case Dcs.ConfigFormat.JSON:
-                val = Dcs.AbstractConfig.json_get_bool (json, key);
-                unavailable = false;
-                break;
-            case Dcs.ConfigFormat.XML:
-                val = Dcs.AbstractConfig.xml_get_bool (xml, key);
-                unavailable = false;
-                break;
-            default:
-                throw new Dcs.ConfigError.INVALID_FORMAT (
-                    "The node data is in an invalid format");
-        }
-
-        if (unavailable) {
-            throw new Dcs.ConfigError.NO_VALUE_SET (
+        var prop = properties.@get (key);
+        if (prop.is_of_type (VariantType.BOOLEAN)) {
+            return prop.get_boolean ();
+        } else {
+            throw new Dcs.ConfigError.NO_VALUE_FOUND (
                 "No property was found with key " + key);
         }
-
-        return val;
     }
 
     /**
@@ -572,29 +495,13 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
      */
     public override double get_double (string ns,
                                        string key) throws GLib.Error {
-        double val = 0.0;
-        bool unavailable = true;
-
-        switch (format) {
-            case Dcs.ConfigFormat.JSON:
-                val = Dcs.AbstractConfig.json_get_double (json, key);
-                unavailable = false;
-                break;
-            case Dcs.ConfigFormat.XML:
-                val = Dcs.AbstractConfig.xml_get_double (xml, key);
-                unavailable = false;
-                break;
-            default:
-                throw new Dcs.ConfigError.INVALID_FORMAT (
-                    "The node data is in an invalid format");
-        }
-
-        if (unavailable) {
-            throw new Dcs.ConfigError.NO_VALUE_SET (
+        var prop = properties.@get (key);
+        if (prop.is_of_type (VariantType.DOUBLE)) {
+            return prop.get_double ();
+        } else {
+            throw new Dcs.ConfigError.NO_VALUE_FOUND (
                 "No property was found with key " + key);
         }
-
-        return val;
     }
 
     private bool is_valid_path (string path) {
@@ -672,16 +579,17 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     public override void set_string (string ns,
                                      string key,
                                      string value) throws GLib.Error {
-        switch (format) {
-            case Dcs.ConfigFormat.JSON:
-                Dcs.AbstractConfig.json_set_string (json, key, value);
-                break;
-            case Dcs.ConfigFormat.XML:
-                Dcs.AbstractConfig.xml_set_string (xml, key, value);
-                break;
-            default:
-                throw new Dcs.ConfigError.INVALID_FORMAT (
-                    "The node data is in an invalid format");
+        if (properties.has_key (key)) {
+            var prop = properties.@get (key);
+            if (prop.is_of_type (VariantType.STRING)) {
+                properties.@set (key, value);
+            } else {
+                throw new Dcs.ConfigError.PROPERTY_TYPE (
+                    "Incorrect property type for " + key);
+            }
+        } else {
+            throw new Dcs.ConfigError.NO_VALUE_SET (
+                "No value available with name " + key);
         }
     }
 
@@ -691,16 +599,17 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     public override void set_int (string ns,
                                   string key,
                                   int value) throws GLib.Error {
-        switch (format) {
-            case Dcs.ConfigFormat.JSON:
-                Dcs.AbstractConfig.json_set_int (json, key, value);
-                break;
-            case Dcs.ConfigFormat.XML:
-                Dcs.AbstractConfig.xml_set_int (xml, key, value);
-                break;
-            default:
-                throw new Dcs.ConfigError.INVALID_FORMAT (
-                    "The node data is in an invalid format");
+        if (properties.has_key (key)) {
+            var prop = properties.@get (key);
+            if (prop.is_of_type (VariantType.INT64)) {
+                properties.@set (key, (int64) value);
+            } else {
+                throw new Dcs.ConfigError.PROPERTY_TYPE (
+                    "Incorrect property type for " + key);
+            }
+        } else {
+            throw new Dcs.ConfigError.NO_VALUE_SET (
+                "No value available with name " + key);
         }
     }
 
@@ -710,16 +619,17 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     public override void set_bool (string ns,
                                    string key,
                                    bool value) throws GLib.Error {
-        switch (format) {
-            case Dcs.ConfigFormat.JSON:
-                Dcs.AbstractConfig.json_set_bool (json, key, value);
-                break;
-            case Dcs.ConfigFormat.XML:
-                Dcs.AbstractConfig.xml_set_bool (xml, key, value);
-                break;
-            default:
-                throw new Dcs.ConfigError.INVALID_FORMAT (
-                    "The node data is in an invalid format");
+        if (properties.has_key (key)) {
+            var prop = properties.@get (key);
+            if (prop.is_of_type (VariantType.BOOLEAN)) {
+                properties.@set (key, value);
+            } else {
+                throw new Dcs.ConfigError.PROPERTY_TYPE (
+                    "Incorrect property type for " + key);
+            }
+        } else {
+            throw new Dcs.ConfigError.NO_VALUE_SET (
+                "No value available with name " + key);
         }
     }
 
@@ -729,16 +639,17 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     public override void set_double (string ns,
                                      string key,
                                      double value) throws GLib.Error {
-        switch (format) {
-            case Dcs.ConfigFormat.JSON:
-                Dcs.AbstractConfig.json_set_double (json, key, value);
-                break;
-            case Dcs.ConfigFormat.XML:
-                Dcs.AbstractConfig.xml_set_double (xml, key, value);
-                break;
-            default:
-                throw new Dcs.ConfigError.INVALID_FORMAT (
-                    "The node data is in an invalid format");
+        if (properties.has_key (key)) {
+            var prop = properties.@get (key);
+            if (prop.is_of_type (VariantType.DOUBLE)) {
+                properties.@set (key, value);
+            } else {
+                throw new Dcs.ConfigError.PROPERTY_TYPE (
+                    "Incorrect property type for " + key);
+            }
+        } else {
+            throw new Dcs.ConfigError.NO_VALUE_SET (
+                "No value available with name " + key);
         }
     }
 

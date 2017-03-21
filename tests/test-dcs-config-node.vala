@@ -50,31 +50,18 @@ public class Dcs.ConfigNodeTests : Dcs.ConfigNodeTestsBase {
     }
 
     public override void set_up () {
-        /*
-         *string json_data = """
-         *  {
-         *    "obj0": {
-         *      "properties": {
-         *        "sprop": "string",
-         *        "slprop": ["string","string"],
-         *        "iprop": 1,
-         *        "ilprop": [1,1],
-         *        "bprop": true,
-         *        "dprop": 1.0
-         *      }
-         *    }
-         *  }
-         *""";
-         */
         string json_data = """
           {
-            "properties": {
-              "sprop": "string",
-              "slprop": ["string","string"],
-              "iprop": 1,
-              "ilprop": [1,1],
-              "bprop": true,
-              "dprop": 1.0
+            "obj0": {
+              "type": "object",
+              "properties": {
+                "sprop": "string",
+                "slprop": ["string","string"],
+                "iprop": 1,
+                "ilprop": [1,1],
+                "bprop": true,
+                "dprop": 1.0
+              }
             }
           }
         """;

@@ -155,13 +155,10 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
      */
     protected static string json_get_string (Json.Node node,
                                              string key) {
-        /*
-         *var _foo = node.get_object ();
-         *var _bar = _foo.get_member ("obj0");
-         *var obj = _bar.get_object ();
-         */
         var obj = node.get_object ();
-        var prop = obj.get_member ("properties");
+        var ns = obj.get_members ().nth_data (0);
+        var data = obj.get_object_member (ns);
+        var prop = data.get_member ("properties");
         var prop_obj = prop.get_object ();
         var sprop = prop_obj.get_member (key);
         var type = sprop.get_value_type ();
@@ -181,7 +178,9 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
         Gee.ArrayList<string> val = null;
 
         var obj = node.get_object ();
-        var prop = obj.get_member ("properties");
+        var ns = obj.get_members ().nth_data (0);
+        var data = obj.get_object_member (ns);
+        var prop = data.get_member ("properties");
         var prop_obj = prop.get_object ();
         var arr = prop_obj.get_array_member (key);
         var list = arr.get_elements ();
@@ -207,7 +206,9 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
         bool unavailable = true;
 
         var obj = node.get_object ();
-        var prop = obj.get_member ("properties");
+        var ns = obj.get_members ().nth_data (0);
+        var data = obj.get_object_member (ns);
+        var prop = data.get_member ("properties");
         var prop_obj = prop.get_object ();
         var iprop = prop_obj.get_member (key);
         var type = iprop.get_value_type ();
@@ -233,7 +234,9 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
         Gee.ArrayList<int> val = null;
 
         var obj = node.get_object ();
-        var prop = obj.get_member ("properties");
+        var ns = obj.get_members ().nth_data (0);
+        var data = obj.get_object_member (ns);
+        var prop = data.get_member ("properties");
         var prop_obj = prop.get_object ();
         var arr = prop_obj.get_array_member (key);
         var list = arr.get_elements ();
@@ -259,7 +262,9 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
         bool unavailable = true;
 
         var obj = node.get_object ();
-        var prop = obj.get_member ("properties");
+        var ns = obj.get_members ().nth_data (0);
+        var data = obj.get_object_member (ns);
+        var prop = data.get_member ("properties");
         var prop_obj = prop.get_object ();
         var bprop = prop_obj.get_member (key);
         var type = bprop.get_value_type ();
@@ -286,7 +291,9 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
         bool unavailable = true;
 
         var obj = node.get_object ();
-        var prop = obj.get_member ("properties");
+        var ns = obj.get_members ().nth_data (0);
+        var data = obj.get_object_member (ns);
+        var prop = data.get_member ("properties");
         var prop_obj = prop.get_object ();
         var dprop = prop_obj.get_member (key);
         var type = dprop.get_value_type ();
@@ -311,7 +318,9 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
                                            string key,
                                            string value) {
 		var obj = node.get_object ();
-		var prop = obj.get_member ("properties");
+        var ns = obj.get_members ().nth_data (0);
+        var data = obj.get_object_member (ns);
+		var prop = data.get_member ("properties");
 		var prop_obj = prop.get_object ();
 		prop_obj.set_string_member (key, value);
     }
@@ -323,7 +332,9 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
                                         string key,
                                         int value) {
 		var obj = node.get_object ();
-		var prop = obj.get_member ("properties");
+        var ns = obj.get_members ().nth_data (0);
+        var data = obj.get_object_member (ns);
+		var prop = data.get_member ("properties");
 		var prop_obj = prop.get_object ();
 		prop_obj.set_int_member (key, (int64) value);
     }
@@ -335,7 +346,9 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
                                          string key,
                                          bool value) {
 		var obj = node.get_object ();
-		var prop = obj.get_member ("properties");
+        var ns = obj.get_members ().nth_data (0);
+        var data = obj.get_object_member (ns);
+		var prop = data.get_member ("properties");
 		var prop_obj = prop.get_object ();
 		prop_obj.set_boolean_member (key, value);
     }
@@ -347,7 +360,9 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
                                            string key,
                                            double value) {
 		var obj = node.get_object ();
-		var prop = obj.get_member ("properties");
+        var ns = obj.get_members ().nth_data (0);
+        var data = obj.get_object_member (ns);
+		var prop = data.get_member ("properties");
 		var prop_obj = prop.get_object ();
 		prop_obj.set_double_member (key, value);
     }
