@@ -187,6 +187,20 @@ public interface Dcs.Config : GLib.Object {
                                    throws GLib.Error;
 
     /**
+     * Retrieve a bool list property.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to return.
+     *
+     * @return Property value at `key'.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
+     */
+    public abstract Gee.ArrayList<bool> get_bool_list (string ns,
+                                                       string key)
+                                                       throws GLib.Error;
+
+    /**
      * Retrieve an double property.
      *
      * @param ns Configuration namespace to search in.
@@ -199,6 +213,20 @@ public interface Dcs.Config : GLib.Object {
     public abstract double get_double (string ns,
                                        string key) throws GLib.Error;
 
+    /**
+     * Retrieve a double list property.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to return.
+     *
+     * @return Property value at `key'.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
+     */
+    public abstract Gee.ArrayList<double?> get_double_list (string ns,
+                                                            string key)
+                                                            throws GLib.Error;
+
 	/**
      * Retrieve a configuration node.
      *
@@ -209,8 +237,8 @@ public interface Dcs.Config : GLib.Object {
      *
      * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
      */
-    public abstract Dcs.Config get_node (string ns,
-                                         string key) throws GLib.Error;
+    public abstract Dcs.ConfigNode get_node (string ns,
+                                             string key) throws GLib.Error;
 
     /**
      * TODO fill me in
@@ -225,6 +253,18 @@ public interface Dcs.Config : GLib.Object {
                                      string value) throws GLib.Error;
 
     /**
+     * Set the value of a string list property with the name `key'.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to set.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
+     */
+    public abstract void set_string_list (string ns,
+                                          string key,
+                                          string[] value) throws GLib.Error;
+
+    /**
      * TODO fill me in
      *
      * @param ns Configuration namespace to search in.
@@ -235,6 +275,18 @@ public interface Dcs.Config : GLib.Object {
     public abstract void set_int (string ns,
                                   string key,
                                   int value) throws GLib.Error;
+
+    /**
+     * Set the value of an int list property with the name `key'.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to set.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
+     */
+    public abstract void set_int_list (string ns,
+                                       string key,
+                                       int[] value) throws GLib.Error;
 
     /**
      * TODO fill me in
@@ -249,6 +301,18 @@ public interface Dcs.Config : GLib.Object {
                                    bool value) throws GLib.Error;
 
     /**
+     * Set the value of a bool list property with the name `key'.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to set.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
+     */
+    public abstract void set_bool_list (string ns,
+                                        string key,
+                                        bool[] value) throws GLib.Error;
+
+    /**
      * TODO fill me in
      *
      * @param ns Configuration namespace to search in.
@@ -259,6 +323,18 @@ public interface Dcs.Config : GLib.Object {
     public abstract void set_double (string ns,
                                      string key,
                                      double value) throws GLib.Error;
+
+    /**
+     * Set the value of a double list property with the name `key'.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to set.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
+     */
+    public abstract void set_double_list (string ns,
+                                          string key,
+                                          double[] value) throws GLib.Error;
 
     /**
      * Update the configuration node with the one provided if it exists already,
@@ -273,5 +349,5 @@ public interface Dcs.Config : GLib.Object {
      */
     public abstract void set_node (string ns,
                                    string key,
-                                   Dcs.Config? value) throws GLib.Error;
+                                   Dcs.ConfigNode? value) throws GLib.Error;
 }

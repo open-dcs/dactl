@@ -41,19 +41,44 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
         this.format = format;
     }
 
+    private Type type_check (string value) {
+        var regint = new Regex ("^[-+]?[0-9]+$",
+                                RegexCompileFlags.CASELESS);
+        var regdbl = new Regex ("^[-+]?[0-9]*\\.?[0-9]+$",
+                                RegexCompileFlags.CASELESS);
+        var regbool = new Regex ("^(true|false)$",
+                                 RegexCompileFlags.CASELESS);
+
+        if (regint.match (value)) {
+            return typeof (int);
+        } else if (regdbl.match (value)) {
+            return typeof (double);
+        } else if (regbool.match (value)) {
+            return typeof (bool);
+        } else {
+            /* If it isn`t an int, double, or boolean it`s a string */
+            return typeof (string);
+        }
+    }
+
     /**
-     * Construct using an XML node.
+     * Construct using an XML node. Currently all array elements for properties
+     * must be the same type.
      *
      * Configuration node data defined using XML must be in the form:
      *
      * {{{
-     * <object id="foo" type="foo-object">
-     *   <property name="foo-prop-a">1</property>
-     *   <property name="foo-prop-b">1.0</property>
-     *   <property name="foo-prop-c">true</property>
-     *   <property name="foo-prop-d">string</property>
-     *   <reference path="/path/to/ref"/>
-     *   <object id="bar" type="bar-object">
+     * <object id="foo0" type="foo-node">
+     *   <property name="val-a">1</property>
+     *   <property name="val-b">string</property>
+     *   <property name="val-c">true</property>
+     *   <property name="val-d">1.1</property>
+     *   <property name="val-e">1, 2</property>
+     *   <property name="val-f">one, two</property>
+     *   <property name="val-g">true, false</property>
+     *   <property name="val-h">1.1, 2.2</property>
+     *   <reference path="/foo1"/>
+     *   <object id="bar" type="bar-node">
      *     <!-- and so on -->
      *   </object>
      * </object>
@@ -70,21 +95,39 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
             if (iter->name == "property") {
                 var value = iter->get_content ();
                 var key = iter->get_prop ("name");
-                var int_regex = new Regex ("^[-+]?[0-9]+$",
-                                           RegexCompileFlags.CASELESS);
-                var double_regex = new Regex ("^[-+]?[0-9]*\\.?[0-9]+$",
-                                              RegexCompileFlags.CASELESS);
-                var bool_regex = new Regex ("^(true|false)$",
-                                            RegexCompileFlags.CASELESS);
+                var type = type_check (value);
 
-                if (int_regex.match (value)) {
+                if (value.contains (",")) {
+                    var list = value.split (",");
+                    /* TODO This should complain if multiple types were set */
+                    var arr_type = type_check (list[0]);
+                    Variant[] arr = {};
+                    VariantType val_type = VariantType.STRING;
+                    foreach (var item in list) {
+                        if (arr_type.is_a (typeof (int))) {
+                            arr += new Variant.int64 (int64.parse (item));
+                            val_type = VariantType.INT64;
+                        } else if (arr_type.is_a (typeof (double))) {
+                            arr += new Variant.double (double.parse (item));
+                            val_type = VariantType.DOUBLE;
+                        } else if (arr_type.is_a (typeof (bool))) {
+                            arr += new Variant.boolean (bool.parse (item));
+                            val_type = VariantType.BOOLEAN;
+                        } else if (arr_type.is_a (typeof (string))) {
+                            arr += new Variant.string (item);
+                            val_type = VariantType.STRING;
+                        }
+                    }
+                    if (arr.length > 0) {
+                        properties.@set (key, new Variant.array (val_type, arr));
+                    }
+                } else if (type.is_a (typeof (int))) {
                     properties.@set (key, new Variant.int64 (int64.parse (value)));
-                } else if (double_regex.match (value)) {
+                } else if (type.is_a (typeof (double))) {
                     properties.@set (key, new Variant.double (double.parse (value)));
-                } else if (bool_regex.match (value)) {
+                } else if (type.is_a (typeof (bool))) {
                     properties.@set (key, new Variant.boolean (bool.parse (value)));
-                } else {
-                    /* If it isn`t an int, double, or boolean it`s a string */
+                } else if (type.is_a (typeof (string))) {
                     properties.@set (key, new Variant.string (value));
                 }
             } else if (iter->name == "reference") {
@@ -98,7 +141,8 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     }
 
     /**
-     * Construct using a JSON object.
+     * Construct using a JSON object. Currently all array elements for
+     * properties must be the same type.
      *
      * Configuration node data defined using JSON must be in the form:
      *
@@ -110,7 +154,11 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
      *       "val-a": 1,
      *       "val-b": "one",
      *       "val-c": true,
-     *       "val-d": 1.0
+     *       "val-d": 1.1,
+     *       "val-e": [1, 2],
+     *       "val-f": ["one", "two"],
+     *       "val-g": [true, false],
+     *       "val-h": [1.1, 2.2],
      *     },
      *     "references": [
      *       "/foo1", "/foo2"
@@ -156,15 +204,42 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
             var props = data.get_object_member ("properties");
             foreach (var name in props.get_members ()) {
                 var member = props.get_member (name);
-                var type = member.get_value_type ();
-                if (type.is_a (typeof (string))) {
-                    properties.@set (name, new Variant.string (member.get_string ()));
-                } else if (type.is_a (typeof (int64))) {
-                    properties.@set (name, new Variant.int64 (member.get_int ()));
-                } else if (type.is_a (typeof (bool))) {
-                    properties.@set (name, new Variant.boolean (member.get_boolean ()));
-                } else if (type.is_a (typeof (double))) {
-                    properties.@set (name, new Variant.double (member.get_double ()));
+                if (member.get_node_type () == Json.NodeType.ARRAY) {
+                    var list = member.get_array ();
+                    /* TODO This should complain if multiple types were set */
+                    var arr_type = list.get_element (0).get_value_type ();
+                    Variant[] arr = {};
+                    VariantType val_type = VariantType.STRING;
+                    for (int i = 0; i < list.get_length (); i++) {
+                        var arr_member = list.get_element (i);
+                        if (arr_type.is_a (typeof (string))) {
+                            arr += new Variant.string (arr_member.get_string ());
+                            val_type = VariantType.STRING;
+                        } else if (arr_type.is_a (typeof (int64))) {
+                            arr += new Variant.int64 (arr_member.get_int ());
+                            val_type = VariantType.INT64;
+                        } else if (arr_type.is_a (typeof (bool))) {
+                            arr += new Variant.boolean (arr_member.get_boolean ());
+                            val_type = VariantType.BOOLEAN;
+                        } else if (arr_type.is_a (typeof (double))) {
+                            arr += new Variant.double (arr_member.get_double ());
+                            val_type = VariantType.DOUBLE;
+                        }
+                    }
+                    if (arr.length > 0) {
+                        properties.@set (name, new Variant.array (val_type, arr));
+                    }
+                } else if (member.get_node_type () == Json.NodeType.VALUE) {
+                    var type = member.get_value_type ();
+                    if (type.is_a (typeof (string))) {
+                        properties.@set (name, new Variant.string (member.get_string ()));
+                    } else if (type.is_a (typeof (int64))) {
+                        properties.@set (name, new Variant.int64 (member.get_int ()));
+                    } else if (type.is_a (typeof (bool))) {
+                        properties.@set (name, new Variant.boolean (member.get_boolean ()));
+                    } else if (type.is_a (typeof (double))) {
+                        properties.@set (name, new Variant.double (member.get_double ()));
+                    }
                 }
             }
         }
@@ -194,6 +269,8 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
 
     /**
      * Dump node content to a string.
+     *
+     * @return Content of the node as a string.
      */
     public string to_string () {
         string val = "";
@@ -213,6 +290,24 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
                 value = prop.get_boolean ().to_string ();
             } else if (prop.is_of_type (VariantType.DOUBLE)) {
                 value = prop.get_double ().to_string ();
+            } else if (prop.is_of_type (VariantType.ARRAY)) {
+                value = "[ ";
+                foreach (var item in prop) {
+                    if (item.is_of_type (VariantType.STRING)) {
+                        value += item.get_string ();
+                    } else if (item.is_of_type (VariantType.INT64)) {
+                        value += ((int) item.get_int64 ()).to_string ();
+                    } else if (item.is_of_type (VariantType.BOOLEAN)) {
+                        value += item.get_boolean ().to_string ();
+                    } else if (item.is_of_type (VariantType.DOUBLE)) {
+                        value += item.get_double ().to_string ();
+                    }
+
+                    if (!item.equal (prop.get_child_value (prop.n_children () - 1))) {
+                        value += ", ";
+                    }
+                }
+                value += " ]";
             }
             val += "  • %s\t%s\n".printf (key, value);
         }
@@ -296,6 +391,20 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
                             builder.add_boolean_value (prop.get_boolean ());
                         } else if (prop.is_of_type (VariantType.DOUBLE)) {
                             builder.add_double_value (prop.get_double ());
+                        } else if (prop.is_of_type (VariantType.ARRAY)) {
+                            builder.begin_array ();
+                            foreach (var item in prop) {
+                                if (item.is_of_type (VariantType.STRING)) {
+                                    builder.add_string_value (item.get_string ());
+                                } else if (item.is_of_type (VariantType.INT64)) {
+                                    builder.add_int_value (item.get_int64 ());
+                                } else if (item.is_of_type (VariantType.BOOLEAN)) {
+                                    builder.add_boolean_value (item.get_boolean ());
+                                } else if (item.is_of_type (VariantType.DOUBLE)) {
+                                    builder.add_double_value (item.get_double ());
+                                }
+                            }
+                            builder.end_array ();
                         }
                     }
                     builder.end_object ();
@@ -354,6 +463,22 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
                             value = prop.get_boolean ().to_string ();
                         } else if (prop.is_of_type (VariantType.DOUBLE)) {
                             value = prop.get_double ().to_string ();
+                        } else if (prop.is_of_type (VariantType.ARRAY)) {
+                            foreach (var item in prop) {
+                                if (item.is_of_type (VariantType.STRING)) {
+                                    value += item.get_string ();
+                                } else if (item.is_of_type (VariantType.INT64)) {
+                                    value += ((int) item.get_int64 ()).to_string ();
+                                } else if (item.is_of_type (VariantType.BOOLEAN)) {
+                                    value += item.get_boolean ().to_string ();
+                                } else if (item.is_of_type (VariantType.DOUBLE)) {
+                                    value += item.get_double ().to_string ();
+                                }
+
+                                if (!item.equal (prop.get_child_value (prop.n_children () - 1))) {
+                                    value += ",";
+                                }
+                            }
                         }
                         node->set_content (value);
                         obj->add_child (node);
@@ -412,21 +537,19 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
                                                            throws GLib.Error {
         Gee.ArrayList<string> val = null;
 
-        switch (format) {
-            case Dcs.ConfigFormat.JSON:
-                val = Dcs.AbstractConfig.json_get_string_list (json, key);
-                break;
-            case Dcs.ConfigFormat.XML:
-                val = Dcs.AbstractConfig.xml_get_string_list (xml, key);
-                break;
-            default:
-                throw new Dcs.ConfigError.INVALID_FORMAT (
-                    "The node data is in an invalid format");
-        }
-
-        if (val == null) {
-            throw new Dcs.ConfigError.NO_VALUE_SET (
-                "No property was found with key " + key);
+        var prop = properties.@get (key);
+        if (prop.is_of_type (VariantType.ARRAY)) {
+            foreach (var item in prop) {
+                if (item.is_of_type (VariantType.STRING)) {
+                    if (val == null) {
+                        val = new Gee.ArrayList<string> ();
+                    }
+                    val.add (item.get_string ());
+                }
+            }
+        } else {
+            throw new Dcs.ConfigError.PROPERTY_TYPE (
+                "The property at " + key + " is not a string list");
         }
 
         return val;
@@ -455,21 +578,19 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
                                                      throws GLib.Error {
         Gee.ArrayList<int> val = null;
 
-        switch (format) {
-            case Dcs.ConfigFormat.JSON:
-                val = Dcs.AbstractConfig.json_get_int_list (json, key);
-                break;
-            case Dcs.ConfigFormat.XML:
-                val = Dcs.AbstractConfig.xml_get_int_list (xml, key);
-                break;
-            default:
-                throw new Dcs.ConfigError.INVALID_FORMAT (
-                    "The node data is in an invalid format");
-        }
-
-        if (val == null) {
-            throw new Dcs.ConfigError.NO_VALUE_SET (
-                "No property was found with key " + key);
+        var prop = properties.@get (key);
+        if (prop.is_of_type (VariantType.ARRAY)) {
+            foreach (var item in prop) {
+                if (item.is_of_type (VariantType.INT64)) {
+                    if (val == null) {
+                        val = new Gee.ArrayList<int> ();
+                    }
+                    val.add ((int) item.get_int64 ());
+                }
+            }
+        } else {
+            throw new Dcs.ConfigError.PROPERTY_TYPE (
+                "The property at " + key + " is not a string list");
         }
 
         return val;
@@ -493,6 +614,32 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     /**
      * {@inheritDoc}
      */
+    public override Gee.ArrayList<bool> get_bool_list (string ns,
+                                                       string key)
+                                                       throws GLib.Error {
+        Gee.ArrayList<bool> val = null;
+
+        var prop = properties.@get (key);
+        if (prop.is_of_type (VariantType.ARRAY)) {
+            foreach (var item in prop) {
+                if (item.is_of_type (VariantType.BOOLEAN)) {
+                    if (val == null) {
+                        val = new Gee.ArrayList<bool> ();
+                    }
+                    val.add (item.get_boolean ());
+                }
+            }
+        } else {
+            throw new Dcs.ConfigError.PROPERTY_TYPE (
+                "The property at " + key + " is not a string list");
+        }
+
+        return val;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public override double get_double (string ns,
                                        string key) throws GLib.Error {
         var prop = properties.@get (key);
@@ -502,6 +649,32 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
             throw new Dcs.ConfigError.NO_VALUE_FOUND (
                 "No property was found with key " + key);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public override Gee.ArrayList<double?> get_double_list (string ns,
+                                                            string key)
+                                                            throws GLib.Error {
+        Gee.ArrayList<double?> val = null;
+
+        var prop = properties.@get (key);
+        if (prop.is_of_type (VariantType.ARRAY)) {
+            foreach (var item in prop) {
+                if (item.is_of_type (VariantType.DOUBLE)) {
+                    if (val == null) {
+                        val = new Gee.ArrayList<double?> ();
+                    }
+                    val.add (item.get_double ());
+                }
+            }
+        } else {
+            throw new Dcs.ConfigError.PROPERTY_TYPE (
+                "The property at " + key + " is not a string list");
+        }
+
+        return val;
     }
 
     private bool is_valid_path (string path) {
@@ -536,9 +709,9 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     /**
      * {@inheritDoc}
      */
-    public override Dcs.Config get_node (string ns,
-                                         string key) throws GLib.Error {
-        Dcs.Config val = null;
+    public override Dcs.ConfigNode get_node (string ns,
+                                             string key) throws GLib.Error {
+        Dcs.ConfigNode val = null;
 
         if (!is_valid_path (key)) {
             throw new Dcs.ConfigError.INVALID_PATH (
@@ -596,6 +769,32 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     /**
      * {@inheritDoc}
      */
+    public override void set_string_list (string ns,
+                                          string key,
+                                          string[] value) throws GLib.Error {
+        if (properties.has_key (key)) {
+            var prop = properties.@get (key);
+            if (prop.is_of_type (VariantType.ARRAY)) {
+                Variant[] arr = {};
+                foreach (var item in value) {
+                    arr += new Variant.string (item);
+                }
+                if (arr.length > 0) {
+                    properties.@set (key, new Variant.array (VariantType.STRING, arr));
+                }
+            } else {
+                throw new Dcs.ConfigError.PROPERTY_TYPE (
+                    "Incorrect property type for " + key);
+            }
+        } else {
+            throw new Dcs.ConfigError.NO_VALUE_SET (
+                "No value available with name " + key);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public override void set_int (string ns,
                                   string key,
                                   int value) throws GLib.Error {
@@ -603,6 +802,32 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
             var prop = properties.@get (key);
             if (prop.is_of_type (VariantType.INT64)) {
                 properties.@set (key, (int64) value);
+            } else {
+                throw new Dcs.ConfigError.PROPERTY_TYPE (
+                    "Incorrect property type for " + key);
+            }
+        } else {
+            throw new Dcs.ConfigError.NO_VALUE_SET (
+                "No value available with name " + key);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public override void set_int_list (string ns,
+                                       string key,
+                                       int[] value) throws GLib.Error {
+        if (properties.has_key (key)) {
+            var prop = properties.@get (key);
+            if (prop.is_of_type (VariantType.ARRAY)) {
+                Variant[] arr = {};
+                foreach (var item in value) {
+                    arr += new Variant.int64 ((int64) item);
+                }
+                if (arr.length > 0) {
+                    properties.@set (key, new Variant.array (VariantType.INT64, arr));
+                }
             } else {
                 throw new Dcs.ConfigError.PROPERTY_TYPE (
                     "Incorrect property type for " + key);
@@ -636,6 +861,32 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     /**
      * {@inheritDoc}
      */
+    public override void set_bool_list (string ns,
+                                        string key,
+                                        bool[] value) throws GLib.Error {
+        if (properties.has_key (key)) {
+            var prop = properties.@get (key);
+            if (prop.is_of_type (VariantType.ARRAY)) {
+                Variant[] arr = {};
+                foreach (var item in value) {
+                    arr += new Variant.boolean (item);
+                }
+                if (arr.length > 0) {
+                    properties.@set (key, new Variant.array (VariantType.BOOLEAN, arr));
+                }
+            } else {
+                throw new Dcs.ConfigError.PROPERTY_TYPE (
+                    "Incorrect property type for " + key);
+            }
+        } else {
+            throw new Dcs.ConfigError.NO_VALUE_SET (
+                "No value available with name " + key);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public override void set_double (string ns,
                                      string key,
                                      double value) throws GLib.Error {
@@ -656,9 +907,35 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     /**
      * {@inheritDoc}
      */
+    public override void set_double_list (string ns,
+                                          string key,
+                                          double[] value) throws GLib.Error {
+        if (properties.has_key (key)) {
+            var prop = properties.@get (key);
+            if (prop.is_of_type (VariantType.ARRAY)) {
+                Variant[] arr = {};
+                foreach (var item in value) {
+                    arr += new Variant.double (item);
+                }
+                if (arr.length > 0) {
+                    properties.@set (key, new Variant.array (VariantType.DOUBLE, arr));
+                }
+            } else {
+                throw new Dcs.ConfigError.PROPERTY_TYPE (
+                    "Incorrect property type for " + key);
+            }
+        } else {
+            throw new Dcs.ConfigError.NO_VALUE_SET (
+                "No value available with name " + key);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public override void set_node (string ns,
                                    string key,
-                                   Dcs.Config? value) throws GLib.Error {
+                                   Dcs.ConfigNode? value) throws GLib.Error {
         switch (format) {
         }
     }

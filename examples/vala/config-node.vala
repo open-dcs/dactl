@@ -7,7 +7,11 @@ private void json_node () {
             "val-a": 1,
             "val-b": "one",
             "val-c": true,
-            "val-d": 1.5
+            "val-d": 1.1,
+            "val-e": [1, 2],
+            "val-f": ["one", "two"],
+            "val-g": [true, false],
+            "val-h": [1.1, 2.2]
           },
           "references": [
             "/foo1", "/foo2"
@@ -64,7 +68,11 @@ private void xml_node () {
         <property name="val-a">1</property>
         <property name="val-b">one</property>
         <property name="val-c">true</property>
-        <property name="val-d">1.5</property>
+        <property name="val-d">1.1</property>
+        <property name="val-e">1,2</property>
+        <property name="val-f">one,two</property>
+        <property name="val-g">true,false</property>
+        <property name="val-h">1.1,2.2</property>
         <reference path="/foo1"/>
         <reference path="/foo2"/>
         <object type="bar-node" id="bar0">

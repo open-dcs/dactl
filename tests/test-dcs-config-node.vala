@@ -26,26 +26,34 @@ public class Dcs.ConfigNodeTests : Dcs.ConfigNodeTestsBase {
         add_test (@"[$class_name] Test JSON get int", test_json_get_int);
         add_test (@"[$class_name] Test JSON get int list", test_json_get_int_list);
         add_test (@"[$class_name] Test JSON get boolean", test_json_get_boolean);
+        add_test (@"[$class_name] Test JSON get boolean list", test_json_get_boolean_list);
         add_test (@"[$class_name] Test JSON get double", test_json_get_double);
+        add_test (@"[$class_name] Test JSON get double list", test_json_get_double_list);
         add_test (@"[$class_name] Test JSON set string", test_json_set_string);
         add_test (@"[$class_name] Test JSON set string list", test_json_set_string_list);
         add_test (@"[$class_name] Test JSON set int", test_json_set_int);
         add_test (@"[$class_name] Test JSON set int list", test_json_set_int_list);
         add_test (@"[$class_name] Test JSON set boolean", test_json_set_boolean);
+        add_test (@"[$class_name] Test JSON set boolean list", test_json_set_boolean_list);
         add_test (@"[$class_name] Test JSON set double", test_json_set_double);
+        add_test (@"[$class_name] Test JSON set double list", test_json_set_double_list);
         add_test (@"[$class_name] Test load from XML node", test_load_xml);
         add_test (@"[$class_name] Test XML get string", test_xml_get_string);
         add_test (@"[$class_name] Test XML get string list", test_xml_get_string_list);
         add_test (@"[$class_name] Test XML get int", test_xml_get_int);
         add_test (@"[$class_name] Test XML get int list", test_xml_get_int_list);
         add_test (@"[$class_name] Test XML get boolean", test_xml_get_boolean);
+        add_test (@"[$class_name] Test XML get boolean list", test_xml_get_boolean_list);
         add_test (@"[$class_name] Test XML get double", test_xml_get_double);
+        add_test (@"[$class_name] Test XML get double list", test_xml_get_double_list);
         add_test (@"[$class_name] Test XML set string", test_xml_set_string);
         add_test (@"[$class_name] Test XML set string list", test_xml_set_string_list);
         add_test (@"[$class_name] Test XML set int", test_xml_set_int);
         add_test (@"[$class_name] Test XML set int list", test_xml_set_int_list);
         add_test (@"[$class_name] Test XML set boolean", test_xml_set_boolean);
+        add_test (@"[$class_name] Test XML set boolean list", test_xml_set_boolean_list);
         add_test (@"[$class_name] Test XML set double", test_xml_set_double);
+        add_test (@"[$class_name] Test XML set double list", test_xml_set_double_list);
         add_test (@"[$class_name] Test node format conversion", test_convert);
     }
 
@@ -60,7 +68,9 @@ public class Dcs.ConfigNodeTests : Dcs.ConfigNodeTestsBase {
                 "iprop": 1,
                 "ilprop": [1,1],
                 "bprop": true,
-                "dprop": 1.0
+                "blprop": [true,true],
+                "dprop": 1.0,
+                "dlprop": [1.1,1.1]
               }
             }
           }
@@ -83,7 +93,9 @@ public class Dcs.ConfigNodeTests : Dcs.ConfigNodeTestsBase {
             <property name="iprop">1</property>
             <property name="ilprop">1,1</property>
             <property name="bprop">true</property>
+            <property name="blprop">true,true</property>
             <property name="dprop">1.0</property>
+            <property name="dlprop">1.1,1.1</property>
           </object>
         """;
 
@@ -130,9 +142,9 @@ public class Dcs.ConfigNodeTests : Dcs.ConfigNodeTestsBase {
 	private void test_json_get_string_list () {
         assert (json.get_format () == Dcs.ConfigFormat.JSON);
         try {
-            var slist = json.get_string_list ("obj0", "slprop");
-            assert_nonnull (slist);
-            foreach (var item in slist) {
+            var list = json.get_string_list ("obj0", "slprop");
+            assert_nonnull (list);
+            foreach (var item in list) {
                 assert (item == "string");
             }
         } catch (GLib.Error e) {
@@ -152,9 +164,9 @@ public class Dcs.ConfigNodeTests : Dcs.ConfigNodeTestsBase {
 	private void test_json_get_int_list () {
         assert (json.get_format () == Dcs.ConfigFormat.JSON);
         try {
-            var ilist = json.get_int_list ("obj0", "ilprop");
-            assert_nonnull (ilist);
-            foreach (var item in ilist) {
+            var list = json.get_int_list ("obj0", "ilprop");
+            assert_nonnull (list);
+            foreach (var item in list) {
                 assert (item == 1);
             }
         } catch (GLib.Error e) {
@@ -171,10 +183,36 @@ public class Dcs.ConfigNodeTests : Dcs.ConfigNodeTestsBase {
         }
 	}
 
+	private void test_json_get_boolean_list () {
+        assert (json.get_format () == Dcs.ConfigFormat.JSON);
+        try {
+            var list = json.get_bool_list ("obj0", "blprop");
+            assert_nonnull (list);
+            foreach (var item in list) {
+                assert (item == true);
+            }
+        } catch (GLib.Error e) {
+            assert (!(e is Dcs.ConfigError));
+        }
+	}
+
 	private void test_json_get_double () {
         assert (json.get_format () == Dcs.ConfigFormat.JSON);
         try {
             assert (json.get_double ("obj0", "dprop") == 1.0);
+        } catch (GLib.Error e) {
+            assert (!(e is Dcs.ConfigError));
+        }
+	}
+
+	private void test_json_get_double_list () {
+        assert (json.get_format () == Dcs.ConfigFormat.JSON);
+        try {
+            var list = json.get_double_list ("obj0", "dlprop");
+            assert_nonnull (list);
+            foreach (var item in list) {
+                assert (item == 1.1);
+            }
         } catch (GLib.Error e) {
             assert (!(e is Dcs.ConfigError));
         }
@@ -192,12 +230,16 @@ public class Dcs.ConfigNodeTests : Dcs.ConfigNodeTestsBase {
 
 	private void test_json_set_string_list () {
         assert (json.get_format () == Dcs.ConfigFormat.JSON);
-        /*
-         *try {
-         *} catch (GLib.Error e) {
-         *    assert (!(e is Dcs.ConfigError));
-         *}
-         */
+        try {
+            string[] value = { "test", "test" };
+            json.set_string_list ("obj0", "slprop", value);
+            var list = json.get_string_list ("obj0", "slprop");
+            foreach (var item in list) {
+                assert (item == "test");
+            }
+        } catch (GLib.Error e) {
+            assert (!(e is Dcs.ConfigError));
+        }
 	}
 
 	private void test_json_set_int () {
@@ -212,12 +254,16 @@ public class Dcs.ConfigNodeTests : Dcs.ConfigNodeTestsBase {
 
 	private void test_json_set_int_list () {
         assert (json.get_format () == Dcs.ConfigFormat.JSON);
-        /*
-         *try {
-         *} catch (GLib.Error e) {
-         *    assert (!(e is Dcs.ConfigError));
-         *}
-         */
+        try {
+            int[] value = { 2, 2 };
+            json.set_int_list ("obj0", "ilprop", value);
+            var list = json.get_int_list ("obj0", "ilprop");
+            foreach (var item in list) {
+                assert (item == 2);
+            }
+        } catch (GLib.Error e) {
+            assert (!(e is Dcs.ConfigError));
+        }
 	}
 
 	private void test_json_set_boolean () {
@@ -230,11 +276,39 @@ public class Dcs.ConfigNodeTests : Dcs.ConfigNodeTestsBase {
         }
 	}
 
+	private void test_json_set_boolean_list () {
+        assert (json.get_format () == Dcs.ConfigFormat.JSON);
+        try {
+            bool[] value = { false, false };
+            json.set_bool_list ("obj0", "blprop", value);
+            var list = json.get_bool_list ("obj0", "blprop");
+            foreach (var item in list) {
+                assert (item == false);
+            }
+        } catch (GLib.Error e) {
+            assert (!(e is Dcs.ConfigError));
+        }
+	}
+
 	private void test_json_set_double () {
         assert (json.get_format () == Dcs.ConfigFormat.JSON);
         try {
             json.set_double ("obj0", "dprop", 2.0);
             assert (json.get_double ("obj0", "dprop") == 2.0);
+        } catch (GLib.Error e) {
+            assert (!(e is Dcs.ConfigError));
+        }
+	}
+
+	private void test_json_set_double_list () {
+        assert (json.get_format () == Dcs.ConfigFormat.JSON);
+        try {
+            double[] value = { 2.2, 2.2 };
+            json.set_double_list ("obj0", "dlprop", value);
+            var list = json.get_double_list ("obj0", "dlprop");
+            foreach (var item in list) {
+                assert (item == 2.2);
+            }
         } catch (GLib.Error e) {
             assert (!(e is Dcs.ConfigError));
         }
@@ -252,9 +326,9 @@ public class Dcs.ConfigNodeTests : Dcs.ConfigNodeTestsBase {
 	private void test_xml_get_string_list () {
         assert (xml.get_format () == Dcs.ConfigFormat.XML);
         try {
-            var slist = xml.get_string_list ("obj0", "slprop");
-            assert_nonnull (slist);
-            foreach (var item in slist) {
+            var list = xml.get_string_list ("obj0", "slprop");
+            assert_nonnull (list);
+            foreach (var item in list) {
                 assert (item == "string");
             }
         } catch (GLib.Error e) {
@@ -274,9 +348,9 @@ public class Dcs.ConfigNodeTests : Dcs.ConfigNodeTestsBase {
 	private void test_xml_get_int_list () {
         assert (xml.get_format () == Dcs.ConfigFormat.XML);
         try {
-            var ilist = xml.get_int_list ("obj0", "ilprop");
-            assert_nonnull (ilist);
-            foreach (var item in ilist) {
+            var list = xml.get_int_list ("obj0", "ilprop");
+            assert_nonnull (list);
+            foreach (var item in list) {
                 assert (item == 1);
             }
         } catch (GLib.Error e) {
@@ -293,10 +367,36 @@ public class Dcs.ConfigNodeTests : Dcs.ConfigNodeTestsBase {
         }
 	}
 
+	private void test_xml_get_boolean_list () {
+        assert (xml.get_format () == Dcs.ConfigFormat.XML);
+        try {
+            var list = xml.get_bool_list ("obj0", "blprop");
+            assert_nonnull (list);
+            foreach (var item in list) {
+                assert (item == true);
+            }
+        } catch (GLib.Error e) {
+            assert (!(e is Dcs.ConfigError));
+        }
+	}
+
 	private void test_xml_get_double () {
         assert (xml.get_format () == Dcs.ConfigFormat.XML);
         try {
             assert (xml.get_double ("obj0", "dprop") == 1.0);
+        } catch (GLib.Error e) {
+            assert (!(e is Dcs.ConfigError));
+        }
+	}
+
+	private void test_xml_get_double_list () {
+        assert (xml.get_format () == Dcs.ConfigFormat.XML);
+        try {
+            var list = xml.get_double_list ("obj0", "dlprop");
+            assert_nonnull (list);
+            foreach (var item in list) {
+                assert (item == 1.1);
+            }
         } catch (GLib.Error e) {
             assert (!(e is Dcs.ConfigError));
         }
@@ -314,12 +414,16 @@ public class Dcs.ConfigNodeTests : Dcs.ConfigNodeTestsBase {
 
 	private void test_xml_set_string_list () {
         assert (xml.get_format () == Dcs.ConfigFormat.XML);
-        /*
-         *try {
-         *} catch (GLib.Error e) {
-         *    assert (!(e is Dcs.ConfigError));
-         *}
-         */
+        try {
+            string[] value = { "test", "test" };
+            xml.set_string_list ("obj0", "slprop", value);
+            var list = xml.get_string_list ("obj0", "slprop");
+            foreach (var item in list) {
+                assert (item == "test");
+            }
+        } catch (GLib.Error e) {
+            assert (!(e is Dcs.ConfigError));
+        }
 	}
 
 	private void test_xml_set_int () {
@@ -334,12 +438,16 @@ public class Dcs.ConfigNodeTests : Dcs.ConfigNodeTestsBase {
 
 	private void test_xml_set_int_list () {
         assert (xml.get_format () == Dcs.ConfigFormat.XML);
-        /*
-         *try {
-         *} catch (GLib.Error e) {
-         *    assert (!(e is Dcs.ConfigError));
-         *}
-         */
+        try {
+            int[] value = { 2, 2 };
+            xml.set_int_list ("obj0", "ilprop", value);
+            var list = xml.get_int_list ("obj0", "ilprop");
+            foreach (var item in list) {
+                assert (item == 2);
+            }
+        } catch (GLib.Error e) {
+            assert (!(e is Dcs.ConfigError));
+        }
 	}
 
 	private void test_xml_set_boolean () {
@@ -352,11 +460,39 @@ public class Dcs.ConfigNodeTests : Dcs.ConfigNodeTestsBase {
         }
 	}
 
+	private void test_xml_set_boolean_list () {
+        assert (xml.get_format () == Dcs.ConfigFormat.XML);
+        try {
+            bool[] value = { false, false };
+            xml.set_bool_list ("obj0", "blprop", value);
+            var list = xml.get_bool_list ("obj0", "blprop");
+            foreach (var item in list) {
+                assert (item == false);
+            }
+        } catch (GLib.Error e) {
+            assert (!(e is Dcs.ConfigError));
+        }
+	}
+
 	private void test_xml_set_double () {
         assert (xml.get_format () == Dcs.ConfigFormat.XML);
         try {
             xml.set_double ("obj0", "dprop", 2.0);
             assert (xml.get_double ("obj0", "dprop") == 2.0);
+        } catch (GLib.Error e) {
+            assert (!(e is Dcs.ConfigError));
+        }
+	}
+
+	private void test_xml_set_double_list () {
+        assert (xml.get_format () == Dcs.ConfigFormat.XML);
+        try {
+            double[] value = { 2.2, 2.2 };
+            xml.set_double_list ("obj0", "dlprop", value);
+            var list = xml.get_double_list ("obj0", "dlprop");
+            foreach (var item in list) {
+                assert (item == 2.2);
+            }
         } catch (GLib.Error e) {
             assert (!(e is Dcs.ConfigError));
         }

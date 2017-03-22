@@ -83,6 +83,15 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
+    public virtual Gee.ArrayList<bool> get_bool_list (string ns,
+                                                      string key)
+                                                      throws GLib.Error {
+        throw new ConfigError.NO_VALUE_SET (_("No value available"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public virtual double get_double (string ns,
                                       string key) throws GLib.Error {
         throw new ConfigError.NO_VALUE_SET (_("No value available"));
@@ -91,8 +100,17 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
-    public virtual Dcs.Config get_node (string ns,
-                                        string key) throws GLib.Error {
+    public virtual Gee.ArrayList<double?> get_double_list (string ns,
+                                                           string key)
+                                                           throws GLib.Error {
+        throw new ConfigError.NO_VALUE_SET (_("No value available"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual Dcs.ConfigNode get_node (string ns,
+                                            string key) throws GLib.Error {
         throw new ConfigError.NO_VALUE_SET (_("No value available"));
     }
 
@@ -108,9 +126,27 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
+    public virtual void set_string_list (string ns,
+                                         string key,
+                                         string[] value) throws GLib.Error {
+        throw new ConfigError.NO_VALUE_SET (_("No value available"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public virtual void set_int (string ns,
                                  string key,
                                  int value) throws GLib.Error {
+        throw new ConfigError.NO_VALUE_SET (_("No value available"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual void set_int_list (string ns,
+                                      string key,
+                                      int[] value) throws GLib.Error {
         throw new ConfigError.NO_VALUE_SET (_("No value available"));
     }
 
@@ -126,6 +162,15 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
+    public virtual void set_bool_list (string ns,
+                                       string key,
+                                       bool[] value) throws GLib.Error {
+        throw new ConfigError.NO_VALUE_SET (_("No value available"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public virtual void set_double (string ns,
                                     string key,
                                     double value) throws GLib.Error {
@@ -135,9 +180,18 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
     /**
      * {@inheritDoc}
      */
+    public virtual void set_double_list (string ns,
+                                         string key,
+                                         double[] value) throws GLib.Error {
+        throw new ConfigError.NO_VALUE_SET (_("No value available"));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public virtual void set_node (string ns,
                                   string key,
-                                  Dcs.Config? value) throws GLib.Error {
+                                  Dcs.ConfigNode? value) throws GLib.Error {
         throw new ConfigError.NO_VALUE_SET (_("No value available"));
     }
 
