@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="object">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="property" maxOccurs="unbounded"/>
+        <xs:element ref="reference" maxOccurs="unbounded"/>
+        <xs:element ref="object" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:string" use="required"/>
+      <xs:attribute name="type" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="property">
+    <xs:complexType mixed="true">
+      <xs:attribute name="name" type="xs:string" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="reference">
+    <xs:complexType>
+      <xs:attribute name="path" type="xs:string" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

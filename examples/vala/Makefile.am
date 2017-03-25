@@ -6,6 +6,7 @@ example_VALAFLAGS = \
 	$(DCS_CLD_DEPS_VALAFLAGS) \
 	--vapidir=$(top_srcdir)/vapi \
 	--vapidir=$(top_srcdir)/src/libdcs-core \
+	--pkg json-glib-1.0 \
 	--pkg dcs-core-0.2 \
 	--pkg dcs-build
 
@@ -19,6 +20,14 @@ example_LDADD = \
 	$(DCS_CLD_DEPS_LIBS) \
 	$(LIBDCS_CORE_LIBS) \
 	$(top_builddir)/src/libdcs-core/libdcs-core-0.2.la
+
+noinst_PROGRAMS += config-node
+
+config_node_SOURCES = config-node.vala
+config_node_DEPENDENCIES = $(example_DEPENDENCIES)
+config_node_VALAFLAGS = $(example_VALAFLAGS)
+config_node_CPPFLAGS = $(example_CFLAGS)
+config_node_LDADD = $(example_LDADD)
 
 if ENABLE_UI
 

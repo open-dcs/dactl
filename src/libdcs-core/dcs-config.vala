@@ -6,6 +6,7 @@ public errordomain Dcs.ConfigError {
     INVALID_FORMAT,
     INVALID_NAMESPACE,
     INVALID_KEY,
+    INVALID_PATH,
     INVALID_XPATH_EXPR,
     PROPERTY_TYPE,
     UNSUPPORTED_FORMAT,
@@ -62,6 +63,8 @@ public interface Dcs.Config : GLib.Object {
      * @param class_type Class to check property existence and type correctness
      * @param check_type Type of the property to check against
      * @param property Name of the property to check
+     *
+     * @throws Dcs.ConfigError Configuration error, see {@link Dcs.ConfigError}.
      */
     public static void check_property_type (GLib.Type class_type,
                                             GLib.Type check_type,
@@ -96,373 +99,255 @@ public interface Dcs.Config : GLib.Object {
     }
 
     /**
-     * TODO fill me in
+     * Get the configuration namespace used.
+     *
+     * @return Configuration namespace.
+     *
+     * @throws Dcs.ConfigError Configuration error, see {@link Dcs.ConfigError}.
      */
     public abstract string get_namespace () throws GLib.Error;
 
     /**
-     * TODO fill me in
+     * Get the current configuration format used.
+     *
+     * @return Configuration format, see {@link Dcs.ConfigFormat}.
+     *
+     * @throws Dcs.ConfigError Configuration error, see {@link Dcs.ConfigError}.
      */
     public abstract Dcs.ConfigFormat get_format () throws GLib.Error;
 
     /**
-     * TODO fill me in
+     * Retrieve a string property.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to return.
+     *
+     * @return Property value at `key'.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
      */
     public abstract string get_string (string ns,
                                        string key)
                                        throws GLib.Error;
 
     /**
-     * TODO fill me in
+     * Retrieve a string list property.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to return.
+     *
+     * @return Property value at `key'.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
      */
     public abstract Gee.ArrayList<string> get_string_list (string ns,
                                                            string key)
                                                            throws GLib.Error;
 
     /**
-     * TODO fill me in
+     * Retrieve an int property.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to return.
+     *
+     * @return Property value at `key'.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
      */
     public abstract int get_int (string ns,
                                  string key)
                                  throws GLib.Error;
 
     /**
-     * TODO fill me in
+     * Retrieve an int list property.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to return.
+     *
+     * @return Property value at `key'.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
      */
     public abstract Gee.ArrayList<int> get_int_list (string ns,
                                                      string key)
                                                      throws GLib.Error;
 
     /**
-     * TODO fill me in
+     * Retrieve a boolean property.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to return.
+     *
+     * @return Property value at `key'.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
      */
     public abstract bool get_bool (string ns,
                                    string key)
                                    throws GLib.Error;
 
     /**
-     * TODO fill me in
+     * Retrieve a bool list property.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to return.
+     *
+     * @return Property value at `key'.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
+     */
+    public abstract Gee.ArrayList<bool> get_bool_list (string ns,
+                                                       string key)
+                                                       throws GLib.Error;
+
+    /**
+     * Retrieve an double property.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to return.
+     *
+     * @return Property value at `key'.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
      */
     public abstract double get_double (string ns,
                                        string key) throws GLib.Error;
 
     /**
+     * Retrieve a double list property.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to return.
+     *
+     * @return Property value at `key'.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
+     */
+    public abstract Gee.ArrayList<double?> get_double_list (string ns,
+                                                            string key)
+                                                            throws GLib.Error;
+
+	/**
+     * Retrieve a configuration node.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Node ID to return value for with optional path prefix.
+     *
+     * @return Configuration node value at `key'.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
+     */
+    public abstract Dcs.ConfigNode get_node (string ns,
+                                             string key) throws GLib.Error;
+
+    /**
      * TODO fill me in
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to set.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
      */
     public abstract void set_string (string ns,
                                      string key,
                                      string value) throws GLib.Error;
 
     /**
+     * Set the value of a string list property with the name `key'.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to set.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
+     */
+    public abstract void set_string_list (string ns,
+                                          string key,
+                                          string[] value) throws GLib.Error;
+
+    /**
      * TODO fill me in
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to set.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
      */
     public abstract void set_int (string ns,
                                   string key,
                                   int value) throws GLib.Error;
 
     /**
+     * Set the value of an int list property with the name `key'.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to set.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
+     */
+    public abstract void set_int_list (string ns,
+                                       string key,
+                                       int[] value) throws GLib.Error;
+
+    /**
      * TODO fill me in
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to set.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
      */
     public abstract void set_bool (string ns,
                                    string key,
                                    bool value) throws GLib.Error;
 
     /**
+     * Set the value of a bool list property with the name `key'.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to set.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
+     */
+    public abstract void set_bool_list (string ns,
+                                        string key,
+                                        bool[] value) throws GLib.Error;
+
+    /**
      * TODO fill me in
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to set.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
      */
     public abstract void set_double (string ns,
                                      string key,
                                      double value) throws GLib.Error;
 
     /**
-     * TODO fill me in
+     * Set the value of a double list property with the name `key'.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Property name to set.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
      */
-    protected static string json_get_string (Json.Node node,
-                                             string key) {
-        var obj = node.get_object ();
-        var prop = obj.get_member ("properties");
-        var prop_obj = prop.get_object ();
-        var sprop = prop_obj.get_member (key);
-        var type = sprop.get_value_type ();
-
-        if (type.is_a (typeof (string))) {
-            return prop_obj.get_string_member (key);
-        }
-
-        return null;
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static Gee.ArrayList<string> json_get_string_list (Json.Node node,
-                                                                 string key) {
-        Gee.ArrayList<string> val = null;
-
-        var obj = node.get_object ();
-        var prop = obj.get_member ("properties");
-        var prop_obj = prop.get_object ();
-        var arr = prop_obj.get_array_member (key);
-        var list = arr.get_elements ();
-        foreach (var item in list) {
-            var type = item.get_value_type ();
-            if (type.is_a (typeof (string))) {
-                if (val == null) {
-                    val = new Gee.ArrayList<string> ();
-                }
-                val.add (item.get_string ());
-            }
-        }
-
-        return val;
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static int json_get_int (Json.Node node,
-                                       string key) throws GLib.Error {
-        int val = 0;
-        bool unavailable = true;
-
-        var obj = node.get_object ();
-        var prop = obj.get_member ("properties");
-        var prop_obj = prop.get_object ();
-        var iprop = prop_obj.get_member (key);
-        var type = iprop.get_value_type ();
-
-        if (type.is_a (typeof (int64))) {
-            val = (int) prop_obj.get_int_member (key);
-            unavailable = false;
-        }
-
-        if (unavailable) {
-            throw new Dcs.ConfigError.NO_VALUE_SET (
-                "No property was found with key " + key);
-        }
-
-        return val;
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static Gee.ArrayList<int> json_get_int_list (Json.Node node,
-                                                           string key) {
-        Gee.ArrayList<int> val = null;
-
-        var obj = node.get_object ();
-        var prop = obj.get_member ("properties");
-        var prop_obj = prop.get_object ();
-        var arr = prop_obj.get_array_member (key);
-        var list = arr.get_elements ();
-        foreach (var item in list) {
-            var type = item.get_value_type ();
-            if (type.is_a (typeof (int64))) {
-                if (val == null) {
-                    val = new Gee.ArrayList<int> ();
-                }
-                val.add ((int) item.get_int ());
-            }
-        }
-
-        return val;
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static bool json_get_bool (Json.Node node,
-                                         string key) throws GLib.Error {
-        bool val = false;
-        bool unavailable = true;
-
-        var obj = node.get_object ();
-        var prop = obj.get_member ("properties");
-        var prop_obj = prop.get_object ();
-        var bprop = prop_obj.get_member (key);
-        var type = bprop.get_value_type ();
-
-        if (type.is_a (typeof (bool))) {
-            val = (bool) prop_obj.get_boolean_member (key);
-            unavailable = false;
-        }
-
-        if (unavailable) {
-            throw new Dcs.ConfigError.NO_VALUE_SET (
-                "No property was found with key " + key);
-        }
-
-        return val;
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static double json_get_double (Json.Node node,
-                                             string key) throws GLib.Error {
-        double val = 0.0;
-        bool unavailable = true;
-
-        var obj = node.get_object ();
-        var prop = obj.get_member ("properties");
-        var prop_obj = prop.get_object ();
-        var dprop = prop_obj.get_member (key);
-        var type = dprop.get_value_type ();
-
-        if (type.is_a (typeof (double))) {
-            val = (double) prop_obj.get_double_member (key);
-            unavailable = false;
-        }
-
-        if (unavailable) {
-            throw new Dcs.ConfigError.NO_VALUE_SET (
-                "No property was found with key " + key);
-        }
-
-        return val;
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static void json_set_string (Json.Node node,
-                                           string key,
-                                           string value) {
-
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static void json_set_int (Json.Node node,
-                                        string key,
-                                        int value) {
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static void json_set_bool (Json.Node node,
-                                         string key,
-                                         bool value) {
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static void json_set_double (Json.Node node,
-                                           string key,
-                                           double value) {
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static string xml_get_string (Xml.Node* node, string key) {
-        return null;
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static Gee.ArrayList<string> xml_get_string_list (Xml.Node* node,
-                                                                string key) {
-        return null;
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static int xml_get_int (Xml.Node* node,
-                                      string key) throws GLib.Error {
-        int val = 0;
-        bool unavailable = true;
-
-        // ...
-
-        if (unavailable) {
-            throw new Dcs.ConfigError.NO_VALUE_SET (
-                "No property was found with key " + key);
-        }
-
-        return val;
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static Gee.ArrayList<int> xml_get_int_list (Xml.Node* node,
-                                                          string key) {
-        return null;
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static bool xml_get_bool (Xml.Node* node,
-                                        string key) throws GLib.Error {
-        bool val = false;
-        bool unavailable = true;
-
-        // ...
-
-        if (unavailable) {
-            throw new Dcs.ConfigError.NO_VALUE_SET (
-                "No property was found with key " + key);
-        }
-
-        return val;
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static double xml_get_double (Xml.Node* node,
-                                            string key) throws GLib.Error {
-        double val = 0.0;
-        bool unavailable = true;
-
-        // ...
-
-        if (unavailable) {
-            throw new Dcs.ConfigError.NO_VALUE_SET (
-                "No property was found with key " + key);
-        }
-
-        return val;
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static void xml_set_string (Xml.Node* node,
+    public abstract void set_double_list (string ns,
                                           string key,
-                                          string value) {
-
-    }
+                                          double[] value) throws GLib.Error;
 
     /**
-     * TODO fill me in
+     * Update the configuration node with the one provided if it exists already,
+     * add this as a new one if it doesn't, or delete one if it exists and
+     * `value' is null.
+     *
+     * @param ns Configuration namespace to search in.
+     * @param key Configuration node ID to set with an optional path prefix.
+     * @param value Node to create/update/delete.
+     *
+     * @throws Dcs.ConfigError Error if not found, see {@link Dcs.ConfigError}.
      */
-    protected static void xml_set_int (Xml.Node* node,
-                                       string key,
-                                       int value) {
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static void xml_set_bool (Xml.Node* node,
-                                        string key,
-                                        bool value) {
-    }
-
-    /**
-     * TODO fill me in
-     */
-    protected static void xml_set_double (Xml.Node* node,
-                                          string key,
-                                          double value) {
-    }
+    public abstract void set_node (string ns,
+                                   string key,
+                                   Dcs.ConfigNode? value) throws GLib.Error;
 }

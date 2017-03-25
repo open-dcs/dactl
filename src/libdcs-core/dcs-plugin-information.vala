@@ -50,7 +50,7 @@ public class Dcs.PluginInformation : GLib.Object {
         if (!module_file.query_exists ()) {
             // try .libs for uninstalled
             module_file = module_dir.get_child (".libs%clibdcs-%s.%s".printf (
-                                                Path.DIR_SEPARATOR,
+                                                GLib.Path.DIR_SEPARATOR,
                                                 module,
                                                 Module.SUFFIX));
             if (!module_file.query_exists ()) {

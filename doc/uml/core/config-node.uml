@@ -27,7 +27,9 @@ class ConfigNode {
     +bool get_bool (string ns, string key) throws Error
     +double get_double (string ns, string key) throws Error
     +void set_string (string ns, string key, string value) throws Error
+    +void set_string_list (string ns, string key, string[] value) throws Error
     +void set_int (string ns, string key, int value) throws Error
+    +void set_int_list (string ns, string key, int[] value) throws Error
     +void set_bool (string ns, string key, bool value) throws Error
     +void set_double (string ns, string key, double value) throws Error
 !endif

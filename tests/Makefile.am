@@ -53,6 +53,7 @@ test_dcs_core_SOURCES = \
 	test-dcs-core.vala \
 	test-dcs-object.vala \
 	test-dcs-config.vala \
+	test-dcs-config-node.vala \
 	test-dcs-container.vala \
 	test-dcs-dataseries.vala \
 	test-dcs-edge.vala \
