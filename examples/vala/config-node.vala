@@ -56,6 +56,13 @@ private void json_node () {
 
     stdout.printf (@"JSON:\n\n$node\n");
 
+    try {
+        var child = node.get_node ("foo0", "/foo0/bar0");
+        stdout.printf (@"Child JSON:\n\n$child\n");
+    } catch (GLib.Error e) {
+        critical (e.message);
+    }
+
     node.set_format (Dcs.ConfigFormat.XML);
     stdout.printf ("Resulting XML after format conversion:\n\n");
     node.print_xml ();
@@ -105,9 +112,65 @@ private void xml_node () {
     node.print_json ();
 }
 
+private void construct_node () {
+    var node = new Dcs.ConfigNode ("foo-node", "foo0", Dcs.ConfigFormat.JSON);
+    var bar0 = new Dcs.ConfigNode ("bar-node", "bar0", Dcs.ConfigFormat.JSON);
+    var bar1 = new Dcs.ConfigNode ("bar-node", "bar1", Dcs.ConfigFormat.JSON);
+    var baz0 = new Dcs.ConfigNode ("baz-node", "baz0", Dcs.ConfigFormat.JSON);
+
+    try {
+        node.add_property ("val-a", VariantType.INT64);
+        node.add_property ("val-b", VariantType.STRING);
+        node.add_property ("val-c", VariantType.BOOLEAN);
+        node.set_int ("bar2", "val-a", 3);
+        node.set_string ("bar2", "val-b", "three");
+        node.set_bool ("bar2", "val-c", true);
+        node.add_reference ("/foo0/bar0");
+        stdout.printf (@"\n\nConstructed node:\n\n$node\n");
+        var properties = node.get_properties ();
+        foreach (var key in properties.keys) {
+            stdout.printf ("prop %s: %s\n", key, properties.@get (key).print (true));
+        }
+        foreach (var @ref in node.get_references ()) {
+            stdout.printf ("ref: %s\n\n", @ref);
+        }
+        node.remove_property ("val-a");
+        node.remove_reference ("/foo0/bar0");
+        stdout.printf (@"Updated constructed node:\n\n$node\n");
+
+        /*
+         *message ("start");
+         *node.set_node ("test", "/", null);
+         *message ("start");
+         *node.set_node ("test", "/./", null);
+         */
+        node.set_node ("test", "/foo0/bar0", bar0);
+        node.set_node ("test", "foo0/bar1", bar1);
+        node.set_node ("test", "foo0/bar0/baz0", baz0);
+        stdout.printf (@"Added nodes:\n\n$node\n");
+        stdout.printf (@"Added subsub node:\n\n$bar0\n");
+        node.set_node ("test", "foo0/bar0", null);
+        node.set_node ("test", "/foo0/bar1", null);
+        stdout.printf (@"Removed nodes:\n\n$node\n");
+        /*
+         *node.set_node ("test", "foo0", null);
+         */
+    } catch (GLib.Error e) {
+        critical (e.message);
+    }
+}
+
 private static int main (string[] args) {
     json_node ();
     xml_node ();
+    construct_node ();
+
+    /*
+     *var path = new Dcs.Path ("../test");
+     *stdout.printf (path.expand () + "\n");
+     *path.data = "./test";
+     *stdout.printf (path.expand () + "\n");
+     */
 
     return 0;
 }

@@ -1,5 +1,83 @@
 /**
+ * This currently only exists to test path concepts. They may just be integrated
+ * into the ConfigNode class, they may not.
+ */
+public class Dcs.Path : GLib.Object {
+
+    private string _data;
+
+    public string data {
+        get {
+            return _data;
+        }
+        set {
+            if (_data != null) {
+                _data = _data.replace ("..", "←");
+                _data = _data.replace (".", "↮");
+            }
+            _data = value;
+        }
+    }
+
+    public Path (string data) {
+        GLib.Object (data : data);
+    }
+
+    /**
+     * consider stripping prefixes:
+     *  dcs:///
+     *  dcs://localhost[:port]/
+     *  dcs://<hostname([\.\w*])*>[:port]/
+     *  dcs://<IP address>[:port]/
+     *
+     * valid:
+     *  obj0
+     *  /obj0
+     *  /ctr0/obj0
+     *
+     * not valid:
+     *  /
+     *  ctr0/obj0
+     */
+    public bool is_valid () {
+        if (data == null) {
+            return false;
+        } else if (data == "") {
+            return false;
+        } else if (data.contains ("/") && (data.get_char (0) != '/')) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Expands a path provided to remove any absolute and relative tokens.
+     *
+     * @return A complete path to an existing object, `null' if invalid.
+     */
+    public string? expand () {
+        string _path = data;
+        if (_path.has_prefix ("./")) {
+            //_path = _path.substring (2) + "/" + @namespace + "/";
+            _path = "/<me>/" + _path.substring (2);
+        } else if (_path.has_prefix ("../")) {
+            /*
+             *if (parent == null) {
+             *    return null;
+             *}
+             */
+            //_path = _path.substring (3) + "/" + parent.get_namespace () + "/";
+            _path = "/<parent>/" + _path.substring (3);
+        }
+        return _path;
+    }
+}
+
+/**
  * Configuration node to use as part of the objects data in a tree.
+ *
+ * TODO change namespace to id ???
  */
 public class Dcs.ConfigNode : Dcs.AbstractConfig {
 
@@ -28,7 +106,7 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     public string obj_type { get; private set; }
 
     construct {
-        children = new Gee.ArrayList<Dcs.ConfigNode> ();
+        children = new Gee.ArrayList<Dcs.ConfigNode> ((Gee.EqualDataFunc<Dcs.ConfigNode>) equals);
         properties = new Gee.HashMap<string, Variant> ();
         references = new Gee.ArrayList<string> ();
     }
@@ -36,29 +114,10 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     /**
      * Default constructor.
      */
-    public ConfigNode (string obj_type, Dcs.ConfigFormat format) {
+    public ConfigNode (string obj_type, string @namespace, Dcs.ConfigFormat format) {
         this.obj_type = obj_type;
+        this.@namespace = @namespace;
         this.format = format;
-    }
-
-    private Type type_check (string value) {
-        var regint = new Regex ("^[-+]?[0-9]+$",
-                                RegexCompileFlags.CASELESS);
-        var regdbl = new Regex ("^[-+]?[0-9]*\\.?[0-9]+$",
-                                RegexCompileFlags.CASELESS);
-        var regbool = new Regex ("^(true|false)$",
-                                 RegexCompileFlags.CASELESS);
-
-        if (regint.match (value)) {
-            return typeof (int);
-        } else if (regdbl.match (value)) {
-            return typeof (double);
-        } else if (regbool.match (value)) {
-            return typeof (bool);
-        } else {
-            /* If it isn`t an int, double, or boolean it`s a string */
-            return typeof (string);
-        }
     }
 
     /**
@@ -267,6 +326,77 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
         }
     }
 
+    private bool equals (Dcs.ConfigNode a, Dcs.ConfigNode b) {
+        return (a.get_namespace () == b.get_namespace ());
+    }
+
+    private Type type_check (string value) {
+        var regint = new Regex ("^[-+]?[0-9]+$",
+                                RegexCompileFlags.CASELESS);
+        var regdbl = new Regex ("^[-+]?[0-9]*\\.?[0-9]+$",
+                                RegexCompileFlags.CASELESS);
+        var regbool = new Regex ("^(true|false)$",
+                                 RegexCompileFlags.CASELESS);
+
+        if (regint.match (value)) {
+            return typeof (int);
+        } else if (regdbl.match (value)) {
+            return typeof (double);
+        } else if (regbool.match (value)) {
+            return typeof (bool);
+        } else {
+            /* If it isn`t an int, double, or boolean it`s a string */
+            return typeof (string);
+        }
+    }
+
+    private bool is_valid_path (string path) {
+        /*
+         * consider stripping prefixes:
+         *  dcs:///
+         *  dcs://localhost[:port]/
+         *  dcs://<hostname([\.\w*])*>[:port]/
+         *  dcs://<IP address>[:port]/
+         *
+         * valid:
+         *  obj0
+         *  /obj0
+         *  /ctr0/obj0
+         *  ctr0/obj0
+         *
+         * not valid:
+         *  /
+         */
+
+        if (path == null) {
+            return false;
+        } else if (path == "") {
+            return false;
+        } else if (path.has_prefix ("/..")) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Expands a path provided to remove any absolute and relative tokens.
+     *
+     * @return A complete path to an existing object, `null' if invalid.
+     */
+    private string? expand_path (string path) {
+        string _path = path;
+        if (_path.has_prefix ("./")) {
+            _path = _path.substring (2) + "/" + @namespace + "/";
+        } else if (_path.has_prefix ("../")) {
+            if (parent == null) {
+                return null;
+            }
+            _path = _path.substring (3) + "/" + parent.get_namespace () + "/";
+        }
+        return _path;
+    }
+
     /**
      * Dump node content to a string.
      *
@@ -351,6 +481,24 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
      */
     public override Dcs.ConfigFormat get_format () throws GLib.Error {
         return format;
+    }
+
+    /**
+     * Retrieve the read only set of configured properties.
+     *
+     * @return A read only set of properties.
+     */
+    public Gee.Map<string, Variant> get_properties () {
+        return properties.read_only_view;
+    }
+
+    /**
+     * Retrieve the read only list of configured references.
+     *
+     * @return A read only list of references.
+     */
+    public Gee.List<string> get_references () {
+        return references.read_only_view;
     }
 
     /**
@@ -516,6 +664,102 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     }
 
     /**
+     * Add a new property with a default value.
+     *
+     * @param name Name of the property to add.
+     * @param type Variant property type to add.
+     *
+     * @throws Dcs.ConfigError Configuration error, see {@link Dcs.ConfigError}.
+     */
+    public void add_property (string name,
+                              VariantType type)
+                              throws GLib.Error {
+        if (properties.has_key (name)) {
+            throw new Dcs.ConfigError.INVALID_KEY (
+                "The key " + name + " already exists in the properties list");
+        }
+
+        if (type.equal (VariantType.STRING)) {
+            properties.@set (name, new Variant.string (""));
+        } else if (type.equal (VariantType.INT16) ||
+                   type.equal (VariantType.INT32) ||
+                   type.equal (VariantType.INT64)) {
+            properties.@set (name, new Variant.int64 (0));
+        } else if (type.equal (VariantType.BOOLEAN)) {
+            properties.@set (name, new Variant.boolean (false));
+        } else if (type.equal (VariantType.DOUBLE)) {
+            properties.@set (name, new Variant.double (0.0));
+        } else {
+            throw new Dcs.ConfigError.PROPERTY_TYPE (
+                "An invalid property type was requested");
+        }
+    }
+
+    /**
+     * Add a new array property containing an empty list. This needs to be
+     * separate from add_property as it requires two types.
+     *
+     * @param name Name of the property to add.
+     * @param type Variant property type to add.
+     *
+     * @throws Dcs.ConfigError Configuration error, see {@link Dcs.ConfigError}.
+     */
+    public void add_array_property (string name,
+                                    VariantType type)
+                                    throws GLib.Error {
+        if (properties.has_key (name)) {
+            throw new Dcs.ConfigError.INVALID_KEY (
+                "The key " + name + " already exists in the properties list");
+        }
+
+        Variant[] arr = {};
+        properties.@set (name, new Variant.array (type, arr));
+    }
+
+    /**
+     * Remove a property if it exists.
+     *
+     * @param name Name of the property to remove.
+     *
+     * @throws Dcs.ConfigError Configuration error, see {@link Dcs.ConfigError}.
+     */
+    public void remove_property (string name) throws GLib.Error {
+        if (!properties.has_key (name)) {
+            throw new Dcs.ConfigError.INVALID_KEY (
+                "The key " + name + " does not exist in the properties list");
+        }
+
+        properties.unset (name);
+    }
+
+    /**
+     * Add the reference to the list if it contains a valid node path.
+     *
+     * @param reference Reference containing a valid path to add.
+     *
+     * @throws Dcs.ConfigError Configuration error, see {@link Dcs.ConfigError}.
+     */
+    public void add_reference (string reference) throws GLib.Error {
+        if (is_valid_path (reference)) {
+            references.add (reference);
+        } else {
+            throw new Dcs.ConfigError.INVALID_PATH (
+                "An invalid path was provided");
+        }
+    }
+
+    /**
+     * Remove the reference from the list if it exists.
+     *
+     * @param reference Reference to remove.
+     */
+    public void remove_reference (string reference) {
+        if (references.contains (reference)) {
+            references.remove (reference);
+        }
+    }
+
+    /**
      * {@inheritDoc}
      */
     public override string get_string (string ns,
@@ -677,35 +921,6 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
         return val;
     }
 
-    private bool is_valid_path (string path) {
-        /*
-         * consider stripping prefixes:
-         *  dcs:///
-         *  dcs://localhost[:port]/
-         *  dcs://<hostname([\.\w*])*>[:port]/
-         *  dcs://<IP address>[:port]/
-         *
-         * valid:
-         *  obj0
-         *  /obj0
-         *  /ctr0/obj0
-         *
-         * not valid:
-         *  /
-         *  ctr0/obj0
-         */
-
-        if (path == null) {
-            return false;
-        } else if (path == "") {
-            return false;
-        } else if (path.contains ("/") && (path.get_char (0) != '/')) {
-            return false;
-        }
-
-        return true;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -713,35 +928,35 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
                                              string key) throws GLib.Error {
         Dcs.ConfigNode val = null;
 
-        if (!is_valid_path (key)) {
+        if (is_valid_path (key)) {
+            var _id = key;
+            if (_id.has_prefix ("/")) {
+                _id = _id.substring (1);
+            }
+            if (@namespace == _id) {
+                val = this;
+            } else {
+                var prefix = "/" + @namespace;
+                if (children != null && key.has_prefix (prefix)) {
+                    foreach (var node in children) {
+                        try {
+                            var path = key.substring (prefix.char_count ());
+                            val = node.get_node (ns, path);
+                        } catch (GLib.Error e) {
+                            /* Don't want to raise an error yet */
+                        }
+                    }
+                }
+            }
+        } else {
             throw new Dcs.ConfigError.INVALID_PATH (
                 "An invalid path was provided");
         }
 
-        if (children != null) {
-            foreach (var node in children) {
-                /*
-                 *if (key == node.get_namespace ()) {
-                 *    return node;
-                 *}
-                 */
-            }
+        if (val == null) {
+            throw new Dcs.ConfigError.NO_VALUE_SET (
+                "No node was found at the location " + key);
         }
-
-        /*
-         *if () {
-         *    try {
-         *    } catch () {
-         *    }
-         *}
-         */
-
-        /*
-         *if (val == null) {
-         *    throw new Dcs.ConfigError.NO_VALUE_SET (
-         *        "No property was found with key " + key);
-         *}
-         */
 
         return val;
     }
@@ -936,7 +1151,78 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     public override void set_node (string ns,
                                    string key,
                                    Dcs.ConfigNode? value) throws GLib.Error {
-        switch (format) {
+        // if path is valid
+        //
+        //   ?tokenize path on "/"
+        //   ?expand path to replace occurences of . and ..
+        //
+        //   if path is an id (! contain "/")
+        //     if child exists for id
+        //       if the value is null
+        //         remove the child
+        //       else
+        //         update the child
+        //     else
+        //       add the child to the list
+        //   else if path is prefixed by "/my-id/"
+        //   else if path contains
+        // ...
+        if (is_valid_path (key)) {
+            /* Go to the root if the path starts there */
+            if (key.has_prefix ("/") && parent != null) {
+                try {
+                    parent.set_node (ns, key, value);
+                } catch (GLib.Error e) {
+                    throw e;
+                }
+            }
+
+            var tokens = key.split ("/");
+            tokens = tokens[0] == "" ? tokens[1:tokens.length] : tokens;
+            tokens = tokens[0] == @namespace ? tokens[1:tokens.length] : tokens;
+
+            if (tokens.length == 1 && has_child (tokens[0])) {
+                int pos = -1;
+                for (int i = 0; i < children.size; i++) {
+                    var child = children.@get (i);
+                    if (child.get_namespace () == tokens[0]) {
+                        pos = i;
+                    }
+                }
+                if (pos != -1) {
+                    if (value == null) {
+                        children.remove_at (pos);
+                    } else {
+                        children.@set (pos, value);
+                    }
+                }
+            } else if (tokens.length == 1 && !has_child (tokens[0])) {
+                if (value != null) {
+                    children.add (value);
+                } else {
+                    throw new Dcs.ConfigError.NO_VALUE_SET (
+                        "Unable to unset a node that doesn't exist");
+                }
+            } else if (tokens.length > 1 && has_child (tokens[0])) {
+                var path = string.joinv ("/", tokens);
+                foreach (var child in children) {
+                    if (child.get_namespace () == tokens[0]) {
+                        child.set_node (ns, path, value);
+                    }
+                }
+            }
+        } else {
+            throw new Dcs.ConfigError.INVALID_PATH (
+                "An invalid path was provided");
         }
+    }
+
+    private bool has_child (string id) {
+        foreach (var child in children) {
+            if (child.get_namespace () == id) {
+                return true;
+            }
+        }
+        return false;
     }
 }
