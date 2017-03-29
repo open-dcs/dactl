@@ -1,7 +1,5 @@
 public class Dcs.Control.Server : Dcs.CLI.Application {
 
-    private static Once<Dcs.Control.Server> _instance;
-
     private GLib.MainLoop loop;
 
     private Dcs.Control.RestService rest_service;
@@ -9,12 +7,6 @@ public class Dcs.Control.Server : Dcs.CLI.Application {
     public Dcs.Control.ZmqService zmq_service;
 
     public Dcs.Control.ZmqClient zmq_client;
-
-    public static unowned Dcs.Control.Server get_default () {
-        return _instance.once (() => {
-            return new Dcs.Control.Server ();
-        });
-    }
 
     internal Server () {
         GLib.Object (application_id: "org.opendcs.dcs.control");
@@ -32,9 +24,11 @@ public class Dcs.Control.Server : Dcs.CLI.Application {
         base.activate ();
 
         debug (_("Activating Control Server"));
+        loop.run ();
     }
 
     protected override void startup () {
+        debug (_("Starting Control server > Main"));
         base.startup ();
 
         debug (_("Starting Control server > ZMQ Client"));
@@ -42,9 +36,6 @@ public class Dcs.Control.Server : Dcs.CLI.Application {
 
         debug (_("Starting Control server > ZMQ Service"));
         zmq_service.run ();
-
-        debug (_("Starting Control server > Main"));
-        loop.run ();
     }
 
     protected override void shutdown () {

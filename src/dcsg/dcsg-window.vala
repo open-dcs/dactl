@@ -41,7 +41,7 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
     public bool fullscreen { get; set; default = false; }
 
     /* Model used to update the view */
-    public Dcs.App.Model model { get; construct set; }
+    public Dcs.Model model { get; construct set; }
 
     /* Layout - XXX maybe the Window should contain the layout? */
     public Dcsg.Layout layout { get; construct set; }
@@ -101,7 +101,7 @@ public class Dcsg.Window : Dcs.UI.WindowBase {
      * @param model Data model class that the interface uses to update itself
      * @return A new instance of an Window object
      */
-    internal Window (Dcs.App.Model model) {
+    internal Window (Dcs.Model model) {
         GLib.Object (title: "Data Acquisition and Control",
                      window_position: Gtk.WindowPosition.CENTER);
 

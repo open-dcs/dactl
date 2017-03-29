@@ -1,4 +1,4 @@
-public class Dcs.CLI.Application : GLib.Application, Dcs.Application {
+public abstract class Dcs.CLI.Application : GLib.Application, Dcs.Application {
 
     /**
      * The commands that are recognized.
@@ -110,8 +110,6 @@ public class Dcs.CLI.Application : GLib.Application, Dcs.Application {
         }
     }
 
-    private static Once<Dcs.CLI.Application> _instance;
-
     public bool _admin = false;
     /**
      * Allow administrative functionality
@@ -126,17 +124,17 @@ public class Dcs.CLI.Application : GLib.Application, Dcs.Application {
     /**
      * {@inheritDoc}
      */
-    public virtual Dcs.App.Model model { get; set; }
+    public virtual Dcs.Model model { get; set; }
 
     /**
      * {@inheritDoc}
      */
-    public virtual Dcs.App.View view { get; set; }
+    public virtual Dcs.View view { get; set; }
 
     /**
      * {@inheritDoc}
      */
-    public virtual Dcs.App.Controller controller { get; set; }
+    public virtual Dcs.Controller controller { get; set; }
 
     /**
      * {@inheritDoc}
@@ -147,19 +145,6 @@ public class Dcs.CLI.Application : GLib.Application, Dcs.Application {
      * Used when the user requests a configuration save.
      */
     public signal void save_requested ();
-
-    /**
-     * Instantiate a new command line application.
-     *
-     * @return Instance of the application.
-     */
-    /*
-     *public static unowned Dcs.CLI.Application get_default () {
-     *    return _instance.once (() => {
-     *        return new Dcs.CLI.Application ();
-     *    });
-     *}
-     */
 
     internal Application () {
         debug ("CLI application construction");

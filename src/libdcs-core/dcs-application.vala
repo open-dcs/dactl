@@ -8,18 +8,18 @@ public interface Dcs.Application : GLib.Object {
     /**
      * Model used to update the view.
      */
-    public abstract Dcs.App.Model model { get; set; }
+    public abstract Dcs.Model model { get; set; }
 
     /**
      * View to provide the user access to the data in the model.
      */
-    public abstract Dcs.App.View view { get; set; }
+    public abstract Dcs.View view { get; set; }
 
     /**
      * Controller to update the model and perform any functionality requested
      * by the view.
      */
-    public abstract Dcs.App.Controller controller { get; set; }
+    public abstract Dcs.Controller controller { get; set; }
 
     /**
      * A list of legacy plugins that are used with the PluginLoader.
@@ -29,7 +29,7 @@ public interface Dcs.Application : GLib.Object {
     /**
      * Emitted when the application has been stopped.
      */
-    public abstract signal void closed ();
+    public signal void closed ();
 
     /**
      * The implementing application can use this to implement an options
@@ -57,4 +57,56 @@ public interface Dcs.Application : GLib.Object {
      * loading a configuration.
      */
     public abstract void register_plugin (Dcs.LegacyPlugin plugin);
+}
+
+public interface Dcs.Runnable : GLib.Object {
+
+}
+
+public abstract class Dcs.FooApplication : GLib.Application, Dcs.Runnable {
+
+    protected Dcs.MetaConfig config;
+
+    protected Dcs.MetaFactory factory;
+
+    /**
+     * Model used to update the view.
+     */
+    protected Dcs.Model model;
+
+    /**
+     * View to provide the user access to the data in the model.
+     */
+    protected Dcs.View view;
+
+    /**
+     * Controller to update the model and perform any functionality requested
+     * by the view.
+     */
+    protected Dcs.Controller controller;
+
+    public virtual void init () {
+        config = Dcs.MetaConfig.get_default ();
+        factory = Dcs.MetaFactory.get_default ();
+    }
+
+    public virtual Dcs.Config get_config () {
+        return config;
+    }
+
+    public virtual Dcs.Factory get_factory () {
+        return factory;
+    }
+
+    public virtual Dcs.Model get_model () {
+        return model;
+    }
+
+    public virtual Dcs.View get_view () {
+        return view;
+    }
+
+    public virtual Dcs.Controller get_controller () {
+        return controller;
+    }
 }

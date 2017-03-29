@@ -53,7 +53,7 @@ internal class Dcs.DAQ.Main : GLib.Object {
 
         this.exit_code = 0;
 
-        app = Dcs.DAQ.Server.get_default ();
+        app = new Dcs.DAQ.Server ();
 
         device_manager = new Dcs.DAQ.DeviceManager ((app as Dcs.DAQ.Server).zmq_service);
 

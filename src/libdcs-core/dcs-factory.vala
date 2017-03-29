@@ -35,3 +35,54 @@ public interface Dcs.Factory : GLib.Object {
     public abstract Dcs.Object make_object_from_node (Xml.Node *node)
                                                       throws GLib.Error;
 }
+
+public abstract class Dcs.FooFactory : GLib.Object {
+
+    public virtual Gee.Map<string, Dcs.Node> produce_map (Gee.List<Dcs.ConfigNode> nodes)
+                                                          throws GLib.Error {
+        Gee.Map<string, Dcs.Node> map = new Gee.TreeMap<string, Dcs.Node> ();
+
+        // do stuff
+
+        return map;
+    }
+
+    public virtual Dcs.Node produce (Type type) throws GLib.Error {
+        Dcs.Node node = null;
+
+        switch (type.name ()) {
+            case "DcsFooDataSeries":
+                node = new Dcs.FooDataSeries (100);
+                break;
+            default:
+                throw new Dcs.FactoryError.TYPE_NOT_FOUND (
+                    "The type requested is not a known type");
+        }
+
+        return node;
+    }
+
+    public virtual Dcs.Node produce_from_config (Dcs.ConfigNode config)
+                                                 throws GLib.Error {
+        Dcs.Node node = null;
+
+        switch (config.get_type_name ()) {
+            case "foo-data-series":
+                node = new Dcs.FooDataSeries (config.get_int ("foo0", "size"));
+                var properties = config.get_properties ();
+                foreach (var key in properties.keys) {
+                    node.set_property (key, properties.@get (key));
+                }
+                foreach (var @ref in config.get_references ()) {
+                    // add reference
+                }
+                // add children
+                break;
+            default:
+                throw new Dcs.FactoryError.TYPE_NOT_FOUND (
+                    "The type requested is not a known type");
+        }
+
+        return node;
+    }
+}

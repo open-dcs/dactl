@@ -1,18 +1,10 @@
 public class Dcs.Recorder.Server : Dcs.CLI.Application {
 
-    private static Once<Dcs.Recorder.Server> _instance;
-
     private GLib.MainLoop loop;
 
     private Dcs.Recorder.RestService rest_service;
 
     public Dcs.Recorder.ZmqClient zmq_client;
-
-    public static unowned Dcs.Recorder.Server get_default () {
-        return _instance.once (() => {
-            return new Dcs.Recorder.Server ();
-        });
-    }
 
     internal Server () {
         GLib.Object (application_id: "org.opendcs.dcs.log");
@@ -28,16 +20,15 @@ public class Dcs.Recorder.Server : Dcs.CLI.Application {
         base.activate ();
 
         debug (_("Activating Recorder Server"));
+        loop.run ();
     }
 
     protected override void startup () {
+        debug (_("Starting Recorder server > Main"));
         base.startup ();
 
         debug (_("Starting Recorder server > ZMQ Client"));
         zmq_client.run ();
-
-        debug (_("Starting Recorder server > Main"));
-        loop.run ();
     }
 
     protected override void shutdown () {

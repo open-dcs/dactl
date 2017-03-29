@@ -1,18 +1,10 @@
 public class Dcs.DAQ.Server : Dcs.CLI.Application {
 
-    private static Once<Dcs.DAQ.Server> _instance;
-
     private GLib.MainLoop loop;
 
     public Dcs.DAQ.RestService rest_service;
 
     public Dcs.DAQ.ZmqService zmq_service;
-
-    public static unowned Dcs.DAQ.Server get_default () {
-        return _instance.once (() => {
-            return new Dcs.DAQ.Server ();
-        });
-    }
 
     internal Server () {
         GLib.Object (application_id: "org.opendcs.dcs.daq");
@@ -28,16 +20,15 @@ public class Dcs.DAQ.Server : Dcs.CLI.Application {
         base.activate ();
 
         debug (_("Activating DAQ Server"));
+        loop.run ();
     }
 
     protected override void startup () {
+        debug (_("Starting DAQ server > Main"));
         base.startup ();
 
         debug (_("Starting DAQ server > ZMQ Service"));
         zmq_service.run ();
-
-        debug (_("Starting DAQ server > Main"));
-        loop.run ();
     }
 
     protected override void shutdown () {
@@ -45,10 +36,6 @@ public class Dcs.DAQ.Server : Dcs.CLI.Application {
         loop.quit ();
 
         base.shutdown ();
-    }
-
-    public virtual int launch (string[] args) {
-        return (this as GLib.Application).run (args);
     }
 
     static bool opt_help;

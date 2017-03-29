@@ -6,7 +6,7 @@ namespace Dcs {
  * Main application class responsible for interfacing with data and different
  * interface types.
  */
-public class Dcs.App.Model : GLib.Object, Dcs.Container {
+public class Dcs.Model : GLib.Object, Dcs.Container {
 
     private string _name = "Untitled";
     /**

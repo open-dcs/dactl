@@ -24,20 +24,29 @@ public class Dcs.Path : GLib.Object {
     }
 
     /**
-     * consider stripping prefixes:
+     * Test if the path contained is valid.
+     *
+     * NOTE consider stripping prefixes
+     *
+     * {{{
+     * Sample ideas
+     *
      *  dcs:///
      *  dcs://localhost[:port]/
      *  dcs://<hostname([\.\w*])*>[:port]/
      *  dcs://<IP address>[:port]/
      *
-     * valid:
+     * Valid
+     *
      *  obj0
      *  /obj0
      *  /ctr0/obj0
      *
-     * not valid:
+     * Invalid
+     *
      *  /
      *  ctr0/obj0
+     * }}}
      */
     public bool is_valid () {
         if (data == null) {
@@ -77,6 +86,7 @@ public class Dcs.Path : GLib.Object {
 /**
  * Configuration node to use as part of the objects data in a tree.
  *
+ * TODO add get_children
  * TODO change namespace to id ???
  */
 public class Dcs.ConfigNode : Dcs.AbstractConfig {
@@ -88,8 +98,6 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     private Json.Node json { internal get; private set; }
 
     private Xml.Node *xml { internal get; private set; }
-
-    private Gee.ArrayList<Dcs.ConfigNode> children;
 
     private Gee.HashMap<string, Variant> properties;
 
@@ -106,7 +114,8 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
     public string obj_type { get; private set; }
 
     construct {
-        children = new Gee.ArrayList<Dcs.ConfigNode> ((Gee.EqualDataFunc<Dcs.ConfigNode>) equals);
+        children = new Gee.ArrayList<Dcs.ConfigNode> (
+            (Gee.EqualDataFunc<Dcs.ConfigNode>) Dcs.ConfigNode.equals);
         properties = new Gee.HashMap<string, Variant> ();
         references = new Gee.ArrayList<string> ();
     }
@@ -326,7 +335,15 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
         }
     }
 
-    private bool equals (Dcs.ConfigNode a, Dcs.ConfigNode b) {
+    /**
+     * Comparison method used with containers.
+     *
+     * @param a The first object to compare.
+     * @param b The second object to compare.
+     *
+     * @return True if the objects are equal, false if not.
+     */
+    public static bool equals (Dcs.ConfigNode a, Dcs.ConfigNode b) {
         return (a.get_namespace () == b.get_namespace ());
     }
 
@@ -338,15 +355,19 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
         var regbool = new Regex ("^(true|false)$",
                                  RegexCompileFlags.CASELESS);
 
-        if (regint.match (value)) {
-            return typeof (int);
-        } else if (regdbl.match (value)) {
-            return typeof (double);
-        } else if (regbool.match (value)) {
-            return typeof (bool);
-        } else {
-            /* If it isn`t an int, double, or boolean it`s a string */
-            return typeof (string);
+        try {
+            if (regint.match (value)) {
+                return typeof (int);
+            } else if (regdbl.match (value)) {
+                return typeof (double);
+            } else if (regbool.match (value)) {
+                return typeof (bool);
+            } else {
+                /* If it isn`t an int, double, or boolean it`s a string */
+                return typeof (string);
+            }
+        } catch (GLib.Error e) {
+            debug (e.message);
         }
     }
 
@@ -499,6 +520,15 @@ public class Dcs.ConfigNode : Dcs.AbstractConfig {
      */
     public Gee.List<string> get_references () {
         return references.read_only_view;
+    }
+
+    /**
+     * Get the type string of the node that was read in from the config.
+     *
+     * @return String representing the type to be configured.
+     */
+    public string get_type_name () {
+        return obj_type;
     }
 
     /**

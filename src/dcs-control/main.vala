@@ -52,7 +52,7 @@ internal class Dcs.Control.Main : GLib.Object {
 
         this.exit_code = 0;
 
-        app = Dcs.Control.Server.get_default ();
+        app = new Dcs.Control.Server ();
 
         loop_manager = new Dcs.Control.LoopManager ((app as Dcs.Control.Server).zmq_client,
                                                     (app as Dcs.Control.Server).zmq_service);

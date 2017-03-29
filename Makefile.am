@@ -109,7 +109,8 @@ valgrind:
 	G_DEBUG=fatal-criticals \
 	G_SLICE=always-malloc \
 	PATH=$(top_builddir)/src/dcsg:$(PATH) \
-	$(LIBTOOL) --mode=execute gdb -ex run --args src/dcsg/dcsg -vvv -f tests/config/blank.xml
+	$(LIBTOOL) --mode=execute valgrind --tool=memcheck --leak-check=full --leak-resolution=high \
+		--num-callers=20 --log-file=vgdump src/dcsg/dcsg -vvv -f tests/config/blank.xml
 
 test:
 	$(MAKE) -C tests test

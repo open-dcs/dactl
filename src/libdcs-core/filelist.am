@@ -8,6 +8,7 @@ LIBDCS_CORE_VAPI_SOURCE_FILES = \
     dcs-cld-adapter.vala \
     dcs-config.vala \
     dcs-config-node.vala \
+    dcs-config-util.vala \
     dcs-container.vala \
     dcs-controller.vala \
     dcs-dataseries.vala \

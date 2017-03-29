@@ -24,7 +24,7 @@ public class Dcsg.SettingsDialog : Gtk.Window {
 
     private Cld.Context cld_ctx;
 
-    private Dcs.App.Model model;
+    private Dcs.Model model;
 
     private Dcsg.CldSettingsData cld_data;
 

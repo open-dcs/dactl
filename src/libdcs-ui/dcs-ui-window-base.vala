@@ -1,7 +1,7 @@
 /**
  * Window base class to use with buildable child windows.
  */
-public abstract class Dcs.UI.WindowBase : Gtk.ApplicationWindow, Dcs.App.View, Dcs.Container, Dcs.Buildable, Dcs.Object {
+public abstract class Dcs.UI.WindowBase : Gtk.ApplicationWindow, Dcs.View, Dcs.Container, Dcs.Buildable, Dcs.Object {
 
     private Xml.Node* _node;
 

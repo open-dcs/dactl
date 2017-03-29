@@ -8,6 +8,8 @@
   <property name="dprop">1.0</property>
 
   <object id="gc0" type="generic-container">
+    <property name="val-c">false</property>
+    <reference path="go0"/>
     <object id="go0" type="generic-object">
       <object id="gc0-go0" type="generic-container">
         <object id="gc0-go0-go0" type="generic-object"/>

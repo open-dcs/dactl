@@ -52,7 +52,7 @@ internal class Dcs.Recorder.Main : GLib.Object {
 
         this.exit_code = 0;
 
-        app = Dcs.Recorder.Server.get_default ();
+        app = new Dcs.Recorder.Server ();
 
         backend_manager = new Dcs.Log.BackendManager ((app as Dcs.Recorder.Server).zmq_client);
 

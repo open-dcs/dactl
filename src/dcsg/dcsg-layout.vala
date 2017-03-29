@@ -3,9 +3,9 @@
  */
 public class Dcsg.Layout : GLib.Object {
 
-    private Dcs.App.Model model;
+    private Dcs.Model model;
 
-    public void Layout (Dcs.App.Model model) {
+    public void Layout (Dcs.Model model) {
         this.model = model;
     }
 

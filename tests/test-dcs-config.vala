@@ -95,7 +95,7 @@ public class Dcs.ConfigTests : Dcs.ConfigTestsBase {
     private void test_meta_config () {
         assert (meta_config.get_namespace () == "dcs");
         /* Load a default config to use */
-        var filename = Path.build_filename (Dcs.Test.Build.CONFIG_DIR, "test-config.xml");
+        var filename = GLib.Path.build_filename (Dcs.Test.Build.CONFIG_DIR, "test-config.xml");
         (config as Dcs.Test.Config).load_file (filename, Dcs.ConfigFormat.XML);
         //config.dump (stdout);
         Dcs.MetaConfig.register_config (config);
@@ -148,7 +148,9 @@ public class Dcs.ConfigTests : Dcs.ConfigTestsBase {
             foreach (var item in ilist) {
                 assert (item == 1);
             }
+            debug ("boolean balls");
             assert (config.get_bool ("dcs", "bprop") == true);
+            debug ("double balls");
             assert (config.get_double ("dcs", "dprop") == 1.0);
         } catch (GLib.Error e) {
             throw e;
@@ -172,7 +174,7 @@ public class Dcs.ConfigTests : Dcs.ConfigTestsBase {
 
     private void test_load_ini () {
         try {
-            var filename = Path.build_filename (Dcs.Test.Build.CONFIG_DIR, "test-config.ini");
+            var filename = GLib.Path.build_filename (Dcs.Test.Build.CONFIG_DIR, "test-config.ini");
             (config as Dcs.Test.Config).load_file (filename, Dcs.ConfigFormat.INI);
             assert (config.get_format () == Dcs.ConfigFormat.INI);
             test_property_getters ();
@@ -213,7 +215,7 @@ public class Dcs.ConfigTests : Dcs.ConfigTestsBase {
 
     private void test_load_json () {
         try {
-            var filename = Path.build_filename (Dcs.Test.Build.CONFIG_DIR, "test-config.json");
+            var filename = GLib.Path.build_filename (Dcs.Test.Build.CONFIG_DIR, "test-config.json");
             (config as Dcs.Test.Config).load_file (filename, Dcs.ConfigFormat.JSON);
             assert (config.get_format () == Dcs.ConfigFormat.JSON);
             test_property_getters ();
@@ -238,6 +240,25 @@ public class Dcs.ConfigTests : Dcs.ConfigTestsBase {
                 "ilprop": [1,1],
                 "bprop": true,
                 "dprop": 1.0
+              },
+              "objects": {
+                "ctr0": {
+                  "type": "container",
+                  "properties": {
+                    "sprop": "string-prop"
+                  },
+                  "objects": {
+                    "obj0": {
+                      "type": "object",
+                      "properties": {
+                        "iprop": "int-prop"
+                      },
+                      "references": [
+                        "dcs:///ctr0/obj1"
+                      ]
+                    }
+                  }
+                }
               }
             }
           }
@@ -259,7 +280,7 @@ public class Dcs.ConfigTests : Dcs.ConfigTestsBase {
 
     private void test_load_xml () {
         try {
-            var filename = Path.build_filename (Dcs.Test.Build.CONFIG_DIR, "test-config.xml");
+            var filename = GLib.Path.build_filename (Dcs.Test.Build.CONFIG_DIR, "test-config.xml");
             (config as Dcs.Test.Config).load_file (filename, Dcs.ConfigFormat.XML);
             assert (config.get_format () == Dcs.ConfigFormat.XML);
             test_property_getters ();
@@ -287,6 +308,15 @@ public class Dcs.ConfigTests : Dcs.ConfigTestsBase {
             <property name="ilprop">1,1</property>
             <property name="bprop">true</property>
             <property name="dprop">1.0</property>
+            <object id="gc0" type="generic-container">
+              <property name="val-c">false</property>
+              <reference path="go0"/>
+              <object id="go0" type="generic-object">
+              <object id="gc0-go0" type="generic-container">
+                <object id="gc0-go0-go0" type="generic-object"/>
+              </object>
+              </object>
+            </object>
           </dcs>
         """;
 

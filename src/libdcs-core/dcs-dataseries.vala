@@ -1,8 +1,30 @@
+public class Dcs.FooDataSeries : Dcs.Node {
+
+    /* Property backing fields */
+    private int _size;
+
+    private Dcs.Point[] data;
+
+    public int size {
+        get { return _size; }
+        set {
+            _size = value;
+            data.resize (value);
+        }
+    }
+
+    public FooDataSeries (int size) {
+        GLib.Object (size : size);
+        data = new Dcs.Point[size];
+    }
+}
+
 /**
  * A buffer that stores data from a Cld.Channel
  *
  * XXX TBD Consider a way to clock out the data at a even pace to prevent th
  */
+[Version (deprecated = true)]
 public class Dcs.DataSeries : Dcs.AbstractObject, Dcs.Buildable, Dcs.CldAdapter {
 
     private Xml.Node* _node;

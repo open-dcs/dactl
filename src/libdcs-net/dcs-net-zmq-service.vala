@@ -31,7 +31,7 @@ public abstract class Dcs.Net.ZmqService : GLib.Object {
 
     public ZmqService () {
         try {
-            zmq_init ();
+            init ();
         } catch (Dcs.Net.ZmqError e) {
             critical (e.message);
         }
@@ -44,13 +44,13 @@ public abstract class Dcs.Net.ZmqService : GLib.Object {
                      address: address,
                      port: port);
         try {
-            zmq_init ();
+            init ();
         } catch (Dcs.Net.ZmqError e) {
             critical (e.message);
         }
     }
 
-    protected void zmq_init () throws Dcs.Net.ZmqError {
+    protected void init () throws Dcs.Net.ZmqError {
         string endpoint = null;
 
         context = new ZMQ.Context ();

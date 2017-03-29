@@ -3,17 +3,17 @@ public abstract class Dcs.UI.Application : Gtk.Application, Dcs.Application {
     /**
      * {@inheritDoc}
      */
-    public Dcs.App.Model model { get; set; }
+    public Dcs.Model model { get; set; }
 
     /**
      * {@inheritDoc}
      */
-    public Dcs.App.View view { get; set; }
+    public Dcs.View view { get; set; }
 
     /**
      * {@inheritDoc}
      */
-    public Dcs.App.Controller controller { get; set; }
+    public Dcs.Controller controller { get; set; }
 
     /**
      * {@inheritDoc}
