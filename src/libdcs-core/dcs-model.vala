@@ -146,6 +146,7 @@ public class Dcs.Model : GLib.Object, Dcs.Container {
     private void config_property_changed_cb (string property) {
         //message ("Property '%s' was changed.\n", property);
     }
+
     /**
      * {@inheritDoc}
      */

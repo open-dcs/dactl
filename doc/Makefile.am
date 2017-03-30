@@ -47,7 +47,7 @@ innerdoc_DATA = \
 	$(NULL)
 
 img_DATA = \
-	dcs-0.2/dcs-0.2/*.png \
+	dcs-0.2/dcs-0.2/img/*.png \
 	$(NULL)
 
 $(doc_data) $(innerdoc_DATA) $(img_DATA): dcs-0.2/index.html

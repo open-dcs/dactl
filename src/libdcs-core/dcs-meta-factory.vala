@@ -47,30 +47,6 @@ public class Dcs.MetaFactory : GLib.Object, Dcs.Factory {
             objects.set_all (map);
         }
 
-        /**
-         * FIXME: Reiterating over the nodeset shouldn't be necessary.
-         */
-/*
- *        for (Xml.Node *iter = node; iter != null; iter = iter->next) {
- *            if (iter->type == Xml.ElementType.ELEMENT_NODE &&
- *                iter->type != Xml.ElementType.COMMENT_NODE) {
- *                try {
- *                    message ("Attempting to load object of type `%s'",
- *                             iter->get_prop ("type"));
- *                    var object = make_object_from_node (iter);
- *
- *                    [> no point adding an object type that isn't recognized <]
- *                    if (object != null) {
- *                        objects.set (object.id, object);
- *                        message ("Loading object of type `%s' with id `%s'",
- *                                iter->get_prop ("type"), object.id);
- *                    }
- *                } catch (GLib.Error e) {
- *                    critical (e.message);
- *                }
- *            }
- *        }
- */
         build_complete ();
 
         return objects;

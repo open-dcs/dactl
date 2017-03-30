@@ -8,8 +8,6 @@ public class Dcs.Test.Node : Dcs.Node {
      */
     public override string id { get; set; }
 
-    protected override Xml.Node* config_node { get; set; }
-
     public Node (string id) {
         this.id = id;
     }

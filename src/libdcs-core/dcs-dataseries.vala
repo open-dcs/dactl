@@ -1,21 +1,21 @@
 public class Dcs.FooDataSeries : Dcs.Node {
 
     /* Property backing fields */
-    private int _size;
+    private int _length;
 
     private Dcs.Point[] data;
 
-    public int size {
-        get { return _size; }
+    public int length {
+        get { return _length; }
         set {
-            _size = value;
+            _length = value;
             data.resize (value);
         }
     }
 
-    public FooDataSeries (int size) {
-        GLib.Object (size : size);
-        data = new Dcs.Point[size];
+    public FooDataSeries (int length = 10) {
+        GLib.Object (length : length);
+        data = new Dcs.Point[length];
     }
 }
 

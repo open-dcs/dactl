@@ -25,7 +25,6 @@ public interface Dcs.Factory : GLib.Object {
      * XXX TBD This will take Dcs.ConfigNode as a parameter
      */
     public virtual Dcs.Node? build () throws Dcs.FactoryError {
-
         return null;
     }
 
@@ -50,7 +49,18 @@ public interface Dcs.Factory : GLib.Object {
                                                       throws GLib.Error;
 }
 
-public abstract class Dcs.FooFactory : GLib.Object {
+public interface Dcs.FooFactory : GLib.Object {
+
+    public abstract Gee.Map<string, Dcs.Node> produce_map (Gee.List<Dcs.ConfigNode> nodes)
+                                                           throws GLib.Error;
+
+    public abstract Dcs.Node produce (Type type) throws GLib.Error;
+
+    public abstract Dcs.Node produce_from_config (Dcs.ConfigNode config)
+                                                  throws GLib.Error;
+}
+
+public class Dcs.FooBarFactory : Dcs.FooFactory, GLib.Object {
 
     public virtual Gee.Map<string, Dcs.Node> produce_map (Gee.List<Dcs.ConfigNode> nodes)
                                                           throws GLib.Error {
@@ -66,7 +76,7 @@ public abstract class Dcs.FooFactory : GLib.Object {
 
         switch (type.name ()) {
             case "DcsFooDataSeries":
-                node = new Dcs.FooDataSeries (100);
+                node = new Dcs.FooDataSeries ();
                 break;
             default:
                 throw new Dcs.FactoryError.TYPE_NOT_FOUND (
@@ -79,23 +89,50 @@ public abstract class Dcs.FooFactory : GLib.Object {
     public virtual Dcs.Node produce_from_config (Dcs.ConfigNode config)
                                                  throws GLib.Error {
         Dcs.Node node = null;
+        Type type;
+        Gee.Map<string, Variant> properties = config.get_properties ();
 
         switch (config.get_type_name ()) {
             case "foo-data-series":
-                node = new Dcs.FooDataSeries (config.get_int ("foo0", "size"));
-                var properties = config.get_properties ();
-                foreach (var key in properties.keys) {
-                    node.set_property (key, properties.@get (key));
-                }
-                foreach (var @ref in config.get_references ()) {
-                    // add reference
-                }
-                // add children
+                node = new Dcs.FooDataSeries ();
+                type = typeof (Dcs.FooDataSeries);
                 break;
             default:
                 throw new Dcs.FactoryError.TYPE_NOT_FOUND (
                     "The type requested is not a known type");
         }
+
+        ObjectClass ocl = (ObjectClass) type.class_ref ();
+
+        foreach (var key in properties.keys) {
+            var prop = properties.@get (key);
+            var spec = ocl.find_property (key);
+            if (spec != null) {
+                // XXX there's some array types in here not accounted for
+                if (prop.is_of_type (VariantType.STRING)) {
+                    node.set_property (key, prop.get_string ());
+                } else if (prop.is_of_type (VariantType.INT64)) {
+                    node.set_property (key, (int) prop.get_int64 ());
+                } else if (prop.is_of_type (VariantType.BOOLEAN)) {
+                    node.set_property (key, prop.get_boolean ());
+                } else if (prop.is_of_type (VariantType.DOUBLE)) {
+                    node.set_property (key, prop.get_double ());
+                } else if (prop.is_of_type (VariantType.ARRAY)) {
+                    // XXX do something
+                }
+            }
+        }
+
+        // add references
+        foreach (var @ref in config.get_references ()) {
+        }
+
+        // add children
+        foreach (var child in config.get_children ()) {
+            node.add (produce_from_config (child));
+        }
+
+        node.id = config.get_namespace ();
 
         return node;
     }

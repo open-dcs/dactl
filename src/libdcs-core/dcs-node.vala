@@ -4,33 +4,28 @@ public errordomain Dcs.NodeError {
 }
 
 public abstract class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
-                                 Dcs.Object,
-                                 Dcs.Buildable,
-                                 Dcs.Serializable,
-                                 Dcs.RefContainer {
-    /**
-     * {@inheritDoc}
-     */
-    public abstract string id { get; set; }
+                                 Dcs.Object, Dcs.Serializable, Dcs.RefContainer {
 
-    protected abstract Xml.Node* config_node { get; set; }
-
-    /**
-     * Build the node using an XML node
-     *
-     * {@inheritDoc}
-     */
-    internal abstract void build_from_xml_node (Xml.Node* node)
-                                                throws GLib.Error;
-    /**
-     * {@inheritDoc}
-     */
-    public abstract string serialize () throws GLib.Error;
+    private bool verbose = false;
 
     /**
      * {@inheritDoc}
      */
-    public abstract void deserialize (string data) throws GLib.Error;
+    public virtual string id { get; set; }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual string serialize () throws GLib.Error {
+        return "{}";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual void deserialize (string data) throws GLib.Error {
+        /* XXX do something */
+    }
 
     /**
      * {@inheritDoc}
@@ -76,10 +71,10 @@ public abstract class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
 
     /**
      * {@inheritDoc}
-     * @return true no error otherwise false
      */
     public override bool @unset (string key, out Dcs.Node node) {
         bool ret;
+
         try {
             remove (node);
             ret = true;
@@ -92,18 +87,30 @@ public abstract class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
     }
 
     /**
+     * Increase to_string verbosity to display parent properties.
+     *
+     * @param value `true` to print parent properties, `false` to hide them.
+     */
+    public void set_print_verbosity (bool value) {
+        verbose = value;
+    }
+
+    /**
      * Add a node.
      *
      * @param node a node to be added
      */
     public virtual void add (Dcs.Node node) throws Dcs.NodeError {
         var descendants = node.get_descendants (typeof (Dcs.Node));
+
         if (node.parent != null) {
             throw new Dcs.NodeError.PARENT_EXISTS (
-                "Node already has a parent.");
+                "Node already has a parent");
         } else if (descendants.contains (this)) {
+            /* XXX is this accurate? what if a descendant has the same ID?
+             * maybe this should be based off the path instead */
             throw new Dcs.NodeError.CIRCULAR_REFERENCE (
-                "Node contains itself as a descendant.");
+                "Node contains itself as a descendant");
         } else {
             base.@set (node.id, node);
             node.parent = this;
@@ -132,6 +139,7 @@ public abstract class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
      * }}}
      *
      * @param type class type to retrieve
+     *
      * @return list of all nodes of a certain class type
      */
     public virtual Gee.ArrayList<Dcs.Node> get_descendants (Type type) {
@@ -161,6 +169,7 @@ public abstract class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
      * }}}
      *
      * @param type class type to retrieve
+     *
      * @return list of all nodes of a certain class type
      */
     public virtual Gee.ArrayList<Dcs.Node> get_children (Type type) {
@@ -181,16 +190,6 @@ public abstract class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
             parent.remove (this);
             new_parent.add (this);
         }
-    }
-
-    /**
-     * Set a node property.
-     *
-     * @param name The name of the property
-     * @param value The property value
-     */
-    public virtual void set_property (string name, GLib.Variant value) {
-
     }
 
     /**
@@ -231,11 +230,51 @@ public abstract class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
      * """
      * }}}
      *
-     *
      * @return A string containing information about this node
      */
     public virtual string to_string () {
+        var builder = new StringBuilder ();
 
-        return "TBD";
+        var type = get_type ();
+        var parent_type = type.parent ();
+        builder.append (type.name () + " (" + id + ")\n");
+        for (var i = 0; i < 48; i++) {
+            builder.append ("-");
+        }
+        builder.append ("\n\n Properties:\n\n");
+
+        var ocl = (ObjectClass) type.class_ref ();
+        var parent_ocl = (ObjectClass) parent_type.class_ref ();
+        foreach (var spec in ocl.list_properties ()) {
+            if (ParamFlags.READABLE in spec.flags) {
+                Value value = Value (spec.value_type);
+                get_property (spec.get_name (), ref value);
+                var str = "";
+
+                if (spec.value_type == typeof (string)) {
+                    str = value.get_string ();
+                } else if (spec.value_type == typeof (int)) {
+                    str = value.get_int ().to_string ();
+                } else if (spec.value_type == typeof (double)) {
+                    str = value.get_double ().to_string ();
+                } else if (spec.value_type == typeof (bool)) {
+                    str = value.get_boolean ().to_string ();
+                } else {
+                    str = "(unknown)";
+                }
+
+                var prop = "%20s : %-20s\n".printf (spec.get_name (), str);
+
+                if (verbose) {
+                    builder.append (prop);
+                } else {
+                    if (parent_ocl.find_property (spec.get_name ()) == null) {
+                        builder.append (prop);
+                    }
+                }
+            }
+        }
+
+        return builder.str;
     }
 }
