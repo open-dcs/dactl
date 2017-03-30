@@ -119,7 +119,7 @@ internal class Dcsg.Main : GLib.Object {
                 warning (ngettext ("No plugins found in %d second; giving up...",
                                    "No plugins found in %d seconds; giving up...",
                                    PLUGIN_TIMEOUT),
-                         PLUGIN_TIMEOUT);
+                                   PLUGIN_TIMEOUT);
 
                 // FIXME: this causes the application to close the device connections
                 //this.exit (-82);

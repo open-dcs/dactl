@@ -23,4 +23,5 @@ class Model {
     +signal void updated (string? id)
 !endif
 }
+
 @enduml

@@ -5,11 +5,13 @@
  '/
 
 class Dcs.MetaFactory {
+!ifdef SHOW_CONTENT
     +{static} Dcs.MetaFactory app_factory;
     +{static} Gee.ArrayList<Dcs.Factory> factories;
     ----
     +{static} Dcs.MetaFactory get_default ()
     +{static} static void register_factory (Dcs.Factory factory)
+!endif
 }
 
 @enduml

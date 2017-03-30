@@ -14,7 +14,7 @@ public interface Dcs.Object : GLib.Object {
      * @return  ``true`` or ``false`` depending on whether or not the id
      *          parameters match
      */
-    public virtual bool equal (Dcs.Object a, Dcs.Object b) {
+    public static bool equal (Dcs.Object a, Dcs.Object b) {
         return a.id == b.id;
     }
 
@@ -22,11 +22,12 @@ public interface Dcs.Object : GLib.Object {
      * Compares the object to another that is provided.
      *
      * @param a the object to compare this one against.
+     * @param b the object to compare this one against.
      *
-     * @return  ``0`` if they contain the same id, ``1`` otherwise
+     * @return  ``0`` if the ids match, a negative value if a.id < b.id, or a positive value if a.id > b.id
      */
-    public virtual int compare (Dcs.Object a) {
-        return this.id.ascii_casecmp (a.id);
+    public static int compare (Dcs.Object a, Dcs.Object b) {
+        return a.id.ascii_casecmp (b.id);
     }
 
     /**

@@ -3,10 +3,26 @@
  '/
 
 @startuml
+
+
 abstract class Node {
 !ifdef SHOW_CONTENT
-    #protected virtual Map<string,weak Node> references { public get; }
-    +virtual Node parent { get; }
+    +{abstract}abstract string id { set; get; }
+    #{abstract}protected abstract unowned Xml.Node* config_node
+    #protected virtual Gee.List<unowned Node> references { public get; }
+    +virtual Dcs.Node parent { get; set }
+    -- signals --
+    +@set (Dcs.Node node)
+    +@get (Dcs.Node node)
+    +remove (Dcs.Node node)
+    +signal void object_added (string id)
+    +signal void object_removed (string id)
+    +void request_object (string id)
+    ----
+    +virtual Gee.ArrayList<Dcs.Object> get_descendants (GLib.Type type)
+    +virtual Gee.ArrayList<Dcs.Object> get_children (GLib.Type type)
+    +virtual void print_node (int depth)
+    +virtual string to_string ()
 !endif
 }
 @enduml

@@ -2,7 +2,7 @@ public abstract class Dcs.AbstractBuildable : Dcs.AbstractObject, Dcs.Buildable 
 
     //protected abstract Dcs.ConfigNode node { get; set; }
 
-    protected Xml.Node* node { get; set; }
+    protected Xml.Node* config_node { get; set; }
 
     /**
      * {@inheritDoc}

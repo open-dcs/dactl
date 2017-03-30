@@ -2,7 +2,7 @@ public class Dcs.UI.HeatMap : GLib.Object, Dcs.Object, Dcs.Container,
                                                Dcs.Buildable, Dcs.UI.Drawable {
 
     private Gee.Map<string, Dcs.Object> _objects;
-    private Xml.Node* _node;
+    private Xml.Node* _config_node;
 
     /**
      * {@inheritDoc}
@@ -21,12 +21,12 @@ public class Dcs.UI.HeatMap : GLib.Object, Dcs.Object, Dcs.Container,
     /**
      * {@inheritDoc}
      */
-    protected virtual Xml.Node* node {
+    protected virtual Xml.Node* config_node {
         get {
-            return _node;
+            return _config_node;
         }
         set {
-            _node = value;
+            _config_node = value;
         }
     }
 
@@ -202,7 +202,7 @@ public class Dcs.UI.HeatMap : GLib.Object, Dcs.Object, Dcs.Container,
         if (node->type == Xml.ElementType.ELEMENT_NODE &&
             node->type != Xml.ElementType.COMMENT_NODE) {
             id = node->get_prop ("id");
-            this.node = node;
+            this.config_node = node;
 
             /* Iterate through node children */
             for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {
@@ -263,10 +263,10 @@ public class Dcs.UI.HeatMap : GLib.Object, Dcs.Object, Dcs.Container,
      * {@inheritDoc}
      */
     protected void update_node () {
-        if (node->type == Xml.ElementType.ELEMENT_NODE &&
-            node->type != Xml.ElementType.COMMENT_NODE) {
+        if (config_node->type == Xml.ElementType.ELEMENT_NODE &&
+            config_node->type != Xml.ElementType.COMMENT_NODE) {
             /* iterate through node children */
-            for (Xml.Node *iter = node->children;
+            for (Xml.Node *iter = config_node->children;
                  iter != null;
                  iter = iter->next) {
                 if (iter->name == "property") {

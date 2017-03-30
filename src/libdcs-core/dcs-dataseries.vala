@@ -1,21 +1,21 @@
 public class Dcs.FooDataSeries : Dcs.Node {
 
     /* Property backing fields */
-    private int _size;
+    private int _length;
 
     private Dcs.Point[] data;
 
-    public int size {
-        get { return _size; }
+    public int length {
+        get { return _length; }
         set {
-            _size = value;
+            _length = value;
             data.resize (value);
         }
     }
 
-    public FooDataSeries (int size) {
-        GLib.Object (size : size);
-        data = new Dcs.Point[size];
+    public FooDataSeries (int length = 10) {
+        GLib.Object (length : length);
+        data = new Dcs.Point[length];
     }
 }
 
@@ -27,7 +27,7 @@ public class Dcs.FooDataSeries : Dcs.Node {
 [Version (deprecated = true)]
 public class Dcs.DataSeries : Dcs.AbstractObject, Dcs.Buildable, Dcs.CldAdapter {
 
-    private Xml.Node* _node;
+    private Xml.Node* _config_node;
     private int _buffer_size;
     private int _stride = 1;
     private Dcs.SimplePoint[] data;
@@ -69,12 +69,12 @@ public class Dcs.DataSeries : Dcs.AbstractObject, Dcs.Buildable, Dcs.CldAdapter 
     /**
      * {@inheritDoc}
      */
-    protected virtual Xml.Node* node {
+    protected virtual Xml.Node* config_node {
         get {
-            return _node;
+            return _config_node;
         }
         set {
-            _node = value;
+            _config_node = value;
         }
     }
 
@@ -102,7 +102,7 @@ public class Dcs.DataSeries : Dcs.AbstractObject, Dcs.Buildable, Dcs.CldAdapter 
     internal void build_from_xml_node (Xml.Node *node) {
         if (node->type == Xml.ElementType.ELEMENT_NODE &&
             node->type != Xml.ElementType.COMMENT_NODE) {
-            this.node = node;
+            this._config_node = node;
             id = node->get_prop ("id");
             ch_ref = node->get_prop ("ref");
 

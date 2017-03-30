@@ -5,17 +5,17 @@
  */
 public class Dcs.UI.PnidElement : GLib.Object, Dcs.Object, Dcs.Buildable {
 
-    private Xml.Node* _node;
+    private Xml.Node* _config_node;
 
     /**
      * {@inheritDoc}
      */
-    protected virtual Xml.Node* node {
+    protected virtual Xml.Node* config_node {
         get {
-            return _node;
+            return _config_node;
         }
         set {
-            _node = value;
+            _config_node = value;
         }
     }
 
@@ -101,7 +101,7 @@ public class Dcs.UI.PnidElement : GLib.Object, Dcs.Object, Dcs.Buildable {
      */
     protected void update_node () {
         /* Iterate through node children */
-        for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {
+        for (Xml.Node *iter = config_node->children; iter != null; iter = iter->next) {
             if (iter->name == "property") {
                 switch (iter->get_prop ("name")) {
                     case "cld-ref":
@@ -418,7 +418,7 @@ public class Dcs.UI.Pnid : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
             node->type != Xml.ElementType.COMMENT_NODE) {
             id = node->get_prop ("id");
 
-            this.node = node;
+            this.config_node = node;
 
             /* Iterate through node children */
             for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {

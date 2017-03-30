@@ -3,10 +3,10 @@ public class Dcs.RefLinker : GLib.Object {
     // node id | ref | path | satisfied
 
     private struct Entry {
-        string id;
-        string @ref;
-        string path;
-        bool satisfied;
+        string id;          // requestor id
+        string @ref;        // reference requested
+        string path;        // path to reference node
+        bool satisfied;     // whether or not the reference is fulfilled
     }
 
     private List<Entry> table;

@@ -1,30 +1,30 @@
-/**
- * Dummy class to instantiate an interface for testing.
- */
-public class Dcs.Test.Factory : GLib.Object, Dcs.Factory {
+public abstract class Dcs.FactoryTestsBase : Dcs.TestCase {
 
-    public string id { get; set; }
+    protected Dcs.Test.Factory factory;
 
-    /**
-     * {@inheritdoc}
-     */
-    public Gee.TreeMap<string, Dcs.Object> make_object_map (Xml.Node *node) {
-        return null;
+    public FactoryTestsBase (string name) {
+        base (name);
+    }
+}
+
+public class Dcs.FactoryTests : Dcs.FactoryTestsBase {
+
+    private const string class_name = "DcsFactory";
+
+    public FactoryTests () {
+        base (class_name);
+        /*add_test (@"[$class_name] Test add a node", test_add);*/
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public Dcs.Object make_object (Type type) throws GLib.Error {
-
-        return null;
+    public override void set_up () {
+        factory = Dcs.Test.Factory.get_default ();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public Dcs.Object make_object_from_node (Xml.Node *node) throws GLib.Error {
+    public override void tear_down () {
+        factory = null;
+    }
 
-        return null;
+    private void test_build () {
+        var node = factory.build ();
     }
 }

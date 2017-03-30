@@ -6,7 +6,7 @@ public class Dcs.Test.Container : Dcs.AbstractContainer {
     /**
      * The map collection of the objects that belong to the container.
      */
-    public Gee.Map<string, Dcs.Object> objects { get; set; }
+    public override Gee.Map<string, Dcs.Object> objects { get; set; }
 
     public Container (string id) {
         this.id = id;
@@ -14,6 +14,5 @@ public class Dcs.Test.Container : Dcs.AbstractContainer {
     }
 
     public void update_objects (Gee.Map<string, Dcs.Object> val) {
-
     }
 }

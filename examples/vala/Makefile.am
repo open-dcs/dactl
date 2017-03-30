@@ -8,7 +8,8 @@ example_VALAFLAGS = \
 	--vapidir=$(top_srcdir)/src/libdcs-core \
 	--pkg json-glib-1.0 \
 	--pkg dcs-core-0.2 \
-	--pkg dcs-build
+	--pkg dcs-build \
+	--pkg json-glib-1.0
 
 example_CFLAGS = \
 	$(DEBUG_CFLAGS) \
@@ -21,13 +22,19 @@ example_LDADD = \
 	$(LIBDCS_CORE_LIBS) \
 	$(top_builddir)/src/libdcs-core/libdcs-core-0.2.la
 
-noinst_PROGRAMS += config-node
+noinst_PROGRAMS += config-node factory
 
 config_node_SOURCES = config-node.vala
 config_node_DEPENDENCIES = $(example_DEPENDENCIES)
 config_node_VALAFLAGS = $(example_VALAFLAGS)
 config_node_CPPFLAGS = $(example_CFLAGS)
 config_node_LDADD = $(example_LDADD)
+
+factory_SOURCES = factory.vala
+factory_DEPENDENCIES = $(example_DEPENDENCIES)
+factory_VALAFLAGS = $(example_VALAFLAGS)
+factory_CPPFLAGS = $(example_CFLAGS)
+factory_LDADD = $(example_LDADD)
 
 if ENABLE_UI
 

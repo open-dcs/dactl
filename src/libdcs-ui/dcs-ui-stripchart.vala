@@ -3,7 +3,7 @@ public class Dcs.UI.StripChartTrace : GLib.Object, Dcs.Object, Dcs.Buildable {
 
     /* Changed name from Trace to StripChartTrace while refactoring */
 
-    private Xml.Node* _node;
+    private Xml.Node* _config_node;
 
     /**
      * {@inheritDoc}
@@ -13,12 +13,12 @@ public class Dcs.UI.StripChartTrace : GLib.Object, Dcs.Object, Dcs.Buildable {
     /**
      * {@inheritDoc}
      */
-    protected virtual Xml.Node* node {
+    protected virtual Xml.Node* config_node {
         get {
-            return _node;
+            return _config_node;
         }
         set {
-            _node = value;
+            _config_node = value;
         }
     }
 
@@ -218,7 +218,7 @@ public class Dcs.UI.StripChartTrace : GLib.Object, Dcs.Object, Dcs.Buildable {
             node->type != Xml.ElementType.COMMENT_NODE) {
             id = node->get_prop ("id");
             ch_ref = node->get_prop ("ref");
-            this.node = node;
+            this.config_node = node;
 
             /* Iterate through node children */
             for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {
@@ -302,10 +302,10 @@ public class Dcs.UI.StripChartTrace : GLib.Object, Dcs.Object, Dcs.Buildable {
      * Update the XML Node for this object.
      */
     private void update_node () {
-        if (node->type == Xml.ElementType.ELEMENT_NODE &&
-            node->type != Xml.ElementType.COMMENT_NODE) {
+        if (config_node->type == Xml.ElementType.ELEMENT_NODE &&
+            config_node->type != Xml.ElementType.COMMENT_NODE) {
             /* iterate through node children */
-            for (Xml.Node *iter = node->children;
+            for (Xml.Node *iter = config_node->children;
                  iter != null;
                  iter = iter->next) {
                 if (iter->name == "property") {
@@ -811,7 +811,7 @@ public class Dcs.UI.StripChart : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
      */
     public override void build_from_xml_node (Xml.Node *node) {
         string? value;
-        this.node = node;
+        this.config_node = node;
 
         if (node->type == Xml.ElementType.ELEMENT_NODE &&
             node->type != Xml.ElementType.COMMENT_NODE) {
@@ -905,10 +905,10 @@ public class Dcs.UI.StripChart : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
      * Update XML node
      */
     protected void update_node () {
-        if (node->type == Xml.ElementType.ELEMENT_NODE &&
-            node->type != Xml.ElementType.COMMENT_NODE) {
+        if (config_node->type == Xml.ElementType.ELEMENT_NODE &&
+            config_node->type != Xml.ElementType.COMMENT_NODE) {
             /* iterate through node children */
-            for (Xml.Node *iter = node->children;
+            for (Xml.Node *iter = config_node->children;
                  iter != null;
                  iter = iter->next) {
                 if (iter->name == "property") {

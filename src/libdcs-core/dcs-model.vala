@@ -150,6 +150,7 @@ public class Dcs.Model : GLib.Object, Dcs.Container {
     /**
      * {@inheritDoc}
      */
+    [Version (deprecated = true, deprecated_since = "0.2")]
     public void update_objects (Gee.Map<string, Dcs.Object> val) {
         _objects = val;
         updated (null);

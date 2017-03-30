@@ -48,7 +48,7 @@ public class Dcs.ObjectTests : Dcs.ObjectTestsBase {
 
     private void test_compare () {
         var object = new Dcs.Test.Object (test_object.id);
-        assert (test_object.compare (object) == 0);
+        assert (Dcs.Object.compare (test_object, object) == 0);
     }
 
     private void test_to_string () {
