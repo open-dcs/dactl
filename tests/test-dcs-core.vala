@@ -12,6 +12,7 @@ void main (string[] args) {
     TestSuite.get_root ().add_suite (new Dcs.MessageTests ().get_suite ());
     TestSuite.get_root ().add_suite (new Dcs.NodeTests ().get_suite ());
     TestSuite.get_root ().add_suite (new Dcs.PointTests ().get_suite ());
+    TestSuite.get_root ().add_suite (new Dcs.RefLinkerTests ().get_suite ());
 
     Test.message ("Execute core unit tests");
     Test.run ();

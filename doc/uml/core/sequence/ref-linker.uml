@@ -1,0 +1,36 @@
+@startuml
+group ConfigXml.Load_data (..)
+App -> ConfigNode: Build ConfigNode from file
+ConfigNode --> App: Return ConfigNode
+end
+
+group Factory.produce_from_config (..)
+App -> Factory: Build RootNode from ConfigNode
+Factory -> ConfigNode: Get references
+ConfigNode --> Factory: Return references
+  loop for each config reference
+    Factory -> RefLinker: Update reference table
+    RefLinker --> Factory: Reference table updated
+  end
+Factory -> ConfigNode: Get children
+ConfigNode --> Factory: Return children
+  loop for each config child
+    Factory -> Child: Build child Node
+    Child --> Factory: Return child Node
+    Factory -> Root: Add child Node
+    Root --> Factory: child Node added
+  end
+  group RefLinker.process_node ()
+    Factory -> RefLinker: Start linking
+    loop for each table entry
+      RefLinker -> Root: Get reference
+      Root --> RefLinker: Return reference
+      RefLinker -> Root: Set reference
+      Root --> RefLinker: Reference set
+    end
+    RefLinker--> Factory: Done linking
+  end
+  Factory --> App: Return RootNode
+  end
+
+@enduml

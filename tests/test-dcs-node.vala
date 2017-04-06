@@ -1,7 +1,6 @@
 public abstract class Dcs.NodeTestsBase : Dcs.TestCase {
 
     protected Dcs.Node node;
-    protected Dcs.Factory factory;
 
     public NodeTestsBase (string name) {
         base (name);
@@ -25,12 +24,10 @@ public class Dcs.NodeTests : Dcs.NodeTestsBase {
 
     public override void set_up () {
         node = new Dcs.Test.Node ("test_node");
-        factory = Dcs.Test.Factory.get_default ();
     }
 
     public override void tear_down () {
         node = null;
-        factory = null;
     }
 
     private void test_add () {

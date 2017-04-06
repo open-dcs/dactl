@@ -118,6 +118,7 @@ public class Dcs.FooBarFactory : Dcs.FooFactory, GLib.Object {
 
         // add references
         foreach (var @ref in config.get_references ()) {
+            /* update the RefLinker table */
         }
 
         // add children
