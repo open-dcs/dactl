@@ -1,8 +1,7 @@
 public errordomain Dcs.NodeError {
     PARENT_EXISTS,
-    DUPLICATE_ID,
-    CHILD_NOT_FOUND,
-    CIRCULAR_REFERENCE
+    CIRCULAR_REFERENCE,
+    NULL_REFERENCE
 }
 
 public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
@@ -62,9 +61,9 @@ public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
     /**
      * Used by implementing class to request an reference node for addition.
      *
-     * @param pa
+     * @param id the ID of the reference node that was requested
      */
-
+    public signal void request_reference (string id);
 
     construct {
         references = new Gee.ArrayList<unowned Dcs.Node> ();
@@ -146,27 +145,38 @@ public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
     }
 
     /**
-     * Update a node.
+     * Get a node from a path identifier
      *
-     * @param node node to update
+     * @param path A path to a node
+     *
+     * @return A node with the given path
      */
-    public virtual void update (Dcs.Node node) throws Dcs.NodeError {
-        if (has_key (node.id)) {
-            base.@set (node.id, node);
-            node_updated (node.id);
-        } else {
-            throw new Dcs.NodeError.CHILD_NOT_FOUND (
-                "Node %s does not contain the child %s", id, node.id);
-        }
-    }
+    public virtual Dcs.Node retrieve (string path) throws Dcs.NodeError {
+        Dcs.Node? result = this;
+        string [] tokens;
+        string p = path;
 
-    /**
-     * Retrieve a node.
-     *
-     * @param id ID of the node to retrieve.
-     */
-    public virtual Dcs.Node? get_child (string id) {
-        return @get (id);
+        if (path.has_prefix ("/")) {
+            p  = path.substring (1, path.length - 1);
+        }
+
+        tokens = p.split ("/");
+        if (tokens[0] == id) {
+            for (int i = 1; i < tokens.length; i++) {
+                var next = result.get (tokens[i]);
+                if (next != null) {
+                    result = next;
+                } else {
+                    result = null;
+                }
+                if (result == null) {
+                throw new Dcs.NodeError.NULL_REFERENCE (
+                                         "Node with path %s does not exist", p);
+                }
+            }
+        }
+
+        return result;
     }
 
     /**

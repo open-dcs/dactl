@@ -47,10 +47,13 @@ public class Dcs.RefLinkerTests : Dcs.RefLinkerTestsBase {
     *
     */
     public void test_process_nodes () {
+        var references = new Gee.ArrayList<string> ();
+
+        /* Build node tree */
         var node0 = new Dcs.Test.Node ("node0");
         var node00 = new Dcs.Test.Node ("node00");
         var node000 = new Dcs.Test.Node ("node000");
-        var node001 = new Dcs.Test.Node ("node000");
+        var node001 = new Dcs.Test.Node ("node001");
         var node01 = new Dcs.Test.Node ("node01");
         var node010 = new Dcs.Test.Node ("node010");
         var node011 = new Dcs.Test.Node ("node011");
@@ -61,5 +64,47 @@ public class Dcs.RefLinkerTests : Dcs.RefLinkerTestsBase {
         node00.set (node001.id, node001);
         node01.set (node010.id, node010);
         node01.set (node011.id, node011);
+
+        /* Build a reference list */
+        var node00_references = new Gee.ArrayList<string> ();
+        var node000_references = new Gee.ArrayList<string> ();
+        var node001_references = new Gee.ArrayList<string> ();
+        var node01_references = new Gee.ArrayList<string> ();
+        var node010_references = new Gee.ArrayList<string> ();
+        var node011_references = new Gee.ArrayList<string> ();
+
+        linker.add_entry ("node00", "/node0/node01");
+        linker.add_entry ("node00", "/node0/node01/node010");
+        linker.add_entry ("node00", "/node0/node01/node011");
+
+        linker.add_entry ("node000", "/node0/node01");
+        linker.add_entry ("node000", "/node0/node01/node010");
+        linker.add_entry ("node000", "/node0/node01/node011");
+
+        linker.add_entry ("node001", "/node0/node01");
+        linker.add_entry ("node001", "/node0/node01/node010");
+        linker.add_entry ("node001", "/node0/node01/node011");
+
+        linker.add_entry ("node01", "/node0/node00");
+        linker.add_entry ("node01", "/node0/node00/node000");
+        linker.add_entry ("node01", "/node0/node00/node001");
+
+        linker.add_entry ("node010", "/node0/node00");
+        linker.add_entry ("node010", "/node0/node00/node000");
+        linker.add_entry ("node010", "/node0/node00/node001");
+
+        linker.add_entry ("node011", "node0/node00");
+        linker.add_entry ("node011", "node0/node00/node000");
+        linker.add_entry ("node011", "node0/node00/node001");
+
+        /*linker.print_table ();*/
+        assert (linker.process_node (node0));
+        /*linker.print_table ();*/
+        linker.add_entry ("node011", "node0/node00/nodeFoo");
+        try {
+            linker.process_node (node0);
+        } catch (Dcs.NodeError e) {
+            assert (e is Dcs.NodeError.NULL_REFERENCE);
+        }
     }
 }

@@ -94,7 +94,58 @@ public class Dcs.NodeTests : Dcs.NodeTestsBase {
     }
 
     private void test_get_children () {
+        /* Build node tree */
+        var node0 = new Dcs.Test.Node ("node0");
+        var node00 = new Dcs.Test.Node ("node00");
+        var node000 = new Dcs.Test.Node ("node000");
+        var node001 = new Dcs.Test.Node ("node001");
+        var node01 = new Dcs.Test.Node ("node01");
+        var node010 = new Dcs.Test.Node ("node010");
+        var node011 = new Dcs.Test.Node ("node011");
 
+        node0.add (node00);
+        node0.add (node01);
+        node00.add (node000);
+        node00.add (node001);
+        node01.add (node010);
+        node01.add (node011);
+
+        assert (node0.get_children (typeof (Dcs.Node)).contains (node00) &&
+                node0.get_children (typeof (Dcs.Node)).contains (node01) &&
+                node00.get_children (typeof (Dcs.Node)).contains (node000) &&
+                node00.get_children (typeof (Dcs.Node)).contains (node001) &&
+                node01.get_children (typeof (Dcs.Node)).contains (node010) &&
+                node01.get_children (typeof (Dcs.Node)).contains (node011) &&
+                (node0.get_children (typeof (Dcs.Node)).size == 2) &&
+                (node00.get_children (typeof (Dcs.Node)).size == 2) &&
+                (node000.get_children (typeof (Dcs.Node)).size == 0) &&
+                (node01.get_children (typeof (Dcs.Node)).size == 2) &&
+                (node010.get_children (typeof (Dcs.Node)).size == 0) &&
+                (node011.get_children (typeof (Dcs.Node)).size == 0));
+    }
+
+    private void test_retrieve () {
+        /* Build node tree */
+        var node0 = new Dcs.Test.Node ("node0");
+        var node00 = new Dcs.Test.Node ("node00");
+        var node000 = new Dcs.Test.Node ("node000");
+        var node001 = new Dcs.Test.Node ("node001");
+        var node01 = new Dcs.Test.Node ("node01");
+        var node010 = new Dcs.Test.Node ("node010");
+        var node011 = new Dcs.Test.Node ("node011");
+
+        node0.add (node00);
+        node0.add (node01);
+        node00.add (node000);
+        node00.add (node001);
+        node01.add (node010);
+        node01.add (node011);
+
+        var ret = node0.retrieve ("/node0/node00/node000");
+        assert (Dcs.Object.equal (ret, node000));
+
+        ret = node0.retrieve ("node0/node00/node000");
+        assert (Dcs.Object.equal (ret, node000));
     }
 
 /*
