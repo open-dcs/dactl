@@ -61,13 +61,25 @@ public interface Dcs.Application : GLib.Object {
 
 public interface Dcs.Runnable : GLib.Object {
 
+    /**
+     * The implementing application can use this to implement an options
+     * handler.
+     */
+    public abstract int launch (string[] args);
 }
 
+/**
+ * Base application class for DCS utilities and services to derive.
+ *
+ * TODO add plugin manager
+ * TODO document
+ * TODO remove runnable? running through launch is redundant as it is
+ */
 public abstract class Dcs.FooApplication : GLib.Application, Dcs.Runnable {
 
     protected Dcs.MetaConfig config;
 
-    protected Dcs.MetaFactory factory;
+    protected Dcs.FooMetaFactory factory;
 
     /**
      * Model used to update the view.
@@ -85,16 +97,21 @@ public abstract class Dcs.FooApplication : GLib.Application, Dcs.Runnable {
      */
     protected Dcs.Controller controller;
 
-    public virtual void init () {
+    /**
+     * Emitted when the application has been stopped.
+     */
+    public signal void closed ();
+
+    protected void init () {
         config = Dcs.MetaConfig.get_default ();
-        factory = Dcs.MetaFactory.get_default ();
+        factory = Dcs.FooMetaFactory.get_default ();
     }
 
     public virtual Dcs.Config get_config () {
         return config;
     }
 
-    public virtual Dcs.Factory get_factory () {
+    public virtual Dcs.FooFactory get_factory () {
         return factory;
     }
 
@@ -108,5 +125,12 @@ public abstract class Dcs.FooApplication : GLib.Application, Dcs.Runnable {
 
     public virtual Dcs.Controller get_controller () {
         return controller;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual int launch (string[] args) {
+        return (this as GLib.Application).run (args);
     }
 }

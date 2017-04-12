@@ -1,15 +1,15 @@
 internal class Dcs.DAQ.Main : GLib.Object {
 
+    /**
+     * Not sure why but having this inside CmdlineConfig blocks startup.
+     */
     private struct Options {
 
-        public static  bool version = false;
+        public static bool version = false;
 
         public static const GLib.OptionEntry[] entries = {{
             "verbose", 'v', OptionFlags.NO_ARG, OptionArg.CALLBACK, (void *) verbose_cb,
             "Provide verbose debugging output.", null
-        },{
-            "version", 'V', 0, OptionArg.NONE, ref version,
-            "Display version number.", null
         },{
             null
         }};
@@ -29,18 +29,14 @@ internal class Dcs.DAQ.Main : GLib.Object {
         try {
             opt_context.parse (ref args);
         } catch (OptionError e) {
-        }
-
-        if (Options.version) {
-            stdout.printf ("%s - version %s\n", args[0], Dcs.Build.PACKAGE_VERSION);
-            Posix.exit (0);
+            critical (e.message);
         }
     }
 
     private static int PLUGIN_TIMEOUT = 5;
 
-    private Dcs.Application app;
     private Dcs.SysLog log;
+    private Dcs.DAQ.Server app;
     private Dcs.DAQ.DeviceManager device_manager;
 
     private int exit_code;
@@ -49,7 +45,7 @@ internal class Dcs.DAQ.Main : GLib.Object {
 
     private Main () throws GLib.Error {
         this.log = Dcs.SysLog.get_default ();
-        log.init (true, null);
+        Dcs.SysLog.init (true, null);
 
         this.exit_code = 0;
 

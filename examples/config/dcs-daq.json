@@ -1,0 +1,14 @@
+{
+  "dcs": {
+    "objects": {
+      "pub0": {
+        "type": "publisher",
+        "properties": {
+          "port": 5001,
+          "address": "*",
+          "trasport-spec": "ipc"
+        }
+      }
+    }
+  }
+}

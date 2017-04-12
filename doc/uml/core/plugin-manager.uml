@@ -15,4 +15,5 @@ abstract class PluginManager {
     #ExtensionSet extensions
     #string search_path
 !endif
+}
 @enduml

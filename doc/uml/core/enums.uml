@@ -3,7 +3,6 @@
  '/
 @startuml
 
-!ifdef SHOW_ENUM
 enum ConfigFormat {
     OPTIONS,
     INI,
@@ -97,6 +96,5 @@ enum SerializationError {
 enum ViewError {
     INVALID_VIEW_REQUEST
 }
-!endif
 
 @enduml

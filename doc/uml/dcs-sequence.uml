@@ -1,16 +1,21 @@
 @startuml
 
-/' OpenDCS UML Sequence Diagram
- '
- ' XXX Add something.
- '/
-
-title OpenDCS Sequence Diagram
-
+actor Designer
+actor Client
+participant Configuration
+participant System
 actor Operator
 
-title OpenDCS Login
-
-
+Designer -> Client : Elicit system requirements
+...
+Client -> Designer : Provide requirements
+Designer -> Configuration : Write configuration
+Designer -> System : Install configuration
+Designer -> System : Test configuration
+Designer -> Client : Notify of system availabilty
+...
+Client -> Operator : Operate system
+Operator -> Client : Provide collected data
+Client -> Designer : Sign off on work completed
 
 @enduml

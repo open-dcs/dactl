@@ -43,7 +43,9 @@ package "Dcs" #DDDDDD {
     '
     ' Enumerations
     '
+    !ifdef SHOW_ENUM
     !include core/enums.uml
+    !endif
 
     '
     ' Interfaces
@@ -206,7 +208,9 @@ package "Dcs" #DDDDDD {
  '        ' Enumerations
  '        '
  '
+ '        !ifdef SHOW_ENUM
  '        !include ui/enums.uml
+ '        !endif
  '
  '        '
  '        ' Interfaces
@@ -294,6 +298,8 @@ package "Dcs" #DDDDDD {
         '
         ' Enumerations
         '
+        !ifdef SHOW_ENUM
+        !endif
 
         '
         ' Interfaces
@@ -326,6 +332,8 @@ package "Dcs" #DDDDDD {
         '
         ' Enumerations
         '
+        !ifdef SHOW_ENUM
+        !endif
 
         '
         ' Interfaces
@@ -349,6 +357,8 @@ package "Dcs" #DDDDDD {
         '
         ' Enumerations
         '
+        !ifdef SHOW_ENUM
+        !endif
 
         '
         ' Interfaces
@@ -383,6 +393,8 @@ package "Dcs" #DDDDDD {
         '
         ' Enumerations
         '
+        !ifdef SHOW_ENUM
+        !endif
 
         '
         ' Interfaces
@@ -420,8 +432,9 @@ package "Dcs" #DDDDDD {
         '
         ' Enumerations
         '
-
+        !ifdef SHOW_ENUM
         !include net/enums.uml
+        !endif
 
         '
         ' Interfaces

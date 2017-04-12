@@ -1,13 +1,7 @@
-SUBDIRS = cli core daq log net ui
-
 if ENABLE_UML
 
 uml_UML = \
-	dcs-activity.uml \
-	dcs-class.uml \
-	dcs-component.uml \
-	dcs-sequence.uml \
-	dcs-state.uml \
+	enums.uml \
 	$(NULL)
 
 uml_PNG = \
@@ -32,3 +26,4 @@ GITIGNOREFILES = \
 endif
 
 -include $(top_srcdir)/git.mk
+

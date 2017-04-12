@@ -1,16 +1,43 @@
-public class Dcs.DAQ.Server : Dcs.CLI.Application {
+public class Dcs.DAQ.Server : Dcs.FooApplication {
 
     private GLib.MainLoop loop;
 
+    /* Application specific configuration */
+    private Dcs.Config service_config;
+
+    /* Command line options read into configuration */
+    private Dcs.Config cmdline_config;
+
+    private Dcs.Net.Factory net_factory;
+
+    /* XXX These should be nested in a node set */
     public Dcs.DAQ.RestService rest_service;
 
     public Dcs.DAQ.ZmqService zmq_service;
 
+    /* Application construction */
     internal Server () {
-        GLib.Object (application_id: "org.opendcs.dcs.daq");
+        GLib.Object (application_id: "org.opendcs.dcs.daq",
+                     flags: ApplicationFlags.HANDLES_COMMAND_LINE);
 
+        debug (_("Constructing DAQ server"));
         loop = new GLib.MainLoop ();
 
+        service_config = new Dcs.DAQ.Config ();
+        cmdline_config = Dcs.DAQ.CmdlineConfig.get_default ();
+
+        net_factory = Dcs.Net.Factory.get_default ();
+
+        /* Performs the base initialization */
+        init ();
+
+        /* Register the known configuration pieces */
+        Dcs.MetaConfig.register_config (cmdline_config);
+
+        /* Register the known factories that are needed */
+        Dcs.FooMetaFactory.register_factory (net_factory);
+
+        // XXX these should go after the config gets loaded
         rest_service = new Dcs.DAQ.RestService ();
         zmq_service = new Dcs.DAQ.ZmqService.with_conn_info (
             Dcs.Net.ZmqTransport.TCP, "*", 5588);
@@ -19,7 +46,19 @@ public class Dcs.DAQ.Server : Dcs.CLI.Application {
     protected override void activate () {
         base.activate ();
 
-        debug (_("Activating DAQ Server"));
+        /* The config should be loaded, build node tree */
+        try {
+            var filename = config.get_string ("dcs", "config");
+            (service_config as Dcs.DAQ.Config).load_file (filename);
+            (service_config as Dcs.DAQ.Config).dump (stdout);
+            Dcs.MetaConfig.register_config (service_config);
+            var node = factory.produce_from_config_list (config.get_children ());
+            stdout.printf (@"$node");
+        } catch (GLib.Error e) {
+            critical (e.message);
+        }
+
+        debug (_("Activating DAQ server"));
         loop.run ();
     }
 
@@ -38,34 +77,27 @@ public class Dcs.DAQ.Server : Dcs.CLI.Application {
         base.shutdown ();
     }
 
-    static bool opt_help;
-    static const OptionEntry[] options = {{
-        "help", 'h', 0, OptionArg.NONE, ref opt_help, null, null
-    },{
-        null
-    }};
-
-    public override int command_line (GLib.ApplicationCommandLine cmdline) {
-        opt_help = false;
-
-        var opt_context = new OptionContext (Dcs.Build.PACKAGE_NAME);
-        opt_context.add_main_entries (options, null);
-        opt_context.set_help_enabled (false);
-
+    private int _command_line (GLib.ApplicationCommandLine cmdline) {
         try {
             string[] args1 = cmdline.get_arguments ();
             unowned string[] args2 = args1;
-            opt_context.parse (ref args2);
+            this.hold ();
+            Dcs.DAQ.CmdlineConfig.parse_args (ref args2);
+            this.release ();
         } catch (OptionError e) {
             cmdline.printerr ("error: %s\n", e.message);
-            cmdline.printerr (opt_context.get_help (true, null));
             return 1;
         }
 
-        if (opt_help) {
-            cmdline.printerr (opt_context.get_help (true, null));
-        }
-
         return 0;
+    }
+
+    public override int command_line (ApplicationCommandLine cmdline) {
+        this.hold ();
+        int res = _command_line (cmdline);
+        activate ();
+        this.release ();
+
+        return res;
     }
 }

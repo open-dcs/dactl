@@ -725,6 +725,12 @@ AC_CONFIG_FILES([
 	doc/man/man1/Makefile
 	doc/md/Makefile
 	doc/uml/Makefile
+	doc/uml/cli/Makefile
+	doc/uml/core/Makefile
+	doc/uml/daq/Makefile
+	doc/uml/log/Makefile
+	doc/uml/net/Makefile
+	doc/uml/ui/Makefile
 	doc/xml/Makefile
 
 	po/Makefile.in

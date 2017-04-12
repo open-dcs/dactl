@@ -67,4 +67,20 @@ internal class Dcs.DAQ.DBusService : GLib.Object, Dcs.DBusInterface {
     }
 
     //public signal void quit_request ();
+
+    public void restart () throws Error {
+        debug (_("Restart requested"));
+        this.main.restart ();
+    }
+
+    public string config_loaded () throws Error {
+        var meta_config = Dcs.MetaConfig.get_default ();
+        string val = "";
+        try {
+            val = meta_config.get_string ("app", "config");
+        } catch (Error e) {
+            throw e;
+        }
+        return val;
+    }
 }

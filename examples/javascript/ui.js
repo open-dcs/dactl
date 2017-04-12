@@ -15,7 +15,7 @@ function onDestroy(widget) {
 }
 
 function main() {
-    let config = Cld.XmlConfig.with_file_name("examples/cld.xml");
+    let config = Cld.XmlConfig.with_file_name("examples/config/cld.xml");
     let context = Cld.Context.from_config(config);
     let chan = context.get_object("ai0");
 

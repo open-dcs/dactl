@@ -72,6 +72,7 @@ dcs_daq_headers = \
 
 dcs_daq_SOURCES = \
 	main.vala \
+	config.vala \
 	cmdline-config.vala \
 	server.vala \
 	dbus-service.vala \
