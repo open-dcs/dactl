@@ -240,12 +240,12 @@ namespace Dcs.ConfigJson {
     public static void set_string (Json.Node node,
                                    string key,
                                    string value) {
-		var obj = node.get_object ();
+        var obj = node.get_object ();
         var ns = obj.get_members ().nth_data (0);
         var data = obj.get_object_member (ns);
-		var prop = data.get_member ("properties");
-		var prop_obj = prop.get_object ();
-		prop_obj.set_string_member (key, value);
+        var prop = data.get_member ("properties");
+        var prop_obj = prop.get_object ();
+        prop_obj.set_string_member (key, value);
     }
 
     /**
@@ -254,12 +254,12 @@ namespace Dcs.ConfigJson {
     public static void set_int (Json.Node node,
                                 string key,
                                 int value) {
-		var obj = node.get_object ();
+        var obj = node.get_object ();
         var ns = obj.get_members ().nth_data (0);
         var data = obj.get_object_member (ns);
-		var prop = data.get_member ("properties");
-		var prop_obj = prop.get_object ();
-		prop_obj.set_int_member (key, (int64) value);
+        var prop = data.get_member ("properties");
+        var prop_obj = prop.get_object ();
+        prop_obj.set_int_member (key, (int64) value);
     }
 
     /**
@@ -268,12 +268,12 @@ namespace Dcs.ConfigJson {
     public static void set_bool (Json.Node node,
                                  string key,
                                  bool value) {
-		var obj = node.get_object ();
+        var obj = node.get_object ();
         var ns = obj.get_members ().nth_data (0);
         var data = obj.get_object_member (ns);
-		var prop = data.get_member ("properties");
-		var prop_obj = prop.get_object ();
-		prop_obj.set_boolean_member (key, value);
+        var prop = data.get_member ("properties");
+        var prop_obj = prop.get_object ();
+        prop_obj.set_boolean_member (key, value);
     }
 
     /**
@@ -282,12 +282,12 @@ namespace Dcs.ConfigJson {
     public static void set_double (Json.Node node,
                                    string key,
                                    double value) {
-		var obj = node.get_object ();
+        var obj = node.get_object ();
         var ns = obj.get_members ().nth_data (0);
         var data = obj.get_object_member (ns);
-		var prop = data.get_member ("properties");
-		var prop_obj = prop.get_object ();
-		prop_obj.set_double_member (key, value);
+        var prop = data.get_member ("properties");
+        var prop_obj = prop.get_object ();
+        prop_obj.set_double_member (key, value);
     }
 }
 
@@ -505,13 +505,13 @@ namespace Dcs.ConfigXml {
     public static void set_string (Xml.Node* node,
                                    string key,
                                    string value) {
-		for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {
-			if (iter->name == "property") {
-				if (iter->get_prop ("name") == key) {
-					iter->set_content (value);
-				}
-			}
-		}
+        for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {
+            if (iter->name == "property") {
+                if (iter->get_prop ("name") == key) {
+                    iter->set_content (value);
+                }
+            }
+        }
     }
 
     /**
@@ -520,13 +520,13 @@ namespace Dcs.ConfigXml {
     public static void set_int (Xml.Node* node,
                                 string key,
                                 int value) {
-		for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {
-			if (iter->name == "property") {
-				if (iter->get_prop ("name") == key) {
-					iter->set_content (value.to_string ());
-				}
-			}
-		}
+        for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {
+            if (iter->name == "property") {
+                if (iter->get_prop ("name") == key) {
+                    iter->set_content (value.to_string ());
+                }
+            }
+        }
     }
 
     /**
@@ -535,13 +535,13 @@ namespace Dcs.ConfigXml {
     public static void set_bool (Xml.Node* node,
                                  string key,
                                  bool value) {
-		for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {
-			if (iter->name == "property") {
-				if (iter->get_prop ("name") == key) {
-					iter->set_content (value.to_string ());
-				}
-			}
-		}
+        for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {
+            if (iter->name == "property") {
+                if (iter->get_prop ("name") == key) {
+                    iter->set_content (value.to_string ());
+                }
+            }
+        }
     }
 
     /**
@@ -550,12 +550,12 @@ namespace Dcs.ConfigXml {
     public static void set_double (Xml.Node* node,
                                    string key,
                                    double value) {
-		for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {
-			if (iter->name == "property") {
-				if (iter->get_prop ("name") == key) {
-					iter->set_content (value.to_string ());
-				}
-			}
-		}
+        for (Xml.Node *iter = node->children; iter != null; iter = iter->next) {
+            if (iter->name == "property") {
+                if (iter->get_prop ("name") == key) {
+                    iter->set_content (value.to_string ());
+                }
+            }
+        }
     }
 }

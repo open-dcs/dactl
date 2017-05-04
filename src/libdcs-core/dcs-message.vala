@@ -69,4 +69,8 @@ public class Dcs.Message : GLib.Object {
 
         //return data;
     //}
+
+    public string to_string () {
+        return "{ \"msgid\": \"msg0\" }";
+    }
 }

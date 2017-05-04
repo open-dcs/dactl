@@ -4,9 +4,7 @@
 
 @startuml
 interface Serializable {
-!ifdef SHOW_CONTENT
     +{abstract} abstract string serialize () throws Error
     +{abstract} abstract voif deserialize (string data) throws Error
-!endif
 }
 @enduml

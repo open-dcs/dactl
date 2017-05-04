@@ -4,11 +4,9 @@
 
 @startuml
 interface DBusInterface {
-!ifdef SHOW_CONTENT
     +const unowned string SERVICE_NAME
     +const unowned string OBJECT_PATH
     ----
     +{abstract} abstract shutdownd () throws IOError
-!endif
 }
 @enduml

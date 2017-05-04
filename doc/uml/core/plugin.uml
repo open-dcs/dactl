@@ -3,10 +3,6 @@
  '/
 
 @startuml
-    interface Plugin {
-!ifdef SHOW_CONTENT
-
-!endif
-    }
-
+interface Plugin {
+}
 @enduml

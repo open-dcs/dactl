@@ -4,12 +4,10 @@
 
 @startuml
 interface Object {
-!ifdef SHOW_CONTENT
     +{abstract} abstract string id
     ----
     +virtual bool equal (Object a, Object b)
     +virtual int compare (Object a)
     +virtual string to_string ()
-!endif
 }
 @enduml

@@ -4,7 +4,5 @@
 
 @startuml
 class Message {
-!ifdef SHOW_CONTENT
-!endif
 }
 @enduml

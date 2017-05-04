@@ -4,7 +4,6 @@
 
 @startuml
 class Model {
-!ifdef SHOW_CONTENT
     +string name
     +bool admin
     +bool def_enabled
@@ -21,7 +20,6 @@ class Model {
     --signals--
     +signal void log_state_changed (string log, bool state
     +signal void updated (string? id)
-!endif
 }
 
 @enduml

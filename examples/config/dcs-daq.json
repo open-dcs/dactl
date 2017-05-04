@@ -6,7 +6,15 @@
         "properties": {
           "port": 5001,
           "address": "*",
-          "trasport-spec": "ipc"
+          "transport-spec": "ipc"
+        }
+      },
+      "pub1": {
+        "type": "publisher",
+        "properties": {
+          "port": 5002,
+          "address": "127.0.0.1",
+          "transport-spec": "tcp"
         }
       }
     }

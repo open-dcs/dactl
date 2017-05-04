@@ -4,9 +4,7 @@
 
 @startuml
 interface Backend {
-!ifdef SHOW_CONTENT
     +{abstract}abstract open () theroes Error
     +{abstract}abstract close () throws Error
-!endif
 }
 @enduml

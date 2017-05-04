@@ -1,4 +1,4 @@
-public class Dcs.DAQ.Server : Dcs.FooApplication {
+public class Dcs.DAQ.Server : Dcs.Net.Service {
 
     private GLib.MainLoop loop;
 
@@ -37,28 +37,34 @@ public class Dcs.DAQ.Server : Dcs.FooApplication {
         /* Register the known factories that are needed */
         Dcs.FooMetaFactory.register_factory (net_factory);
 
-        // XXX these should go after the config gets loaded
+        /* XXX these should go after the config gets loaded */
         rest_service = new Dcs.DAQ.RestService ();
         zmq_service = new Dcs.DAQ.ZmqService.with_conn_info (
             Dcs.Net.ZmqTransport.TCP, "*", 5588);
+
+        /* Create the plugin manager which loads all plugins */
+        /* TODO Make this provide the entire service to the extension */
+        plugin_manager = new Dcs.DAQ.DeviceManager (zmq_service);
     }
 
     protected override void activate () {
+        debug (_("Activating DAQ server"));
         base.activate ();
 
         /* The config should be loaded, build node tree */
         try {
             var filename = config.get_string ("dcs", "config");
             (service_config as Dcs.DAQ.Config).load_file (filename);
-            (service_config as Dcs.DAQ.Config).dump (stdout);
+            //(service_config as Dcs.DAQ.Config).dump (stdout);
             Dcs.MetaConfig.register_config (service_config);
-            var node = factory.produce_from_config_list (config.get_children ());
-            stdout.printf (@"$node");
+            construct_model ();
+
+            /* Start as a service including starting configured sockets */
+            this.start ();
         } catch (GLib.Error e) {
             critical (e.message);
         }
 
-        debug (_("Activating DAQ server"));
         loop.run ();
     }
 

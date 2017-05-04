@@ -156,3 +156,10 @@ public class Dcs.Model : GLib.Object, Dcs.Container {
         updated (null);
     }
 }
+
+public class Dcs.FooModel : Dcs.Node {
+
+    construct {
+        id = "root";
+    }
+}

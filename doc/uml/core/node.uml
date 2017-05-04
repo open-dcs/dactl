@@ -3,10 +3,7 @@
  '/
 
 @startuml
-
-
 abstract class Node {
-!ifdef SHOW_CONTENT
     +{abstract}abstract string id { set; get; }
     #{abstract}protected abstract unowned Xml.Node* config_node
     #protected virtual Gee.List<unowned Node> references { public get; }
@@ -23,6 +20,5 @@ abstract class Node {
     +virtual Gee.ArrayList<Dcs.Object> get_children (GLib.Type type)
     +virtual void print_node (int depth)
     +virtual string to_string ()
-!endif
 }
 @enduml

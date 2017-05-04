@@ -3,6 +3,7 @@ SUBDIRS = \
 	comedi \
 	mccusb \
 	samples \
+	signal-generator \
 	$(NULL)
 
 EXTRA_DIST = Makefile.device

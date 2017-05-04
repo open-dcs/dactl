@@ -4,11 +4,9 @@
 
 @startuml
 class Point <<compact>> {
-!ifdef SHOW_CONTENT
     +double x { set; get; }
     +double y {set; get; }
     ----
     +Point (double x, double y)
-!endif
 }
 @enduml

@@ -64,7 +64,6 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
     public virtual string get_string (string ns,
                                       string key)
                                       throws GLib.Error {
-                                        debug ("hi");
         throw new ConfigError.NO_VALUE_SET (_("No value available"));
     }
 

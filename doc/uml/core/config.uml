@@ -3,9 +3,7 @@
  '/
 
 @startuml
-
 interface Config {
-!ifdef SHOW_CONTENT
     -- signals --
     +void config_changed (ConfigEntry entry)
     +void setting_changed (string ns, string key)
@@ -50,7 +48,5 @@ interface Config {
     #{static} void xml_set_int_list (Xml.Node* node, string key)
     #{static} void xml_set_bool (Xml.Node* node, string key)
     #{static} void xml_set_double (Xml.Node* node, string key)
-!endif
 }
-
 @enduml

@@ -25,6 +25,7 @@ libdcs_net_0_2_la_public_sources = \
 	dcs-net-factory.c \
 	dcs-net-publisher.c \
 	dcs-net-subscriber.c \
+	dcs-net-service.c \
 	dcs-net-rest-service.c \
 	dcs-net-zmq-service.c \
 	dcs-net-zmq-client.c \
@@ -35,6 +36,7 @@ libdcs_net_0_2_la_VALASOURCES = \
 	dcs-net-factory.vala \
 	dcs-net-publisher.vala \
 	dcs-net-subscriber.vala \
+	dcs-net-service.vala \
 	dcs-net-rest-service.vala \
 	dcs-net-zmq-service.vala \
 	dcs-net-zmq-client.vala \
@@ -115,6 +117,7 @@ $(builddir)/DcsNet-0.2.gir: $(srcdir)/Dcs-0.2.gir
 		-e 's,Dcs\.,DcsNet.,g' \
 		-e 's,namespace name="Dcs",namespace name="DcsNet",g' \
 		-e 's,DcsNet\.Node,DcsCore.Node,g' \
+		-e 's,DcsNet\.FooApplication,DcsCore.FooApplication,g' \
 		-e 's,DcsNet\.FooFactory,DcsCore.FooFactory,g' \
 		-e 's,<package name="dcs-net-0.2"/>,<include name="DcsCore" version="0.2"/>\n<package name="dcs-net-0.2"/>,' \
 		$< >$@

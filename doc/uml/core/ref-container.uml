@@ -4,10 +4,8 @@
 
 @startuml
 interface RefContainer {
-!ifdef SHOW_CONTENT
     #{abstract} abstract Map<string, weak Node> references
     ----
     +{abstract} virtual void add_reference (Dcs.Node node)
-!endif
 }
 @enduml

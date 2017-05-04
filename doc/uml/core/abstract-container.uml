@@ -4,10 +4,8 @@
 
 @startuml
 abstract class AbstractContainer {
-!ifdef SHOW_CONTENT
    +Map<string,Object> objects
    ----
    +virtual void update_objects (Map<string, Object> val)
-!endif
 }
 @enduml

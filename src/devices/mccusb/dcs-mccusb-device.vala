@@ -10,16 +10,21 @@ public class Dcs.DAQ.MccUsb.Device : Peas.ExtensionBase, Peas.Activatable {
 
     public void activate () {
         debug ("Measurement Computing USB device activated");
+    }
+
+    public void deactivate () {
+        debug ("Measurement Computing USB device deactivated");
+    }
+
+    public void update_state () { }
+
+    public void run () {
         device = (Dcs.DAQ.Device) object;
         debug (device.zmq_service.to_string ());
         device.zmq_service.data_published.connect ((data) => {
             debug ((string) data);
         });
     }
-
-    public void deactivate () { }
-
-    public void update_state () { }
 }
 
 [ModuleInit]

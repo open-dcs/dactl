@@ -4,7 +4,6 @@
 
 @startuml
 interface Container {
-!ifdef SHOW_CONTENT
     -- signals --
     +signal void object_added (string id)
     +signal void object_removed (string id)
@@ -14,6 +13,5 @@ interface Container {
     +virtual Gee.ArrayList<Dcs.Object> get_children (GLib.Type type)
     +virtual void sort_objects ()
     +virtual void print_objects (int depth)
-!endif
 }
 @enduml

@@ -4,7 +4,5 @@
 
 @startuml
 interface Channel {
-!ifdef SHOW_CONTENT
-!endif
 }
 @enduml

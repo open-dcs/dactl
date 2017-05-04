@@ -31,7 +31,7 @@ left to right direction
 'page 4x1
 
 ' Control output
-'!define SHOW_CONTENT
+!define SHOW_CONTENT
 '!define SHOW_ENUM
 '!define SHOW_GLIB_ASSOC
 '!define SHOW_GTK_ASSOC

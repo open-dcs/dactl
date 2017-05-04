@@ -1,3 +1,5 @@
+include $(top_srcdir)/common.am
+
 CLEANFILES =
 DISTCLEANFILES =
 BUILT_SOURCES =
@@ -117,6 +119,7 @@ $(builddir)/DcsDAQ-0.2.gir: $(srcdir)/Dcs-0.2.gir
 		-e 's,Dcs\.,DcsDAQ.,g' \
 		-e 's,namespace name="Dcs",namespace name="DcsDAQ",g' \
 		-e 's,DcsDAQ\.Extension,DcsCore.Extension,g' \
+		-e 's,DcsDAQ\.PluginExtension,DcsCore.PluginExtension,g' \
 		-e 's,<package name="dcs-daq-0.2"/>,<include name="DcsCore" version="0.2"/>\n<package name="dcs-daq-0.2"/>,' \
 		$< >$@
 GIRS = DcsDAQ-0.2.gir

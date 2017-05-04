@@ -379,6 +379,7 @@ dnl ***********************************************************************
 m4_include([src/devices/comedi/configure.ac])
 m4_include([src/devices/mccusb/configure.ac])
 m4_include([src/devices/arduino/configure.ac])
+m4_include([src/devices/signal-generator/configure.ac])
 
 AC_SUBST([DEVICE_DIR],[${libdir}/dcs/devices])
 
@@ -701,24 +702,24 @@ AC_CONFIG_FILES([
 	data/mime/Makefile
 	data/org.opendcs.Dcsg.desktop.in
 
-    data/systemd/Makefile
-    data/systemd/dcs-ctl.service
-    data/systemd/dcs-daq.service
-    data/systemd/dcs-log.service
+	data/systemd/Makefile
+	data/systemd/dcs-ctl.service
+	data/systemd/dcs-daq.service
+	data/systemd/dcs-log.service
 
-    data/templates/Makefile
-    data/templates/common/Makefile
-    data/templates/common/build/Makefile
-    data/templates/common/build/autotools/Makefile
-    data/templates/common/src/Makefile
-    data/templates/backend/Makefile
-    data/templates/backend/src/Makefile
-    data/templates/device/Makefile
-    data/templates/device/src/Makefile
-    data/templates/plugin/Makefile
-    data/templates/plugin/src/Makefile
+	data/templates/Makefile
+	data/templates/common/Makefile
+	data/templates/common/build/Makefile
+	data/templates/common/build/autotools/Makefile
+	data/templates/common/src/Makefile
+	data/templates/backend/Makefile
+	data/templates/backend/src/Makefile
+	data/templates/device/Makefile
+	data/templates/device/src/Makefile
+	data/templates/plugin/Makefile
+	data/templates/plugin/src/Makefile
 
-    data/gsettings/Makefile
+	data/gsettings/Makefile
 
 	doc/Makefile
 	doc/man/Makefile
@@ -753,9 +754,9 @@ AC_CONFIG_FILES([
 	src/libdcs-ui/Makefile
 	src/libdcs-ui/extensions/Makefile
 
-    src/backends/Makefile
+	src/backends/Makefile
 
-    src/loops/Makefile
+	src/loops/Makefile
 
 	src/plugins/Makefile
 	src/plugins/samples/Makefile

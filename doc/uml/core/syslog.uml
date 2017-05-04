@@ -4,12 +4,10 @@
 
 @startuml
 class SysLog {
-!ifdef SHOW_CONTENT
     +{static} int verbosity
     +{static} unowned SysLog get_default ()
     +{static} void init (bool stdout, string? filename)
     +{static} void shutdown ()
     +{static} void increase_verbosity ()
-!endif
 }
 @enduml

@@ -169,11 +169,8 @@ public class Dcs.DAQ.Config : Dcs.AbstractConfig {
                                        string key) throws GLib.Error {
         string val = null;
 
-        debug ("fuck");
-
         switch (format) {
             case Dcs.ConfigFormat.JSON:
-                debug ("tard");
                 val = Dcs.ConfigJson.get_string (json, key);
                 break;
             case Dcs.ConfigFormat.XML:

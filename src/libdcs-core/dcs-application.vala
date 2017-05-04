@@ -1,4 +1,5 @@
 public errordomain Dcs.ApplicationError {
+    NOT_INITIALIZED,
     INVALID_ADD_REQUEST,
     INVALID_REMOVE_REQUEST
 }
@@ -77,6 +78,8 @@ public interface Dcs.Runnable : GLib.Object {
  */
 public abstract class Dcs.FooApplication : GLib.Application, Dcs.Runnable {
 
+    private bool initialized = false;
+
     protected Dcs.MetaConfig config;
 
     protected Dcs.FooMetaFactory factory;
@@ -84,7 +87,7 @@ public abstract class Dcs.FooApplication : GLib.Application, Dcs.Runnable {
     /**
      * Model used to update the view.
      */
-    protected Dcs.Model model;
+    public Dcs.FooModel model;
 
     /**
      * View to provide the user access to the data in the model.
@@ -102,9 +105,15 @@ public abstract class Dcs.FooApplication : GLib.Application, Dcs.Runnable {
      */
     public signal void closed ();
 
+    /**
+     * TODO Fix this, doesn't seem like a good idea to rely on the person using
+     * this class to perform the manual initialization when fetching the
+     * singletons could just be done using a property getter.
+     */
     protected void init () {
         config = Dcs.MetaConfig.get_default ();
         factory = Dcs.FooMetaFactory.get_default ();
+        initialized = true;
     }
 
     public virtual Dcs.Config get_config () {
@@ -115,7 +124,7 @@ public abstract class Dcs.FooApplication : GLib.Application, Dcs.Runnable {
         return factory;
     }
 
-    public virtual Dcs.Model get_model () {
+    public virtual Dcs.FooModel get_model () {
         return model;
     }
 
@@ -125,6 +134,20 @@ public abstract class Dcs.FooApplication : GLib.Application, Dcs.Runnable {
 
     public virtual Dcs.Controller get_controller () {
         return controller;
+    }
+
+    public virtual void construct_model () throws GLib.Error {
+        if (initialized) {
+            model = new Dcs.FooModel();
+            var node = factory.produce_from_config_list (config.get_children ());
+            foreach (var child in node.get_children (typeof (Dcs.Node))) {
+                //debug (child.to_string ());
+                child.reparent (model);
+            }
+        } else {
+            throw new Dcs.ApplicationError.NOT_INITIALIZED (
+                "The application was not initialized correctly");
+        }
     }
 
     /**

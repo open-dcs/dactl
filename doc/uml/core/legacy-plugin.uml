@@ -4,7 +4,6 @@
 
 @startuml
 class LegacyPlugin {
-!ifdef SHOW_CONTENT
     +PluginCapabilities capabilities
     +string name
     +string title
@@ -16,6 +15,5 @@ class LegacyPlugin {
     +LegacyPlugin (string name, string? title, string? description = null, PluginCapabilities capabilities = NONE)
     ----
     +override void constructed ()
-!endif
 }
 @enduml

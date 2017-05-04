@@ -130,7 +130,8 @@ public class Dcs.FooBarFactory : Dcs.FooFactory, GLib.Object {
 
     public virtual Dcs.Node produce_from_config_list (Gee.List<Dcs.ConfigNode> config)
                                                       throws GLib.Error {
-        Dcs.Node node = null;
+        Dcs.Node node = new Dcs.Node ();
+        node.id = "core0";
 
         try {
             foreach (var item in config) {

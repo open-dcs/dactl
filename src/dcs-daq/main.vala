@@ -37,7 +37,6 @@ internal class Dcs.DAQ.Main : GLib.Object {
 
     private Dcs.SysLog log;
     private Dcs.DAQ.Server app;
-    private Dcs.DAQ.DeviceManager device_manager;
 
     private int exit_code;
 
@@ -50,8 +49,6 @@ internal class Dcs.DAQ.Main : GLib.Object {
         this.exit_code = 0;
 
         app = new Dcs.DAQ.Server ();
-
-        device_manager = new Dcs.DAQ.DeviceManager ((app as Dcs.DAQ.Server).zmq_service);
 
         Unix.signal_add (Posix.SIGHUP,  () => { this.restart (); return true; });
         Unix.signal_add (Posix.SIGINT,  () => { this.exit (0);   return true; });

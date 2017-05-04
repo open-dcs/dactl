@@ -46,6 +46,23 @@ public class Dcs.MetaConfig : Dcs.AbstractConfig {
     /**
      * {@inheritDoc}
      */
+    public override Gee.List<Dcs.ConfigNode> get_children () {
+        var list = new Gee.ArrayList<Dcs.ConfigNode> (
+            (Gee.EqualDataFunc<Dcs.ConfigNode>) Dcs.ConfigNode.equals);
+
+        foreach (var config in config_list) {
+            if (config is Dcs.AbstractConfig &&
+                (config as Dcs.AbstractConfig).has_children ()) {
+                list.add_all ((config as Dcs.AbstractConfig).get_children ());
+            }
+        }
+
+        return list.read_only_view;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public override void dump (GLib.FileStream stream) {
         foreach (var config in config_list) {
             try {

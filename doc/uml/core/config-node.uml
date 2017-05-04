@@ -3,9 +3,7 @@
  '/
 
 @startuml
-
 class ConfigNode {
-!ifdef SHOW_CONTENT
     -- signals --
     +void property_edited (string property)
     -- properties --
@@ -32,7 +30,5 @@ class ConfigNode {
     +void set_int_list (string ns, string key, int[] value) throws Error
     +void set_bool (string ns, string key, bool value) throws Error
     +void set_double (string ns, string key, double value) throws Error
-!endif
 }
-
 @enduml

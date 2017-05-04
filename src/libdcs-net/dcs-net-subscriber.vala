@@ -13,16 +13,23 @@ public class Dcs.Net.Subscriber : Dcs.Node {
      */
     public int port { get; set; default = 5000; }
 
+    private string _transport_spec = "inproc";
     /**
      * Transport to use with the service as a configurable string.
      */
     public string transport_spec {
         get {
-            string spec = transport.to_string ();
-            unowned string _spec = spec;
-            return _spec;
+            /*
+             *string spec = transport.to_string ();
+             *unowned string _spec = spec;
+             *return _spec;
+             */
+            return _transport_spec;
         }
-        set { transport = Dcs.Net.ZmqTransport.parse (value); }
+        set {
+            _transport_spec = value;
+            transport = Dcs.Net.ZmqTransport.parse (value);
+        }
     }
 
     /**
@@ -58,13 +65,7 @@ public class Dcs.Net.Subscriber : Dcs.Node {
      */
     public signal void data_received (uint8[] data);
 
-    public Subscriber () {
-        try {
-            init ();
-        } catch (Dcs.Net.ZmqError e) {
-            critical (e.message);
-        }
-    }
+    public Subscriber () { }
 
     public Subscriber.with_conn_info (Dcs.Net.ZmqTransport transport,
                                       string address,
@@ -72,10 +73,13 @@ public class Dcs.Net.Subscriber : Dcs.Node {
         GLib.Object (transport: transport,
                      address: address,
                      port: port);
+    }
+
+    public void start () throws Dcs.Net.ZmqError {
         try {
             init ();
         } catch (Dcs.Net.ZmqError e) {
-            critical (e.message);
+            throw e;
         }
     }
 

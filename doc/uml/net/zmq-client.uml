@@ -4,7 +4,6 @@
 
 @startuml
 abstract class ZmqClient {
-!ifdef SHOW_CONTENT
     +int port
     +ZmqTransport transport
     +string address
@@ -22,6 +21,5 @@ abstract class ZmqClient {
     --fields--
     +Context context
     +Socket subscriber
-!endif
 }
 @enduml

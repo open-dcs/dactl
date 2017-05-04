@@ -185,11 +185,13 @@ public class Dcs.FooMetaFactory : GLib.Object, Dcs.FooFactory {
 
     public virtual Dcs.Node produce_from_config_list (Gee.List<Dcs.ConfigNode> config)
                                                       throws GLib.Error {
-        Dcs.Node node = null;
+        Dcs.Node node = new Dcs.Node ();
+        node.id = "root0";
 
         foreach (var factory in factories) {
             try {
-                node.set_all (factory.produce_from_config_list (config));
+                debug ("Consuming config nodes in MetaFactory");
+                node.add (factory.produce_from_config_list (config));
             } catch (GLib.Error e) {
                 if (!(e is Dcs.FactoryError.TYPE_NOT_FOUND ||
                       e is Dcs.FactoryError.INVALID_FORMAT ||

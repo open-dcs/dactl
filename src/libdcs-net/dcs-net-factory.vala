@@ -84,11 +84,16 @@ public class Dcs.Net.Factory : GLib.Object, Dcs.FooFactory {
 
     public virtual Dcs.Node produce_from_config_list (Gee.List<Dcs.ConfigNode> config)
                                                       throws GLib.Error {
-        Dcs.Node node = null;
+        Dcs.Node node = new Dcs.Node ();
+        node.id = "net";
 
         try {
             foreach (var item in config) {
-                node.add (produce_from_config (item));
+                debug ("Consuming config nodes in NetFactory");
+                var child = produce_from_config (item);
+                if (child != null) {
+                    node.add ((owned) child);
+                }
             }
         } catch (GLib.Error e) {
             if (!(e is Dcs.FactoryError.TYPE_NOT_FOUND)) {
