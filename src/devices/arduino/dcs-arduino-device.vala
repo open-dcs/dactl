@@ -1,11 +1,12 @@
-public class Dcs.DAQ.Arduino.Device : Peas.ExtensionBase, Peas.Activatable {
+public class Dcs.DAQ.Arduino.Device : Dcs.DAQ.Device {
 
     private Dcs.DAQ.Device device;
 
     public GLib.Object object { construct; owned get; }
 
-    public Device (Dcs.Net.ZmqService zmq_service) {
+    public Device (Dcs.Net.Service service) {
         debug ("Arduino device constructor");
+        base (service);
     }
 
     public void activate () {
@@ -20,10 +21,11 @@ public class Dcs.DAQ.Arduino.Device : Peas.ExtensionBase, Peas.Activatable {
 
     public void run () {
         device = (Dcs.DAQ.Device) object;
-        debug (device.zmq_service.to_string ());
-        device.zmq_service.data_published.connect ((data) => {
-            debug ((string) data);
-        });
+        /*
+         *device.zmq_service.data_published.connect ((data) => {
+         *    debug ((string) data);
+         *});
+         */
     }
 }
 

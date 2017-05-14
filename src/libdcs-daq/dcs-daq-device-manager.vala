@@ -1,14 +1,14 @@
 public class Dcs.DAQ.DeviceManager : Dcs.PluginManager {
 
-    private Dcs.Net.ZmqService zmq_service;
+    private Dcs.Net.Service service;
 
     public Dcs.DAQ.Device ext { get; set; }
 
-    public DeviceManager (Dcs.Net.ZmqService zmq_service) {
-        this.zmq_service = zmq_service;
+    public DeviceManager (Dcs.Net.Service service) {
+        this.service = service;
 
         engine = Peas.Engine.get_default ();
-        ext = new Dcs.DAQ.Device (zmq_service);
+        ext = new Dcs.DAQ.Device (service);
         search_path = Dcs.Build.DEVICE_DIR;
 
         init ();

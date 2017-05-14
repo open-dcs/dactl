@@ -44,19 +44,46 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
 
         /* Create the plugin manager which loads all plugins */
         /* TODO Make this provide the entire service to the extension */
-        plugin_manager = new Dcs.DAQ.DeviceManager (zmq_service);
+        plugin_manager = new Dcs.DAQ.DeviceManager (this);
     }
 
     protected override void activate () {
         debug (_("Activating DAQ server"));
         base.activate ();
 
+        string? filename = null;
+
         /* The config should be loaded, build node tree */
         try {
-            var filename = config.get_string ("dcs", "config");
+            filename = config.get_string ("dcs", "config");
+        } catch (GLib.Error e) {
+            if (e is Dcs.ConfigError.NO_VALUE_SET) {
+                if (filename == null) {
+                    /* First check for ~/.config/dcs/dcs-daq.xml */
+                    filename = "~/.config/dcs/dcs-daq.xml";
+                    if (!FileUtils.test (filename, FileTest.EXISTS)) {
+                        /* If a user config doesn't exist use the default */
+                        filename = GLib.Path.build_filename (Dcs.Build.DATADIR,
+                                                            "dcs-daq.xml");
+                    }
+                    debug ("Configuration file not provided at prompt, using %s",
+                           filename);
+                }
+            } else {
+                critical (e.message);
+            }
+        }
+
+        if (filename != null && FileUtils.test (filename, FileTest.EXISTS)) {
             (service_config as Dcs.DAQ.Config).load_file (filename);
             //(service_config as Dcs.DAQ.Config).dump (stdout);
             Dcs.MetaConfig.register_config (service_config);
+        } else {
+            critical ("No configuration available or provided");
+        }
+
+        try {
+            /* Use any configuration that's available at this point to build */
             construct_model ();
 
             /* Start as a service including starting configured sockets */

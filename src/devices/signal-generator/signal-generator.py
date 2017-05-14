@@ -9,30 +9,31 @@
 import gi
 gi.require_version('Peas', '1.0')
 gi.require_version('DcsCore', '0.2')
+gi.require_version('DcsDAQ', '0.2')
 gi.require_version('DcsNet', '0.2')
 from gi.repository import GObject
 from gi.repository import Peas
 from gi.repository import DcsCore
+from gi.repository import DcsDAQ
 from gi.repository import DcsNet
 
 from pprint import pprint
 
 LABEL_STRING="Signal Generator Device"
 
-class SignalGenerator(Peas.ExtensionBase, Peas.Activatable):
+class SignalGenerator(DcsDAQ.DAQDevice):
     __gtype_name__ = 'SignalGenerator'
 
     object = GObject.property(type=GObject.Object)
 
     def do_activate(self):
-        print("SignalGenerator.do_activate")
-        app = self.object.get_app()
-        controller = app.get_controller()
+        # print("SignalGenerator.do_activate")
+        self.object.get_something()
+        # self.service = self.object.get_service()
+        self.variable = 0
 
     def do_deactivate(self):
         print("SignalGenerator.do_deactivate")
-        app = self.object.get_app()
-        controller = app.get_controller()
 
     def do_update_state(self):
         print("SignalGenerator.do_update_state")

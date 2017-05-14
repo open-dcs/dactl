@@ -27,6 +27,8 @@ LIBDCS_CORE_VAPI_SOURCE_FILES = \
     dcs-node.vala \
     dcs-object.vala \
     dcs-plugin.vala \
+    dcs-plugin-config.vala \
+    dcs-plugin-factory.vala \
     dcs-plugin-loader.vala \
     dcs-plugin-manager.vala \
     dcs-point.vala \

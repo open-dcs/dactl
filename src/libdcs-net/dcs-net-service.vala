@@ -6,13 +6,13 @@ public errordomain Dcs.ServiceError {
 /**
  * Questions:
  * - should there be one queue per configured socket type?
- *   > I think so
+ * > I think so
  * - should there be an async processor for each queue?
- *   > I think so
+ * > I think so
  * - should PUB and REQ have different queues and processors?
- *   > I think so
+ * > I think so
  * - should SUB and REP have different queues and processors?
- *   > I think so
+ * > I think so
  */
 
 public class Dcs.Net.Service : Dcs.FooApplication {

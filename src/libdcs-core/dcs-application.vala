@@ -87,7 +87,7 @@ public abstract class Dcs.FooApplication : GLib.Application, Dcs.Runnable {
     /**
      * Model used to update the view.
      */
-    public Dcs.FooModel model;
+    protected Dcs.FooModel model;
 
     /**
      * View to provide the user access to the data in the model.

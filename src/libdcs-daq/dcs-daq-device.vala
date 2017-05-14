@@ -1,10 +1,10 @@
 public class Dcs.DAQ.Device : Dcs.PluginExtension {
 
-    public Dcs.Net.ZmqService zmq_service { get; construct set; }
+    public Dcs.Net.Service service { get; construct set; }
 
-    public Device (Dcs.Net.ZmqService zmq_service) {
+    public Device (Dcs.Net.Service service) {
         debug ("Device constructor");
-        this.zmq_service = zmq_service;
+        this.service = service;
     }
 
     /*
@@ -13,4 +13,8 @@ public class Dcs.DAQ.Device : Dcs.PluginExtension {
      *    return null;
      *}
      */
+
+    public void get_something () {
+        stdout.printf ("hi\n");
+    }
 }

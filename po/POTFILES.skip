@@ -58,6 +58,8 @@ src/libdcs-log/dcs-log-factory.c
 src/libdcs-net/dcs-net-factory.c
 src/libdcs-net/dcs-net-zmq-client.c
 src/libdcs-net/dcs-net-zmq-service.c
+src/libdcs-net/dcs-net-publisher.c
+src/libdcs-net/dcs-net-subscriber.c
 src/libdcs-ui/dcs-ui-factory.c
 src/libdcs-ui/ui/ai-control.ui
 src/libdcs-ui/ui/ao-control.ui
