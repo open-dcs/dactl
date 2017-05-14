@@ -1,0 +1,7 @@
+[Plugin]
+Module=signal-generator
+Loader=python3
+Name=Signal Generator Device Plugin
+Description=Signal generator device.
+Authors=Geoff Johnson <geoff.jay@gmail.com>
+Copyright=Copyright © 2016 Geoff Johnson

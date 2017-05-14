@@ -4,12 +4,10 @@
 
 @startuml
 interface Buildable {
-!ifdef SHOW_CONTENT
     #{abstract} abstract unowned Node* node
     ----
     +{static} static unowned string get_xml_default ()
     +{static} static unowned string get_xsd_default ()
     ~{abstract} internal build_from_xml_node (unowned Node* node)
-!endif
 }
 @enduml

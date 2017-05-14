@@ -1,3 +1,5 @@
+SUBDIRS = cli core daq log net ui
+
 if ENABLE_UML
 
 uml_UML = \
@@ -11,7 +13,10 @@ uml_UML = \
 uml_PNG = \
 	$(uml_UML:%.uml=%.png)
 
-all: $(uml_PNG)
+uml_PDF = \
+	$(uml_UML:%.uml=%.pdf)
+
+all: $(uml_PNG) # $(uml_PDF)
 
 clean:
 	-test -z "$(CLEAN_FILES)" || rm -f $(CLEAN_FILES)
@@ -19,12 +24,17 @@ clean:
 %.png: %.uml
 	$(PLANTUML) $<
 
+%.pdf: %.uml
+	$(PLANTUML) -tpdf $<
+
 CLEAN_FILES = \
 	$(uml_PNG) \
+	$(uml_PDF) \
 	$(NULL)
 
 GITIGNOREFILES = \
 	$(uml_PNG) \
+	$(uml_PDF) \
 	$(NULL)
 
 endif

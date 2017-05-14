@@ -4,7 +4,6 @@
 
 @startuml
 abstract class PluginManager {
-!ifdef SHOW_CONTENT
     #virtual void init ()
     #{abstract}abstract add_extension ()
     #virtual void load_plugins ()
@@ -14,5 +13,5 @@ abstract class PluginManager {
     #Engine engine
     #ExtensionSet extensions
     #string search_path
-!endif
+}
 @enduml

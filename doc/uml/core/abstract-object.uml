@@ -4,11 +4,9 @@
 
 @startuml
 abstract class AbstractObject {
-!ifdef SHOW_CONTENT
     +string id
     ----
     +virtual string serialize () throws Error
     +virtual void deserialize (string data) throws Error
-!endif
 }
 @enduml

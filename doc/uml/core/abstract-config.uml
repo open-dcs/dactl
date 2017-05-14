@@ -4,7 +4,6 @@
 
 @startuml
 abstract class AbstractConfig {
-!ifdef SHOW_CONTENT
     #ConfigFormat format
     #string namespace
     -- methods --
@@ -23,6 +22,5 @@ abstract class AbstractConfig {
     +virtual void set_int_list (string ns, string key, int[] value) throws GLib.Error
     +virtual void set_bool (string ns, string key, bool value) throws GLib.Error
     +virtual void set_double (string ns, string key, double value) throws GLib.Error
-!endif
 }
 @enduml

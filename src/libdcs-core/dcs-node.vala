@@ -3,8 +3,8 @@ public errordomain Dcs.NodeError {
     CIRCULAR_REFERENCE
 }
 
-public abstract class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
-                                 Dcs.Object, Dcs.Serializable, Dcs.RefContainer {
+public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
+                        Dcs.Object, Dcs.Serializable, Dcs.RefContainer {
 
     private bool verbose = false;
 
@@ -105,12 +105,12 @@ public abstract class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
 
         if (node.parent != null) {
             throw new Dcs.NodeError.PARENT_EXISTS (
-                "Node already has a parent");
+                "Node %s already has parent %s", id, parent.id);
         } else if (descendants.contains (this)) {
             /* XXX is this accurate? what if a descendant has the same ID?
              * maybe this should be based off the path instead */
             throw new Dcs.NodeError.CIRCULAR_REFERENCE (
-                "Node contains itself as a descendant");
+                "Node %s contains itself as a descendant", id);
         } else {
             base.@set (node.id, node);
             node.parent = this;
@@ -185,7 +185,7 @@ public abstract class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
     /**
      * Moves a node value from this node to another.
      */
-    private void reparent (Dcs.Node? new_parent) {
+    public void reparent (Dcs.Node? new_parent) {
         if (parent != null) {
             parent.remove (this);
             new_parent.add (this);

@@ -4,7 +4,6 @@
 
 @startuml
 abstract class ModuleLoader {
-!ifdef SHOW_CONTENT
     +string base_path
     --creation--
     +ModuleLoader (string path)
@@ -14,6 +13,5 @@ abstract class ModuleLoader {
     +void load_modules_sync (Cancellable? cancellable = null)
     #{abstract}abstract bool load_module_from_file (File file)
     #{abstract}abstract bool load_module_from_info (PluginInformation info)
-!endif
 }
 @enduml

@@ -4,7 +4,6 @@
 
 @startuml
 class MetaConfig {
-!ifdef SHOW_CONTENT
     +{static} static MetaConfig get_default ()
     +{static} static void register_config (Config config)
     ----
@@ -21,6 +20,5 @@ class MetaConfig {
     +void set_int (string ns, string key, int value) throws Error
     +void set_bool (string ns, string key, bool value) throws Error
     +void set_double (string ns, string key, double value) throws Error
-!endif
 }
 @enduml

@@ -11,7 +11,7 @@ class DcsExample(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="DCS Example")
 
-        config = Cld.XmlConfig.with_file_name("examples/cld.xml")
+        config = Cld.XmlConfig.with_file_name("examples/config/cld.xml")
         self.context = Cld.Context.from_config(config)
         self.chan = self.context.get_object("ai0")
         self.dev = self.context.get_object("dev0")

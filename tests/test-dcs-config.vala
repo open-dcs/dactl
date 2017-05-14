@@ -107,6 +107,7 @@ public class Dcs.ConfigTests : Dcs.ConfigTestsBase {
             assert (meta_config.get_format () == Dcs.ConfigFormat.MIXED);
             /* Test a cmdline config property */
             assert (meta_config.get_bool ("dcs", "test-a") == true);
+            assert (meta_config.get_string ("dcs", "test-string") == "string");
             /* Test a base config property */
             meta_config.set_string ("dcs", "sprop", "meta");
             assert (meta_config.get_string ("dcs", "sprop") == "meta");

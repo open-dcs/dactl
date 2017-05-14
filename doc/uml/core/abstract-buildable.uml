@@ -4,8 +4,6 @@
 
 @startuml
 abstract class AbstractBuildable {
-!ifdef SHOW_CONTENT
     #unowned Node* node
-!endif
 }
 @enduml

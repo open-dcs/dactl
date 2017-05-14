@@ -1,11 +1,15 @@
 public class Dcs.DAQ.CmdlineConfig : Dcs.AbstractConfig {
 
-    private static string _config = "";
+    private static string? _config = null;
+    private static bool _verbose = false;
+    private static bool _version = false;
 
     public string config { get { return _config; } }
 
     const OptionEntry[] options = {
-        { "config", 'c', 0, OptionArg.NONE, ref _config, "Configuration File", null },
+        { "config", 'c', 0, OptionArg.FILENAME, ref _config, "Configuration File", null },
+        { "verbose", 'v', 0, OptionArg.NONE, ref _verbose, "Provide verbose output", null },
+        { "version", 'V', 0, OptionArg.NONE, ref _version, "Display version number", null },
         { null }
     };
 
@@ -19,7 +23,7 @@ public class Dcs.DAQ.CmdlineConfig : Dcs.AbstractConfig {
     public static void parse_args (ref unowned string[] args)
                                    throws GLib.OptionError {
         var opt_context = new OptionContext ("DCS Data Acquisition Service");
-        opt_context.set_help_enabled (false);
+        opt_context.set_help_enabled (true);
         opt_context.set_ignore_unknown_options (true);
         opt_context.add_main_entries (options, null);
 
@@ -27,6 +31,12 @@ public class Dcs.DAQ.CmdlineConfig : Dcs.AbstractConfig {
             opt_context.parse (ref args);
         } catch (GLib.OptionError.BAD_VALUE e) {
             critical (e.message);
+            stdout.printf (opt_context.get_help (true, null));
+        }
+
+        if (_version) {
+            stdout.printf ("%s - version %s\n", args[0], Dcs.Build.PACKAGE_VERSION);
+            Posix.exit (0);
         }
     }
 

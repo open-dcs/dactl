@@ -15,20 +15,24 @@ public interface Dcs.Extension : GLib.Object {
     }
 }
 
-public class Dcs.PluginExtension : Peas.ExtensionBase, Dcs.Extension, Peas.Activatable {
+public abstract class Dcs.PluginExtension : Peas.ExtensionBase, Dcs.Extension, Peas.Activatable {
 
     public bool is_enabled { get; private set; }
 
     public GLib.Object object { construct; owned get; }
 
+    public Dcs.PluginConfig config { get; protected set; }
+
+    public Dcs.PluginFactory factory { get; protected set; }
+
     public void activate () {
-        message ("Extension added");
+        info ("Extension %s enabled", plugin_info.get_name ());
         enabled.connect (() => { is_enabled = true; });
         disabled.connect (() => { is_enabled = false; });
     }
 
     public void deactivate () {
-        message ("Extension removed");
+        info ("Extension %s disabled", plugin_info.get_name ());
     }
 
     public void update_state () { }
@@ -59,6 +63,21 @@ public abstract class Dcs.PluginManager {
             if (engine.try_load_plugin (plug)) {
                 debug (_("Plugin loaded: " + plug.get_name ()));
             }
+        }
+    }
+
+    public string[] loaded_plugins () {
+        return engine.loaded_plugins;
+    }
+
+    /**
+     * Just used during testing.
+     */
+    public void dump_plugin_list () {
+        foreach (var info in engine.get_plugin_list ()) {
+            var extension = extensions.get_extension (info);
+            var type = extension.get_type ();
+            debug ("Plugin extension name: %s", type.name ());
         }
     }
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  - Default DCS DAQ Service Configuration file
+  - Geoff Johnson <geoff.jay@gmail.com>
+  - 2017-05-04
+  -->
+<dcs xmlns:daq="urn:libdcs-daq">
+
+  <!-- Plugin configuration -->
+  <!--
+     -<devices>
+     -  <device id="gen0" type="device">
+     -    <daq:property name="config">/usr/local/etc/dcs/device/signal-generator.json</daq:property>
+     -    <daq:property name="enabled">true</daq:property>
+     -  </device>
+     -</devices>
+     -->
+
+  <!-- DAQ configuration -->
+  <daq:object id="pub0" type="publisher">
+    <daq:property name="port">5001</daq:property>
+    <daq:property name="address">*</daq:property>
+    <daq:property name="transport-spec">ipc</daq:property>
+  </daq:object>
+  <daq:object id="pub1" type="publisher">
+    <daq:property name="port">5002</daq:property>
+    <daq:property name="address">127.0.0.1</daq:property>
+    <daq:property name="transport-spec">tcp</daq:property>
+  </daq:object>
+  <!-- End DAQ configuration -->
+
+</dcs>

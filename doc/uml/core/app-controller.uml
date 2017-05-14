@@ -4,7 +4,6 @@
 
 @startuml
 abstract class Controller {
-!ifdef SHOW_CONTENT
     +bool admin
     ----
     +{abstract}abstract void update_view (string? id)
@@ -22,6 +21,5 @@ abstract class Controller {
     --fields--
     #App.Model model
     #App.View view
-!endif
 }
 @enduml

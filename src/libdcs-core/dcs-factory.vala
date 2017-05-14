@@ -51,25 +51,16 @@ public interface Dcs.Factory : GLib.Object {
 
 public interface Dcs.FooFactory : GLib.Object {
 
-    public abstract Gee.Map<string, Dcs.Node> produce_map (Gee.List<Dcs.ConfigNode> nodes)
-                                                           throws GLib.Error;
-
     public abstract Dcs.Node produce (Type type) throws GLib.Error;
 
     public abstract Dcs.Node produce_from_config (Dcs.ConfigNode config)
                                                   throws GLib.Error;
+
+    public abstract Dcs.Node produce_from_config_list (Gee.List<Dcs.ConfigNode> config)
+                                                       throws GLib.Error;
 }
 
 public class Dcs.FooBarFactory : Dcs.FooFactory, GLib.Object {
-
-    public virtual Gee.Map<string, Dcs.Node> produce_map (Gee.List<Dcs.ConfigNode> nodes)
-                                                          throws GLib.Error {
-        Gee.Map<string, Dcs.Node> map = new Gee.TreeMap<string, Dcs.Node> ();
-
-        // do stuff
-
-        return map;
-    }
 
     public virtual Dcs.Node produce (Type type) throws GLib.Error {
         Dcs.Node node = null;
@@ -133,6 +124,24 @@ public class Dcs.FooBarFactory : Dcs.FooFactory, GLib.Object {
         }
 
         node.id = config.get_namespace ();
+
+        return node;
+    }
+
+    public virtual Dcs.Node produce_from_config_list (Gee.List<Dcs.ConfigNode> config)
+                                                      throws GLib.Error {
+        Dcs.Node node = new Dcs.Node ();
+        node.id = "core0";
+
+        try {
+            foreach (var item in config) {
+                node.add (produce_from_config (item));
+            }
+        } catch (GLib.Error e) {
+            if (!(e is Dcs.FactoryError.TYPE_NOT_FOUND)) {
+                throw e;
+            }
+        }
 
         return node;
     }

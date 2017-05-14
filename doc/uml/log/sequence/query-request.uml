@@ -1,0 +1,27 @@
+@startuml
+
+actor User
+participant LogService
+participant Query
+participant Backend
+database Storage
+participant QueryResult
+
+User -> LogService : Send query request message
+LogService -> LogService : Parse message
+LogService -> Query : Construct query
+activate Query
+Query --> LogService : Query created
+LogService -> Backend : Query logging backend
+Backend -> Storage : Retrieve data using query
+Storage --> Backend : Return query result dataset
+Backend -> QueryResult : Construct query result from dataset
+activate QueryResult
+QueryResult --> Backend : Result created
+Backend --> LogService : Return query results
+deactivate Query
+LogService -> LogService : Convert result to message
+deactivate QueryResult
+LogService --> User : Send query reply message
+
+@enduml

@@ -7,7 +7,7 @@ GirFFI.setup :Cld
 GirFFI.setup :DcsUI
 
 # load the CLD configuration
-config = Cld::XmlConfig.with_file_name('examples/cld.xml')
+config = Cld::XmlConfig.with_file_name('examples/config/cld.xml')
 context = Cld::Context.from_config(config)
 
 chan = context.get_object('ai0')

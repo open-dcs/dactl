@@ -4,7 +4,6 @@
 
 @startuml
 class LegacyConfig {
-!ifdef SHOW_CONTENT
     +public string file_name
     +public bool loaded
     ----
@@ -25,6 +24,5 @@ class LegacyConfig {
     +void set_xml_node (string xpath, unowned Node* node)
     --signals--
     +signal void property_changed (string property)
-!endif
 }
 @enduml

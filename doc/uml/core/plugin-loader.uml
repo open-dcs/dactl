@@ -4,7 +4,6 @@
 
 @startuml
 class PluginLoader {
-!ifdef SHOW_CONTENT
     +override void constructed ()
     +bool plugin_disabled (string name)
     +void add_plugin (LegacyPlugin plugin)
@@ -14,6 +13,5 @@ class PluginLoader {
     #override bool load_module_from_info (PluginInformation info)
     --signals--
     +signal void plugin_available (LegacyPlugin plugin)
-!endif
 }
 @enduml

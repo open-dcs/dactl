@@ -4,7 +4,6 @@
 
 @startuml
 class DataSeries {
-!ifdef SHOW_CONTENT
     +string ch_ref
     +Cld.Channel channel
     +int buffer_size
@@ -18,6 +17,5 @@ class DataSeries {
     +void offer_cld_object (Cld.Object object)
     #async void request_data ()
     +SimplePoint[] to_array ()
-!endif
 }
 @enduml

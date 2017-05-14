@@ -4,7 +4,6 @@
 
 @startuml
 abstract class ZmqService {
-!ifdef SHOW_CONTENT
     +int port { construct set; get; }
     +ZmqTransport transport { construct set; get; }
     +string address { construct set; get; }
@@ -21,6 +20,5 @@ abstract class ZmqService {
     --fields--
     #Context context
     #Socket publisher
-!endif
 }
 @enduml

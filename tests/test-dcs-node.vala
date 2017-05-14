@@ -17,9 +17,10 @@ public class Dcs.NodeTests : Dcs.NodeTestsBase {
         add_test (@"[$class_name] Test add a node", test_add);
         add_test (@"[$class_name] Test remove a node", test_remove);
         add_test (@"[$class_name] Test return all nodes of a type",
-                                                          test_get_descendants);
-        add_test (@"[$class_name] Test return children of a type", test_get_children);
-        /*add_test (@"[$class_name] Test ", test_print_node);*/
+                  test_get_descendants);
+        add_test (@"[$class_name] Test return children of a type",
+                  test_get_children);
+        //add_test (@"[$class_name] Test ", test_print_node);
     }
 
     public override void set_up () {
@@ -33,6 +34,16 @@ public class Dcs.NodeTests : Dcs.NodeTestsBase {
     }
 
     private void test_add () {
+        var node_a = new Dcs.Test.Node ("node_a");
+        try {
+            node.add (node_a);
+        } catch (Dcs.NodeError e) {
+            assert (false);
+        }
+        assert (node.size == 1);
+    }
+
+    private void test_circular_references () {
         /* Tests that adding  circular reference is not possible */
         var node_a = new Dcs.Test.Node ("node_a");
         var node_b = new Dcs.Test.Node ("node_b");
@@ -45,9 +56,9 @@ public class Dcs.NodeTests : Dcs.NodeTestsBase {
             debug (e.message);
         }
 
-        assert (node_a.size ==  0);
-        assert (node_b.size ==  1);
-        assert (node_c.size ==  1);
+        assert (node_a.size == 0);
+        assert (node_b.size == 1);
+        assert (node_c.size == 1);
 
         /* Tests that adding a parented node is not possible */
         node_a = new Dcs.Test.Node ("node_a");

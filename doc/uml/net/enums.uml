@@ -3,7 +3,7 @@
  '/
 
 @startuml
-!ifdef SHOW_ENUM
+
 /'
  'struct RouteEntry {
  '    +unowned string? path
@@ -31,5 +31,5 @@ enum RouteArg {
 enum ZmqError {
     INIT
 }
-!endif
+
 @enduml

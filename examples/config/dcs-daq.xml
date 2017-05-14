@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dcs xmlns:daq="urn:libdcs-daq">
+  <daq:object id="pub0" type="publisher">
+    <daq:property name="port">5001</daq:property>
+    <daq:property name="address">*</daq:property>
+    <daq:property name="transport-spec">ipc</daq:property>
+  </daq:object>
+  <daq:object id="pub1" type="publisher">
+    <daq:property name="port">5002</daq:property>
+    <daq:property name="address">127.0.0.1</daq:property>
+    <daq:property name="transport-spec">tcp</daq:property>
+  </daq:object>
+</dcs>

@@ -115,3 +115,97 @@ public class Dcs.MetaFactory : GLib.Object, Dcs.Factory {
         return object;
     }
 }
+
+public class Dcs.FooMetaFactory : GLib.Object, Dcs.FooFactory {
+
+    private static Gee.ArrayList<Dcs.FooFactory> factories;
+
+    /* Singleton for this factory */
+    private static Once<Dcs.FooMetaFactory> _instance;
+
+    public static unowned Dcs.FooMetaFactory get_default () {
+        return _instance.once (() => { return new Dcs.FooMetaFactory (); });
+    }
+
+    public static void register_factory (Dcs.FooFactory factory) {
+        if (factories == null) {
+            factories = new Gee.ArrayList<Dcs.FooFactory> ();
+        }
+        factories.add (factory);
+    }
+
+    public virtual Dcs.Node produce (Type type) throws GLib.Error {
+        Dcs.Node node = null;
+
+        foreach (var factory in factories) {
+            try {
+                node = factory.produce (type);
+            } catch (GLib.Error e) {
+                if (!(e is Dcs.FactoryError.TYPE_NOT_FOUND ||
+                      e is Dcs.FactoryError.INVALID_FORMAT ||
+                      e is Dcs.FactoryError.UNABLE_TO_PROCESS)) {
+                    throw e;
+                }
+            }
+        }
+
+        /* The type was not found in any of the registered factories */
+        if (node == null) {
+            throw new Dcs.FactoryError.TYPE_NOT_FOUND (
+                _("The type requested is not a known Dcs type."));
+        }
+
+        return node;
+    }
+
+    public virtual Dcs.Node produce_from_config (Dcs.ConfigNode config)
+                                                 throws GLib.Error {
+        Dcs.Node node = null;
+
+        foreach (var factory in factories) {
+            try {
+                node = factory.produce_from_config (config);
+            } catch (GLib.Error e) {
+                if (!(e is Dcs.FactoryError.TYPE_NOT_FOUND ||
+                      e is Dcs.FactoryError.INVALID_FORMAT ||
+                      e is Dcs.FactoryError.UNABLE_TO_PROCESS)) {
+                    throw e;
+                }
+            }
+        }
+
+        /* The type was not found in any of the registered factories */
+        if (node == null) {
+            throw new Dcs.FactoryError.TYPE_NOT_FOUND (
+                _("The type requested is not a known Dcs type."));
+        }
+
+        return node;
+    }
+
+    public virtual Dcs.Node produce_from_config_list (Gee.List<Dcs.ConfigNode> config)
+                                                      throws GLib.Error {
+        Dcs.Node node = new Dcs.Node ();
+        node.id = "root0";
+
+        foreach (var factory in factories) {
+            try {
+                debug ("Consuming config nodes in MetaFactory");
+                node.add (factory.produce_from_config_list (config));
+            } catch (GLib.Error e) {
+                if (!(e is Dcs.FactoryError.TYPE_NOT_FOUND ||
+                      e is Dcs.FactoryError.INVALID_FORMAT ||
+                      e is Dcs.FactoryError.UNABLE_TO_PROCESS)) {
+                    throw e;
+                }
+            }
+        }
+
+        if (node == null) {
+            throw new Dcs.FactoryError.UNABLE_TO_PROCESS (
+                _("The configuration failed to generate a valid node set."));
+        }
+
+        return node;
+    }
+}
