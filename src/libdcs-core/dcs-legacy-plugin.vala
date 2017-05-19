@@ -5,7 +5,7 @@
 /**
  * Errors related to plugin types.
  */
-public errordomain Dcs.PluginError {
+public errordomain Dcs.ModuleError {
     NO_CONFIGURABLE_SETTINGS,
     CONTROL_NOT_AVAILABLE
 }
@@ -89,7 +89,7 @@ public class Dcs.LegacyPlugin : GLib.Object {
      */
     /*
      *public virtual void post_construction (Xml.Node *node) throws GLib.Error {
-     *    throw new PluginError.NO_CONFIGURABLE_SETTINGS
+     *    throw new ModuleError.NO_CONFIGURABLE_SETTINGS
      *                (_("Plugin `%s' contains no configuration settings"), name);
      *}
      */
@@ -101,7 +101,7 @@ public class Dcs.LegacyPlugin : GLib.Object {
      */
     /*
      *public virtual Dcs.Object get_control () throws GLib.Error {
-     *    throw new PluginError.CONTROL_NOT_AVAILABLE
+     *    throw new ModuleError.CONTROL_NOT_AVAILABLE
      *                (_("Plugin `%s' contains no configuration settings"), name);
      *}
      */

@@ -130,6 +130,10 @@ public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
         node_removed (node.id);
     }
 
+    public virtual Dcs.Node? get_child (string id) {
+        return @get (id);
+    }
+
     /**
      * Retrieves a list of all nodes of a certain type.
      *

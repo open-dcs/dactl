@@ -21,6 +21,9 @@ libdcs_device_arduino_la_public_sources = \
 
 libdcs_device_arduino_la_VALASOURCES = \
 	dcs-arduino-device.vala \
+	dcs-arduino-config-provider.vala \
+	dcs-arduino-factory-provider.vala \
+	dcs-arduino-service-addin.vala \
 	$(NULL)
 
 libdcs_device_arduino_la_SOURCES = \

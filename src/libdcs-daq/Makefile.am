@@ -118,8 +118,7 @@ $(builddir)/DcsDAQ-0.2.gir: $(srcdir)/Dcs-0.2.gir
 	$(AM_V_GEN)$(SED) \
 		-e 's,Dcs\.,DcsDAQ.,g' \
 		-e 's,namespace name="Dcs",namespace name="DcsDAQ",g' \
-		-e 's,DcsDAQ\.Extension,DcsCore.Extension,g' \
-		-e 's,DcsDAQ\.PluginExtension,DcsCore.PluginExtension,g' \
+		-e 's,DcsDAQ\.Node,DcsCore.Node,g' \
 		-e 's,<package name="dcs-daq-0.2"/>,<include name="DcsCore" version="0.2"/>\n<package name="dcs-daq-0.2"/>,' \
 		$< >$@
 GIRS = DcsDAQ-0.2.gir

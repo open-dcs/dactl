@@ -95,4 +95,17 @@ public class Dcs.Net.Publisher : Dcs.Node {
                 _("An error ocurred while binding to endpoint"));
         }
     }
+
+    /**
+     * XXX Should consider putting the threading here and call a delegate
+     * function that gets provided by the socket user.
+     * XXX Could also send data received over a stream.
+     */
+    public void send_message (Dcs.Message message) {
+        var data = message.serialize ().data;
+        var reply = ZMQ.Msg.with_data (data);
+        var n = reply.send (socket);
+        /* XXX No idea what the point of this is */
+        data_published (data);
+    }
 }

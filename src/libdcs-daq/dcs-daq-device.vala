@@ -1,20 +1,8 @@
-public class Dcs.DAQ.Device : Dcs.PluginExtension {
+public class Dcs.DAQ.Device : Dcs.Node {
 
-    public Dcs.Net.Service service { get; construct set; }
+    public string module { get; set; }
 
-    public Device (Dcs.Net.Service service) {
-        debug ("Device constructor");
-        this.service = service;
-    }
+    public bool enable { get; set; }
 
-    /*
-     *public virtual void* run () {
-     *    debug ("Device worker function");
-     *    return null;
-     *}
-     */
-
-    public void get_something () {
-        stdout.printf ("hi\n");
-    }
+    public string? configuration { get; set; default = null; }
 }

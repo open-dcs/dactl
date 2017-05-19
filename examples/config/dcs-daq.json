@@ -1,6 +1,10 @@
 {
   "dcs": {
     "objects": {
+      "dev0": { "type": "device", "properties": { "module": "dcs-arduino-device", "enable": true } },
+      "dev1": { "type": "device", "properties": { "module": "dcs-comedi-device", "enable": false } },
+      "dev2": { "type": "device", "properties": { "module": "dcs-mccusb-device", "enable": false } },
+      "dev3": { "type": "device", "properties": { "module": "signal-generator", "enable": true } },
       "pub0": {
         "type": "publisher",
         "properties": {

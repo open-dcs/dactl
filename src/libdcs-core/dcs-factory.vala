@@ -49,6 +49,7 @@ public interface Dcs.Factory : GLib.Object {
                                                       throws GLib.Error;
 }
 
+[Version (experimental = true, experimental_until = "0.3")]
 public interface Dcs.FooFactory : GLib.Object {
 
     public abstract Dcs.Node produce (Type type) throws GLib.Error;
@@ -60,6 +61,7 @@ public interface Dcs.FooFactory : GLib.Object {
                                                        throws GLib.Error;
 }
 
+[Version (experimental = true, experimental_until = "0.3")]
 public class Dcs.FooBarFactory : Dcs.FooFactory, GLib.Object {
 
     public virtual Dcs.Node produce (Type type) throws GLib.Error {

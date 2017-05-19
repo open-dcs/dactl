@@ -1,3 +1,5 @@
+include $(top_srcdir)/common.am
+
 CLEANFILES =
 DISTCLEANFILES =
 BUILT_SOURCES =

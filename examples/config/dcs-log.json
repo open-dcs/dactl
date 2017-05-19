@@ -1,0 +1,25 @@
+{
+  "dcs": {
+    "objects": {
+      "pub0": {
+        "type": "subscriber",
+        "properties": {
+          "port": 5001,
+          "address": "127.0.0.1",
+          "filter": "",
+          "transport-spec": "ipc"
+        }
+      },
+      "pub1": {
+        "type": "subscriber",
+        "properties": {
+          "port": 5002,
+          "address": "127.0.0.1",
+          "filter": "",
+          "transport-spec": "tcp"
+        }
+      },
+      "back0": { "type": "backend", "properties": { "module": "xml-backend", "enable": true } }
+    }
+  }
+}

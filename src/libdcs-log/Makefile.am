@@ -1,3 +1,5 @@
+include $(top_srcdir)/common.am
+
 CLEANFILES =
 DISTCLEANFILES =
 BUILT_SOURCES =
@@ -114,7 +116,7 @@ $(builddir)/DcsLog-0.2.gir: $(srcdir)/Dcs-0.2.gir
 	$(AM_V_GEN)$(SED) \
 		-e 's,Dcs\.,DcsLog.,g' \
 		-e 's,namespace name="Dcs",namespace name="DcsLog",g' \
-		-e 's,DcsLog\.Extension,DcsCore.Extension,g' \
+		-e 's,DcsLog\.Node,DcsCore.Node,g' \
 		-e 's,<package name="dcs-log-0.2"/>,<include name="DcsCore" version="0.2"/>\n<package name="dcs-log-0.2"/>,' \
 		$< >$@
 GIRS = DcsLog-0.2.gir

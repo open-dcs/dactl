@@ -16,7 +16,6 @@ public class Dcs.Control.LoopManager : Dcs.PluginManager {
         search_path = Dcs.Build.LOOP_DIR;
 
         init ();
-        add_extension ();
         load_plugins ();
     }
 

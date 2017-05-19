@@ -10,12 +10,11 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
 
     private Dcs.Net.Factory net_factory;
 
-    /* XXX These should be nested in a node set */
+    private Dcs.DAQ.Factory daq_factory;
+
+    /* TODO Lower the REST handler to the service class */
     public Dcs.DAQ.RestService rest_service;
 
-    public Dcs.DAQ.ZmqService zmq_service;
-
-    /* Application construction */
     internal Server () {
         GLib.Object (application_id: "org.opendcs.dcs.daq",
                      flags: ApplicationFlags.HANDLES_COMMAND_LINE);
@@ -27,6 +26,7 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
         cmdline_config = Dcs.DAQ.CmdlineConfig.get_default ();
 
         net_factory = Dcs.Net.Factory.get_default ();
+        daq_factory = Dcs.DAQ.Factory.get_default ();
 
         /* Performs the base initialization */
         init ();
@@ -36,15 +36,16 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
 
         /* Register the known factories that are needed */
         Dcs.FooMetaFactory.register_factory (net_factory);
+        Dcs.FooMetaFactory.register_factory (daq_factory);
 
         /* XXX these should go after the config gets loaded */
         rest_service = new Dcs.DAQ.RestService ();
-        zmq_service = new Dcs.DAQ.ZmqService.with_conn_info (
-            Dcs.Net.ZmqTransport.TCP, "*", 5588);
 
-        /* Create the plugin manager which loads all plugins */
-        /* TODO Make this provide the entire service to the extension */
+        /* Create the plugin manager which loads device plugins */
         plugin_manager = new Dcs.DAQ.DeviceManager (this);
+        plugin_manager.load_plugin_configurations ();
+        //plugin_manager.register_plugin_configurations ();
+        //plugin_manager.register_plugin_factories ();
     }
 
     protected override void activate () {
@@ -53,28 +54,36 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
 
         string? filename = null;
 
-        /* The config should be loaded, build node tree */
+        /* Attempt to find a configuration file */
         try {
             filename = config.get_string ("dcs", "config");
         } catch (GLib.Error e) {
             if (e is Dcs.ConfigError.NO_VALUE_SET) {
-                if (filename == null) {
-                    /* First check for ~/.config/dcs/dcs-daq.xml */
-                    filename = "~/.config/dcs/dcs-daq.xml";
-                    if (!FileUtils.test (filename, FileTest.EXISTS)) {
-                        /* If a user config doesn't exist use the default */
-                        filename = GLib.Path.build_filename (Dcs.Build.DATADIR,
-                                                            "dcs-daq.xml");
+                string[] filenames = {
+                    GLib.Path.build_filename (GLib.Environment.get_home_dir (),
+                                              ".config", "dcs", "dcs-daq.xml"),
+                    GLib.Path.build_filename (GLib.Environment.get_home_dir (),
+                                              ".config", "dcs", "dcs-daq.json"),
+                    GLib.Path.build_filename (Dcs.Build.DATADIR, "dcs-daq.xml"),
+                    GLib.Path.build_filename (Dcs.Build.DATADIR, "dcs-daq.json"),
+                };
+                /* Take the first configuration that was found */
+                foreach (var file in filenames) {
+                    if (FileUtils.test (file, FileTest.EXISTS)) {
+                        filename = file;
+                        break;
+                    } else {
+                        debug ("File %s does not exist, trying next", file);
                     }
-                    debug ("Configuration file not provided at prompt, using %s",
-                           filename);
                 }
+                debug ("Configuration file not provided at prompt, using %s", filename);
             } else {
                 critical (e.message);
             }
         }
 
-        if (filename != null && FileUtils.test (filename, FileTest.EXISTS)) {
+        /* Should have a configuration at this point to load and register */
+        if (filename != null) {
             (service_config as Dcs.DAQ.Config).load_file (filename);
             //(service_config as Dcs.DAQ.Config).dump (stdout);
             Dcs.MetaConfig.register_config (service_config);
@@ -85,7 +94,22 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
         try {
             /* Use any configuration that's available at this point to build */
             construct_model ();
+            var nodes = get_model ().get_descendants (typeof (Dcs.Node));
+            debug ("Configured %d nodes", nodes.size);
+            /*
+             *foreach (var node in nodes) {
+             *    debug (node.to_string ());
+             *}
+             */
 
+            (plugin_manager as Dcs.DAQ.DeviceManager).enable_device ("signal-generator");
+            (plugin_manager as Dcs.DAQ.DeviceManager).start_devices ();
+        } catch (GLib.Error e) {
+            critical (e.message);
+        }
+
+        /* Construction of plugins shouldn't cause the service to fail */
+        try {
             /* Start as a service including starting configured sockets */
             this.start ();
         } catch (GLib.Error e) {
@@ -96,11 +120,8 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
     }
 
     protected override void startup () {
-        debug (_("Starting DAQ server > Main"));
+        debug (_("Starting DAQ server"));
         base.startup ();
-
-        debug (_("Starting DAQ server > ZMQ Service"));
-        zmq_service.run ();
     }
 
     protected override void shutdown () {

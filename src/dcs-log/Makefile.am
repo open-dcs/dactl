@@ -71,6 +71,8 @@ dcs_log_headers = \
 
 dcs_log_SOURCES = \
 	main.vala \
+	cmdline-config.vala \
+	config.vala \
 	server.vala \
 	dbus-service.vala \
 	rest-service.vala \

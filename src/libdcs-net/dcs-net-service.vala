@@ -29,9 +29,13 @@ public class Dcs.Net.Service : Dcs.FooApplication {
         queue_group = new Gee.HashMap<string, Gee.ArrayQueue<Dcs.Message>> ();
     }
 
-    protected void start () throws Dcs.ServiceError {
+    /**
+     * {@inheritDoc}
+     */
+    protected virtual void start () throws GLib.Error {
         debug ("Starting the service");
 
+        /* Start any configured socket providers. */
         try {
             foreach (var pub in model.get_descendants (typeof (Dcs.Net.Publisher))) {
                 var queue = new Gee.ArrayQueue<Dcs.Message> ();
@@ -54,17 +58,34 @@ public class Dcs.Net.Service : Dcs.FooApplication {
             }
         }
 
-        foreach (var plugin in plugin_manager.loaded_plugins ()) {
-            debug ("plugin %s is loaded", plugin);
-        }
+        /* Launch any configured plugins. */
+        /* TODO Load configured plugin list from the model. */
+        /*
+         *foreach (var plugin in plugin_manager.loaded_plugins ()) {
+         *    debug ("plugin %s is loaded", plugin);
+         *}
+         */
     }
 
-    protected void pause () throws Dcs.ServiceError {
+    /**
+     * {@inheritDoc}
+     */
+    protected virtual void pause () throws GLib.Error {
         debug ("Pausing the service");
     }
 
-    protected void stop () throws Dcs.ServiceError {
+    /**
+     * {@inheritDoc}
+     */
+    protected virtual void stop () throws GLib.Error {
         debug ("Stopping the service");
+    }
+
+    /**
+     * Do nothing method that does nothing.
+     */
+    public void test_nothing (string name) {
+        debug ("Testing the plugin connection to the service from %s", name);
     }
 
 /*

@@ -1,0 +1,14 @@
+{
+  "device": {
+    "name": "signal-generator",
+    "properties": {
+      "description": "A signal generator device"
+    },
+    "objects": {
+      "sg-ctrl0": {
+        "type": "device-control",
+        "references": [ "dcs:///plug1" ]
+      }
+    }
+  }
+}

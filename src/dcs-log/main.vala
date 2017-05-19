@@ -2,14 +2,11 @@ internal class Dcs.Recorder.Main : GLib.Object {
 
     private struct Options {
 
-        public static  bool version = false;
+        public static bool version = false;
 
         public static const GLib.OptionEntry[] entries = {{
             "verbose", 'v', OptionFlags.NO_ARG, OptionArg.CALLBACK, (void *) verbose_cb,
             "Provide verbose debugging output.", null
-        },{
-            "version", 'V', 0, OptionArg.NONE, ref version,
-            "Display version number.", null
         },{
             null
         }};
@@ -31,16 +28,10 @@ internal class Dcs.Recorder.Main : GLib.Object {
         } catch (OptionError e) {
             error (e.message);
         }
-
-        if (Options.version) {
-            stdout.printf ("%s - version %s\n", args[0], Dcs.Build.PACKAGE_VERSION);
-            Posix.exit (0);
-        }
     }
 
-    private Dcs.Application app;
     private Dcs.SysLog log;
-    private Dcs.PluginManager backend_manager;
+    private Dcs.Recorder.Server app;
 
     private int exit_code;
 
@@ -53,8 +44,6 @@ internal class Dcs.Recorder.Main : GLib.Object {
         this.exit_code = 0;
 
         app = new Dcs.Recorder.Server ();
-
-        backend_manager = new Dcs.Log.BackendManager ((app as Dcs.Recorder.Server).zmq_client);
 
         Unix.signal_add (Posix.SIGHUP,  () => { this.restart (); return true; });
         Unix.signal_add (Posix.SIGINT,  () => { this.exit (0);   return true; });

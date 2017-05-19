@@ -3,7 +3,7 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-plugindir=@PLUGIN_DIR@
+plugindir=@BACKEND_DIR@
 plugin_ldflags=@PLUGIN_LDFLAGS@
 
 Name: dcs-log-0.2

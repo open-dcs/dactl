@@ -12,12 +12,18 @@ public class Dcs.Net.Factory : GLib.Object, Dcs.FooFactory {
         return _instance.once(() => { return new Dcs.Net.Factory (); });
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public virtual Dcs.Node produce (Type type) throws GLib.Error {
         Dcs.Node node = null;
 
         switch (type.name ()) {
-            case "DcsFooDataSeries":
-                node = new Dcs.FooDataSeries ();
+            case "DcsNetPublisher":
+                node = new Dcs.Net.Publisher ();
+                break;
+            case "DcsNetSubscriber":
+                node = new Dcs.Net.Subscriber ();
                 break;
             default:
                 throw new Dcs.FactoryError.TYPE_NOT_FOUND (
@@ -27,6 +33,9 @@ public class Dcs.Net.Factory : GLib.Object, Dcs.FooFactory {
         return node;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public virtual Dcs.Node produce_from_config (Dcs.ConfigNode config)
                                                  throws GLib.Error {
         Dcs.Node node = null;
@@ -82,6 +91,9 @@ public class Dcs.Net.Factory : GLib.Object, Dcs.FooFactory {
         return node;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public virtual Dcs.Node produce_from_config_list (Gee.List<Dcs.ConfigNode> config)
                                                       throws GLib.Error {
         Dcs.Node node = new Dcs.Node ();

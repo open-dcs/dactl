@@ -115,11 +115,39 @@ public class Dcs.Net.Subscriber : Dcs.Node {
 
         connected = true;
 
-        filter = "\"data\":";
+        /*
+         *filter = "\"data\":";
+         */
+        debug (_("Setting ZMQ subscription filter to: %s"), filter);
+        socket.setsockopt (ZMQ.SocketOption.SUBSCRIBE,
+                           filter,
+                           filter.length);
     }
 
     public bool is_connected () {
         return connected;
     }
-}
 
+    /**
+     * XXX Should consider putting the threading here and pass the data back
+     * using a signal. Reduces the effort required by the socket user.
+     * XXX Could also pass the data back through a stream.
+     */
+    public Dcs.Message recv_message () {
+        var msg = ZMQ.Msg ();
+        var n = msg.recv (socket);
+        size_t size = msg.size () + 1;
+        uint8[] data = new uint8[size];
+        //Dcs.Message message = new Dcs.Message ();
+        Dcs.Message message = new Dcs.Message.alert ("alert0");
+
+        GLib.Memory.copy (data, msg.data, size - 1);
+        data[size - 1] = '\0';
+        debug ((string) data);
+        //var json = Json.from_string ((string) data);
+        //debug (Json.to_string (json, false));
+        //message.deserialize (Json.to_string (json, false));
+
+        return message;
+    }
+}

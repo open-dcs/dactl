@@ -5,3 +5,4 @@ Description=A device plugin using the Measurement Computing USB driver.
 Authors=Geoff Johnson <geoff.jay@gmail.com>
 Copyright=Copyright © 2016 Geoff Johnson
 Builtin=true
+X-Type=device
