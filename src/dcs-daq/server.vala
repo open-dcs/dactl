@@ -39,7 +39,7 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
         Dcs.FooMetaFactory.register_factory (daq_factory);
 
         /* XXX these should go after the config gets loaded */
-        rest_service = new Dcs.DAQ.RestService ();
+        rest_service = new Dcs.DAQ.RestService (this);
 
         /* Create the plugin manager which loads device plugins */
         plugin_manager = new Dcs.DAQ.DeviceManager (this);

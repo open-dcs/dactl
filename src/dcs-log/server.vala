@@ -35,7 +35,7 @@ public class Dcs.Recorder.Server : Dcs.Net.Service {
         Dcs.FooMetaFactory.register_factory (net_factory);
 
         /* XXX these should go after the config gets loaded */
-        rest_service = new Dcs.Recorder.RestService.with_port (8089);
+        rest_service = new Dcs.Recorder.RestService (this);
 
         /* Create the plugin manager that loads the backend plugins */
         plugin_manager = new Dcs.Log.BackendManager (this);

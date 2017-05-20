@@ -57,8 +57,12 @@ public class Dcs.XmlServiceAddin : GLib.Object, Dcs.Net.ServiceProvider {
         ThreadFunc<void*> run = () => {
             try {
                 while (running) {
-                    var message = subscriber.recv_message ();
-                    debug (message.to_string ());
+                    if (subscriber.is_connected ()) {
+                        var message = subscriber.recv_message ();
+                        debug (message.to_string ());
+                    } else {
+                        Posix.sleep (5);
+                    }
                 }
             } catch (GLib.Error e) {
                 error (e.message);

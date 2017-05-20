@@ -11,18 +11,20 @@ public class Dcs.DAQ.RestService : Dcs.Net.RestService {
 
     private const string bad_request = "jsonp('XXX': {'status': 400})";
 
-    public RestService () {
+    public RestService (Dcs.Net.Service service) {
+        this.service = service;
         init ();
     }
 
-    public RestService.with_port (int port) {
+    public RestService.with_port (Dcs.Net.Service service, int port) {
+        this.service = service;
         GLib.Object (port: port);
         init ();
     }
 
     private void init () {
-        debug (_("Starting DAQ REST service on port %d"), port);
-        listen_all (port, 0);
+        base.init ();
+        debug (_("Initializing the DAQ REST service"));
 
         add_handler (null,        route_default);
         add_handler ("/channel",  route_channel);

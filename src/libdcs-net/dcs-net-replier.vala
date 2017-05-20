@@ -1,8 +1,17 @@
-public class Dcs.Net.Publisher : Dcs.Node {
+namespace Dcs.Net {
+
+    public delegate Dcs.Message ResponseFunc (Dcs.Message message);
+}
+
+public class Dcs.Net.Replier : Dcs.Node {
 
     private ZMQ.Context context;
 
     private ZMQ.Socket socket;
+
+    private bool running = false;
+
+    private Dcs.Net.ResponseFunc response_func;
 
     /**
      * Port number to use with the service.
@@ -47,27 +56,41 @@ public class Dcs.Net.Publisher : Dcs.Node {
      */
     public signal void data_published (uint8[] data);
 
-    public Publisher.with_conn_info (Dcs.Net.ZmqTransport transport,
-                                     string address,
-                                     int port) {
+    public Replier.with_conn_info (Dcs.Net.ZmqTransport transport,
+                                   string address,
+                                   int port) {
         GLib.Object (transport: transport,
                      address: address,
                      port: port);
     }
 
-    public void start () throws Dcs.Net.ZmqError {
+    public void start (Dcs.Net.ResponseFunc func) throws Dcs.Net.ZmqError {
+        response_func = func;
         try {
             init ();
+            running = true;
+            listen.begin ((obj, res) => {
+                try {
+                    listen.end (res);
+                } catch (ThreadError e) {
+                    throw new Dcs.Net.ZmqError.RUN_FAILURE (e.message);
+                }
+            });
         } catch (Dcs.Net.ZmqError e) {
             throw e;
         }
+    }
+
+    /* TODO check status of thread and throw error if fail to stop */
+    public void stop () throws Dcs.Net.ZmqError {
+        running = false;
     }
 
     protected void init () throws Dcs.Net.ZmqError {
         string endpoint = null;
 
         context = new ZMQ.Context ();
-        socket = ZMQ.Socket.create (context, ZMQ.SocketType.PUB);
+        socket = ZMQ.Socket.create (context, ZMQ.SocketType.REP);
 
         switch (transport) {
             case ZmqTransport.INPROC:
@@ -84,7 +107,7 @@ public class Dcs.Net.Publisher : Dcs.Node {
                 assert_not_reached ();
         }
 
-        debug ("Publish to %s", endpoint);
+        debug ("Reply on %s", endpoint);
 
         var ret = socket.bind (endpoint);
 
@@ -94,53 +117,29 @@ public class Dcs.Net.Publisher : Dcs.Node {
         }
     }
 
-    /**
-     * XXX Should consider putting the threading here and call a delegate
-     * function that gets provided by the socket user.
-     * XXX Could also send data received over a stream.
-     */
-    public void send_message (Dcs.Message message) {
-        var data = message.serialize ().data;
-        var reply = ZMQ.Msg.with_data (data);
-        var n = reply.send (socket);
-        /* XXX No idea what the point of this is */
-        data_published (data);
-    }
+    private async void listen () throws ThreadError {
+        SourceFunc callback = listen.callback;
 
-    /**
-     * {@inheritDoc}
-     */
-    public virtual Json.Node json_serialize () throws GLib.Error {
-        var builder = new Json.Builder ();
-        builder.begin_object ();
-        builder.set_member_name (id);
-        builder.begin_object ();
-        builder.set_member_name ("type");
-        builder.add_string_value ("publisher");
-        builder.set_member_name ("properties");
-        builder.begin_object ();
-        builder.set_member_name ("port");
-        builder.add_int_value (port);
-        builder.set_member_name ("address");
-        builder.add_string_value (address);
-        builder.set_member_name ("transport-spec");
-        builder.add_string_value (transport.to_string ());
-        builder.end_object ();
-        builder.end_object ();
-        builder.end_object ();
+        ThreadFunc<void*> run = () => {
+            while (running) {
+                /* XXX nead to resolve the difference in the vapi I'm using for zeromq */
+                //[> Read a request <]
+                //var request = ZMQ.Msg ();
+                //socket.recv (ref request);
+                //[> Generate a reponse using the provided method <]
+                //var msg = response_func (request.data ());
+                //[> Reply <]
+                //var reply = Msg.with_data (msg.serialize ().data);
+                //socket.send (reply);
+                Posix.sleep (1);
+                debug ("I should be responding to a request");
+            }
 
-        var node = builder.get_root ();
-        if (node == null) {
-            throw new Dcs.SerializationError.SERIALIZE_FAILURE (
-                "Failed to serialize publisher %s", id);
-        }
+            Idle.add ((owned) callback);
+            return null;
+        };
 
-        return node;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public virtual void json_deserialize (Json.Node node) throws GLib.Error {
+        Thread.create<void*> (run, false);
+        yield;
     }
 }

@@ -1,5 +1,6 @@
 public errordomain Dcs.Net.ZmqError {
-    INIT;
+    INIT,
+    RUN_FAILURE;
 }
 
 public abstract class Dcs.Net.ZmqService : GLib.Object {

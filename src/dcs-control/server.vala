@@ -13,7 +13,7 @@ public class Dcs.Control.Server : Dcs.CLI.Application {
 
         loop = new GLib.MainLoop ();
 
-        rest_service = new Dcs.Control.RestService.with_port (8090);
+        rest_service = new Dcs.Control.RestService.with_port (new Dcs.Net.Service (), 8090);
         zmq_client = new Dcs.Control.ZmqClient.with_conn_info (
             Dcs.Net.ZmqTransport.TCP, "127.0.0.1", 5588);
         zmq_service = new Dcs.Control.ZmqService.with_conn_info (

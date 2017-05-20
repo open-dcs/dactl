@@ -48,4 +48,18 @@ public abstract class Dcs.AbstractObject : GLib.Object, Dcs.Object, Dcs.Serializ
             throw new Dcs.SerializationError.INVALID_CONTENT ("Invalid XML content was provided.");
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual Json.Node json_serialize () throws GLib.Error {
+        Json.Node node = null;
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual void json_deserialize (Json.Node node) throws GLib.Error {
+    }
 }

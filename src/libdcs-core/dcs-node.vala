@@ -30,6 +30,47 @@ public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
     /**
      * {@inheritDoc}
      */
+    public virtual Json.Node json_serialize () throws GLib.Error {
+        var builder = new Json.Builder ();
+        builder.begin_object ();
+        builder.set_member_name (id);
+        builder.begin_object ();
+        builder.set_member_name ("type");
+        builder.add_string_value (get_type ().name ());
+        builder.set_member_name ("properties");
+        builder.begin_object ();
+        /* TODO use ParamSpec to fill in for default implementation */
+        builder.end_object ();
+        if (references != null) {
+            if (references.size () > 0) {
+                builder.begin_array ();
+                foreach (var @ref in references) {
+                    builder.add_string_value (@ref.id);
+                }
+                builder.end_array ();
+            }
+        }
+        builder.end_object ();
+        builder.end_object ();
+
+        var node = builder.get_root ();
+        if (node == null) {
+            throw new Dcs.SerializationError.SERIALIZE_FAILURE (
+                "Failed to serialize publisher %s", id);
+        }
+
+        return node;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual void json_deserialize (Json.Node node) throws GLib.Error {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     protected virtual Gee.List<unowned Dcs.Node> references { get; private set; }
 
     /**

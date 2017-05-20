@@ -88,6 +88,7 @@ public class Dcs.Message : GLib.Object, Dcs.Serializable {
      */
     protected uint8[] payload;
 
+    /* TODO get rid of the uint8[] payload and make it all live in JSON */
     private Json.Node payload_node;
 
     construct {
@@ -221,6 +222,90 @@ public class Dcs.Message : GLib.Object, Dcs.Serializable {
         generator.set_root (node);
 
         return generator.to_data (null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual Json.Node json_serialize () throws GLib.Error {
+        var builder = new Json.Builder ();
+        builder.begin_object ();
+        builder.set_member_name (id);
+        builder.begin_object ();
+        builder.set_member_name ("type");
+        builder.add_string_value (message_type.to_string ());
+        builder.set_member_name ("timestamp");
+        builder.add_int_value (timestamp);
+        switch (message_type) {
+            case Dcs.MessageType.OBJECT:
+                if (payload_node == null) {
+                    throw new Dcs.MessageError.NULL_PAYLOAD ("Empty payload");
+                }
+                try {
+                    //var payload_node = Json.from_string ((string) payload);
+                    builder.set_member_name ("payload");
+                    builder.add_value (payload_node);
+                } catch (GLib.Error e) {
+                    throw e;
+                }
+                break;
+            case Dcs.MessageType.CONFIG:
+                break;
+            case Dcs.MessageType.ALERT:
+            case Dcs.MessageType.ERROR:
+            case Dcs.MessageType.INFO:
+            case Dcs.MessageType.WARNING:
+                builder.set_member_name ("message");
+                builder.add_string_value ((string) payload);
+                break;
+            default:
+                break;
+        }
+        builder.end_object ();
+        builder.end_object ();
+
+        var node = builder.get_root ();
+        if (node == null) {
+            throw new Dcs.SerializationError.SERIALIZE_FAILURE (
+                "Failed to serialize publisher %s", id);
+        }
+
+        return node;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual void json_deserialize (Json.Node node) throws GLib.Error {
+        try {
+            var obj = node.get_object ();
+            var members = obj.get_members ();
+            id = members.nth_data (0);
+            var member = obj.get_member (members.nth_data (0));
+            var node_obj = member.get_object ();
+            message_type = Dcs.MessageType.parse (node_obj.get_string_member ("type"));
+            timestamp = node_obj.get_int_member ("timestamp");
+            switch (message_type) {
+                case Dcs.MessageType.OBJECT:
+                    payload_node = node_obj.get_member ("payload");
+                    var str = Json.to_string (payload_node, false);
+                    payload = str.data;
+                    break;
+                case Dcs.MessageType.CONFIG:
+                    break;
+                case Dcs.MessageType.ALERT:
+                case Dcs.MessageType.ERROR:
+                case Dcs.MessageType.INFO:
+                case Dcs.MessageType.WARNING:
+                    var message = node_obj.get_string_member ("message");
+                    payload = message.data;
+                    break;
+                default:
+                    break;
+            }
+        } catch (GLib.Error e) {
+            throw e;
+        }
     }
 
     public string to_string () {

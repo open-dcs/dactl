@@ -65,8 +65,6 @@ public class Dcs.Net.Subscriber : Dcs.Node {
      */
     public signal void data_received (uint8[] data);
 
-    public Subscriber () { }
-
     public Subscriber.with_conn_info (Dcs.Net.ZmqTransport transport,
                                       string address,
                                       int port) {

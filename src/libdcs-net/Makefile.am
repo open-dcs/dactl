@@ -28,6 +28,8 @@ libdcs_net_0_2_la_public_sources = \
 	dcs-net-service.c \
 	dcs-net-service-provider.c \
 	dcs-net-rest-service.c \
+	dcs-net-reply.c \
+	dcs-net-request.c \
 	dcs-net-zmq-service.c \
 	dcs-net-zmq-client.c \
 	$(NULL)
@@ -40,6 +42,8 @@ libdcs_net_0_2_la_VALASOURCES = \
 	dcs-net-service.vala \
 	dcs-net-service-provider.vala \
 	dcs-net-rest-service.vala \
+	dcs-net-replier.vala \
+	dcs-net-requester.vala \
 	dcs-net-zmq-service.vala \
 	dcs-net-zmq-client.vala \
 	$(NULL)

@@ -25,6 +25,12 @@ public class Dcs.Net.Factory : GLib.Object, Dcs.FooFactory {
             case "DcsNetSubscriber":
                 node = new Dcs.Net.Subscriber ();
                 break;
+            case "DcsNetRequester":
+                node = new Dcs.Net.Requester ();
+                break;
+            case "DcsNetReplier":
+                node = new Dcs.Net.Replier ();
+                break;
             default:
                 throw new Dcs.FactoryError.TYPE_NOT_FOUND (
                     "The type requested is not a known type");
@@ -50,6 +56,14 @@ public class Dcs.Net.Factory : GLib.Object, Dcs.FooFactory {
             case "subscriber":
                 node = new Dcs.Net.Subscriber ();
                 type = typeof (Dcs.Net.Subscriber);
+                break;
+            case "requester":
+                node = new Dcs.Net.Requester ();
+                type = typeof (Dcs.Net.Requester);
+                break;
+            case "replier":
+                node = new Dcs.Net.Replier ();
+                type = typeof (Dcs.Net.Replier);
                 break;
             default:
                 throw new Dcs.FactoryError.TYPE_NOT_FOUND (

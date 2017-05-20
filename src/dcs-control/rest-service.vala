@@ -2,18 +2,20 @@ internal class Dcs.Control.RestService : Dcs.Net.RestService {
 
     private const string bad_request = "jsonp('XXX': {'status': 400})";
 
-    public RestService () {
+    public RestService (Dcs.Net.Service service) {
+        this.service = service;
         init ();
     }
 
-    public RestService.with_port (int port) {
+    public RestService.with_port (Dcs.Net.Service service, int port) {
+        this.service = service;
         GLib.Object (port: port);
         init ();
     }
 
     private void init () {
-        debug ("Starting Control REST service on port %d", port);
-        listen_all (port, 0);
+        base.init ();
+        debug (_("Initializing the Control REST service"));
 
         add_handler (null,        route_default);
         add_handler ("/control",  route_control);
