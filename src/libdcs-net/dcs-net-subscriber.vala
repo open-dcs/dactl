@@ -4,7 +4,7 @@ public class Dcs.Net.Subscriber : Dcs.Node {
 
     private ZMQ.Socket socket;
 
-    private bool connected = false;
+    private bool running = false;
 
     private string? _filter = null;
 
@@ -53,7 +53,7 @@ public class Dcs.Net.Subscriber : Dcs.Node {
         get { return _filter; }
         set {
             _filter = value;
-            debug (_("Setting ZMQ subscription filter to: %s"), value);
+            debug (_("Setting subscriber filter to: %s"), value);
             socket.setsockopt (ZMQ.SocketOption.SUBSCRIBE,
                                filter,
                                filter.length);
@@ -73,9 +73,14 @@ public class Dcs.Net.Subscriber : Dcs.Node {
                      port: port);
     }
 
-    public void start () throws Dcs.Net.ZmqError {
+    public void start () throws GLib.Error {
         try {
-            init ();
+            if (!running) {
+                init ();
+            } else {
+                throw new Dcs.RunnableError.ALREADY_RUNNING (
+                    "Socket provider %s is already running", id);
+            }
         } catch (Dcs.Net.ZmqError e) {
             throw e;
         }
@@ -111,7 +116,7 @@ public class Dcs.Net.Subscriber : Dcs.Node {
                 _("An error ocurred while binding to endpoint"));
         }
 
-        connected = true;
+        running = true;
 
         /*
          *filter = "\"data\":";
@@ -122,8 +127,8 @@ public class Dcs.Net.Subscriber : Dcs.Node {
                            filter.length);
     }
 
-    public bool is_connected () {
-        return connected;
+    public bool is_running () {
+        return running;
     }
 
     /**
@@ -147,5 +152,55 @@ public class Dcs.Net.Subscriber : Dcs.Node {
         //message.deserialize (Json.to_string (json, false));
 
         return message;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual Json.Node json_serialize () throws GLib.Error {
+        var builder = new Json.Builder ();
+        builder.begin_object ();
+        builder.set_member_name (id);
+        builder.begin_object ();
+        builder.set_member_name ("type");
+        builder.add_string_value ("subscriber");
+        builder.set_member_name ("properties");
+        builder.begin_object ();
+        builder.set_member_name ("port");
+        builder.add_int_value (port);
+        builder.set_member_name ("address");
+        builder.add_string_value (address);
+        builder.set_member_name ("transport-spec");
+        builder.add_string_value (transport.to_string ());
+        builder.set_member_name ("filter");
+        builder.add_string_value (filter);
+        builder.end_object ();
+        builder.end_object ();
+        builder.end_object ();
+
+        var node = builder.get_root ();
+        if (node == null) {
+            throw new Dcs.SerializationError.SERIALIZE_FAILURE (
+                "Failed to serialize subscriber %s", id);
+        }
+
+        return node;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual void json_deserialize (Json.Node node) throws GLib.Error {
+        var obj = node.get_object ();
+        id = obj.get_members ().nth_data (0);
+        var data = obj.get_object_member (id);
+
+        if (data.has_member ("properties")) {
+            var props = data.get_object_member ("properties");
+            port = (int) props.get_int_member ("port");
+            address = props.get_string_member ("address");
+            transport_spec = props.get_string_member ("transport-spec");
+            filter = props.get_string_member ("filter");
+        }
     }
 }

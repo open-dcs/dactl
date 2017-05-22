@@ -1,26 +1,34 @@
 {
   "dcs": {
-    "objects": {
-      "dev0": { "type": "device", "properties": { "module": "dcs-arduino-device", "enable": true } },
-      "dev1": { "type": "device", "properties": { "module": "dcs-comedi-device", "enable": false } },
-      "dev2": { "type": "device", "properties": { "module": "dcs-mccusb-device", "enable": false } },
-      "dev3": { "type": "device", "properties": { "module": "signal-generator", "enable": true } },
-      "pub0": {
-        "type": "publisher",
-        "properties": {
-          "port": 5001,
-          "address": "*",
-          "transport-spec": "ipc"
+    "name": "daq-test",
+    "http-port": 8080,
+    "daq": {
+        "dev0": {
+          "type": "device",
+          "properties": {
+            "module": "dcs-arduino-device",
+            "enable": true
+          }
         }
-      },
-      "pub1": {
-        "type": "publisher",
-        "properties": {
-          "port": 5002,
-          "address": "127.0.0.1",
-          "transport-spec": "tcp"
+    },
+    "net": {
+        "pub0": {
+          "type": "publisher",
+          "properties": {
+            "port": 5001,
+            "address": "*",
+            "transport-spec": "tcp"
+          }
+        },
+        "sub0": {
+          "type": "subscriber",
+          "properties": {
+            "port": 6001,
+            "address": "127.0.0.1",
+            "filter": "control-test",
+            "transport-spec": "tcp"
+          }
         }
-      }
     }
   }
 }

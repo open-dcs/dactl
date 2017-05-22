@@ -73,6 +73,31 @@ namespace Dcs.ConfigJson {
         return children;
     }
 
+    public static Gee.List<Json.Node> get_namespace_nodes (Json.Node node,
+                                                           string ns)
+                                                           throws GLib.Error {
+        var obj = node.get_object ();
+        var data = obj.get_object_member ("dcs");
+        var nodes = new Gee.ArrayList<Json.Node> ();
+
+        if (data.has_member (ns)) {
+            var objects = data.get_object_member (ns);
+            foreach (var name in objects.get_members ()) {
+                var builder = new Json.Builder ();
+                builder.begin_object ();
+                builder.set_member_name (name);
+                builder.add_value (objects.get_member (name));
+                builder.end_object ();
+                nodes.add (builder.get_root ());
+            }
+        } else {
+            throw new Dcs.ConfigError.INVALID_NAMESPACE (
+                "Invalid namespace %s provided", ns);
+        }
+
+        return nodes;
+    }
+
     /**
      * TODO fill me in
      */

@@ -13,7 +13,7 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
     private Dcs.DAQ.Factory daq_factory;
 
     /* TODO Lower the REST handler to the service class */
-    public Dcs.DAQ.RestService rest_service;
+    public Dcs.DAQ.Router router;
 
     internal Server () {
         GLib.Object (application_id: "org.opendcs.dcs.daq",
@@ -39,7 +39,7 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
         Dcs.FooMetaFactory.register_factory (daq_factory);
 
         /* XXX these should go after the config gets loaded */
-        rest_service = new Dcs.DAQ.RestService (this);
+        router = new Dcs.DAQ.Router (this);
 
         /* Create the plugin manager which loads device plugins */
         plugin_manager = new Dcs.DAQ.DeviceManager (this);
@@ -101,6 +101,7 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
              *    debug (node.to_string ());
              *}
              */
+            debug ("Model tree:\n%s", Dcs.Node.tree (get_model ()));
 
             (plugin_manager as Dcs.DAQ.DeviceManager).enable_device ("signal-generator");
             (plugin_manager as Dcs.DAQ.DeviceManager).start_devices ();

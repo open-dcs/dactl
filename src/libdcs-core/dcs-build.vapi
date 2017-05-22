@@ -53,4 +53,7 @@ public class Dcs.Build {
 
     [CCode (cname = "LIBDIR")]
     public static const string LIBDIR;
+
+    [CCode (cname = "TMPLDIR")]
+    public static const string TMPLDIR;
 }

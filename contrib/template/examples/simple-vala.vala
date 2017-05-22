@@ -12,7 +12,7 @@ static int main (string[] argv)
 		var scope = new Template.Scope ();
 
 		var title = scope.get ("title");
-		title.assign_string ("Example Title");
+		title.assign_string ("Derp");
 
 		var expanded = tmpl.expand_string (scope);
 		stdout.printf ("%s\n", expanded);

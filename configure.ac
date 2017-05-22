@@ -225,6 +225,7 @@ m4_define([libxml_required_version], [2.9.0])
 m4_define([peas_required_version], [1.16.0])
 m4_define([soup_required_version], [2.48.0])
 m4_define([zmq_required_version], [3.2.0])
+m4_define([tmpl_required_version], [3.19.4])
 
 PKG_CHECK_MODULES(LIBDCS_CORE, [gio-2.0 >= glib_required_version
                                 json-glib-1.0 >= json_required_version
@@ -251,8 +252,9 @@ PKG_CHECK_MODULES(LIBDCS_NET, [gee-0.8 >= gee_required_version
                                json-glib-1.0 >= json_required_version
                                libpeas-1.0 >= peas_required_version
                                libsoup-2.4 >= soup_required_version
-                               libzmq > zmq_required_version
-                               cld-0.3 >= cld_required_version])
+                               libzmq >= zmq_required_version
+                               cld-0.3 >= cld_required_version
+                               template-glib-1.0 >= tmpl_required_version])
 PKG_CHECK_MODULES(LIBDCS_CONTROL, [gio-2.0 >= glib_required_version
                                    gee-0.8 >= gee_required_version
                                    libpeas-1.0 >= peas_required_version
@@ -679,6 +681,12 @@ AC_SUBST(LOOP_VALAFLAGS)
 
 
 dnl ***********************************************************************
+dnl Process dependencies in contrib
+dnl ***********************************************************************
+dnl AC_CONFIG_SUBDIRS([contrib/template])
+
+
+dnl ***********************************************************************
 dnl Process .in Files
 dnl ***********************************************************************
 AC_CONFIG_FILES([
@@ -701,6 +709,11 @@ AC_CONFIG_FILES([
 	data/icons/scalable/Makefile
 	data/mime/Makefile
 	data/org.opendcs.Dcsg.desktop.in
+
+	data/services/Makefile
+	data/services/control/Makefile
+	data/services/daq/Makefile
+	data/services/log/Makefile
 
 	data/systemd/Makefile
 	data/systemd/dcs-ctl.service

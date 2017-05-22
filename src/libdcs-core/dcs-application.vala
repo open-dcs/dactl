@@ -146,11 +146,11 @@ public abstract class Dcs.FooApplication : GLib.Application, Dcs.Runnable {
 
     public virtual void construct_model () throws GLib.Error {
         /* XXX Possibly perform initialization in a context class */
+        debug ("Constructing the data model");
         if (initialized) {
             model = new Dcs.FooModel();
             var node = factory.produce_from_config_list (config.get_children ());
             foreach (var child in node.get_children (typeof (Dcs.Node))) {
-                //debug (child.to_string ());
                 child.reparent (model);
             }
         } else {

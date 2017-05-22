@@ -27,6 +27,11 @@ libdcs_daq_0_2_la_public_sources = \
 	dcs-daq-device.c \
 	dcs-daq-device-manager.c \
 	dcs-daq-factory.c \
+	dcs-daq-port.c \
+	dcs-daq-sensor.c \
+	dcs-daq-serial-port.c \
+	dcs-daq-signal.c \
+	dcs-daq-task.c \
 	$(NULL)
 
 libdcs_daq_0_2_la_VALASOURCES = \
@@ -34,6 +39,11 @@ libdcs_daq_0_2_la_VALASOURCES = \
 	dcs-daq-device.vala \
 	dcs-daq-device-manager.vala \
 	dcs-daq-factory.vala \
+	dcs-daq-port.vala \
+	dcs-daq-sensor.vala \
+	dcs-daq-serial-port.vala \
+	dcs-daq-signal.vala \
+	dcs-daq-task.vala \
 	$(NULL)
 
 libdcs_daq_0_2_la_SOURCES = \

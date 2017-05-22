@@ -18,7 +18,9 @@ public class Dcs.ArduinoServiceAddin : GLib.Object, Dcs.Net.ServiceProvider {
         debug ("Arduino device starting...");
         var model = service.get_model ();
         var net = model.@get ("net");
-        debug (net.to_string ());
+        /*
+         *debug (net.to_string ());
+         */
         var publishers = net.get_children (typeof (Dcs.Net.Publisher));
         if (publishers == null || publishers.size == 0) {
             warning ("Couldn't find any publishers");
@@ -31,7 +33,9 @@ public class Dcs.ArduinoServiceAddin : GLib.Object, Dcs.Net.ServiceProvider {
             running = false;
         } else {
             running = true;
-            debug (publisher.to_string ());
+            /*
+             *debug (publisher.to_string ());
+             */
             send_messages.begin ((obj, res) => {
                 try {
                     send_messages.end (res);

@@ -72,7 +72,7 @@ dcs_control_SOURCES = \
 	main.vala \
 	server.vala \
 	dbus-service.vala \
-	rest-service.vala \
+	router.vala \
 	zmq-service.vala \
 	zmq-client.vala \
 	$(NULL)

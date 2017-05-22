@@ -95,8 +95,20 @@ public class Dcs.DAQ.Config : Dcs.AbstractConfig {
                         json = null;
                     }
                     json = Dcs.ConfigJson.load_file (filename);
-                    var nodes = Dcs.ConfigJson.get_child_nodes (json);
-                    foreach (var node in nodes) {
+                    /*
+                     *var nodes = Dcs.ConfigJson.get_child_nodes (json);
+                     *foreach (var node in nodes) {
+                     *    children.add (new Dcs.ConfigNode.from_json (node));
+                     *}
+                     */
+                    var daq = Dcs.ConfigJson.get_namespace_nodes (json, "daq");
+                    foreach (var node in daq) {
+                        stdout.printf (Json.to_string (node, true));
+                        children.add (new Dcs.ConfigNode.from_json (node));
+                    }
+                    var net = Dcs.ConfigJson.get_namespace_nodes (json, "net");
+                    foreach (var node in net) {
+                        stdout.printf (Json.to_string (node, true));
                         children.add (new Dcs.ConfigNode.from_json (node));
                     }
                     break;

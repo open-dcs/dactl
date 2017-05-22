@@ -1,10 +1,4 @@
-public class Dcs.DAQ.Device : Dcs.Node {
-
-    public string module { get; set; }
-
-    public bool enable { get; set; }
-
-    public string? configuration { get; set; default = null; }
+public class Dcs.DAQ.Sensor : Dcs.Node {
 
     /**
      * {@inheritDoc}
@@ -15,7 +9,7 @@ public class Dcs.DAQ.Device : Dcs.Node {
         builder.set_member_name (id);
         builder.begin_object ();
         builder.set_member_name ("type");
-        builder.add_string_value ("");
+        builder.add_string_value ("sensor");
         builder.set_member_name ("properties");
         builder.begin_object ();
         builder.end_object ();

@@ -11,7 +11,7 @@ public class Dcs.Recorder.Server : Dcs.Net.Service {
     private Dcs.Net.Factory net_factory;
 
     /* TODO Lower the REST handler to the service class */
-    private Dcs.Recorder.RestService rest_service;
+    private Dcs.Recorder.Router router;
 
     internal Server () {
         GLib.Object (application_id: "org.opendcs.dcs.log",
@@ -35,7 +35,7 @@ public class Dcs.Recorder.Server : Dcs.Net.Service {
         Dcs.FooMetaFactory.register_factory (net_factory);
 
         /* XXX these should go after the config gets loaded */
-        rest_service = new Dcs.Recorder.RestService (this);
+        router = new Dcs.Recorder.Router (this);
 
         /* Create the plugin manager that loads the backend plugins */
         plugin_manager = new Dcs.Log.BackendManager (this);

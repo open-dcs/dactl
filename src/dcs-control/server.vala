@@ -2,7 +2,7 @@ public class Dcs.Control.Server : Dcs.CLI.Application {
 
     private GLib.MainLoop loop;
 
-    private Dcs.Control.RestService rest_service;
+    private Dcs.Control.Router router;
 
     public Dcs.Control.ZmqService zmq_service;
 
@@ -13,7 +13,7 @@ public class Dcs.Control.Server : Dcs.CLI.Application {
 
         loop = new GLib.MainLoop ();
 
-        rest_service = new Dcs.Control.RestService.with_port (new Dcs.Net.Service (), 8090);
+        router = new Dcs.Control.Router.with_port (new Dcs.Net.Service (), 8090);
         zmq_client = new Dcs.Control.ZmqClient.with_conn_info (
             Dcs.Net.ZmqTransport.TCP, "127.0.0.1", 5588);
         zmq_service = new Dcs.Control.ZmqService.with_conn_info (

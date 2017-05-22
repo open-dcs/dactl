@@ -4,6 +4,8 @@ public class Dcs.Net.Publisher : Dcs.Node {
 
     private ZMQ.Socket socket;
 
+    private bool running = false;
+
     /**
      * Port number to use with the service.
      */
@@ -55,9 +57,15 @@ public class Dcs.Net.Publisher : Dcs.Node {
                      port: port);
     }
 
-    public void start () throws Dcs.Net.ZmqError {
+    public void start () throws GLib.Error {
         try {
-            init ();
+            if (!running) {
+                init ();
+                running = true;
+            } else {
+                throw new Dcs.RunnableError.ALREADY_RUNNING (
+                    "Socket provider %s is already running", id);
+            }
         } catch (Dcs.Net.ZmqError e) {
             throw e;
         }
@@ -142,5 +150,15 @@ public class Dcs.Net.Publisher : Dcs.Node {
      * {@inheritDoc}
      */
     public virtual void json_deserialize (Json.Node node) throws GLib.Error {
+        var obj = node.get_object ();
+        id = obj.get_members ().nth_data (0);
+        var data = obj.get_object_member (id);
+
+        if (data.has_member ("properties")) {
+            var props = data.get_object_member ("properties");
+            port = (int) props.get_int_member ("port");
+            address = props.get_string_member ("address");
+            transport_spec = props.get_string_member ("transport-spec");
+        }
     }
 }

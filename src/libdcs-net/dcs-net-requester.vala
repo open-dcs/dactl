@@ -8,6 +8,8 @@ public class Dcs.Net.Requester : Dcs.Node {
 
     private bool running = false;
 
+    private Gee.Queue<Dcs.Message> message_queue;
+
     /**
      * Port number to use with the service.
      */
@@ -46,6 +48,10 @@ public class Dcs.Net.Requester : Dcs.Node {
      */
     public string address { get; set; default = "127.0.0.1"; }
 
+    construct {
+        message_queue = new Gee.ArrayQueue<Dcs.Message> ();
+    }
+
     public Requester.with_conn_info (Dcs.Net.ZmqTransport transport,
                                      string address,
                                      int port) {
@@ -54,17 +60,22 @@ public class Dcs.Net.Requester : Dcs.Node {
                      port: port);
     }
 
-    public void start () throws Dcs.Net.ZmqError {
+    public void start () throws GLib.Error {
         try {
-            init ();
-            running = true;
-            relay.begin ((obj, res) => {
-                try {
-                    relay.end (res);
-                } catch (ThreadError e) {
-                    throw new Dcs.Net.ZmqError.RUN_FAILURE (e.message);
-                }
-            });
+            if (!running) {
+                init ();
+                running = true;
+                relay.begin ((obj, res) => {
+                    try {
+                        relay.end (res);
+                    } catch (ThreadError e) {
+                        throw new Dcs.Net.ZmqError.RUN_FAILURE (e.message);
+                    }
+                });
+            } else {
+                throw new Dcs.RunnableError.ALREADY_RUNNING (
+                    "Socket provider %s is already running", id);
+            }
         } catch (Dcs.Net.ZmqError e) {
             throw e;
         }
@@ -114,11 +125,9 @@ public class Dcs.Net.Requester : Dcs.Node {
 
     public void send_message (Dcs.Message msg) {
         /* Add a message to the internal queue */
-        /*
-         *lock (queue) {
-         *    queue.push (msg);
-         *}
-         */
+        lock (message_queue) {
+            message_queue.offer (msg);
+        }
     }
 
     private async void relay () throws ThreadError {
@@ -129,8 +138,13 @@ public class Dcs.Net.Requester : Dcs.Node {
                 /* XXX need to wait for messages on the queue somewhere else and
                  * use the delegate to send here */
                 /* XXX watch the internal queue and pop all available? */
-                Posix.sleep (10);
+                Posix.sleep (600);
                 debug ("I should be making requests here");
+                /*
+                 *lock (message_queue) {
+                 *    var msg = message_queue.poll ();
+                 *}
+                 */
             }
 
             Idle.add ((owned) callback);
@@ -139,5 +153,52 @@ public class Dcs.Net.Requester : Dcs.Node {
 
         Thread.create<void*> (run, false);
         yield;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual Json.Node json_serialize () throws GLib.Error {
+        var builder = new Json.Builder ();
+        builder.begin_object ();
+        builder.set_member_name (id);
+        builder.begin_object ();
+        builder.set_member_name ("type");
+        builder.add_string_value ("requester");
+        builder.set_member_name ("properties");
+        builder.begin_object ();
+        builder.set_member_name ("port");
+        builder.add_int_value (port);
+        builder.set_member_name ("address");
+        builder.add_string_value (address);
+        builder.set_member_name ("transport-spec");
+        builder.add_string_value (transport.to_string ());
+        builder.end_object ();
+        builder.end_object ();
+        builder.end_object ();
+
+        var node = builder.get_root ();
+        if (node == null) {
+            throw new Dcs.SerializationError.SERIALIZE_FAILURE (
+                "Failed to serialize requester %s", id);
+        }
+
+        return node;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual void json_deserialize (Json.Node node) throws GLib.Error {
+        var obj = node.get_object ();
+        id = obj.get_members ().nth_data (0);
+        var data = obj.get_object_member (id);
+
+        if (data.has_member ("properties")) {
+            var props = data.get_object_member ("properties");
+            port = (int) props.get_int_member ("port");
+            address = props.get_string_member ("address");
+            transport_spec = props.get_string_member ("transport-spec");
+        }
     }
 }

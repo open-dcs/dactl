@@ -1,5 +1,7 @@
 public errordomain Dcs.RunnableError {
-    UNDEFINED
+    UNDEFINED,
+    ALREADY_RUNNING,
+    NOT_RUNNING;
 }
 
 /**
