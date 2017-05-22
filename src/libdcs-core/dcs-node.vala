@@ -53,6 +53,12 @@ public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
      */
     public signal void request_node (string id);
 
+    public Node () {
+        this.node_added.connect ((node_id) => {
+            debug ("Node %s was added to %s", node_id, id);
+        });
+    }
+
     /**
      * {@inheritDoc}
      */

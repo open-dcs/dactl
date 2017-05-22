@@ -120,6 +120,33 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
         loop.run ();
     }
 
+    public override void construct_model () throws GLib.Error {
+        debug ("What happens now?");
+        if (initialized) {
+            model = new Dcs.FooModel();
+            var net = new Dcs.Node ();
+            net.id = "net";
+            var daq = new Dcs.Node ();
+            daq.id = "daq";
+            foreach (var config_node in config.get_children ()) {
+                var node = factory.produce_from_config (config_node);
+                if (node is Dcs.DAQ.Device) {
+                    daq.add (node);
+                } else if (node is Dcs.Net.Publisher ||
+                           node is Dcs.Net.Subscriber ||
+                           node is Dcs.Net.Requester ||
+                           node is Dcs.Net.Replier) {
+                    net.add (node);
+                }
+            }
+            model.add (daq);
+            model.add (net);
+        } else {
+            throw new Dcs.ApplicationError.NOT_INITIALIZED (
+                "The application was not initialized correctly");
+        }
+    }
+
     protected override void startup () {
         debug (_("Starting DAQ server"));
         base.startup ();

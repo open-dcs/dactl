@@ -69,7 +69,7 @@ public interface Dcs.Application : GLib.Object {
  */
 public abstract class Dcs.FooApplication : GLib.Application, Dcs.Runnable {
 
-    private bool initialized = false;
+    protected bool initialized = false;
 
     protected Dcs.MetaConfig config;
 

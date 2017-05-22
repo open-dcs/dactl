@@ -3,35 +3,31 @@
     "name": "log-test",
     "http-port": 8081,
     "log": {
-      "backends": {
-        "back0": {
-          "type": "backend",
-          "properties": {
-            "module": "xml-backend",
-            "enable": true
-          }
+      "back0": {
+        "type": "backend",
+        "properties": {
+          "module": "xml-backend",
+          "enable": true
         }
       }
     },
     "net": {
-      "channels": {
-        "sub0": {
-          "type": "subscriber",
-          "properties": {
-            "port": 5001,
-            "address": "127.0.0.1",
-            "filter": "daq-test",
-            "transport-spec": "tcp"
-          }
-        },
-        "sub1": {
-          "type": "subscriber",
-          "properties": {
-            "port": 6001,
-            "address": "127.0.0.1",
-            "filter": "control-test",
-            "transport-spec": "tcp"
-          }
+      "sub0": {
+        "type": "subscriber",
+        "properties": {
+          "port": 5001,
+          "address": "127.0.0.1",
+          "filter": "daq-test",
+          "transport-spec": "tcp"
+        }
+      },
+      "sub1": {
+        "type": "subscriber",
+        "properties": {
+          "port": 6001,
+          "address": "127.0.0.1",
+          "filter": "control-test",
+          "transport-spec": "tcp"
         }
       }
     }
