@@ -1,13 +1,15 @@
 public class Dcs.ConfigFile : Dcs.AbstractConfig {
 
-    private Json.Node json;
+    protected Json.Node json;
 
-    private Xml.Node *xml;
+    protected Xml.Node *xml;
 
     construct {
         children = new Gee.ArrayList<Dcs.ConfigNode> (
             (Gee.EqualDataFunc<Dcs.ConfigNode>) Dcs.ConfigNode.equals);
     }
+
+	/* TODO Add from_data constructor */
 
     public ConfigFile.from_file (string filename) {
         /* Test if the data is JSON by attempting to load it */
@@ -15,6 +17,10 @@ public class Dcs.ConfigFile : Dcs.AbstractConfig {
             var parser = new Json.Parser ();
             parser.load_from_file (filename);
             format = Dcs.ConfigFormat.JSON;
+			if (json != null) {
+				json = null;
+			}
+			json = Dcs.ConfigJson.load_file (filename);
         } catch (GLib.Error e) {
             format = Dcs.ConfigFormat.INVALID;
         }
@@ -24,34 +30,39 @@ public class Dcs.ConfigFile : Dcs.AbstractConfig {
             Xml.Doc* doc = Xml.Parser.parse_file (filename);
             if (doc != null) {
                 format = Dcs.ConfigFormat.XML;
+                if (xml != null) {
+                    xml = null;
+                }
+                xml = Dcs.ConfigXml.load_file (filename, "dcs");
             } else {
                 format = Dcs.ConfigFormat.INVALID;
             }
         }
 
-        switch (format) {
-            case Dcs.ConfigFormat.JSON:
-                if (json != null) {
-                    json = null;
-                }
-                json = Dcs.ConfigJson.load_file (filename);
-                var nodes = Dcs.ConfigJson.get_child_nodes (json);
-                foreach (var node in nodes) {
-                    children.add (new Dcs.ConfigNode.from_json (node));
-                }
-                break;
-            case Dcs.ConfigFormat.XML:
-                if (xml != null) {
-                    xml = null;
-                }
-                xml = Dcs.ConfigXml.load_file (filename, "dcs");
-                var nodes = Dcs.ConfigXml.get_child_nodes (xml);
-                foreach (var node in nodes) {
-                    children.add (new Dcs.ConfigNode.from_xml (node));
-                }
-                break;
-            default:
-                break;
+		populate_config_tree ();
+    }
+
+    protected virtual void populate_config_tree () throws GLib.Error {
+        try {
+            switch (format) {
+                case Dcs.ConfigFormat.JSON:
+					var nodes = Dcs.ConfigJson.get_child_nodes (json);
+					foreach (var node in nodes) {
+						children.add (new Dcs.ConfigNode.from_json (node));
+					}
+                    break;
+                case Dcs.ConfigFormat.XML:
+                    /* FIXME This is wrong */
+                    var nodes = Dcs.ConfigXml.get_child_nodes (xml);
+                    foreach (var node in nodes) {
+                        children.add (new Dcs.ConfigNode.from_xml (node));
+                    }
+                    break;
+                default:
+                    break;
+            }
+        } catch (GLib.Error e) {
+            throw e;
         }
     }
 

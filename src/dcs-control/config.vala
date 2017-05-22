@@ -1,7 +1,7 @@
 /**
  * XXX The XML stuff will not work, maybe fix later, maybe remove entirely.
  */
-public class Dcs.DAQ.Config : Dcs.ConfigFile {
+public class Dcs.Control.Config : Dcs.ConfigFile {
 
     construct {
         children = new Gee.ArrayList<Dcs.ConfigNode> (
@@ -94,8 +94,8 @@ public class Dcs.DAQ.Config : Dcs.ConfigFile {
         try {
             switch (format) {
                 case Dcs.ConfigFormat.JSON:
-                    var daq = Dcs.ConfigJson.get_namespace_nodes (json, "daq");
-                    foreach (var node in daq) {
+                    var control = Dcs.ConfigJson.get_namespace_nodes (json, "control");
+                    foreach (var node in control) {
                         //debug ("\n" + Json.to_string (node, true));
                         children.add (new Dcs.ConfigNode.from_json (node));
                     }

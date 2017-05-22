@@ -70,11 +70,10 @@ dcs_control_headers = \
 
 dcs_control_SOURCES = \
 	main.vala \
+	config.vala \
 	server.vala \
 	dbus-service.vala \
 	router.vala \
-	zmq-service.vala \
-	zmq-client.vala \
 	$(NULL)
 
 BUILT_SOURCES += libdcs-control.h

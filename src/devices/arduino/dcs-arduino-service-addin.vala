@@ -22,11 +22,15 @@ public class Dcs.ArduinoServiceAddin : GLib.Object, Dcs.Net.ServiceProvider {
          *debug (net.to_string ());
          */
         var publishers = net.get_children (typeof (Dcs.Net.Publisher));
-        if (publishers == null || publishers.size == 0) {
+        /* FIXME This is dumb, get_children shouldn't allocate an empty list */
+        if (publishers == null) {
+            warning ("Couldn't find any publishers");
+            return;
+        } else if (publishers.size == 0) {
             warning ("Couldn't find any publishers");
             return;
         }
-        publisher = (Dcs.Net.Publisher) publishers.@get (1);
+        publisher = (Dcs.Net.Publisher) publishers.@get (0);
         /* TODO Add more verbose checking */
         if (publisher == null) {
             debug ("Couldn't get publisher");

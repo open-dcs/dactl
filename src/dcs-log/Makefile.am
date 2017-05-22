@@ -76,8 +76,6 @@ dcs_log_SOURCES = \
 	server.vala \
 	dbus-service.vala \
 	router.vala \
-	zmq-service.vala \
-	zmq-client.vala \
 	$(NULL)
 
 BUILT_SOURCES += libdcs-log.h

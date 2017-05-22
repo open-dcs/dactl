@@ -121,7 +121,7 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
     }
 
     public override void construct_model () throws GLib.Error {
-        debug ("What happens now?");
+        debug ("Constructing the DAQ service data model");
         if (initialized) {
             model = new Dcs.FooModel();
             var net = new Dcs.Node ();

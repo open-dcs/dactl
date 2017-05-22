@@ -10,6 +10,8 @@ public class Dcs.Recorder.Server : Dcs.Net.Service {
 
     private Dcs.Net.Factory net_factory;
 
+    private Dcs.Log.Factory log_factory;
+
     /* TODO Lower the REST handler to the service class */
     private Dcs.Recorder.Router router;
 
@@ -24,6 +26,7 @@ public class Dcs.Recorder.Server : Dcs.Net.Service {
         cmdline_config = Dcs.Recorder.CmdlineConfig.get_default ();
 
         net_factory = Dcs.Net.Factory.get_default ();
+        log_factory = Dcs.Log.Factory.get_default ();
 
         /* Perform the base initialization */
         init ();
@@ -33,6 +36,7 @@ public class Dcs.Recorder.Server : Dcs.Net.Service {
 
         /* Register the known factories that are needed */
         Dcs.FooMetaFactory.register_factory (net_factory);
+        Dcs.FooMetaFactory.register_factory (log_factory);
 
         /* XXX these should go after the config gets loaded */
         router = new Dcs.Recorder.Router (this);
@@ -90,6 +94,14 @@ public class Dcs.Recorder.Server : Dcs.Net.Service {
         try {
             /* Use any configuration that's available at this point to build */
             construct_model ();
+            var nodes = get_model ().get_descendants (typeof (Dcs.Node));
+            debug ("Configured %d nodes", nodes.size);
+            /*
+             *foreach (var node in nodes) {
+             *    debug (node.to_string ());
+             *}
+             */
+            debug ("Model tree:\n%s", Dcs.Node.tree (get_model ()));
 
             //(plugin_manager as Dcs.Log.BackendManager).enable_backend ("xml");
             (plugin_manager as Dcs.Log.BackendManager).start_backends ();
@@ -106,6 +118,33 @@ public class Dcs.Recorder.Server : Dcs.Net.Service {
         }
 
         loop.run ();
+    }
+
+    public override void construct_model () throws GLib.Error {
+        debug ("Constructing the Log service data model");
+        if (initialized) {
+            model = new Dcs.FooModel();
+            var net = new Dcs.Node ();
+            net.id = "net";
+            var log = new Dcs.Node ();
+            log.id = "log";
+            foreach (var config_node in config.get_children ()) {
+                var node = factory.produce_from_config (config_node);
+                if (node is Dcs.Log.Backend) {
+                    log.add (node);
+                } else if (node is Dcs.Net.Publisher ||
+                           node is Dcs.Net.Subscriber ||
+                           node is Dcs.Net.Requester ||
+                           node is Dcs.Net.Replier) {
+                    net.add (node);
+                }
+            }
+            model.add (log);
+            model.add (net);
+        } else {
+            throw new Dcs.ApplicationError.NOT_INITIALIZED (
+                "The application was not initialized correctly");
+        }
     }
 
     protected override void startup () {

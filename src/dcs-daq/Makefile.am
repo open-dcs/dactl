@@ -79,7 +79,6 @@ dcs_daq_SOURCES = \
 	server.vala \
 	dbus-service.vala \
 	router.vala \
-	zmq-service.vala \
 	$(NULL)
 
 BUILT_SOURCES += libdcs-daq.h
