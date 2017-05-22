@@ -33,7 +33,7 @@ public class Dcs.ArduinoServiceAddin : GLib.Object, Dcs.Net.ServiceProvider {
         publisher = (Dcs.Net.Publisher) publishers.@get (0);
         /* TODO Add more verbose checking */
         if (publisher == null) {
-            debug ("Couldn't get publisher");
+            warning ("Couldn't get publisher");
             running = false;
         } else {
             running = true;

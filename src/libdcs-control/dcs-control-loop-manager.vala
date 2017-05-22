@@ -1,38 +1,65 @@
 public class Dcs.Control.LoopManager : Dcs.PluginManager {
 
-    private Dcs.Net.ZmqClient zmq_client;
+    private Dcs.Net.Service service;
 
-    private Dcs.Net.ZmqService zmq_service;
-
-    public Dcs.Control.LoopProxy ext { get; set; }
-
-    public LoopManager (Dcs.Net.ZmqClient zmq_client,
-                        Dcs.Net.ZmqService zmq_service) {
-        this.zmq_client = zmq_client;
-        this.zmq_service = zmq_service;
+    public LoopManager (Dcs.Net.Service service) {
+        this.service = service;
 
         engine = Peas.Engine.get_default ();
-        ext = new Dcs.Control.LoopProxy (zmq_client, zmq_service);
-        search_path = Dcs.Build.LOOP_DIR;
+        search_path = Dcs.Build.CONTROLLER_DIR;
 
         init ();
         load_plugins ();
+        /*
+         *load_plugin_configurations ();
+         */
+
+        /*
+         *dump_plugins ();
+         */
     }
 
     protected override void add_extension () {
-		// The extension set
+        // The extension set
         extensions = new Peas.ExtensionSet (engine,
-                                            typeof (Peas.Activatable),
-                                            "object",
-                                            ext,
-                                            null);
+                                            typeof (Dcs.Net.ServiceProvider),
+                                            "service",
+                                            service);
 
         extensions.extension_added.connect ((info, extension) => {
-            (extension as Peas.Activatable).activate ();
+            /* XXX Not sure anything needs to happen when an extension is added */
+            debug ("%s was added", info.get_name ());
         });
 
         extensions.extension_removed.connect ((info, extension) => {
-            (extension as Peas.Activatable).deactivate ();
+            /* XXX Not sure anything needs to happen when an extension is removed */
+            debug ("%s was removed", info.get_name ());
+        });
+    }
+
+    public void enable_loop (string name) throws GLib.Error {
+        var info = engine.get_plugin_info (name);
+        if (info == null) {
+            throw new Dcs.PluginError.NOT_FOUND (
+                "Cannot enable controller %s, not found", name);
+        }
+        var extension = extensions.get_extension (info);
+        (extension as Dcs.Net.ServiceProvider).activate ();
+    }
+
+    public void disable_loop (string name) throws GLib.Error {
+        var info = engine.get_plugin_info (name);
+        if (info == null) {
+            throw new Dcs.PluginError.NOT_FOUND (
+                "Cannot disable controller %s, not found", name);
+        }
+        var extension = extensions.get_extension (info);
+        (extension as Dcs.Net.ServiceProvider).deactivate ();
+    }
+
+    public void start_loops () {
+        extensions.@foreach ((exts, info, ext) => {
+            (ext as Dcs.Net.ServiceProvider).start ();
         });
     }
 }

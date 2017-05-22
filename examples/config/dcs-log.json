@@ -9,6 +9,17 @@
           "module": "xml-backend",
           "enable": true
         }
+      },
+      "log0": {
+        "type": "file",
+        "properties": {
+        },
+        "objects": {
+          "col0": { "type": "column", "properties": { "dummy": "null" } },
+          "col1": { "type": "column", "properties": { "dummy": "null" } },
+          "col2": { "type": "column", "properties": { "dummy": "null" } },
+          "col3": { "type": "column", "properties": { "dummy": "null" } }
+        }
       }
     },
     "net": {

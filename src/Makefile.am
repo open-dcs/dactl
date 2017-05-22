@@ -13,8 +13,8 @@ SUBDIRS = \
 	dcs-control \
 	dcs-plugin \
 	backends \
+	controllers \
 	devices \
-	loops \
 	plugins \
 	$(NULL)
 

@@ -1,7 +1,8 @@
-internal class Dcs.Control.Router : Dcs.Net.Router {
+public class Dcs.Control.Router : Dcs.Net.Router {
 
     public Router (Dcs.Net.Service service) {
         this.service = service;
+        port = 8082;
         init ();
     }
 

@@ -4,6 +4,8 @@ public class Dcs.Net.Subscriber : Dcs.Node {
 
     private ZMQ.Socket socket;
 
+    private bool connected = false;
+
     private bool running = false;
 
     private string? _filter = null;
@@ -116,7 +118,9 @@ public class Dcs.Net.Subscriber : Dcs.Node {
                 _("An error ocurred while binding to endpoint"));
         }
 
+        /* FIXME running differs from connected and should be used in thread */
         running = true;
+        connected = true;
 
         /*
          *filter = "\"data\":";
@@ -129,6 +133,10 @@ public class Dcs.Net.Subscriber : Dcs.Node {
 
     public bool is_running () {
         return running;
+    }
+
+    public bool is_connected () {
+        return connected;
     }
 
     /**

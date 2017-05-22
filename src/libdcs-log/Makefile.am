@@ -25,13 +25,19 @@ libdcs_log_0_2_la_public_headers = \
 libdcs_log_0_2_la_public_sources = \
 	dcs-log-backend.c \
 	dcs-log-backend-manager.c \
+	dcs-log-column.c \
 	dcs-log-factory.c \
+	dcs-log-file.c \
+	dcs-log-query.c \
 	$(NULL)
 
 libdcs_log_0_2_la_VALASOURCES = \
 	dcs-log-backend.vala \
 	dcs-log-backend-manager.vala \
+	dcs-log-column.vala \
 	dcs-log-factory.vala \
+	dcs-log-file.vala \
+	dcs-log-query.vala \
 	$(NULL)
 
 libdcs_log_0_2_la_SOURCES = \

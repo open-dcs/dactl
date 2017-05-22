@@ -9,6 +9,21 @@
           "module": "dcs-arduino-device",
           "enable": true
         }
+      },
+      "sen0": {
+        "type": "sensor",
+        "properties": {
+        }
+      },
+      "sig0": {
+        "type": "signal",
+        "properties": {
+        }
+      },
+      "port0": {
+        "type": "serial-port",
+        "properties": {
+        }
       }
     },
     "net": {

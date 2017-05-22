@@ -22,6 +22,18 @@ public class Dcs.DAQ.Factory : GLib.Object, Dcs.FooFactory {
             case "DcsDAQDevice":
                 node = new Dcs.DAQ.Device ();
                 break;
+            case "DcsDAQSensor":
+                node = new Dcs.DAQ.Sensor ();
+                break;
+            case "DcsDAQSerialPort":
+                node = new Dcs.DAQ.SerialPort ();
+                break;
+            case "DcsDAQSignal":
+                node = new Dcs.DAQ.Signal ();
+                break;
+            case "DcsDAQTask":
+                node = new Dcs.DAQ.Task ();
+                break;
             default:
                 throw new Dcs.FactoryError.TYPE_NOT_FOUND (
                     "The type requested is not a known type");
@@ -43,6 +55,22 @@ public class Dcs.DAQ.Factory : GLib.Object, Dcs.FooFactory {
             case "device":
                 node = new Dcs.DAQ.Device ();
                 type = typeof (Dcs.DAQ.Device);
+                break;
+            case "sensor":
+                node = new Dcs.DAQ.Sensor ();
+                type = typeof (Dcs.DAQ.Sensor);
+                break;
+            case "serial-port":
+                node = new Dcs.DAQ.SerialPort ();
+                type = typeof (Dcs.DAQ.SerialPort);
+                break;
+            case "signal":
+                node = new Dcs.DAQ.Signal ();
+                type = typeof (Dcs.DAQ.Signal);
+                break;
+            case "task":
+                node = new Dcs.DAQ.Task ();
+                type = typeof (Dcs.DAQ.Task);
                 break;
             default:
                 throw new Dcs.FactoryError.TYPE_NOT_FOUND (

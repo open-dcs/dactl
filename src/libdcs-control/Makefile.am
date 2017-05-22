@@ -23,13 +23,13 @@ libdcs_control_0_2_la_public_headers = \
 	$(NULL)
 
 libdcs_control_0_2_la_public_sources = \
-	dcs-control-loop.c \
+	dcs-control-controller.c \
 	dcs-control-loop-manager.c \
 	dcs-control-factory.c \
 	$(NULL)
 
 libdcs_control_0_2_la_VALASOURCES = \
-	dcs-control-loop.vala \
+	dcs-control-controller.vala \
 	dcs-control-loop-manager.vala \
 	dcs-control-factory.vala \
 	$(NULL)
@@ -72,7 +72,7 @@ libdcs_control_0_2_la_VALAFLAGS = \
 libdcs_control_0_2_la_CFLAGS = \
 	-DG_LOG_DOMAIN=\"libdcs-control\" \
 	-DGETTEXT_PACKAGE=\"dcs\" \
-	-DLOOP_DIR=\""$(loopdir)"\" \
+	-DCONTROLLER_DIR=\""$(controllerdir)"\" \
 	$(AM_CFLAGS) \
 	$(LIBDCS_CFLAGS) \
 	$(LIBDCS_CONTROL_CFLAGS) \
@@ -117,6 +117,7 @@ $(builddir)/DcsControl-0.2.gir: $(srcdir)/Dcs-0.2.gir
 		-e 's,Dcs\.,DcsControl.,g' \
 		-e 's,namespace name="Dcs",namespace name="DcsControl",g' \
 		-e 's,DcsControl\.Extension,DcsCore.Extension,g' \
+		-e 's,DcsControl\.Node,DcsCore.Node,g' \
 		-e 's,<package name="dcs-control-0.2"/>,<include name="DcsCore" version="0.2"/>\n<package name="dcs-control-0.2"/>,' \
 		$< >$@
 GIRS = DcsControl-0.2.gir

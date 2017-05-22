@@ -17,6 +17,9 @@ libdcs_device_arduino_la_vala.stamp: $(libdcs_device_arduino_la_VALASOURCES)
 
 libdcs_device_arduino_la_public_sources = \
 	dcs-arduino-device.c \
+	dcs-arduino-config-provider.c \
+	dcs-arduino-factory-provider.c \
+	dcs-arduino-service-addin.c \
 	$(NULL)
 
 libdcs_device_arduino_la_VALASOURCES = \

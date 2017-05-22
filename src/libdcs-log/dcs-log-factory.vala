@@ -22,6 +22,15 @@ public class Dcs.Log.Factory : GLib.Object, Dcs.FooFactory {
             case "DcsLogBackend":
                 node = new Dcs.Log.Backend ();
                 break;
+            case "DcsLogFile":
+                node = new Dcs.Log.File ();
+                break;
+            case "DcsLogColumn":
+                node = new Dcs.Log.Column ();
+                break;
+            case "DcsLogQuery":
+                node = new Dcs.Log.Query ();
+                break;
             default:
                 throw new Dcs.FactoryError.TYPE_NOT_FOUND (
                     "The type requested is not a known type");
@@ -43,6 +52,18 @@ public class Dcs.Log.Factory : GLib.Object, Dcs.FooFactory {
             case "backend":
                 node = new Dcs.Log.Backend ();
                 type = typeof (Dcs.Log.Backend);
+                break;
+            case "file":
+                node = new Dcs.Log.File ();
+                type = typeof (Dcs.Log.File);
+                break;
+            case "column":
+                node = new Dcs.Log.Column ();
+                type = typeof (Dcs.Log.Column);
+                break;
+            case "query":
+                node = new Dcs.Log.Query ();
+                type = typeof (Dcs.Log.Query);
                 break;
             default:
                 throw new Dcs.FactoryError.TYPE_NOT_FOUND (

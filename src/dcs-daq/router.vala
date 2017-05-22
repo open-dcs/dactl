@@ -13,6 +13,7 @@ public class Dcs.DAQ.Router : Dcs.Net.Router {
 
     public Router (Dcs.Net.Service service) {
         this.service = service;
+        port = 8080;
         init ();
     }
 

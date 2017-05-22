@@ -71,6 +71,7 @@ dcs_control_headers = \
 dcs_control_SOURCES = \
 	main.vala \
 	config.vala \
+	cmdline-config.vala \
 	server.vala \
 	dbus-service.vala \
 	router.vala \
