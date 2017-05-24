@@ -18,6 +18,7 @@ dcs_daq_VALAFLAGS = \
 	--pkg json-glib-1.0 \
 	--pkg libsoup-2.4 \
 	--pkg libzmq \
+	--pkg template-glib-1.0 \
 	--pkg dcs-build \
 	--pkg dcs-core-0.2 \
 	--pkg dcs-cli-0.2 \
@@ -29,6 +30,7 @@ dcs_daq_includes = \
 	-include config.h \
 	-DLOCALEDIR=\""$(datadir)/locale"\" \
 	-DDATADIR=\""$(shareddir)"\" \
+	-DTMPLDIR=\""$(libdir)/@PACKAGE@/dcs-daq"\" \
 	-I$(top_srcdir)/src/libdcs-core \
 	-I$(top_srcdir)/src/libdcs-cli \
 	-I$(top_srcdir)/src/libdcs-daq \
@@ -76,8 +78,7 @@ dcs_daq_SOURCES = \
 	cmdline-config.vala \
 	server.vala \
 	dbus-service.vala \
-	rest-service.vala \
-	zmq-service.vala \
+	router.vala \
 	$(NULL)
 
 BUILT_SOURCES += libdcs-daq.h

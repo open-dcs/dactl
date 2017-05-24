@@ -8,7 +8,7 @@ public interface Dcs.Net.Provider : GLib.Object {
 
     //public Dcs.Net.ProviderFlags flags = Dcs.Net.ProviderFlags.NONE;
 
-    //protected Dcs.Net.RestService rest;
+    //protected Dcs.Net.Router router;
 
     //protected Dcs.Net.ZmqService zmq;
 }

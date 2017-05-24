@@ -1,5 +1,7 @@
 public errordomain Dcs.NodeError {
     PARENT_EXISTS,
+    DUPLICATE_ID,
+    CHILD_NOT_FOUND,
     CIRCULAR_REFERENCE
 }
 
@@ -12,20 +14,6 @@ public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
      * {@inheritDoc}
      */
     public virtual string id { get; set; }
-
-    /**
-     * {@inheritDoc}
-     */
-    public virtual string serialize () throws GLib.Error {
-        return "{}";
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public virtual void deserialize (string data) throws GLib.Error {
-        /* XXX do something */
-    }
 
     /**
      * {@inheritDoc}
@@ -52,11 +40,24 @@ public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
     public signal void node_removed (string id);
 
     /**
+     * Emitted whenever an node as been updated.
+     *
+     * @param id the ID of the node that was updated
+     */
+    public signal void node_updated (string id);
+
+    /**
      * Used by implementing classes to request a child node for addition.
      *
      * @param id the ID of the node that was requested
      */
     public signal void request_node (string id);
+
+    public Node () {
+        this.node_added.connect ((node_id) => {
+            debug ("Node %s was added to %s", node_id, id);
+        });
+    }
 
     /**
      * {@inheritDoc}
@@ -111,6 +112,9 @@ public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
              * maybe this should be based off the path instead */
             throw new Dcs.NodeError.CIRCULAR_REFERENCE (
                 "Node %s contains itself as a descendant", id);
+        } else if (has_key (node.id)) {
+            throw new Dcs.NodeError.DUPLICATE_ID (
+                "Node %s already contains a child with the ID %s", id, node.id);
         } else {
             base.@set (node.id, node);
             node.parent = this;
@@ -131,6 +135,30 @@ public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
     }
 
     /**
+     * Update a node.
+     *
+     * @param node node to update
+     */
+    public virtual void update (Dcs.Node node) throws Dcs.NodeError {
+        if (has_key (node.id)) {
+            base.@set (node.id, node);
+            node_updated (node.id);
+        } else {
+            throw new Dcs.NodeError.CHILD_NOT_FOUND (
+                "Node %s does not contain the child %s", id, node.id);
+        }
+    }
+
+    /**
+     * Retrieve a node.
+     *
+     * @param id ID of the node to retrieve.
+     */
+    public virtual Dcs.Node? get_child (string id) {
+        return @get (id);
+    }
+
+    /**
      * Retrieves a list of all nodes of a certain type.
      *
      * {{{
@@ -140,10 +168,11 @@ public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
      *
      * @param type class type to retrieve
      *
-     * @return list of all nodes of a certain class type
+     * @return list of all nodes of a certain class type, `null' if empty
      */
-    public virtual Gee.ArrayList<Dcs.Node> get_descendants (Type type) {
+    public virtual Gee.ArrayList<Dcs.Node>? get_descendants (Type type) {
         var list = new Gee.ArrayList<Dcs.Node> ();
+
         foreach (var node in values) {
             if (node.get_type ().is_a (type)) {
                 list.add (node);
@@ -157,7 +186,12 @@ public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
                 }
             }
         }
-        return list;
+
+        //if (list.size > 0) {
+            return list;
+        //} else {
+            //return null;
+        //}
     }
 
     /**
@@ -170,16 +204,22 @@ public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
      *
      * @param type class type to retrieve
      *
-     * @return list of all nodes of a certain class type
+     * @return list of all nodes of a certain class type, `null' if empty
      */
-    public virtual Gee.ArrayList<Dcs.Node> get_children (Type type) {
+    public virtual Gee.ArrayList<Dcs.Node>? get_children (Type type) {
         Gee.ArrayList<Dcs.Node> list = new Gee.ArrayList<Dcs.Node> ();
+
         foreach (var node in values) {
             if (node.get_type ().is_a (type)) {
                 list.add (node);
             }
         }
-        return list;
+
+        //if (list.size > 0) {
+            return list;
+        //} else {
+            //return null;
+        //}
     }
 
     /**
@@ -204,6 +244,95 @@ public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
             if (node is Dcs.Node) {
                 (node as Dcs.Node).print_node (depth + 1);
             }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual string serialize () throws GLib.Error {
+        return "{}";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual void deserialize (string data) throws GLib.Error {
+        /* XXX do something */
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual Json.Node json_serialize () throws GLib.Error {
+        var builder = new Json.Builder ();
+        builder.begin_object ();
+        builder.set_member_name (id);
+        builder.begin_object ();
+        builder.set_member_name ("type");
+        builder.add_string_value (get_type ().name ());
+        builder.set_member_name ("properties");
+        builder.begin_object ();
+        /* TODO Use ParamSpec to fill in for default implementation */
+        builder.end_object ();
+        if (size > 0) {
+            builder.begin_object ();
+            foreach (var child in values) {
+                /* FIXME Shouldn't ignore exception here */
+                builder.add_value (child.json_serialize ());
+            }
+            builder.end_object ();
+        }
+        if (references != null) {
+            if (references.size > 0) {
+                builder.begin_array ();
+                foreach (var @ref in references) {
+                    builder.add_string_value (@ref.id);
+                }
+                builder.end_array ();
+            }
+        }
+        builder.end_object ();
+        builder.end_object ();
+
+        var node = builder.get_root ();
+        if (node == null) {
+            throw new Dcs.SerializationError.SERIALIZE_FAILURE (
+                "Failed to serialize publisher %s", id);
+        }
+
+        return node;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public virtual void json_deserialize (Json.Node node) throws GLib.Error {
+        var obj = node.get_object ();
+        id = obj.get_members ().nth_data (0);
+        var data = obj.get_object_member (id);
+
+        /* XXX Not sure if it's best to iterate the ParamSpec list or leave
+         * it up to the object that extends Node */
+        if (data.has_member ("properties")) {
+            var props = data.get_object_member ("properties");
+        }
+
+        /* TODO Test this */
+        if (data.has_member ("objects")) {
+            var objs = data.get_object_member ("objects");
+            foreach (var child_id in objs.get_members ()) {
+                if (has_key (child_id)) {
+                    var child = @get (child_id);
+                    var child_json = objs.get_member (child_id);
+                    child.json_deserialize (child_json);
+                }
+            }
+        }
+
+        if (data.has_member ("references")) {
+            var refs = data.get_array_member ("references");
+            /* TODO Need to use the RefLinker table to do this */
         }
     }
 
@@ -272,6 +401,50 @@ public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
                         builder.append (prop);
                     }
                 }
+            }
+        }
+
+        return builder.str;
+    }
+
+    /**
+     * Return the node tree as a string.
+     *
+     * Example output:
+     *
+     * {{{
+     * """
+     * model
+     * ├── control
+     * │   ├── ctl0
+     * │   ├── ctl1
+     * │   └── ctl2
+     * ├── daq
+     * │   ├── dev0
+     * │   └── dev1
+     * ├── log
+     * │   ├── back0
+     * │   └── back1
+     * └── net
+     *     ├── pub0
+     *     └── pub1
+     * """
+     * }}}
+     */
+    public static string tree (Dcs.Node node, string parent_prefix = "") {
+        string[] prefix_a = {"├─ ", "│  "};
+        string[] prefix_b = {"└─ ", "   "};
+        var builder = new StringBuilder ();
+        if (parent_prefix == "") {
+            builder.append (node.id + "\n");
+        }
+        for (var iter = node.bidir_map_iterator (); iter.has_next ();) {
+            iter.next ();
+            var child = iter.get_value ();
+            if (child != null) {
+                var prefix = (iter.has_next ()) ? prefix_a : prefix_b;
+                builder.append (parent_prefix + prefix[0] + iter.get_key () + "\n");
+                builder.append (Dcs.Node.tree (child, parent_prefix + prefix[1]));
             }
         }
 

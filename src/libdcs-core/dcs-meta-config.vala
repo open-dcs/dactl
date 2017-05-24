@@ -54,6 +54,13 @@ public class Dcs.MetaConfig : Dcs.AbstractConfig {
             if (config is Dcs.AbstractConfig &&
                 (config as Dcs.AbstractConfig).has_children ()) {
                 list.add_all ((config as Dcs.AbstractConfig).get_children ());
+                var type = config.get_type ();
+                /*
+                 *debug ("Get children for %s", type.name ());
+                 *foreach (var config_node in (config as Dcs.AbstractConfig).get_children ()) {
+                 *    debug (config_node.to_string ());
+                 *}
+                 */
             }
         }
 

@@ -16,11 +16,13 @@ libdcs_backend_xml_la_vala.stamp: $(libdcs_backend_xml_la_VALASOURCES)
 		&& touch $@
 
 libdcs_backend_xml_la_public_sources = \
-	dcs-xml-backend.c \
+	xml-backend.c \
+	dcs-xml-service-addin.c \
 	$(NULL)
 
 libdcs_backend_xml_la_VALASOURCES = \
-	dcs-xml-backend.vala \
+	xml-backend.vala \
+	dcs-xml-service-addin.vala \
 	$(NULL)
 
 libdcs_backend_xml_la_SOURCES = \

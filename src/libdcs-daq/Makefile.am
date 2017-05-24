@@ -27,6 +27,11 @@ libdcs_daq_0_2_la_public_sources = \
 	dcs-daq-device.c \
 	dcs-daq-device-manager.c \
 	dcs-daq-factory.c \
+	dcs-daq-port.c \
+	dcs-daq-sensor.c \
+	dcs-daq-serial-port.c \
+	dcs-daq-signal.c \
+	dcs-daq-task.c \
 	$(NULL)
 
 libdcs_daq_0_2_la_VALASOURCES = \
@@ -34,6 +39,11 @@ libdcs_daq_0_2_la_VALASOURCES = \
 	dcs-daq-device.vala \
 	dcs-daq-device-manager.vala \
 	dcs-daq-factory.vala \
+	dcs-daq-port.vala \
+	dcs-daq-sensor.vala \
+	dcs-daq-serial-port.vala \
+	dcs-daq-signal.vala \
+	dcs-daq-task.vala \
 	$(NULL)
 
 libdcs_daq_0_2_la_SOURCES = \
@@ -118,8 +128,7 @@ $(builddir)/DcsDAQ-0.2.gir: $(srcdir)/Dcs-0.2.gir
 	$(AM_V_GEN)$(SED) \
 		-e 's,Dcs\.,DcsDAQ.,g' \
 		-e 's,namespace name="Dcs",namespace name="DcsDAQ",g' \
-		-e 's,DcsDAQ\.Extension,DcsCore.Extension,g' \
-		-e 's,DcsDAQ\.PluginExtension,DcsCore.PluginExtension,g' \
+		-e 's,DcsDAQ\.Node,DcsCore.Node,g' \
 		-e 's,<package name="dcs-daq-0.2"/>,<include name="DcsCore" version="0.2"/>\n<package name="dcs-daq-0.2"/>,' \
 		$< >$@
 GIRS = DcsDAQ-0.2.gir

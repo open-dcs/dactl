@@ -48,9 +48,12 @@ public class Dcs.Build {
     [CCode (cname = "BACKEND_DIR")]
     public static const string BACKEND_DIR;
 
-    [CCode (cname = "LOOP_DIR")]
-    public static const string LOOP_DIR;
+    [CCode (cname = "CONTROLLER_DIR")]
+    public static const string CONTROLLER_DIR;
 
     [CCode (cname = "LIBDIR")]
     public static const string LIBDIR;
+
+    [CCode (cname = "TMPLDIR")]
+    public static const string TMPLDIR;
 }

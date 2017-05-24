@@ -19,7 +19,9 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
      * @return True if the config contains child config nodes, false if not.
      */
     public bool has_children () {
-        if (children.size > 0) {
+        if (children == null) {
+            return false;
+        } else if (children.size > 0) {
             return true;
         }
         return false;

@@ -1,5 +1,8 @@
 internal class Dcs.Control.Main : GLib.Object {
 
+    /**
+     * Not sure why but having this inside CmdlineConfig blocks startup.
+     */
     private struct Options {
 
         public static  bool version = false;
@@ -7,9 +10,6 @@ internal class Dcs.Control.Main : GLib.Object {
         public static const GLib.OptionEntry[] entries = {{
             "verbose", 'v', OptionFlags.NO_ARG, OptionArg.CALLBACK, (void *) verbose_cb,
             "Provide verbose debugging output.", null
-        },{
-            "version", 'V', 0, OptionArg.NONE, ref version,
-            "Display version number.", null
         },{
             null
         }};
@@ -31,16 +31,12 @@ internal class Dcs.Control.Main : GLib.Object {
         } catch (OptionError e) {
             error (e.message);
         }
-
-        if (Options.version) {
-            stdout.printf ("%s - version %s\n", args[0], Dcs.Build.PACKAGE_VERSION);
-            Posix.exit (0);
-        }
     }
 
-    private Dcs.Application app;
+    private static int PLUGIN_TIMEOUT = 5;
+
     private Dcs.SysLog log;
-    private Dcs.PluginManager loop_manager;
+    private Dcs.Control.Server app;
 
     private int exit_code;
 
@@ -53,9 +49,6 @@ internal class Dcs.Control.Main : GLib.Object {
         this.exit_code = 0;
 
         app = new Dcs.Control.Server ();
-
-        loop_manager = new Dcs.Control.LoopManager ((app as Dcs.Control.Server).zmq_client,
-                                                    (app as Dcs.Control.Server).zmq_service);
 
         Unix.signal_add (Posix.SIGHUP,  () => { this.restart (); return true; });
         Unix.signal_add (Posix.SIGINT,  () => { this.exit (0);   return true; });
@@ -75,9 +68,6 @@ internal class Dcs.Control.Main : GLib.Object {
     public void restart () {
         this.need_restart = true;
         this.exit (0);
-    }
-
-    public void load_configuration (string filename) {
     }
 
     private int run (string[] args) {

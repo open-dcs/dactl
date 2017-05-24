@@ -1,7 +1,7 @@
-public interface Dcs.Plugin : GLib.Object {
+public errordomain Dcs.PluginError {
+    NOT_FOUND
+}
 
-    /**
-     * This will be the worker function for the plugin.
-     */
-    public abstract void* run ();
+[Version (deprecated = true, deprecated_since = "0.2")]
+public interface Dcs.Plugin : GLib.Object {
 }

@@ -1,0 +1,45 @@
+{
+  "dcs": {
+    "properties": {
+      "name": "control-test",
+      "http-port": 8082,
+      "reply-channel": "rep0"
+    },
+    "control": {
+      "ctl0": {
+        "type": "controller",
+        "properties": {
+          "module": "pid",
+          "enable": true
+        }
+      }
+    },
+    "net": {
+      "rep0": {
+        "type": "replier",
+        "properties": {
+          "port": 10002,
+          "address": "127.0.0.1",
+          "transport-spec": "tcp"
+        }
+      },
+      "pub0": {
+        "type": "publisher",
+        "properties": {
+          "port": 6001,
+          "address": "*",
+          "transport-spec": "tcp"
+        }
+      },
+      "sub0": {
+        "type": "subscriber",
+        "properties": {
+          "port": 5001,
+          "address": "127.0.0.1",
+          "filter": "daq-test",
+          "transport-spec": "tcp"
+        }
+      }
+    }
+  }
+}

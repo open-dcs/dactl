@@ -159,7 +159,7 @@ public class Dcs.Model : GLib.Object, Dcs.Container {
 
 public class Dcs.FooModel : Dcs.Node {
 
-    construct {
-        id = "root";
+    public FooModel () {
+        this.id = "root";
     }
 }

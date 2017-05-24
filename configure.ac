@@ -225,6 +225,7 @@ m4_define([libxml_required_version], [2.9.0])
 m4_define([peas_required_version], [1.16.0])
 m4_define([soup_required_version], [2.48.0])
 m4_define([zmq_required_version], [3.2.0])
+m4_define([tmpl_required_version], [3.19.4])
 
 PKG_CHECK_MODULES(LIBDCS_CORE, [gio-2.0 >= glib_required_version
                                 json-glib-1.0 >= json_required_version
@@ -251,8 +252,9 @@ PKG_CHECK_MODULES(LIBDCS_NET, [gee-0.8 >= gee_required_version
                                json-glib-1.0 >= json_required_version
                                libpeas-1.0 >= peas_required_version
                                libsoup-2.4 >= soup_required_version
-                               libzmq > zmq_required_version
-                               cld-0.3 >= cld_required_version])
+                               libzmq >= zmq_required_version
+                               cld-0.3 >= cld_required_version
+                               template-glib-1.0 >= tmpl_required_version])
 PKG_CHECK_MODULES(LIBDCS_CONTROL, [gio-2.0 >= glib_required_version
                                    gee-0.8 >= gee_required_version
                                    libpeas-1.0 >= peas_required_version
@@ -393,11 +395,11 @@ AC_SUBST([BACKEND_DIR],[${libdir}/dcs/backends])
 
 
 dnl ***********************************************************************
-dnl Check for supported control loops
+dnl Check for supported feedback controllers
 dnl ***********************************************************************
-m4_include([src/loops/pid/configure.ac])
+m4_include([src/controllers/pid/configure.ac])
 
-AC_SUBST([LOOP_DIR],[${libdir}/dcs/loops])
+AC_SUBST([CONTROLLER_DIR],[${libdir}/dcs/controllers])
 
 
 dnl ***********************************************************************
@@ -647,35 +649,41 @@ AC_SUBST(BACKEND_VALAFLAGS)
 
 
 dnl ***********************************************************************
-dnl Setup common cflags and ldflags for control loops
+dnl Setup common cflags and ldflags for control controllers
 dnl ***********************************************************************
-LOOP_CFLAGS="$LOOP_CFLAGS -I\$(top_srcdir)/src/libdcs-core"
-LOOP_CFLAGS="$LOOP_CFLAGS -I\$(top_srcdir)/src/libdcs-control"
-LOOP_CFLAGS="$LOOP_CFLAGS -I\$(top_srcdir)/src/libdcs-net"
-LOOP_CFLAGS="$LOOP_CFLAGS $LIBDCS_CORE_CFLAGS"
-LOOP_CFLAGS="$LOOP_CFLAGS $LIBDCS_NET_CFLAGS"
-LOOP_CFLAGS="$LOOP_CFLAGS $LIBDCS_CONTROL_CFLAGS"
-LOOP_CFLAGS="$LOOP_CFLAGS $DEBUG_CFLAGS"
-LOOP_CFLAGS="$LOOP_CFLAGS $OPTIMIZE_CFLAGS"
-AC_SUBST(LOOP_CFLAGS)
+CONTROLLER_CFLAGS="$CONTROLLER_CFLAGS -I\$(top_srcdir)/src/libdcs-core"
+CONTROLLER_CFLAGS="$CONTROLLER_CFLAGS -I\$(top_srcdir)/src/libdcs-control"
+CONTROLLER_CFLAGS="$CONTROLLER_CFLAGS -I\$(top_srcdir)/src/libdcs-net"
+CONTROLLER_CFLAGS="$CONTROLLER_CFLAGS $LIBDCS_CORE_CFLAGS"
+CONTROLLER_CFLAGS="$CONTROLLER_CFLAGS $LIBDCS_NET_CFLAGS"
+CONTROLLER_CFLAGS="$CONTROLLER_CFLAGS $LIBDCS_CONTROL_CFLAGS"
+CONTROLLER_CFLAGS="$CONTROLLER_CFLAGS $DEBUG_CFLAGS"
+CONTROLLER_CFLAGS="$CONTROLLER_CFLAGS $OPTIMIZE_CFLAGS"
+AC_SUBST(CONTROLLER_CFLAGS)
 
-LOOP_LDFLAGS="$LOOP_LDFLAGS $OPTIMIZE_LDFLAGS"
-LOOP_LDFLAGS="$LOOP_LDFLAGS -avoid-version"
-dnl LOOP_LDFLAGS="$LOOP_LDFLAGS -export-symbols-regex peas_register_types"
-LOOP_LDFLAGS="$LOOP_LDFLAGS -module"
-AC_SUBST(LOOP_LDFLAGS)
+CONTROLLER_LDFLAGS="$CONTROLLER_LDFLAGS $OPTIMIZE_LDFLAGS"
+CONTROLLER_LDFLAGS="$CONTROLLER_LDFLAGS -avoid-version"
+dnl CONTROLLER_LDFLAGS="$CONTROLLER_LDFLAGS -export-symbols-regex peas_register_types"
+CONTROLLER_LDFLAGS="$CONTROLLER_LDFLAGS -module"
+AC_SUBST(CONTROLLER_LDFLAGS)
 
-LOOP_VALAFLAGS="$LOOP_VALAFLAGS --target-glib=2.44"
-LOOP_VALAFLAGS="$LOOP_VALAFLAGS --thread"
-LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_srcdir)/vapi"
-LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-core"
-LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-control"
-LOOP_VALAFLAGS="$LOOP_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-net"
-LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-core-0.2"
-LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-control-0.2"
-LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg dcs-net-0.2"
-LOOP_VALAFLAGS="$LOOP_VALAFLAGS --pkg libpeas-1.0"
-AC_SUBST(LOOP_VALAFLAGS)
+CONTROLLER_VALAFLAGS="$CONTROLLER_VALAFLAGS --target-glib=2.44"
+CONTROLLER_VALAFLAGS="$CONTROLLER_VALAFLAGS --thread"
+CONTROLLER_VALAFLAGS="$CONTROLLER_VALAFLAGS --vapidir \$(top_srcdir)/vapi"
+CONTROLLER_VALAFLAGS="$CONTROLLER_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-core"
+CONTROLLER_VALAFLAGS="$CONTROLLER_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-control"
+CONTROLLER_VALAFLAGS="$CONTROLLER_VALAFLAGS --vapidir \$(top_builddir)/src/libdcs-net"
+CONTROLLER_VALAFLAGS="$CONTROLLER_VALAFLAGS --pkg dcs-core-0.2"
+CONTROLLER_VALAFLAGS="$CONTROLLER_VALAFLAGS --pkg dcs-control-0.2"
+CONTROLLER_VALAFLAGS="$CONTROLLER_VALAFLAGS --pkg dcs-net-0.2"
+CONTROLLER_VALAFLAGS="$CONTROLLER_VALAFLAGS --pkg libpeas-1.0"
+AC_SUBST(CONTROLLER_VALAFLAGS)
+
+
+dnl ***********************************************************************
+dnl Process dependencies in contrib
+dnl ***********************************************************************
+dnl AC_CONFIG_SUBDIRS([contrib/template])
 
 
 dnl ***********************************************************************
@@ -701,6 +709,11 @@ AC_CONFIG_FILES([
 	data/icons/scalable/Makefile
 	data/mime/Makefile
 	data/org.opendcs.Dcsg.desktop.in
+
+	data/services/Makefile
+	data/services/control/Makefile
+	data/services/daq/Makefile
+	data/services/log/Makefile
 
 	data/systemd/Makefile
 	data/systemd/dcs-ctl.service
@@ -756,7 +769,7 @@ AC_CONFIG_FILES([
 
 	src/backends/Makefile
 
-	src/loops/Makefile
+	src/controllers/Makefile
 
 	src/plugins/Makefile
 	src/plugins/samples/Makefile
@@ -820,9 +833,9 @@ AC_MSG_NOTICE([
      Comedi: ...................................... : ${enable_comedi_device}
      MCC USB: ..................................... : ${enable_mccusb_device}
 
-    Control Loops
+    Feedback Controllers
 
-     PID: ......................................... : ${enable_pid_loop}
+     PID: ......................................... : ${enable_pid_controller}
 
     Example Plugins
 

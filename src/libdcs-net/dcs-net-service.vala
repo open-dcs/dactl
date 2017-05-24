@@ -20,29 +20,81 @@ public class Dcs.Net.Service : Dcs.FooApplication {
     /**
      * There needs to be a different message queue for each configured socket
      * type, each is referenced using the id of the node that was configured.
+     *
+     * XXX Don't need this here, each socket provider should have a message
+     * queue so that multiple plugins can attach directly to it.
      */
-    private Gee.HashMap<string, Gee.ArrayQueue<Dcs.Message>> queue_group;
+    /*
+     *private Gee.HashMap<string, Gee.ArrayQueue<Dcs.Message>> queue_group;
+     */
 
     protected Dcs.PluginManager plugin_manager;
 
+    private bool running = false;
+
     construct {
-        queue_group = new Gee.HashMap<string, Gee.ArrayQueue<Dcs.Message>> ();
+        /*
+         *queue_group = new Gee.HashMap<string, Gee.ArrayQueue<Dcs.Message>> ();
+         */
+        var net = get_model ().@get ("net");
+        if (net != null) {
+            net.node_added.connect ((id) => {
+                var node = net.@get (id);
+                if (running = true) {
+                    /* FIXME Not checking for exception */
+                    /* FIXME Should make a generic socket/channel interface */
+                    if (node is Dcs.Net.Publisher) {
+                        (node as Dcs.Net.Publisher).start ();
+                    } else if (node is Dcs.Net.Subscriber) {
+                        (node as Dcs.Net.Subscriber).start ();
+                    } else if (node is Dcs.Net.Requester) {
+                        (node as Dcs.Net.Requester).start ();
+                    } else if (node is Dcs.Net.Replier) {
+                        (node as Dcs.Net.Replier).start ();
+                    }
+                }
+            });
+        }
     }
 
-    protected void start () throws Dcs.ServiceError {
+    /**
+     * {@inheritDoc}
+     */
+    protected virtual void start () throws GLib.Error {
         debug ("Starting the service");
 
+        /* Start any configured socket providers. */
         try {
             foreach (var pub in model.get_descendants (typeof (Dcs.Net.Publisher))) {
-                var queue = new Gee.ArrayQueue<Dcs.Message> ();
-                queue_group.@set (pub.id, queue);
+                /*
+                 *var queue = new Gee.ArrayQueue<Dcs.Message> ();
+                 *queue_group.@set (pub.id, queue);
+                 */
                 (pub as Dcs.Net.Publisher).start ();
             }
 
             foreach (var sub in model.get_descendants (typeof (Dcs.Net.Subscriber))) {
-                var queue = new Gee.ArrayQueue<Dcs.Message> ();
-                queue_group.@set (sub.id, queue);
+                /*
+                 *var queue = new Gee.ArrayQueue<Dcs.Message> ();
+                 *queue_group.@set (sub.id, queue);
+                 */
                 (sub as Dcs.Net.Subscriber).start ();
+            }
+
+            foreach (var req in model.get_descendants (typeof (Dcs.Net.Requester))) {
+                /*
+                 *var queue = new Gee.ArrayQueue<Dcs.Message> ();
+                 *queue_group.@set (req.id, queue);
+                 */
+                (req as Dcs.Net.Requester).start ();
+            }
+
+            foreach (var rep in model.get_descendants (typeof (Dcs.Net.Replier))) {
+                /*
+                 *var queue = new Gee.ArrayQueue<Dcs.Message> ();
+                 *queue_group.@set (rep.id, queue);
+                 */
+                (rep as Dcs.Net.Replier).start ();
             }
         } catch (GLib.Error e) {
             if (e is Dcs.Net.ZmqError.INIT) {
@@ -54,17 +106,38 @@ public class Dcs.Net.Service : Dcs.FooApplication {
             }
         }
 
-        foreach (var plugin in plugin_manager.loaded_plugins ()) {
-            debug ("plugin %s is loaded", plugin);
-        }
+        /* Launch any configured plugins. */
+        /* TODO Load configured plugin list from the model. */
+        /*
+         *foreach (var plugin in plugin_manager.loaded_plugins ()) {
+         *    debug ("plugin %s is loaded", plugin);
+         *}
+         */
+
+        running = true;
     }
 
-    protected void pause () throws Dcs.ServiceError {
+    /**
+     * {@inheritDoc}
+     */
+    protected virtual void pause () throws GLib.Error {
         debug ("Pausing the service");
+        running = false;
     }
 
-    protected void stop () throws Dcs.ServiceError {
+    /**
+     * {@inheritDoc}
+     */
+    protected virtual void stop () throws GLib.Error {
         debug ("Stopping the service");
+        running = false;
+    }
+
+    /**
+     * Do nothing method that does nothing.
+     */
+    public void test_nothing (string name) {
+        debug ("Testing the plugin connection to the service from %s", name);
     }
 
 /*

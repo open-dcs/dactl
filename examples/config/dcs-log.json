@@ -1,0 +1,57 @@
+{
+  "dcs": {
+    "properties": {
+      "name": "log-test",
+      "http-port": 8081,
+      "reply-channel": "rep0"
+    },
+    "log": {
+      "back0": {
+        "type": "backend",
+        "properties": {
+          "module": "xml",
+          "enable": true
+        }
+      },
+      "log0": {
+        "type": "file",
+        "properties": {
+        },
+        "objects": {
+          "col0": { "type": "column", "properties": { "dummy": "null" } },
+          "col1": { "type": "column", "properties": { "dummy": "null" } },
+          "col2": { "type": "column", "properties": { "dummy": "null" } },
+          "col3": { "type": "column", "properties": { "dummy": "null" } }
+        }
+      }
+    },
+    "net": {
+      "rep0": {
+        "type": "replier",
+        "properties": {
+          "port": 10001,
+          "address": "127.0.0.1",
+          "transport-spec": "tcp"
+        }
+      },
+      "sub0": {
+        "type": "subscriber",
+        "properties": {
+          "port": 5001,
+          "address": "127.0.0.1",
+          "filter": "daq-test",
+          "transport-spec": "tcp"
+        }
+      },
+      "sub1": {
+        "type": "subscriber",
+        "properties": {
+          "port": 6001,
+          "address": "127.0.0.1",
+          "filter": "control-test",
+          "transport-spec": "tcp"
+        }
+      }
+    }
+  }
+}

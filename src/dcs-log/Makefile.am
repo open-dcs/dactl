@@ -71,11 +71,11 @@ dcs_log_headers = \
 
 dcs_log_SOURCES = \
 	main.vala \
+	cmdline-config.vala \
+	config.vala \
 	server.vala \
 	dbus-service.vala \
-	rest-service.vala \
-	zmq-service.vala \
-	zmq-client.vala \
+	router.vala \
 	$(NULL)
 
 BUILT_SOURCES += libdcs-log.h

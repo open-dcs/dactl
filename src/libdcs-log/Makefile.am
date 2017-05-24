@@ -1,3 +1,5 @@
+include $(top_srcdir)/common.am
+
 CLEANFILES =
 DISTCLEANFILES =
 BUILT_SOURCES =
@@ -23,13 +25,19 @@ libdcs_log_0_2_la_public_headers = \
 libdcs_log_0_2_la_public_sources = \
 	dcs-log-backend.c \
 	dcs-log-backend-manager.c \
+	dcs-log-column.c \
 	dcs-log-factory.c \
+	dcs-log-file.c \
+	dcs-log-query.c \
 	$(NULL)
 
 libdcs_log_0_2_la_VALASOURCES = \
 	dcs-log-backend.vala \
 	dcs-log-backend-manager.vala \
+	dcs-log-column.vala \
 	dcs-log-factory.vala \
+	dcs-log-file.vala \
+	dcs-log-query.vala \
 	$(NULL)
 
 libdcs_log_0_2_la_SOURCES = \
@@ -114,7 +122,7 @@ $(builddir)/DcsLog-0.2.gir: $(srcdir)/Dcs-0.2.gir
 	$(AM_V_GEN)$(SED) \
 		-e 's,Dcs\.,DcsLog.,g' \
 		-e 's,namespace name="Dcs",namespace name="DcsLog",g' \
-		-e 's,DcsLog\.Extension,DcsCore.Extension,g' \
+		-e 's,DcsLog\.Node,DcsCore.Node,g' \
 		-e 's,<package name="dcs-log-0.2"/>,<include name="DcsCore" version="0.2"/>\n<package name="dcs-log-0.2"/>,' \
 		$< >$@
 GIRS = DcsLog-0.2.gir

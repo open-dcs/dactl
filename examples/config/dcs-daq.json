@@ -1,19 +1,62 @@
 {
   "dcs": {
-    "objects": {
+    "properties": {
+      "name": "daq-test",
+      "http-port": 8080,
+      "reply-channel": "rep0"
+    },
+    "daq": {
+      "dev0": {
+        "type": "device",
+        "properties": {
+          "module": "arduino",
+          "enable": true
+        }
+      },
+      "sen0": {
+        "type": "sensor",
+        "properties": {
+        }
+      },
+      "sig0": {
+        "type": "signal",
+        "properties": {
+        }
+      },
+      "port0": {
+        "type": "serial-port",
+        "properties": {
+        }
+      },
+      "task0": {
+        "type": "task",
+        "properties": {
+        }
+      }
+    },
+    "net": {
+      "rep0": {
+        "type": "replier",
+        "properties": {
+          "port": 10000,
+          "address": "127.0.0.1",
+          "transport-spec": "tcp"
+        }
+      },
       "pub0": {
         "type": "publisher",
         "properties": {
           "port": 5001,
           "address": "*",
-          "transport-spec": "ipc"
+          "transport-spec": "tcp"
         }
       },
-      "pub1": {
-        "type": "publisher",
+      "sub0": {
+        "type": "subscriber",
         "properties": {
-          "port": 5002,
+          "port": 6001,
           "address": "127.0.0.1",
+          "filter": "control-test",
           "transport-spec": "tcp"
         }
       }

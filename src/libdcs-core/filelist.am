@@ -7,7 +7,9 @@ LIBDCS_CORE_VAPI_SOURCE_FILES = \
     dcs-buildable.vala \
     dcs-cld-adapter.vala \
     dcs-config.vala \
+    dcs-config-file.vala \
     dcs-config-node.vala \
+    dcs-config-provider.vala \
     dcs-config-util.vala \
     dcs-container.vala \
     dcs-controller.vala \
@@ -15,6 +17,7 @@ LIBDCS_CORE_VAPI_SOURCE_FILES = \
     dcs-dbus-interface.vala \
     dcs-edge.vala \
     dcs-factory.vala \
+    dcs-factory-provider.vala \
     dcs-graph.vala \
     dcs-legacy-config.vala \
     dcs-legacy-plugin.vala \
@@ -27,12 +30,13 @@ LIBDCS_CORE_VAPI_SOURCE_FILES = \
     dcs-node.vala \
     dcs-object.vala \
     dcs-plugin.vala \
-    dcs-plugin-config.vala \
+    dcs-plugin-extension.vala \
     dcs-plugin-factory.vala \
     dcs-plugin-loader.vala \
     dcs-plugin-manager.vala \
     dcs-point.vala \
     dcs-ref-container.vala \
+    dcs-runnable.vala \
     dcs-serializable.vala \
     dcs-view.vala
 

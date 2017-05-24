@@ -10,4 +10,20 @@
     <daq:property name="address">127.0.0.1</daq:property>
     <daq:property name="transport-spec">tcp</daq:property>
   </daq:object>
+  <daq:object id="dev0" type="device">
+    <daq:property name="module">dcs-arduino-device</daq:property>
+    <daq:property name="enable">false</daq:property>
+  </daq:object>
+  <daq:object id="dev1" type="device">
+    <daq:property name="module">dcs-comedi-device</daq:property>
+    <daq:property name="enable">false</daq:property>
+  </daq:object>
+  <daq:object id="dev2" type="device">
+    <daq:property name="module">dcs-mccusb-device</daq:property>
+    <daq:property name="enable">false</daq:property>
+  </daq:object>
+  <daq:object id="dev3" type="device">
+    <daq:property name="module">signal-generator</daq:property>
+    <daq:property name="enable">true</daq:property>
+  </daq:object>
 </dcs>

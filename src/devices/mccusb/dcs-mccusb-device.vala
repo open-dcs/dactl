@@ -1,13 +1,6 @@
-public class Dcs.DAQ.MccUsb.Device : Dcs.DAQ.Device {
+public class Dcs.DAQ.MccUsbDevice : GLib.Object, Dcs.Net.ServiceProvider {
 
-    private Dcs.DAQ.Device device;
-
-    public GLib.Object object { construct; owned get; }
-
-    public Device (Dcs.Net.Service service) {
-        debug ("Measurement Computing USB device constructor");
-        base (service);
-    }
+    public Dcs.Net.Service service { get; construct set; }
 
     public void activate () {
         debug ("Measurement Computing USB device activated");
@@ -17,22 +10,22 @@ public class Dcs.DAQ.MccUsb.Device : Dcs.DAQ.Device {
         debug ("Measurement Computing USB device deactivated");
     }
 
-    public void update_state () { }
+    public void start () {
+        service.test_nothing (get_type ().name ());
+    }
 
-    public void run () {
-        device = (Dcs.DAQ.Device) object;
-        /*
-         *device.zmq_service.data_published.connect ((data) => {
-         *    debug ((string) data);
-         *});
-         */
+    public void pause () {
+        service.test_nothing (get_type ().name ());
+    }
+
+    public void stop () {
+        service.test_nothing (get_type ().name ());
     }
 }
 
 [ModuleInit]
 public void peas_register_types (GLib.TypeModule module) {
-    var objmodule = module as Peas.ObjectModule;
-    objmodule.register_extension_type (typeof (Peas.Activatable),
-                                       typeof (Dcs.DAQ.MccUsb.Device));
-}
+    var peas = module as Peas.ObjectModule;
 
+    peas.register_extension_type (typeof (Dcs.Net.ServiceProvider), typeof (Dcs.DAQ.MccUsbDevice));
+}

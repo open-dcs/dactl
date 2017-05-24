@@ -17,10 +17,16 @@ libdcs_device_arduino_la_vala.stamp: $(libdcs_device_arduino_la_VALASOURCES)
 
 libdcs_device_arduino_la_public_sources = \
 	dcs-arduino-device.c \
+	dcs-arduino-config-provider.c \
+	dcs-arduino-factory-provider.c \
+	dcs-arduino-service-addin.c \
 	$(NULL)
 
 libdcs_device_arduino_la_VALASOURCES = \
 	dcs-arduino-device.vala \
+	dcs-arduino-config-provider.vala \
+	dcs-arduino-factory-provider.vala \
+	dcs-arduino-service-addin.vala \
 	$(NULL)
 
 libdcs_device_arduino_la_SOURCES = \

@@ -60,15 +60,6 @@ public interface Dcs.Application : GLib.Object {
     public abstract void register_plugin (Dcs.LegacyPlugin plugin);
 }
 
-public interface Dcs.Runnable : GLib.Object {
-
-    /**
-     * The implementing application can use this to implement an options
-     * handler.
-     */
-    public abstract int launch (string[] args);
-}
-
 /**
  * Base application class for DCS utilities and services to derive.
  *
@@ -78,7 +69,7 @@ public interface Dcs.Runnable : GLib.Object {
  */
 public abstract class Dcs.FooApplication : GLib.Application, Dcs.Runnable {
 
-    private bool initialized = false;
+    protected bool initialized = false;
 
     protected Dcs.MetaConfig config;
 
@@ -136,12 +127,30 @@ public abstract class Dcs.FooApplication : GLib.Application, Dcs.Runnable {
         return controller;
     }
 
+    /**
+     * Reloading a data model has not been implemented correctly yet, don't use.
+     */
+    public virtual void reload () throws GLib.Error {
+        /**
+         * XXX This seems like a bad idea without properly flushing the model
+         * first, not how to do that yet though.
+         */
+        lock (model) {
+            try {
+                construct_model ();
+            } catch (GLib.Error e) {
+                throw e;
+            }
+        }
+    }
+
     public virtual void construct_model () throws GLib.Error {
+        /* XXX Possibly perform initialization in a context class */
+        debug ("Constructing the data model");
         if (initialized) {
             model = new Dcs.FooModel();
             var node = factory.produce_from_config_list (config.get_children ());
             foreach (var child in node.get_children (typeof (Dcs.Node))) {
-                //debug (child.to_string ());
                 child.reparent (model);
             }
         } else {
@@ -152,6 +161,31 @@ public abstract class Dcs.FooApplication : GLib.Application, Dcs.Runnable {
 
     /**
      * {@inheritDoc}
+     */
+    protected virtual void start () throws GLib.Error {
+        throw new Dcs.RunnableError.UNDEFINED (
+            "The application does not provide the ability to start");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected virtual void pause () throws GLib.Error {
+        throw new Dcs.RunnableError.UNDEFINED (
+            "The application does not provide the ability to pause");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected virtual void stop () throws GLib.Error {
+        throw new Dcs.RunnableError.UNDEFINED (
+            "The application does not provide the ability to stop");
+    }
+
+    /**
+     * The implementing application can use this to implement an options
+     * handler.
      */
     public virtual int launch (string[] args) {
         return (this as GLib.Application).run (args);

@@ -26,7 +26,10 @@ libdcs_net_0_2_la_public_sources = \
 	dcs-net-publisher.c \
 	dcs-net-subscriber.c \
 	dcs-net-service.c \
-	dcs-net-rest-service.c \
+	dcs-net-service-provider.c \
+	dcs-net-router.c \
+	dcs-net-reply.c \
+	dcs-net-request.c \
 	dcs-net-zmq-service.c \
 	dcs-net-zmq-client.c \
 	$(NULL)
@@ -37,7 +40,10 @@ libdcs_net_0_2_la_VALASOURCES = \
 	dcs-net-publisher.vala \
 	dcs-net-subscriber.vala \
 	dcs-net-service.vala \
-	dcs-net-rest-service.vala \
+	dcs-net-service-provider.vala \
+	dcs-net-router.vala \
+	dcs-net-replier.vala \
+	dcs-net-requester.vala \
 	dcs-net-zmq-service.vala \
 	dcs-net-zmq-client.vala \
 	$(NULL)
@@ -68,7 +74,9 @@ libdcs_net_0_2_la_VALAFLAGS = \
 	--pkg json-glib-1.0 \
 	--pkg libsoup-2.4 \
 	--pkg libzmq \
+	--pkg template-glib-1.0 \
 	--pkg dcs-core-0.2 \
+	--pkg dcs-build \
 	$(COVERAGE_VALAFLAGS) \
 	$(NULL)
 
