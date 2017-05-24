@@ -15,7 +15,7 @@ public class Dcs.Control.Controller : Dcs.Node {
         builder.set_member_name (id);
         builder.begin_object ();
         builder.set_member_name ("type");
-        builder.add_string_value ("");
+        builder.add_string_value ("controller");
         builder.set_member_name ("properties");
         builder.begin_object ();
         builder.end_object ();

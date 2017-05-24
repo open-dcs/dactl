@@ -12,14 +12,30 @@ public enum Dcs.Net.RouteArg {
     CALLBACK;
 }
 
+[Flags]
 public enum Dcs.Net.RouterErrorCode {
-    UNINITIALIZED = 500,
-    OBJECT_NOT_FOUND,
-    UNSUPPORTED_REQUEST,
-    MISSING_ID,
-    OBJECT_INSERT_FAILED,
-    OBJECT_UPDATE_FAILED,
-    OBJECT_DELETE_FAILED
+    UNINITIALIZED        = 500,
+    UNSUPPORTED_REQUEST  = 501,
+    MISSING_ID           = 502,
+    OBJECT_NOT_FOUND     = 503,
+    OBJECT_INSERT_FAILED = 504,
+    OBJECT_UPDATE_FAILED = 505,
+    OBJECT_DELETE_FAILED = 506,
+    WRONG_NAMESPACE      = 507;
+
+    public string to_string () {
+        switch (this) {
+            case UNINITIALIZED:        return "Router uninitialized";
+            case UNSUPPORTED_REQUEST:  return "Unsupported request";
+            case MISSING_ID:           return "Request requires ID";
+            case OBJECT_NOT_FOUND:     return "Object not found";
+            case OBJECT_INSERT_FAILED: return "Failed to insert the object provided";
+            case OBJECT_UPDATE_FAILED: return "Failed to update the object provided";
+            case OBJECT_DELETE_FAILED: return "Failed to delete the object provided";
+            case WRONG_NAMESPACE:      return "Wrong namespace in request";
+            default: assert_not_reached ();
+        }
+    }
 }
 
 public abstract class Dcs.Net.Router : Soup.Server {
@@ -37,8 +53,6 @@ public abstract class Dcs.Net.Router : Soup.Server {
      */
     [Version (experimental = "true", experimental_until = "0.3")]
     private Dcs.Net.RouteEntry[] entries;
-
-    private const string bad_request = "jsonp('XXX': {'status': 500})";
 
     /**
      * Perform initialization of routes generic to all net based services.
@@ -103,8 +117,8 @@ public abstract class Dcs.Net.Router : Soup.Server {
      * @param status Error code to respond with.
      * @param error Error message to send.
      */
-    protected void send_bad_request (Soup.Message msg, string context, int status, string error) {
-        var response = "{\"%s\": {\"status\": %d, \"error\": \"%s\"}}".printf (context, status, error);
+    protected void send_bad_request (Soup.Message msg, string context, Dcs.Net.RouterErrorCode code) {
+        var response = "{\"%s\": {\"code\": %d, \"error\": \"%s\"}}".printf (context, code, code.to_string ());
         msg.status_code = Soup.Status.BAD_REQUEST;
         msg.response_headers.append ("Access-Control-Allow-Origin", "*");
         msg.set_response ("application/json", Soup.MemoryUse.COPY, response.data);
@@ -132,12 +146,17 @@ public abstract class Dcs.Net.Router : Soup.Server {
                                    GLib.HashTable? query,
                                    Soup.ClientContext client) {
         if (service == null) {
-            send_bad_request (msg, "net", 500, "Router uninitialized");
+            send_bad_request (msg, "net", Dcs.Net.RouterErrorCode.UNINITIALIZED);
             return;
         }
 
         /* Some nonsense about skipping tokens */
         string[] tokens = path.substring (1).split ("/");
+
+        if (tokens[1] != "net") {
+            send_bad_request (msg, "net", Dcs.Net.RouterErrorCode.WRONG_NAMESPACE);
+            return;
+        }
 
         switch (msg.method.up ()) {
             case "PUT":
@@ -150,8 +169,7 @@ public abstract class Dcs.Net.Router : Soup.Server {
                     net.add (obj);
                     send_action_complete (msg, tokens[2]);
                 } catch (GLib.Error e) {
-                    send_bad_request (msg, tokens[2], 504,
-                                      "Failed to add the object provided");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.OBJECT_INSERT_FAILED);
                 }
                 break;
             case "GET":
@@ -163,7 +181,7 @@ public abstract class Dcs.Net.Router : Soup.Server {
                     if (node != null) {
                         json = (node as Dcs.Net.Publisher).json_serialize ();
                     } else {
-                        send_bad_request (msg, tokens[2], 501, "Object not found");
+                        send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.OBJECT_NOT_FOUND);
                         return;
                     }
                 } else {
@@ -190,8 +208,7 @@ public abstract class Dcs.Net.Router : Soup.Server {
             case "POST":
                 /* Retrieve object from net node and update */
                 if (tokens.length < 4) {
-                    send_bad_request (msg, tokens[2], 503,
-                                      msg.method.up () + " request requires ID");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.MISSING_ID);
                     return;
                 }
 
@@ -202,15 +219,14 @@ public abstract class Dcs.Net.Router : Soup.Server {
                     (node as Dcs.Net.Publisher).json_deserialize (json);
                     send_action_complete (msg, tokens[2]);
                 } else {
-                    send_bad_request (msg, tokens[2], 501, "Object not found");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.OBJECT_NOT_FOUND);
                 }
                 break;
             case "DELETE":
                 /* Remove object from net node */
                 /* XXX This is a potentially dangerous operation, need to test */
                 if (tokens.length < 4) {
-                    send_bad_request (msg, tokens[2], 503,
-                                      msg.method.up () + " request requires ID");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.MISSING_ID);
                     return;
                 }
                 var net = service.get_model ().@get ("net");
@@ -219,11 +235,11 @@ public abstract class Dcs.Net.Router : Soup.Server {
                     net.remove (node);
                     send_action_complete (msg, tokens[2]);
                 } else {
-                    send_bad_request (msg, tokens[2], 501, "Object not found");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.OBJECT_NOT_FOUND);
                 }
                 break;
             default:
-                send_bad_request (msg, tokens[2], 502, "Unsupported request");
+                send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.UNSUPPORTED_REQUEST);
                 break;
         }
     }
@@ -237,7 +253,7 @@ public abstract class Dcs.Net.Router : Soup.Server {
                                     GLib.HashTable? query,
                                     Soup.ClientContext client) {
         if (service == null) {
-            send_bad_request (msg, "net", 500, "Router uninitialized");
+            send_bad_request (msg, "net", Dcs.Net.RouterErrorCode.UNINITIALIZED);
             return;
         }
 
@@ -255,8 +271,7 @@ public abstract class Dcs.Net.Router : Soup.Server {
                     net.add (obj);
                     send_action_complete (msg, tokens[2]);
                 } catch (GLib.Error e) {
-                    send_bad_request (msg, tokens[2], 504,
-                                      "Failed to add the object provided");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.OBJECT_INSERT_FAILED);
                 }
                 break;
             case "GET":
@@ -268,7 +283,7 @@ public abstract class Dcs.Net.Router : Soup.Server {
                     if (node != null) {
                         json = (node as Dcs.Net.Subscriber).json_serialize ();
                     } else {
-                        send_bad_request (msg, tokens[2], 501, "Object not found");
+                        send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.OBJECT_NOT_FOUND);
                         return;
                     }
                 } else {
@@ -295,8 +310,7 @@ public abstract class Dcs.Net.Router : Soup.Server {
             case "POST":
                 /* Retrieve object from net node and update */
                 if (tokens.length < 4) {
-                    send_bad_request (msg, tokens[2], 503,
-                                      msg.method.up () + " request requires ID");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.MISSING_ID);
                     return;
                 }
 
@@ -307,15 +321,14 @@ public abstract class Dcs.Net.Router : Soup.Server {
                     (node as Dcs.Net.Subscriber).json_deserialize (json);
                     send_action_complete (msg, tokens[2]);
                 } else {
-                    send_bad_request (msg, tokens[2], 501, "Object not found");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.OBJECT_NOT_FOUND);
                 }
                 break;
             case "DELETE":
                 /* Remove object from net node */
                 /* XXX This is a potentially dangerous operation, need to test */
                 if (tokens.length < 4) {
-                    send_bad_request (msg, tokens[2], 503,
-                                      msg.method.up () + " request requires ID");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.MISSING_ID);
                     return;
                 }
                 var net = service.get_model ().@get ("net");
@@ -324,11 +337,11 @@ public abstract class Dcs.Net.Router : Soup.Server {
                     net.remove (node);
                     send_action_complete (msg, tokens[2]);
                 } else {
-                    send_bad_request (msg, tokens[2], 501, "Object not found");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.OBJECT_NOT_FOUND);
                 }
                 break;
             default:
-                send_bad_request (msg, tokens[2], 502, "Unsupported request");
+                send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.UNSUPPORTED_REQUEST);
                 break;
         }
     }
@@ -342,7 +355,7 @@ public abstract class Dcs.Net.Router : Soup.Server {
                                    GLib.HashTable? query,
                                    Soup.ClientContext client) {
         if (service == null) {
-            send_bad_request (msg, "net", 500, "Router uninitialized");
+            send_bad_request (msg, "net", Dcs.Net.RouterErrorCode.UNINITIALIZED);
             return;
         }
 
@@ -360,8 +373,7 @@ public abstract class Dcs.Net.Router : Soup.Server {
                     net.add (obj);
                     send_action_complete (msg, tokens[2]);
                 } catch (GLib.Error e) {
-                    send_bad_request (msg, tokens[2], 504,
-                                      "Failed to add the object provided");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.OBJECT_INSERT_FAILED);
                 }
                 break;
             case "GET":
@@ -373,7 +385,7 @@ public abstract class Dcs.Net.Router : Soup.Server {
                     if (node != null) {
                         json = (node as Dcs.Net.Requester).json_serialize ();
                     } else {
-                        send_bad_request (msg, tokens[2], 501, "Object not found");
+                        send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.OBJECT_NOT_FOUND);
                         return;
                     }
                 } else {
@@ -400,8 +412,7 @@ public abstract class Dcs.Net.Router : Soup.Server {
             case "POST":
                 /* Retrieve object from net node and update */
                 if (tokens.length < 4) {
-                    send_bad_request (msg, tokens[2], 503,
-                                      msg.method.up () + " request requires ID");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.MISSING_ID);
                     return;
                 }
 
@@ -412,15 +423,14 @@ public abstract class Dcs.Net.Router : Soup.Server {
                     (node as Dcs.Net.Requester).json_deserialize (json);
                     send_action_complete (msg, tokens[2]);
                 } else {
-                    send_bad_request (msg, tokens[2], 501, "Object not found");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.OBJECT_NOT_FOUND);
                 }
                 break;
             case "DELETE":
                 /* Remove object from net node */
                 /* XXX This is a potentially dangerous operation, need to test */
                 if (tokens.length < 4) {
-                    send_bad_request (msg, tokens[2], 503,
-                                      msg.method.up () + " request requires ID");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.MISSING_ID);
                     return;
                 }
                 var net = service.get_model ().@get ("net");
@@ -429,11 +439,11 @@ public abstract class Dcs.Net.Router : Soup.Server {
                     net.remove (node);
                     send_action_complete (msg, tokens[2]);
                 } else {
-                    send_bad_request (msg, tokens[2], 501, "Object not found");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.OBJECT_NOT_FOUND);
                 }
                 break;
             default:
-                send_bad_request (msg, tokens[2], 502, "Unsupported request");
+                send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.UNSUPPORTED_REQUEST);
                 break;
         }
     }
@@ -447,7 +457,7 @@ public abstract class Dcs.Net.Router : Soup.Server {
                                  GLib.HashTable? query,
                                  Soup.ClientContext client) {
         if (service == null) {
-            send_bad_request (msg, "net", 500, "Router uninitialized");
+            send_bad_request (msg, "net", Dcs.Net.RouterErrorCode.UNINITIALIZED);
             return;
         }
 
@@ -465,8 +475,7 @@ public abstract class Dcs.Net.Router : Soup.Server {
                     net.add (obj);
                     send_action_complete (msg, tokens[2]);
                 } catch (GLib.Error e) {
-                    send_bad_request (msg, tokens[2], 504,
-                                      "Failed to add the object provided");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.OBJECT_INSERT_FAILED);
                 }
                 break;
             case "GET":
@@ -478,7 +487,7 @@ public abstract class Dcs.Net.Router : Soup.Server {
                     if (node != null) {
                         json = (node as Dcs.Net.Replier).json_serialize ();
                     } else {
-                        send_bad_request (msg, tokens[2], 501, "Object not found");
+                        send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.OBJECT_NOT_FOUND);
                         return;
                     }
                 } else {
@@ -505,8 +514,7 @@ public abstract class Dcs.Net.Router : Soup.Server {
             case "POST":
                 /* Retrieve object from net node and update */
                 if (tokens.length < 4) {
-                    send_bad_request (msg, tokens[2], 503,
-                                      msg.method.up () + " request requires ID");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.MISSING_ID);
                     return;
                 }
 
@@ -517,15 +525,14 @@ public abstract class Dcs.Net.Router : Soup.Server {
                     (node as Dcs.Net.Replier).json_deserialize (json);
                     send_action_complete (msg, tokens[2]);
                 } else {
-                    send_bad_request (msg, tokens[2], 501, "Object not found");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.OBJECT_NOT_FOUND);
                 }
                 break;
             case "DELETE":
                 /* Remove object from net node */
                 /* XXX This is a potentially dangerous operation, need to test */
                 if (tokens.length < 4) {
-                    send_bad_request (msg, tokens[2], 503,
-                                      msg.method.up () + " request requires ID");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.MISSING_ID);
                     return;
                 }
                 var net = service.get_model ().@get ("net");
@@ -534,11 +541,11 @@ public abstract class Dcs.Net.Router : Soup.Server {
                     net.remove (node);
                     send_action_complete (msg, tokens[2]);
                 } else {
-                    send_bad_request (msg, tokens[2], 501, "Object not found");
+                    send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.OBJECT_NOT_FOUND);
                 }
                 break;
             default:
-                send_bad_request (msg, tokens[2], 502, "Unsupported request");
+                send_bad_request (msg, tokens[2], Dcs.Net.RouterErrorCode.UNSUPPORTED_REQUEST);
                 break;
         }
     }

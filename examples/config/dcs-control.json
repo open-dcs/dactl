@@ -1,7 +1,10 @@
 {
   "dcs": {
-    "name": "control-test",
-    "http-port": 8082,
+    "properties": {
+      "name": "control-test",
+      "http-port": 8082,
+      "reply-channel": "rep0"
+    },
     "control": {
       "ctl0": {
         "type": "controller",
@@ -12,6 +15,14 @@
       }
     },
     "net": {
+      "rep0": {
+        "type": "replier",
+        "properties": {
+          "port": 10002,
+          "address": "127.0.0.1",
+          "transport-spec": "tcp"
+        }
+      },
       "pub0": {
         "type": "publisher",
         "properties": {

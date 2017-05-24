@@ -1,4 +1,4 @@
-public class Dcs.Log.Task : Dcs.Node {
+public class Dcs.Log.Query : Dcs.Node {
 
     /**
      * {@inheritDoc}

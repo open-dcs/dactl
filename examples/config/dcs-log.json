@@ -1,12 +1,15 @@
 {
   "dcs": {
-    "name": "log-test",
-    "http-port": 8081,
+    "properties": {
+      "name": "log-test",
+      "http-port": 8081,
+      "reply-channel": "rep0"
+    },
     "log": {
       "back0": {
         "type": "backend",
         "properties": {
-          "module": "xml-backend",
+          "module": "xml",
           "enable": true
         }
       },
@@ -23,6 +26,14 @@
       }
     },
     "net": {
+      "rep0": {
+        "type": "replier",
+        "properties": {
+          "port": 10001,
+          "address": "127.0.0.1",
+          "transport-spec": "tcp"
+        }
+      },
       "sub0": {
         "type": "subscriber",
         "properties": {

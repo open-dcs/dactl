@@ -1,12 +1,15 @@
 {
   "dcs": {
-    "name": "daq-test",
-    "http-port": 8080,
+    "properties": {
+      "name": "daq-test",
+      "http-port": 8080,
+      "reply-channel": "rep0"
+    },
     "daq": {
       "dev0": {
         "type": "device",
         "properties": {
-          "module": "dcs-arduino-device",
+          "module": "arduino",
           "enable": true
         }
       },
@@ -24,9 +27,22 @@
         "type": "serial-port",
         "properties": {
         }
+      },
+      "task0": {
+        "type": "task",
+        "properties": {
+        }
       }
     },
     "net": {
+      "rep0": {
+        "type": "replier",
+        "properties": {
+          "port": 10000,
+          "address": "127.0.0.1",
+          "transport-spec": "tcp"
+        }
+      },
       "pub0": {
         "type": "publisher",
         "properties": {

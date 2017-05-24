@@ -12,6 +12,8 @@ public class Dcs.Recorder.Server : Dcs.Net.Service {
 
     private Dcs.Log.Factory log_factory;
 
+    private Dcs.Net.Replier reply_channel;
+
     /* TODO Lower the REST handler to the service class */
     private Dcs.Recorder.Router router;
 
@@ -103,6 +105,13 @@ public class Dcs.Recorder.Server : Dcs.Net.Service {
              */
             debug ("Model tree:\n%s", Dcs.Node.tree (get_model ()));
 
+            var net = get_model ().@get ("net");
+            var rc = config.get_string ("dcs", "reply-channel");
+            debug ("Replying channel: %s", rc);
+            if (net.has_key (rc)) {
+                reply_channel = (Dcs.Net.Replier) net.@get (rc);
+            }
+
             //(plugin_manager as Dcs.Log.BackendManager).enable_backend ("xml");
             (plugin_manager as Dcs.Log.BackendManager).start_backends ();
         } catch (GLib.Error e) {
@@ -130,12 +139,10 @@ public class Dcs.Recorder.Server : Dcs.Net.Service {
             log.id = "log";
             foreach (var config_node in config.get_children ()) {
                 var node = factory.produce_from_config (config_node);
-                if (node is Dcs.Log.Backend) {
+                var type = node.get_type ();
+                if (type.name ().has_prefix ("DcsLog")) {
                     log.add (node);
-                } else if (node is Dcs.Net.Publisher ||
-                           node is Dcs.Net.Subscriber ||
-                           node is Dcs.Net.Requester ||
-                           node is Dcs.Net.Replier) {
+                } else if (type.name ().has_prefix ("DcsNet")) {
                     net.add (node);
                 }
             }

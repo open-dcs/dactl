@@ -12,6 +12,8 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
 
     private Dcs.DAQ.Factory daq_factory;
 
+    private Dcs.Net.Replier reply_channel;
+
     /* TODO Lower the REST handler to the service class */
     public Dcs.DAQ.Router router;
 
@@ -103,7 +105,14 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
              */
             debug ("Model tree:\n%s", Dcs.Node.tree (get_model ()));
 
-            (plugin_manager as Dcs.DAQ.DeviceManager).enable_device ("signal-generator");
+            var net = get_model ().@get ("net");
+            var rc = config.get_string ("dcs", "reply-channel");
+            debug ("Replying channel: %s", rc);
+            if (net.has_key (rc)) {
+                reply_channel = (Dcs.Net.Replier) net.@get (rc);
+            }
+
+            //(plugin_manager as Dcs.DAQ.DeviceManager).enable_device ("signal-generator");
             (plugin_manager as Dcs.DAQ.DeviceManager).start_devices ();
         } catch (GLib.Error e) {
             critical (e.message);
@@ -130,12 +139,10 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
             daq.id = "daq";
             foreach (var config_node in config.get_children ()) {
                 var node = factory.produce_from_config (config_node);
-                if (node is Dcs.DAQ.Device) {
+                var type = node.get_type ();
+                if (type.name ().has_prefix ("DcsDAQ")) {
                     daq.add (node);
-                } else if (node is Dcs.Net.Publisher ||
-                           node is Dcs.Net.Subscriber ||
-                           node is Dcs.Net.Requester ||
-                           node is Dcs.Net.Replier) {
+                } else if (type.name ().has_prefix ("DcsNet")) {
                     net.add (node);
                 }
             }
