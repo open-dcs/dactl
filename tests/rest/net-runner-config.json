@@ -1,0 +1,73 @@
+{
+  "dcs": {
+    "daq": {},
+    "net": {
+      "pub0": {
+        "type": "publisher",
+        "properties": {
+          "port": 5001,
+          "address": "*",
+          "transport-spec": "ipc"
+        }
+      },
+      "pub1": {
+        "type": "publisher",
+        "properties": {
+          "port": 5002,
+          "address": "127.0.0.1",
+          "transport-spec": "tcp"
+        }
+      },
+      "sub0": {
+        "type": "subscriber",
+        "properties": {
+          "port": 5001,
+          "address": "127.0.0.1",
+          "transport-spec": "ipc",
+          "filter": "pub0"
+        }
+      },
+      "sub1": {
+        "type": "subscriber",
+        "properties": {
+          "port": 5002,
+          "address": "127.0.0.1",
+          "transport-spec": "tcp",
+          "filter": "pub2"
+        }
+      },
+      "req0": {
+        "type": "requester",
+        "properties": {
+          "port": 5003,
+          "address": "127.0.0.1",
+          "transport-spec": "tcp"
+        }
+      },
+      "req1": {
+        "type": "requester",
+        "properties": {
+          "port": 5004,
+          "address": "127.0.0.1",
+          "transport-spec": "tcp"
+        }
+      },
+      "rep0": {
+        "type": "replier",
+        "properties": {
+          "port": 5003,
+          "address": "*",
+          "transport-spec": "tcp"
+        }
+      },
+      "rep1": {
+        "type": "replier",
+        "properties": {
+          "port": 5004,
+          "address": "127.0.0.1",
+          "transport-spec": "tcp"
+        }
+      }
+    }
+  }
+}

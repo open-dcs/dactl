@@ -1,0 +1,2009 @@
+{
+	"variables": [],
+	"info": {
+		"name": "OpenDCS",
+		"_postman_id": "a3520a15-d8d8-ae74-b527-34668aabc6ab",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Network Routes",
+			"description": "",
+			"item": [
+				{
+					"name": "Publisher - GET Multiple",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test multiple publishers\"] = jsonData.publishers.length === 2;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/publishers",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Publisher - GET Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test single publisher type\"] = jsonData.pub0.type === \"publisher\";",
+									"tests[\"Test single publisher port\"] = jsonData.pub0.properties.port === 5001;",
+									"tests[\"Test single publisher address\"] = jsonData.pub0.properties.address === \"*\";",
+									"tests[\"Test single publisher transport\"] = jsonData.pub0.properties[\"transport-spec\"] === \"ipc\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/publishers/pub0",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Publisher - GET Invalid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test invalid publisher request\"] = jsonData.publishers.code === 503;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/publishers/null",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Subscriber - GET Multiple",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test multiple subscribers\"] = jsonData.subscribers.length === 2;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/subscribers",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Subscriber - GET Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test single subscriber type\"] = jsonData.sub0.type === \"subscriber\";",
+									"tests[\"Test single subscriber port\"] = jsonData.sub0.properties.port === 5001;",
+									"tests[\"Test single subscriber address\"] = jsonData.sub0.properties.address === \"127.0.0.1\";",
+									"tests[\"Test single subscriber transport\"] = jsonData.sub0.properties[\"transport-spec\"] === \"ipc\";",
+									"tests[\"Test single subscriber transport\"] = jsonData.sub0.properties.filter === \"pub0\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/subscribers/sub0",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Subscriber - GET Invalid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test invalid subscriber request\"] = jsonData.subscribers.code === 503;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/subscribers/null",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Publisher - PUT Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test create publisher request\"] = jsonData.publishers[\"PUT\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/publishers",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"pub2\": {\n        \"type\": \"publisher\",\n        \"properties\": {\n        \t\"port\": 5010,\n        \t\"address\": \"*\",\n        \t\"transport-spec\": \"tcp\"\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Subscriber - PUT Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test create subscriber request\"] = jsonData.subscribers[\"PUT\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/subscribers",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sub2\": {\n        \"type\": \"subscriber\",\n        \"properties\": {\n        \t\"port\": 5010,\n        \t\"address\": \"127.0.0.1\",\n        \t\"transport-spec\": \"tcp\",\n        \t\"filter\": \"pub2\"\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Publisher - POST Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test update publisher request\"] = jsonData.publishers[\"POST\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/publishers/pub2",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"pub2\": {\n        \"properties\": {\n        \t\"port\": 5020,\n        \t\"address\": \"*\",\n        \t\"transport-spec\": \"tcp\"\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Subscriber - POST Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test update subscriber request\"] = jsonData.subscribers[\"POST\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/subscribers/sub2",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sub2\": {\n        \"properties\": {\n        \t\"port\": 5020,\n        \t\"address\": \"127.0.0.1\",\n        \t\"transport-spec\": \"tcp\",\n        \t\"filter\": \"pub2\"\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Subscriber - DELETE Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test delete subscriber request\"] = jsonData.subscribers[\"DELETE\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/subscribers/sub2",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sub2\": {}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Publisher - DELETE Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test delete publisher request\"] = jsonData.publishers[\"DELETE\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/publishers/pub2",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"pub2\": {}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Replier - GET Multiple",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test multiple repliers\"] = jsonData.repliers.length === 2;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/repliers",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Replier - GET Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test single replier type\"] = jsonData.rep0.type === \"replier\";",
+									"tests[\"Test single replier port\"] = jsonData.rep0.properties.port === 5003;",
+									"tests[\"Test single replier address\"] = jsonData.rep0.properties.address === \"*\";",
+									"tests[\"Test single replier transport\"] = jsonData.rep0.properties[\"transport-spec\"] === \"tcp\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/repliers/rep0",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Replier - GET Invalid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test invalid replier request\"] = jsonData.repliers.code === 503;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/repliers/null",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Requester - GET Multiple",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test multiple requesters\"] = jsonData.requesters.length === 2;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/requesters",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Requester - GET Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test single requester type\"] = jsonData.req0.type === \"requester\";",
+									"tests[\"Test single requester port\"] = jsonData.req0.properties.port === 5003;",
+									"tests[\"Test single requester address\"] = jsonData.req0.properties.address === \"127.0.0.1\";",
+									"tests[\"Test single requester transport\"] = jsonData.req0.properties[\"transport-spec\"] === \"tcp\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/requesters/req0",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Requester - GET Invalid",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test invalid requester request\"] = jsonData.requesters.code === 503;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/requesters/null",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Replier - PUT Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test create replier request\"] = jsonData.repliers[\"PUT\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/repliers",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"rep2\": {\n        \"type\": \"replier\",\n        \"properties\": {\n        \t\"port\": 5011,\n        \t\"address\": \"*\",\n        \t\"transport-spec\": \"tcp\"\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Requester - PUT Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test create requester request\"] = jsonData.requesters[\"PUT\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/requesters",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"req2\": {\n        \"type\": \"requester\",\n        \"properties\": {\n        \t\"port\": 5011,\n        \t\"address\": \"127.0.0.1\",\n        \t\"transport-spec\": \"tcp\"\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Replier - POST Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test update replier request\"] = jsonData.repliers[\"POST\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/repliers/rep2",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"rep2\": {\n        \"properties\": {\n        \t\"port\": 5021,\n        \t\"address\": \"*\",\n        \t\"transport-spec\": \"tcp\"\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Requester - POST Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test update requester request\"] = jsonData.requesters[\"POST\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/requesters/req2",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"req2\": {\n        \"properties\": {\n        \t\"port\": 5021,\n        \t\"address\": \"127.0.0.1\",\n        \t\"transport-spec\": \"tcp\"\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Requester - DELETE Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test delete requester request\"] = jsonData.requesters[\"DELETE\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/requesters/req2",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"req2\": {}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Replier - DELETE Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test delete replier request\"] = jsonData.repliers[\"DELETE\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/net/repliers/rep2",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"rep2\": {}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Service Routes (Control)",
+			"description": "",
+			"item": [
+				{
+					"name": "Controller - GET Multiple",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test multiple controllers\"] = jsonData.controllers.length === 1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8082/api/control/controllers",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Controller - GET Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test single controller\"] = jsonData.ctl0.type === \"controller\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8082/api/control/controllers/ctl0",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Controller - PUT Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test create controller request\"] = jsonData.controllers[\"PUT\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8082/api/control/controllers/ctl1",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ctl1\": {\n        \"type\": \"controller\",\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Controller - POST Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test udpate controller request\"] = jsonData.controllers[\"POST\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8082/api/control/controllers/ctl1",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ctl1\": {\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Controller - DELETE Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test delete controller request\"] = jsonData.controllers[\"DELETE\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8082/api/control/controllers/ctl1",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ctl1\": {}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Service Routes (DAQ)",
+			"description": "",
+			"item": [
+				{
+					"name": "Device - GET Multiple",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test multiple devices\"] = jsonData.devices.length === 1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/devices",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Device - GET Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test single device\"] = jsonData.dev0.type === \"device\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/devices/dev0",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Device - PUT Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test create device request\"] = jsonData.devices[\"PUT\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/devices/dev1",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"dev1\": {\n        \"type\": \"device\",\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Device - POST Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test udpate device request\"] = jsonData.devices[\"POST\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/devices/dev1",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"dev1\": {\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Device - DELETE Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test delete device request\"] = jsonData.devices[\"DELETE\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/devices/dev1",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"dev1\": {}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Sensor - GET Multiple",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test multiple sensors\"] = jsonData.sensors.length === 1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/sensors",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Sensor - GET Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test single sensor\"] = jsonData.sen0.type === \"sensor\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/sensors/sen0",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Sensor - PUT Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test create sensor request\"] = jsonData.sensors[\"PUT\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/sensors/sen1",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sen1\": {\n        \"type\": \"sensor\",\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Sensor - POST Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test update sensor request\"] = jsonData.sensors[\"POST\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/sensors/sen1",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sen1\": {\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Sensor - DELETE Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test delete sensor request\"] = jsonData.sensors[\"DELETE\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/sensors/sen1",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sen1\": {}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Signal - GET Multiple",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test multiple signals\"] = jsonData.signals.length === 1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/signals",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Signal - GET Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test single signal\"] = jsonData.sig0.type === \"signal\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/signals/sig0",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Signal - PUT Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test create signal request\"] = jsonData.signals[\"PUT\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/signals/sig1",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sig1\": {\n        \"type\": \"signal\",\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Signal - POST Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test update signal request\"] = jsonData.signals[\"POST\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/signals/sig1",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sig1\": {\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Signal - DELETE Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test delete signal request\"] = jsonData.signals[\"DELETE\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/signals/sig1",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"sig1\": {}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Port - GET Multiple",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test multiple ports\"] = jsonData.ports.length === 1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/ports",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Port - GET Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test single port\"] = jsonData.port0.type === \"serial-port\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/ports/port0",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Port - PUT Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test create port request\"] = jsonData.ports[\"PUT\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/ports/port1",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"port1\": {\n        \"type\": \"port\",\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Port - POST Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test update port request\"] = jsonData.ports[\"POST\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/ports/port1",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"port1\": {\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Port - DELETE Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test delete port request\"] = jsonData.ports[\"DELETE\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/ports/port1",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"port1\": {}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Task - GET Multiple",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test multiple tasks\"] = jsonData.tasks.length === 1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/tasks",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Task - GET Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test single tasks\"] = jsonData.task0.type === \"task\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/tasks/task0",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Task - PUT Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test create task request\"] = jsonData.tasks[\"PUT\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/tasks/task1",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"task1\": {\n        \"type\": \"task\",\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Task - POST Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test update task request\"] = jsonData.tasks[\"POST\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/tasks/task1",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"task1\": {\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Task - DELETE Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test delete task request\"] = jsonData.tasks[\"DELETE\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8080/api/daq/tasks/task1",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"task1\": {}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Service Routes (Log)",
+			"description": "",
+			"item": [
+				{
+					"name": "Backend - GET Multiple",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test multiple backends\"] = jsonData.backends.length === 1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8081/api/log/backends",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Backend - GET Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test single backend\"] = jsonData.back0.type === \"DcsLogBackend\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8081/api/log/backends/back0",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Backend - PUT Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test create backend request\"] = jsonData.backends[\"PUT\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8081/api/log/backends/back1",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"back1\": {\n        \"type\": \"backend\",\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Backend - POST Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test udpate backend request\"] = jsonData.backends[\"POST\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8081/api/log/backends/back1",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"back1\": {\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Backend - DELETE Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test delete backend request\"] = jsonData.backends[\"DELETE\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8081/api/log/backends/back1",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"back1\": {}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Log - GET Multiple",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test multiple logs\"] = jsonData.logs.length === 1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8081/api/log/logs",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Log - GET Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test single log\"] = jsonData.log0.type === \"file\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8081/api/log/logs/log0",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Log - PUT Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test create log request\"] = jsonData.logs[\"PUT\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8081/api/log/logs/log1",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"log1\": {\n        \"type\": \"log\",\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Log - POST Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test udpate log request\"] = jsonData.logs[\"POST\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8081/api/log/logs/log1",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"log1\": {\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Log - DELETE Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test delete log request\"] = jsonData.logs[\"DELETE\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8081/api/log/logs/log1",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"log1\": {}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Column - GET Multiple",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test multiple columns\"] = jsonData.columns.length === 4;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8081/api/log/columns",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Column - GET Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test single column\"] = jsonData.col0.type === \"column\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8081/api/log/columns/col0?log=log0",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Column - PUT Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test create column request\"] = jsonData.columns[\"PUT\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8081/api/log/columns/col1",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"col1\": {\n        \"type\": \"column\",\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Column - POST Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test udpate column request\"] = jsonData.columns[\"POST\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8081/api/log/columns/col1",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"col1\": {\n        \"properties\": {\n        }\n    }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Column - DELETE Single",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test delete column request\"] = jsonData.columns[\"DELETE\"] === \"complete\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8081/api/log/columns/col1",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"col1\": {}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Query - GET Log Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Test single query\"] = jsonData.query.status === \"unimplemented\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://localhost:8081/api/log/query/log0",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
