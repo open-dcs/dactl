@@ -48,7 +48,8 @@
         "properties": {
           "port": 5001,
           "address": "*",
-          "transport-spec": "tcp"
+          "transport-spec": "tcp",
+          "envelope": "daq-test"
         }
       },
       "sub0": {

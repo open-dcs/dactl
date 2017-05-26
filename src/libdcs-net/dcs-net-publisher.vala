@@ -44,6 +44,11 @@ public class Dcs.Net.Publisher : Dcs.Node {
      */
     public string address { get; set; default = "*"; }
 
+    /**
+     * Envelope to attach to the message.
+     */
+    public string envelope { get; set; }
+
 	/**
 	 * Signals that new data was published to the socket.
      */
@@ -108,11 +113,15 @@ public class Dcs.Net.Publisher : Dcs.Node {
      * XXX Could also send data received over a stream.
      */
     public void send_message (Dcs.Message message) {
-        var data = message.serialize ().data;
-        var reply = ZMQ.Msg.with_data (data);
+        var builder = new StringBuilder ();
+        if (envelope != null) {
+            builder.append (envelope + " ");
+        }
+        builder.append (message.serialize ());
+        var reply = ZMQ.Msg.with_data (builder.str.data);
         var n = reply.send (socket);
         /* XXX No idea what the point of this is */
-        data_published (data);
+        data_published (builder.str.data);
     }
 
     /**

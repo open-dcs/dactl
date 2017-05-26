@@ -106,10 +106,12 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
             debug ("Model tree:\n%s", Dcs.Node.tree (get_model ()));
 
             var net = get_model ().@get ("net");
-            var rc = config.get_string ("dcs", "reply-channel");
-            debug ("Replying channel: %s", rc);
-            if (net.has_key (rc)) {
-                reply_channel = (Dcs.Net.Replier) net.@get (rc);
+            string? rc = null;
+            try {
+                rc = config.get_string ("dcs", "reply-channel");
+                debug ("Replying channel: %s", rc);
+            } catch (GLib.Error e) {
+                warning ("Unable to find channel to use for message responses");
             }
 
             //(plugin_manager as Dcs.DAQ.DeviceManager).enable_device ("signal-generator");

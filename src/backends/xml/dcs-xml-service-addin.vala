@@ -24,7 +24,7 @@ public class Dcs.XmlServiceAddin : GLib.Object, Dcs.Net.ServiceProvider {
             warning ("Couldn't find any subscribers");
             return;
         }
-        subscriber = (Dcs.Net.Subscriber) subscribers.@get (1);
+        subscriber = (Dcs.Net.Subscriber) subscribers.@get (0);
         if (subscriber == null) {
             debug ("Couldn't get subscriber");
             running = false;
