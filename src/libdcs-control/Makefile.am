@@ -8,7 +8,7 @@ EXTRA_DIST =
 libdcscontrolincdir = $(includedir)/dcs-0.2
 libdcscontrolinc_HEADERS = dcs-control.h
 
-pkglibdir = $(libdir)/dcs
+pkglibdir = $(libdir)
 pkglib_LTLIBRARIES = libdcs-control-0.2.la
 
 headersdir = $(includedir)/dcs-@VERSION@/libdcs-control
@@ -125,7 +125,7 @@ GIRS = DcsControl-0.2.gir
 girdir = $(datadir)/dcs/gir-1.0
 gir_DATA = $(GIRS)
 
-typelibdir = $(pkglibdir)/girepository-1.0
+typelibdir = $(pkglibdir)/dcs/girepository-1.0
 typelib_DATA = $(GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
@@ -144,7 +144,7 @@ dcs-control-0.2.deps: Makefile
 VAPI_FILES = dcs-control-0.2.vapi
 DEPS_FILES = dcs-control-0.2.deps
 
-vapidir = $(VAPIDIR)
+vapidir = $(datadir)/vala/vapi
 vapi_DATA = $(VAPI_FILES) $(DEPS_FILES)
 dcs-control.h dcs-control-0.2.vapi Dcs-0.2.gir: libdcs_control_0_2_la_vala.stamp
 

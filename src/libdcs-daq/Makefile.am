@@ -8,7 +8,7 @@ EXTRA_DIST =
 libdcsdaqincdir = $(includedir)/dcs-0.2
 libdcsdaqinc_HEADERS = dcs-daq.h
 
-pkglibdir = $(libdir)/dcs
+pkglibdir = $(libdir)
 pkglib_LTLIBRARIES = libdcs-daq-0.2.la
 
 headersdir = $(includedir)/dcs-@VERSION@/libdcs-daq
@@ -136,7 +136,7 @@ GIRS = DcsDAQ-0.2.gir
 girdir = $(datadir)/dcs/gir-1.0
 gir_DATA = $(GIRS)
 
-typelibdir = $(pkglibdir)/girepository-1.0
+typelibdir = $(pkglibdir)/dcs/girepository-1.0
 typelib_DATA = $(GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
@@ -155,7 +155,7 @@ dcs-daq-0.2.deps: Makefile
 VAPI_FILES = dcs-daq-0.2.vapi
 DEPS_FILES = dcs-daq-0.2.deps
 
-vapidir = $(VAPIDIR)
+vapidir = $(datadir)/vala/vapi
 vapi_DATA = $(VAPI_FILES) $(DEPS_FILES)
 dcs-daq.h dcs-daq-0.2.vapi Dcs-0.2.gir: libdcs_daq_0_2_la_vala.stamp
 

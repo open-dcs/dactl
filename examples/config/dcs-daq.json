@@ -52,6 +52,15 @@
           "envelope": "daq-test"
         }
       },
+      "pub1": {
+        "type": "publisher",
+        "properties": {
+          "port": 5002,
+          "address": "*",
+          "transport-spec": "tcp",
+          "envelope": "daq-pub-gen"
+        }
+      },
       "sub0": {
         "type": "subscriber",
         "properties": {

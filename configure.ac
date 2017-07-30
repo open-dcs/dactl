@@ -779,6 +779,8 @@ AC_CONFIG_FILES([
 
 	tests/Makefile
 
+	vapi/Makefile
+
 	examples/Makefile
 	examples/javascript/Makefile
 	examples/python/Makefile

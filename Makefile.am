@@ -1,4 +1,4 @@
-SUBDIRS = . build contrib data doc src examples po tests
+SUBDIRS = . build contrib data doc src examples po tests vapi
 
 ACLOCAL_AMFLAGS = -I build/autotools
 

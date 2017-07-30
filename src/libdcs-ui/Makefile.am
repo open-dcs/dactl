@@ -14,7 +14,7 @@ include $(srcdir)/filelist.am
 libdcsuiincdir = $(includedir)/dcs-0.2
 libdcsuiinc_HEADERS = dcs-ui.h
 
-pkglibdir = $(libdir)/dcs
+pkglibdir = $(libdir)
 pkglib_LTLIBRARIES = libdcs-ui-0.2.la
 
 headersdir = $(includedir)/dcs-0.2
@@ -156,7 +156,7 @@ GIRS = DcsUI-0.2.gir
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(GIRS)
 
-typelibdir = $(pkglibdir)/girepository-1.0
+typelibdir = $(pkglibdir)/dcs/girepository-1.0
 typelib_DATA = $(GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
@@ -177,7 +177,7 @@ dcs-ui-0.2.deps: Makefile
 VAPI_FILES = dcs-ui-0.2.vapi
 DEPS_FILES = dcs-ui-0.2.deps
 
-vapidir = $(VAPIDIR)
+vapidir = $(datadir)/vala/vapi
 vapi_DATA = $(VAPI_FILES) $(DEPS_FILES)
 dcs-ui.h dcs-cli-0.2.vapi: libdcs_ui_0_2_la_vala.stamp
 

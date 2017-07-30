@@ -9,7 +9,7 @@ include $(srcdir)/filelist.am
 libdcsincdir = $(includedir)/dcs-0.2
 libdcsinc_HEADERS = dcs-core.h
 
-pkglibdir = $(libdir)/dcs
+pkglibdir = $(libdir)
 pkglib_LTLIBRARIES = libdcs-core-0.2.la
 
 pkgconfig_DATA = dcs-core-0.2.pc
@@ -100,7 +100,7 @@ GIRS = DcsCore-0.2.gir
 girdir = $(datadir)/gir-1.0
 gir_DATA = $(GIRS)
 
-typelibdir = $(pkglibdir)/girepository-1.0
+typelibdir = $(pkglibdir)/dcs/girepository-1.0
 typelib_DATA = $(GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
@@ -123,7 +123,7 @@ dcs-core-0.2.deps: Makefile
 VAPI_FILES = dcs-core-0.2.vapi
 DEPS_FILES = dcs-core-0.2.deps
 
-vapidir = $(VAPIDIR)
+vapidir = $(datadir)/vala/vapi
 vapi_DATA = $(VAPI_FILES) $(DEPS_FILES)
 dcs-core.h dcs-core-0.2.vapi Dcs-0.2.gir: libdcs_core_0_2_la_vala.stamp
 
