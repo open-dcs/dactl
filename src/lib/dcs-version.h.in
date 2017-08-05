@@ -1,0 +1,114 @@
+/* dcs-version.h.in
+ *
+ * Copyright (C) 2017 Geoff Johnson <geoff.jay@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#ifndef DCS_VERSION_H
+#define DCS_VERSION_H
+
+#if !defined(DCS_INSIDE) && !defined(DCS_COMPILATION)
+# error "Only <dcs.h> can be included directly."
+#endif
+
+/**
+ * SECTION:dcs-version
+ * @short_description: libdcs version checking
+ *
+ * libdcs provides macros to check the version of the library
+ * at compile-time
+ */
+
+/* TODO Remove BUILD_* stuff or copy what gnome-builder does */
+
+/**
+ * DCS_BUILD_TYPE:
+ *
+ * The build type of the installed build.
+ */
+#define DCS_BUILD_TYPE @BUILD_TYPE@
+
+/**
+ * DCS_BUILD_CHANNEL:
+ *
+ * The release channel of Builder. This should be a string such as
+ * "other", "flatpak-stable", or "flatpak-nightly".
+ */
+#define DCS_BUILD_CHANNEL @BUILD_CHANNEL@
+
+/**
+ * DCS_MAJOR_VERSION:
+ *
+ * libdcs major version component (e.g. 1 if %DCS_VERSION is 1.2.3)
+ */
+#define DCS_MAJOR_VERSION (@MAJOR_VERSION@)
+
+/**
+ * DCS_MINOR_VERSION:
+ *
+ * libdcs minor version component (e.g. 2 if %DCS_VERSION is 1.2.3)
+ */
+#define DCS_MINOR_VERSION (@MINOR_VERSION@)
+
+/**
+ * DCS_MICRO_VERSION:
+ *
+ * libdcs micro version component (e.g. 3 if %DCS_VERSION is 1.2.3)
+ */
+#define DCS_MICRO_VERSION (@MICRO_VERSION@)
+
+/**
+ * DCS_VERSION
+ *
+ * libdcs version.
+ */
+#define DCS_VERSION (@VERSION@)
+
+/**
+ * DCS_VERSION_S:
+ *
+ * libdcs version, encoded as a string, useful for printing and
+ * concatenation.
+ */
+#define DCS_VERSION_S "@VERSION@"
+
+#define DCS_ENCODE_VERSION(major,minor,micro) \
+        ((major) << 24 | (minor) << 16 | (micro) << 8)
+
+/**
+ * DCS_VERSION_HEX:
+ *
+ * libdcs version, encoded as an hexadecimal number, useful for
+ * integer comparisons.
+ */
+#define DCS_VERSION_HEX \
+        (DCS_ENCODE_VERSION (DCS_MAJOR_VERSION, DCS_MINOR_VERSION, DCS_MICRO_VERSION))
+
+/**
+ * DCS_CHECK_VERSION:
+ * @major: required major version
+ * @minor: required minor version
+ * @micro: required micro version
+ *
+ * Compile-time version checking. Evaluates to %TRUE if the version
+ * of libdcs is greater than the required one.
+ */
+#define DCS_CHECK_VERSION(major,minor,micro)   \
+        (DCS_MAJOR_VERSION > (major) || \
+         (DCS_MAJOR_VERSION == (major) && DCS_MINOR_VERSION > (minor)) || \
+         (DCS_MAJOR_VERSION == (major) && DCS_MINOR_VERSION == (minor) && \
+          DCS_MICRO_VERSION >= (micro)))
+
+#endif /* DCS_VERSION_H */

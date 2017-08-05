@@ -1,0 +1,7 @@
+{
+global:
+    dcs_control_*;
+    _dcs_control_*;
+local:
+    *;
+};

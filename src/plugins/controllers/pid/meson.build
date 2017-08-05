@@ -1,0 +1,43 @@
+if get_option('with_controller_pid')
+
+pid_controller_sources = [
+  'pid-controller.vala',
+  'dcs-pid-service-addin.vala',
+]
+
+pid_controller_deps = controller_deps
+
+pid_controller_c_args = [
+  '-DLOG_DOMAIN="pid-controller"',
+  '-DGETTEXT_PACKAGE="opendcs"',
+  '-DPACKAGE_DATADIR="@0@"'.format(join_paths(get_option('prefix'),
+                                              get_option('datadir'),
+                                              'dcs'))
+]
+
+configure_file(
+          input: 'pid.plugin',
+         output: 'pid.plugin',
+  configuration: configuration_data(),
+        install: true,
+    install_dir: controllerdir,
+)
+
+configure_file(
+          input: 'pid.json',
+         output: 'pid.json',
+  configuration: configuration_data(),
+        install: true,
+    install_dir: controllerconfdir,
+)
+
+shared_module('pid-controller', pid_controller_sources,
+  dependencies: pid_controller_deps,
+        c_args: pid_controller_c_args,
+     link_args: plugin_link_args,
+  link_depends: plugin_link_deps,
+       install: true,
+   install_dir: controllerdir,
+)
+
+endif

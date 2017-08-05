@@ -1,0 +1,19 @@
+option('enable_tracing', type: 'boolean', value: false)
+option('enable_profiling', type: 'boolean', value: false)
+
+option('with_ui', type: 'boolean')
+option('with_webkit', type: 'boolean')
+option('with_help', type: 'boolean')
+option('with_docs', type: 'boolean')
+option('with_examples', type: 'boolean', value: false)
+option('with_tests', type: 'boolean')
+
+# Plugins
+# Ideally we want many of these to be defined in the plugin dir:
+#   https://github.com/mesonbuild/meson/issues/707
+option('with_backend_xml', type: 'boolean')
+option('with_controller_pid', type: 'boolean')
+option('with_device_arduino', type: 'boolean')
+option('with_device_comedi', type: 'boolean')
+option('with_device_mccusb', type: 'boolean')
+option('with_device_signal_generator', type: 'boolean', value: false)
