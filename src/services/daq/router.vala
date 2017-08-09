@@ -23,7 +23,7 @@ public class Dcs.DAQ.Router : Dcs.Net.Router {
 
     private void init () {
         base.init ();
-        debug (_("Initializing the DAQ REST service"));
+        debug ("Initializing the DAQ REST service");
 
         add_handler (null,                route_default);
         add_handler ("/api/daq/channels", route_channels);

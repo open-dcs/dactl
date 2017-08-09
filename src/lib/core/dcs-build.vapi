@@ -16,6 +16,9 @@ public class Dcs.Build {
     [CCode (cname = "PACKAGE_VERSION")]
     public const string PACKAGE_VERSION;
 
+    [CCode (cname = "PACKAGE_DATADIR")]
+    public const string PACKAGE_DATADIR;
+
     /* Gettext package */
 
     [CCode (cname = "GETTEXT_PACKAGE")]

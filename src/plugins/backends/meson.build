@@ -1,8 +1,11 @@
-backend_deps = common_deps + [
-  libdcs_plugin_dep,
-  libdcs_net_plugin_dep,
-  #libdcs_log_plugin_dep,
+backend_deps = [
+  libdcs_log_plugin_dep,
 ]
+
+#backend_vala_args = plugin_vala_args + [
+  #'--vapidir', join_paths(meson.build_root(), 'src/lib/log'),
+  #'--pkg', 'dcs-log-@0@'.format(libdcs_api_version),
+#]
 
 backenddir = join_paths(get_option('prefix'), get_option('libdir'), 'dcs/backends')
 backenddatadir = join_paths(get_option('prefix'), get_option('datadir'), 'dcs/backend')

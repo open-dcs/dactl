@@ -54,14 +54,14 @@ internal class Dcs.Recorder.DBusService : GLib.Object, Dcs.DBusInterface {
             return;
         }
 
-        message (_("Another instance of daq-server is already running. Not starting."));
+        message ("Another instance of daq-server is already running. Not starting.");
         this.main.exit (-15);
     }
 
     /*** Test Methods ***/
 
     public void shutdown () throws IOError {
-        debug (_("Received shutdown"));
+        debug ("Received shutdown");
         //quit_requested ();
         this.main.exit (0);
     }

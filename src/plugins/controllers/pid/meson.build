@@ -34,6 +34,7 @@ configure_file(
 shared_module('pid-controller', pid_controller_sources,
   dependencies: pid_controller_deps,
         c_args: pid_controller_c_args,
+    #vala_args: plugin_vala_args,
      link_args: plugin_link_args,
   link_depends: plugin_link_deps,
        install: true,

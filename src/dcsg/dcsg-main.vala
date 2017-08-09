@@ -94,7 +94,7 @@ internal class Dcsg.Main : GLib.Object {
     }
 
     private int run (string[] args) {
-        debug (_("OpenDCS GUI v%s starting..."), Dcs.Build.PACKAGE_VERSION);
+        debug ("OpenDCS GUI v%s starting...", Dcs.Build.PACKAGE_VERSION);
         app.launch (args);
 
         return exit_code;

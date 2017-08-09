@@ -21,7 +21,7 @@ public class Dcs.Recorder.Server : Dcs.Net.Service {
         GLib.Object (application_id: "org.opendcs.dcs.log",
                      flags: ApplicationFlags.HANDLES_COMMAND_LINE);
 
-        debug (_("Constructing Recorder server"));
+        debug ("Constructing Recorder server");
         loop = new GLib.MainLoop ();
 
         service_config = new Dcs.Recorder.Config ();
@@ -51,7 +51,7 @@ public class Dcs.Recorder.Server : Dcs.Net.Service {
     }
 
     protected override void activate () {
-        debug (_("Activating Recorder server"));
+        debug ("Activating Recorder server");
         base.activate ();
 
         string? filename = null;
@@ -155,12 +155,12 @@ public class Dcs.Recorder.Server : Dcs.Net.Service {
     }
 
     protected override void startup () {
-        debug (_("Starting Recorder server"));
+        debug ("Starting Recorder server");
         base.startup ();
     }
 
     protected override void shutdown () {
-        debug (_("Shuting down Recorder Server"));
+        debug ("Shuting down Recorder Server");
         loop.quit ();
 
         base.shutdown ();

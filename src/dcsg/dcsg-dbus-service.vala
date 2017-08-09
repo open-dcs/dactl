@@ -57,14 +57,14 @@ internal class Dcsg.DBusService : GLib.Object, Dcs.DBusInterface {
             return;
         }
 
-        message (_("Another instance of dcsg is already running. Not starting."));
+        message ("Another instance of dcsg is already running. Not starting.");
         this.main.exit (-15);
     }
 
     /*** Test Methods ***/
 
     public void ping (GLib.BusName sender) {
-        message (_("Received ping from: %s"), sender);
+        message ("Received ping from: %s", sender);
         pong ();
     }
 

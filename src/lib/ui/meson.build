@@ -2,7 +2,7 @@ if get_option('with_ui')
 
 libdcs_ui_resources = gnome.compile_resources('libdcs-ui-resources',
   'libdcs-ui.gresource.xml',
-  c_name: 'libdcs-ui',
+  c_name: 'libdcs_ui',
 )
 
 libdcs_ui_generated_headers = [
@@ -56,17 +56,28 @@ libdcs_ui_sources = libdcs_ui_generated_headers + [
   'dcs-ui-window.vala',
 ]
 
-libdcs_ui_deps = common_deps + [
+libdcs_ui_vala_args = [
+  '--vapidir', join_paths(meson.build_root(), 'src/lib/core'),
+  '--pkg', 'gsl',
+]
+
+libdcs_ui_deps = [
   libdcs_dep,
   libgtk_dep,
   libgtksource_dep,
+  librsvg_dep,
 ]
 
 if get_option('with_webkit')
   libdcs_ui_deps += [dependency('webkit2gtk-4.0', version: '>= 2.12.0')]
+  #libdcs_ui_deps += [dependency('webkit2gtk-web-extension-4.0', version: '>= 2.12.0')]
   libdcs_ui_sources += [
     'dcs-ui-rich-content.vala',
-    'extensions/dcs-ui-extension-dom.vala',
+    'dcs-ui-webkit-widget.vala',
+    #'extensions/dcs-ui-extension-dom.vala',
+  ]
+  libdcs_ui_vala_args += [
+    '--pkg', 'javascriptcoregtk-3.0',
   ]
 endif
 
@@ -74,8 +85,9 @@ libdcs_ui = shared_library('dcs-ui-' + libdcs_api_version, libdcs_ui_resources +
   link_depends: 'dcs-ui.map',
      link_args: [ '-Wl,--version-script,' + join_paths(meson.current_source_dir(), 'dcs-ui.map') ],
    vala_header: 'dcs-ui.h',
+     vala_args: libdcs_ui_vala_args,
      vala_vapi: 'dcs-ui-@0@.vapi'.format(libdcs_api_version),
-      vala_gir: 'DcsUI-@0@.gir'.format(libdcs_api_version),
+      vala_gir: 'Dcs-@0@.gir'.format(libdcs_api_version),
   dependencies: libdcs_ui_deps,
         c_args: libdcs_args,
      soversion: soversion,
@@ -83,17 +95,45 @@ libdcs_ui = shared_library('dcs-ui-' + libdcs_api_version, libdcs_ui_resources +
    install_dir: [ true, true, true, true ],
 )
 
-g_ir_compiler = find_program('g-ir-compiler', required: false)
 if g_ir_compiler.found()
-  custom_target('DcsUI typelib',
-        command: [ g_ir_compiler, '--shared-library', libdcs_ui.full_path(), '--output', '@OUTPUT@', join_paths(meson.current_build_dir(), 'DcsUI-@0@.gir'.format(libdcs_api_version)) ],
-          #input: join_paths(meson.current_build_dir(), 'DcsUI-@0@.gir'.format(libdcs_aip_version)),
+  custom_target('DcsUI-@0@.typelib'.format(libdcs_api_version),
+        command: [ g_ir_compiler,
+                   '--shared-library', libdcs_ui.full_path(),
+                   '--includedir', libdcs_girdir,
+                   '--output', '@OUTPUT@',
+                   #'@INPUT@',
+                   join_paths(meson.current_build_dir(), 'DcsUI-@0@.gir'.format(libdcs_api_version)),
+                 ],
+          #input: join_paths(meson.current_build_dir(), 'DcsUI-@0@.gir'.format(libdcs_api_version)),
          output: 'DcsUI-@0@.typelib'.format(libdcs_api_version),
         depends: libdcs_ui,
         install: true,
-    install_dir: join_paths(get_option('libdir'), 'girepository-1.0')
+    install_dir: dir_typelib,
 )
 endif
+
+custom_target('DcsUI-@0@.gir'.format(libdcs_api_version),
+      command: [ sed,
+                 '-e', 's|Dcs[.]|DcsUI.|g',
+                 '-e', 's|namespace name="Dcs"|namespace name="DcsUI"|g',
+                 '-e', 's|DcsUI[.]Object|DcsCore.Object|g',
+                 '-e', 's|DcsUI[.]Buildable|DcsCore.Buildable|g',
+                 '-e', 's|DcsUI[.]Container|DcsCore.Container|g',
+                 '-e', 's|DcsUI[.]CldAdapter|DcsCore.CldAdapter|g',
+                 '-e', 's|DcsUI[.]PluginExtension|DcsCore.PluginExtension|g',
+                 '-e', 's|DcsUI[.]Factory|DcsCore.Factory|g',
+                 '-e', 's|<package name="dcs-ui-@0@"/>|<include name="DcsCore" version="@0@"/><package name="dcs-ui-@0@"/>|'.format(libdcs_api_version),
+                 #'@INPUT@',
+                 join_paths(meson.current_build_dir(), 'Dcs-@0@.gir'.format(libdcs_api_version)),
+               ],
+        #input: join_paths(meson.current_build_dir(), 'Dcs-@0@.gir'.format(libdcs_api_version)),
+       output: 'DcsUI-@0@.gir'.format(libdcs_api_version),
+      capture: true,
+      install: true,
+  install_dir: dir_gir,
+)
+
+libdcs_ui_girdir = meson.current_build_dir()
 
 # XXX not sure if deps were done correctly here
 libdcs_ui_dep = declare_dependency(
@@ -119,7 +159,7 @@ pkgg.generate(
          name: 'libdcs-ui',
      filebase: 'libdcs-ui-@0@'.format(libdcs_api_version),
   description: 'Gtk UI widgets for OpenDCS',
-     requires: [ 'gtk+-3.0', 'gtksourceview-3.0' ],
+     requires: [ 'gtk+-3.0', 'gtksourceview-3.0', 'librsvg-2.0', 'gsl' ],
   install_dir: join_paths(pkglibdir, 'pkgconfig'),
 )
 

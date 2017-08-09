@@ -75,7 +75,7 @@ public class Dcs.MetaFactory : GLib.Object, Dcs.Factory {
                     break;
                 default:
                     throw new Dcs.FactoryError.TYPE_NOT_FOUND (
-                        _("The type requested is not a known Dcs type."));
+                        "The type requested is not a known Dcs type.");
             }
         }
 
@@ -107,7 +107,7 @@ public class Dcs.MetaFactory : GLib.Object, Dcs.Factory {
                         break;
                     default:
                         throw new Dcs.FactoryError.TYPE_NOT_FOUND (
-                            _("The type requested is not a known Dcs type."));
+                            "The type requested is not a known Dcs type.");
                 }
             }
         }
@@ -152,7 +152,7 @@ public class Dcs.FooMetaFactory : GLib.Object, Dcs.FooFactory {
         /* The type was not found in any of the registered factories */
         if (node == null) {
             throw new Dcs.FactoryError.TYPE_NOT_FOUND (
-                _("The type requested is not a known Dcs type."));
+                "The type requested is not a known Dcs type.");
         }
 
         return node;
@@ -177,7 +177,7 @@ public class Dcs.FooMetaFactory : GLib.Object, Dcs.FooFactory {
         /* The type was not found in any of the registered factories */
         if (node == null) {
             throw new Dcs.FactoryError.TYPE_NOT_FOUND (
-                _("The type requested is not a known Dcs type."));
+                "The type requested is not a known Dcs type.");
         }
 
         return node;
@@ -203,7 +203,7 @@ public class Dcs.FooMetaFactory : GLib.Object, Dcs.FooFactory {
 
         if (node == null) {
             throw new Dcs.FactoryError.UNABLE_TO_PROCESS (
-                _("The configuration failed to generate a valid node set."));
+                "The configuration failed to generate a valid node set.");
         }
 
         return node;

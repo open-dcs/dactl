@@ -610,7 +610,7 @@ This section shows how to add a chart axis to a configuration file.
 
 
 Real Time Chart
-^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
 
 This secion shows how to add a real time chart to a configuration file.
 
@@ -871,7 +871,7 @@ Double clicking the chart reveals basic configuraton options:
 .. figure:: assets/striphart-settings.png
 
 Stripchart Trace
-^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^
 
 This is the legacy stripchart trace that is used with the strip chart.
 
@@ -921,7 +921,7 @@ This secion shows how to add a stripchart trace to a configuration file.
 +-------------------+---------------------+---------------+
 
 Polar Chart
-^^^^^^^^^^
+^^^^^^^^^^^
 
 The polar chart is a surface for plotting polar data. To be complete it requires
 

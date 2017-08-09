@@ -34,6 +34,7 @@ configure_file(
 shared_module('xml-backend', xml_backend_sources,
   dependencies: xml_backend_deps,
         c_args: xml_backend_c_args,
+    #vala_args: plugin_vala_args,
      link_args: plugin_link_args,
   link_depends: plugin_link_deps,
        install: true,

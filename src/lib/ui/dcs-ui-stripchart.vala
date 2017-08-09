@@ -1,4 +1,4 @@
-[Deprecated (since = "0.4.0")]
+[Version (deprecated = true, deprecated_since = "0.4.0")]
 public class Dcs.UI.StripChartTrace : GLib.Object, Dcs.Object, Dcs.Buildable {
 
     /* Changed name from Trace to StripChartTrace while refactoring */

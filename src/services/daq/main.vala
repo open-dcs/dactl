@@ -71,7 +71,7 @@ internal class Dcs.DAQ.Main : GLib.Object {
     }
 
     private int run (string[] args) {
-        message (_("DAQ Server v%s starting..."), Dcs.Build.PACKAGE_VERSION);
+        message ("DAQ Server v%s starting...", Dcs.Build.PACKAGE_VERSION);
         app.launch (args);
 
         return this.exit_code;

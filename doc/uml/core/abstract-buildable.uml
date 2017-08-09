@@ -1,9 +1,0 @@
-/'
- '  UML include file for AbstractBuildable class
- '/
-
-@startuml
-abstract class AbstractBuildable {
-    #unowned Node* node
-}
-@enduml

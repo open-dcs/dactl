@@ -1,4 +1,4 @@
-[Version (experimental = "true", experimental_until = "0.3")]
+[Version (experimental = "true")]
 public struct Dcs.Net.RouteEntry {
     public unowned string? path;
     public Dcs.Net.RouteArg arg;
@@ -6,7 +6,7 @@ public struct Dcs.Net.RouteEntry {
     public unowned string description;
 }
 
-[Version (experimental = "true", experimental_until = "0.3")]
+[Version (experimental = "true")]
 public enum Dcs.Net.RouteArg {
     NONE,
     CALLBACK;
@@ -51,14 +51,14 @@ public abstract class Dcs.Net.Router : Soup.Server {
      * Would like to have an entry table but it may make more sense to use
      * delegates in the entry.
      */
-    [Version (experimental = "true", experimental_until = "0.3")]
+    [Version (experimental = "true")]
     private Dcs.Net.RouteEntry[] entries;
 
     /**
      * Perform initialization of routes generic to all net based services.
      */
     protected void init () {
-        debug (_("Initializing REST for a network service on port %d"), port);
+        debug ("Initializing REST for a network service on port %d", port);
         listen_all (port, 0);
 
         add_handler ("/api/net/publishers",  route_publishers);
@@ -74,7 +74,7 @@ public abstract class Dcs.Net.Router : Soup.Server {
      *
      * @param routes The list of route entries to add.
      */
-    [Version (experimental = "true", experimental_until = "0.3")]
+    [Version (experimental = "true")]
     public void add_routes (Dcs.Net.RouteEntry[] routes) {
         entries = routes;
         foreach (var route in entries) {

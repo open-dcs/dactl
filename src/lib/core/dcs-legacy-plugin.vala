@@ -90,7 +90,7 @@ public class Dcs.LegacyPlugin : GLib.Object {
     /*
      *public virtual void post_construction (Xml.Node *node) throws GLib.Error {
      *    throw new ModuleError.NO_CONFIGURABLE_SETTINGS
-     *                (_("Plugin `%s' contains no configuration settings"), name);
+     *                ("Plugin `%s' contains no configuration settings", name);
      *}
      */
 
@@ -102,7 +102,7 @@ public class Dcs.LegacyPlugin : GLib.Object {
     /*
      *public virtual Dcs.Object get_control () throws GLib.Error {
      *    throw new ModuleError.CONTROL_NOT_AVAILABLE
-     *                (_("Plugin `%s' contains no configuration settings"), name);
+     *                ("Plugin `%s' contains no configuration settings", name);
      *}
      */
 }

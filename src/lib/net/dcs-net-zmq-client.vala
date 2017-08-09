@@ -36,7 +36,7 @@ public abstract class Dcs.Net.ZmqClient : GLib.Object {
         get { return _filter; }
         set {
             _filter = value;
-            debug (_("Setting ZMQ subscription filter to: %s"), value);
+            debug ("Setting ZMQ subscription filter to: %s", value);
             subscriber.setsockopt (ZMQ.SocketOption.SUBSCRIBE,
                                    filter,
                                    filter.length);
@@ -95,7 +95,7 @@ public abstract class Dcs.Net.ZmqClient : GLib.Object {
 
         if (ret == -1) {
             throw new Dcs.Net.ZmqError.INIT (
-                _("An error ocurred while connecting to endpoint"));
+                "An error ocurred while connecting to endpoint");
         }
 
         is_connected = true;

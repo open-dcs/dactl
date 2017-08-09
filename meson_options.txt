@@ -8,6 +8,8 @@ option('with_docs', type: 'boolean')
 option('with_examples', type: 'boolean', value: false)
 option('with_tests', type: 'boolean')
 
+option('with-valadoc', type: 'boolean', value: false)
+
 # Plugins
 # Ideally we want many of these to be defined in the plugin dir:
 #   https://github.com/mesonbuild/meson/issues/707

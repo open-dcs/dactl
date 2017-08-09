@@ -38,14 +38,14 @@ if (version_split[1].to_int() % 2 == 1)
 endif
 
 status += [
-  'Version ............... : @0@'.format(meson.project_version()),
-  'Build Type ............ : @0@'.format(get_option('buildtype')),
+  'Version ............................... : @0@'.format(meson.project_version()),
+  'Build Type ............................ : @0@'.format(get_option('buildtype')),
   '',
-  'Prefix ................ : @0@'.format(get_option('prefix')),
-  'Libdir ................ : @0@'.format(join_paths(get_option('prefix'), get_option('libdir'))),
+  'Prefix ................................ : @0@'.format(get_option('prefix')),
+  'Libdir ................................ : @0@'.format(join_paths(get_option('prefix'), get_option('libdir'))),
   '',
-  'Tracing ............... : @0@'.format(get_option('enable_tracing')),
-  'Profiling ............. : @0@'.format(get_option('enable_profiling')),
+  'Tracing ............................... : @0@'.format(get_option('enable_tracing')),
+  'Profiling ............................. : @0@'.format(get_option('enable_profiling')),
   '', ''
 ]
 
@@ -81,6 +81,7 @@ add_project_arguments([
 # Commonly used deps
 libgio_dep = dependency('gio-2.0', version: '>= 2.44.0')
 libgee_dep = dependency('gee-0.8', version: '>= 0.18.0')
+libgsl_dep = dependency('gsl', version: '>= 2.1')
 libpeas_dep = dependency('libpeas-1.0', version: '>= 1.20.0')
 libjson_glib_dep = dependency('json-glib-1.0', version: '>= 1.2.0')
 libxml_dep = dependency('libxml-2.0', version: '>= 2.9.0')
@@ -125,27 +126,42 @@ if not libtemplate_glib_dep.found()
 endif
 
 common_c_args = []
-common_vala_args = []
+
+common_vala_args = [
+  '--vapidir', join_paths(meson.source_root(), 'vapi'),
+  '--pkg', 'libzmq',
+  '--pkg', 'libsoup-2.4',
+]
+
 common_deps = [
   libgio_dep,
   libgee_dep,
+  libgsl_dep,
   libpeas_dep,
   libjson_glib_dep,
   libxml_dep,
   libcld_dep,
+  libzmq_dep,
+  libsoup_dep,
   #libcomedi_dep,
   comedi_dep,
   posix_dep,
   linux_dep,
 ]
 
+sed = find_program('sed')
+g_ir_compiler = find_program('g-ir-compiler', required: false)
+
+dir_gir = join_paths(get_option('datadir'), 'gir-1.0')
+dir_typelib = join_paths(get_option('libdir'), 'girepository-1.0')
+
 gnome = import('gnome')
 i18n = import('i18n')
 
-subdir('doc')
 subdir('data')
 subdir('po')
 subdir('src')
+subdir('doc')
 subdir('examples')
 subdir('tests')
 
@@ -153,6 +169,11 @@ configure_file(
          output: 'config.h',
   configuration: conf
 )
+
+# Enable others to find this .h file
+extra_includes = [
+  include_directories('.'),
+]
 
 exe_link_args = [ '-pie' ]
 exe_c_args = [ '-fPIE' ]

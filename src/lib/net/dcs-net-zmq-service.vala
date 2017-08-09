@@ -78,7 +78,7 @@ public abstract class Dcs.Net.ZmqService : GLib.Object {
 
         if (ret == -1) {
             throw new Dcs.Net.ZmqError.INIT (
-                _("An error ocurred while binding to endpoint"));
+                "An error ocurred while binding to endpoint");
         }
     }
 

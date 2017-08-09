@@ -2,11 +2,12 @@
 if get_option('with_ui')
   libgtk_dep = dependency('gtk+-3.0', version: '>= 3.22.0')
   libgtksource_dep = dependency('gtksourceview-3.0', version: '>= 3.22.0')
+  librsvg_dep = dependency('librsvg-2.0', version: '>= 2.40.0')
 endif
 
 subdir('config')
 
-common_vala_args = [
+common_vala_args += [
   '--vapidir', dir_libconfig,
   '--pkg', 'dcs-config',
 ]
@@ -14,11 +15,11 @@ common_vala_args = [
 # Libraries
 subdir('lib')
 subdir('lib/core')
+subdir('lib/net')
 subdir('lib/cli')
 subdir('lib/control')
 subdir('lib/daq')
 subdir('lib/log')
-subdir('lib/net')
 subdir('lib/ui')
 
 # Plugins

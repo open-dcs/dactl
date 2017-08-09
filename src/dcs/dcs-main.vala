@@ -141,7 +141,7 @@ public class Dcs.Client : GLib.Object {
         }
 
         if (Options.version) {
-            stdout.printf (_("%s - version %s\n"), args[0],
+            stdout.printf ("%s - version %s\n", args[0],
                            Dcs.Build.PACKAGE_VERSION);
             Posix.exit (0);
         }

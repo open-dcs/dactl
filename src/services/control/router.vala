@@ -14,7 +14,7 @@ public class Dcs.Control.Router : Dcs.Net.Router {
 
     private void init () {
         base.init ();
-        debug (_("Initializing the Control REST service"));
+        debug ("Initializing the Control REST service");
 
         add_handler (null,                       route_default);
         add_handler ("/api/control/controllers", route_controllers);

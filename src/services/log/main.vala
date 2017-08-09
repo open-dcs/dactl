@@ -69,7 +69,7 @@ internal class Dcs.Recorder.Main : GLib.Object {
     }
 
     private int run (string[] args) {
-        message (_("Recorder Server v%s starting..."), Dcs.Build.PACKAGE_VERSION);
+        message ("Recorder Server v%s starting...", Dcs.Build.PACKAGE_VERSION);
         app.launch (args);
 
         return this.exit_code;

@@ -14,7 +14,7 @@ internal class Dcs.Recorder.Router : Dcs.Net.Router {
 
     private void init () {
         base.init ();
-        debug (_("Initializing the Recorder REST service"));
+        debug ("Initializing the Recorder REST service");
 
         add_handler (null,                route_default);
         add_handler ("/api/log/backends", route_backends);

@@ -1,5 +1,4 @@
-plugin_deps = common_deps + [
-  libdcs_plugin_dep,
+plugin_deps = [
   libdcs_net_plugin_dep,
   libdcs_ui_plugin_dep,
 ]

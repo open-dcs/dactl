@@ -21,7 +21,7 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
         GLib.Object (application_id: "org.opendcs.dcs.daq",
                      flags: ApplicationFlags.HANDLES_COMMAND_LINE);
 
-        debug (_("Constructing DAQ server"));
+        debug ("Constructing DAQ server");
         loop = new GLib.MainLoop ();
 
         service_config = new Dcs.DAQ.Config ();
@@ -51,7 +51,7 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
     }
 
     protected override void activate () {
-        debug (_("Activating DAQ server"));
+        debug ("Activating DAQ server");
         base.activate ();
 
         string? filename = null;
@@ -157,12 +157,12 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
     }
 
     protected override void startup () {
-        debug (_("Starting DAQ server"));
+        debug ("Starting DAQ server");
         base.startup ();
     }
 
     protected override void shutdown () {
-        debug (_("Shuting down DAQ Server"));
+        debug ("Shuting down DAQ Server");
         loop.quit ();
 
         base.shutdown ();

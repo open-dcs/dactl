@@ -333,18 +333,18 @@ public class Dcsg.Application : Dcs.UI.Application {
                     //var arrangement = Tabler.load_from_file (file.get_uri ());
                     //create_window (arrangement);
                 } catch (GLib.Error e) {
-                    stderr.printf (_("An error occured while reading file %s: %s\n"),
+                    stderr.printf ("An error occured while reading file %s: %s\n",
                                 file.get_uri (), e.message);
                     dos.put_string (_("An error occured while reading file %s: %s\n".printf (
                                     file.get_uri (), e.message)));
                     //create_window (new Arrangement ());
-                    //show_error (_("Invalid file"), _("Error loading %s."),
+                    //show_error ("Invalid file"), _("Error loading %s.",
                                 //file.get_basename ());
                     continue;
                 } catch (FileError e) {
                     //create_window (new Arrangement ());
-                    //show_error (_("File not found or could not be read."),
-                                //_("%s not found or could not be read."), file.get_path ());
+                    //show_error ("File not found or could not be read.",
+                                //"%s not found or could not be read.", file.get_path ());
                     continue;
                 }
             }

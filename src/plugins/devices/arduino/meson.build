@@ -36,6 +36,7 @@ configure_file(
 shared_module('arduino-device', arduino_device_sources,
   dependencies: arduino_device_deps,
         c_args: arduino_device_c_args,
+     #vala_args: plugin_vala_args,
      link_args: plugin_link_args,
   link_depends: plugin_link_deps,
        install: true,

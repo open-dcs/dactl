@@ -9,7 +9,7 @@ public class Dcs.UI.Extension.DOM : GLib.Object {
 
     private static bool value_dir = false;
 
-    private static const JSCore.StaticFunction[] class_functions = {{
+    private const JSCore.StaticFunction[] class_functions = {{
         "get_analog", (JSCore.ObjectCallAsFunctionCallback) meas_get_analog_cb, JSCore.PropertyAttribute.ReadOnly
     },{
         "get_digital", (JSCore.ObjectCallAsFunctionCallback) meas_get_digital_cb, JSCore.PropertyAttribute.ReadOnly
@@ -17,7 +17,7 @@ public class Dcs.UI.Extension.DOM : GLib.Object {
         null, null, 0
     }};
 
-    private static const JSCore.ClassDefinition class_definition = {
+    private const JSCore.ClassDefinition class_definition = {
         0,                          // version
         JSCore.ClassAttribute.None, // attributes
         "Measurement",              // className

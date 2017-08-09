@@ -33,6 +33,7 @@ configure_file(
 shared_module('mccusb-device', mccusb_device_sources,
   dependencies: mccusb_device_deps,
         c_args: mccusb_device_c_args,
+    #vala_args: plugin_vala_args,
      link_args: plugin_link_args,
   link_depends: plugin_link_deps,
        install: true,

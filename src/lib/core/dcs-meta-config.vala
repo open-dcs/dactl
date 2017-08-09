@@ -86,14 +86,14 @@ public class Dcs.MetaConfig : Dcs.AbstractConfig {
 
     public override string get_namespace () throws GLib.Error {
         if (@namespace != "dcs") {
-            throw new Dcs.ConfigError.INVALID_NAMESPACE (_("Invalid namespace has been set"));
+            throw new Dcs.ConfigError.INVALID_NAMESPACE ("Invalid namespace has been set");
         }
         return @namespace;
     }
 
     public override Dcs.ConfigFormat get_format () throws GLib.Error {
         if (format != Dcs.ConfigFormat.MIXED) {
-            throw new Dcs.ConfigError.INVALID_FORMAT (_("Invalid format has been set"));
+            throw new Dcs.ConfigError.INVALID_FORMAT ("Invalid format has been set");
         }
         return format;
     }
@@ -120,7 +120,7 @@ public class Dcs.MetaConfig : Dcs.AbstractConfig {
         if (value != null) {
             return value;
         } else {
-            throw new Dcs.ConfigError.NO_VALUE_SET (_("No value available"));
+            throw new Dcs.ConfigError.NO_VALUE_SET ("No value available");
 		}
     }
 
@@ -146,7 +146,7 @@ public class Dcs.MetaConfig : Dcs.AbstractConfig {
         if (value != null) {
             return value;
         } else {
-            throw new Dcs.ConfigError.NO_VALUE_SET (_("No value available"));
+            throw new Dcs.ConfigError.NO_VALUE_SET ("No value available");
 		}
     }
 
@@ -174,7 +174,7 @@ public class Dcs.MetaConfig : Dcs.AbstractConfig {
         if (value_set) {
             return value;
         } else {
-            throw new Dcs.ConfigError.NO_VALUE_SET (_("No value available"));
+            throw new Dcs.ConfigError.NO_VALUE_SET ("No value available");
 		}
     }
 
@@ -200,7 +200,7 @@ public class Dcs.MetaConfig : Dcs.AbstractConfig {
         if (value != null) {
             return value;
         } else {
-            throw new Dcs.ConfigError.NO_VALUE_SET (_("No value available"));
+            throw new Dcs.ConfigError.NO_VALUE_SET ("No value available");
 		}
     }
 
@@ -228,7 +228,7 @@ public class Dcs.MetaConfig : Dcs.AbstractConfig {
         if (value_set) {
             return value;
         } else {
-            throw new Dcs.ConfigError.NO_VALUE_SET (_("No value available"));
+            throw new Dcs.ConfigError.NO_VALUE_SET ("No value available");
 		}
     }
 
@@ -256,7 +256,7 @@ public class Dcs.MetaConfig : Dcs.AbstractConfig {
         if (value_set) {
             return value;
         } else {
-            throw new Dcs.ConfigError.NO_VALUE_SET (_("No value available"));
+            throw new Dcs.ConfigError.NO_VALUE_SET ("No value available");
         }
     }
 

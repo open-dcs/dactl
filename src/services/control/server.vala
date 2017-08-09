@@ -21,7 +21,7 @@ public class Dcs.Control.Server : Dcs.Net.Service {
         GLib.Object (application_id: "org.opendcs.dcs.control",
                      flags: ApplicationFlags.HANDLES_COMMAND_LINE);
 
-        debug (_("Constructing Control server"));
+        debug ("Constructing Control server");
         loop = new GLib.MainLoop ();
 
         service_config = new Dcs.Control.Config ();
@@ -51,7 +51,7 @@ public class Dcs.Control.Server : Dcs.Net.Service {
     }
 
     protected override void activate () {
-        debug (_("Activating Control server"));
+        debug ("Activating Control server");
         base.activate ();
 
         string? filename = null;
@@ -155,12 +155,12 @@ public class Dcs.Control.Server : Dcs.Net.Service {
     }
 
     protected override void startup () {
-        debug (_("Starting Control server"));
+        debug ("Starting Control server");
         base.startup ();
     }
 
     protected override void shutdown () {
-        debug (_("Shuting down Control Server"));
+        debug ("Shuting down Control Server");
         loop.quit ();
 
         base.shutdown ();

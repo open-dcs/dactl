@@ -103,7 +103,7 @@ public class Dcs.Net.Publisher : Dcs.Node {
 
         if (ret == -1) {
             throw new Dcs.Net.ZmqError.INIT (
-                _("An error ocurred while binding to endpoint"));
+                "An error ocurred while binding to endpoint");
         }
     }
 

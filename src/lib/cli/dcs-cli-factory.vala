@@ -47,7 +47,7 @@ public class Dcs.CLI.Factory : GLib.Object, Dcs.Factory {
             case "DcsCLISomething":   break;
             default:
                 throw new Dcs.FactoryError.TYPE_NOT_FOUND (
-                    _("The type requested is not a known DCS type"));
+                    "The type requested is not a known DCS type");
         }
 
         return object;
@@ -68,7 +68,7 @@ public class Dcs.CLI.Factory : GLib.Object, Dcs.Factory {
                     case "something":   return make_something (node);
                     default:
                         throw new Dcs.FactoryError.TYPE_NOT_FOUND (
-                            _("The type requested is not a known DCS type"));
+                            "The type requested is not a known DCS type");
                 }
             }
         }

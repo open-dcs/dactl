@@ -131,10 +131,10 @@ public abstract class Dcs.PluginManager {
                                           info.get_external_data ("Type"),
                                           info.get_module_name () + ".json"),
                 /* Then from the system path */
-                GLib.Path.build_filename (Dcs.Build.DATADIR,
+                GLib.Path.build_filename (Dcs.Build.PACKAGE_DATADIR,
                                           info.get_external_data ("Type"),
                                           info.get_module_name () + ".xml"),
-                GLib.Path.build_filename (Dcs.Build.DATADIR,
+                GLib.Path.build_filename (Dcs.Build.PACKAGE_DATADIR,
                                           info.get_external_data ("Type"),
                                           info.get_module_name () + ".json")
             };

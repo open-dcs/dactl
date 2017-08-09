@@ -36,7 +36,7 @@ public class Dcs.PluginInformation : GLib.Object {
         keyfile.load_from_file (file.get_path (), KeyFileFlags.NONE);
         if (!keyfile.has_group ("Plugin")) {
             throw new KeyFileError.GROUP_NOT_FOUND
-                                        (_("[Plugin] group not found"));
+                                        ("[Plugin] group not found");
         }
 
         var name = keyfile.get_string ("Plugin", "Name");
@@ -54,7 +54,7 @@ public class Dcs.PluginInformation : GLib.Object {
                                                 module,
                                                 Module.SUFFIX));
             if (!module_file.query_exists ()) {
-                throw new FileError.EXIST (_("Plugin module %s does not exist"),
+                throw new FileError.EXIST ("Plugin module %s does not exist",
                                            module_file.get_path ());
             }
         }

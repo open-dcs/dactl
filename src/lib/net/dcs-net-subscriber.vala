@@ -55,7 +55,7 @@ public class Dcs.Net.Subscriber : Dcs.Node {
         get { return _filter; }
         set {
             _filter = value;
-            debug (_("Setting subscriber filter to: %s"), value);
+            debug ("Setting subscriber filter to: %s", value);
             socket.setsockopt (ZMQ.SocketOption.SUBSCRIBE,
                                filter,
                                filter.length);
@@ -115,7 +115,7 @@ public class Dcs.Net.Subscriber : Dcs.Node {
 
         if (ret == -1) {
             throw new Dcs.Net.ZmqError.INIT (
-                _("An error ocurred while binding to endpoint"));
+                "An error ocurred while binding to endpoint");
         }
 
         /* FIXME running differs from connected and should be used in thread */
@@ -125,7 +125,7 @@ public class Dcs.Net.Subscriber : Dcs.Node {
         /*
          *filter = "\"data\":";
          */
-        debug (_("Setting ZMQ subscription filter to: %s"), filter);
+        debug ("Setting ZMQ subscription filter to: %s", filter);
         socket.setsockopt (ZMQ.SocketOption.SUBSCRIBE,
                            filter,
                            filter.length);

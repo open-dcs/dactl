@@ -72,7 +72,7 @@ public class Dcs.UI.Factory : GLib.Object, Dcs.Factory {
             case "DcsUIFooPage":                break;
             default:
                 throw new Dcs.FactoryError.TYPE_NOT_FOUND (
-                    _("The type requested is not a known Dcs type"));
+                    "The type requested is not a known Dcs type");
         }
 
         return object;
@@ -116,7 +116,7 @@ public class Dcs.UI.Factory : GLib.Object, Dcs.Factory {
                     case "foo-page":            return make_foo_page (node);
                     default:
                         throw new Dcs.FactoryError.TYPE_NOT_FOUND (
-                            _("The type requested is not a known Dcs type"));
+                            "The type requested is not a known Dcs type");
                 }
             }
         }

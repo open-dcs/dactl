@@ -58,17 +58,37 @@ libdcs = shared_library('dcs-' + libdcs_api_version, libdcs_sources,
    install_dir: [ true, true, true, true ],
 )
 
-g_ir_compiler = find_program('g-ir-compiler', required: false)
 if g_ir_compiler.found()
-  custom_target('Dcs typelib',
-        command: [ g_ir_compiler, '--shared-library', libdcs.full_path(), '--output', '@OUTPUT@', join_paths(meson.current_build_dir(), 'Dcs-@0@.gir'.format(libdcs_api_version)) ],
-          #input: join_paths(meson.current_build_dir(), 'Dcs-@0@.gir'.format(libdcs_aip_version)),
-         output: 'Dcs-@0@.typelib'.format(libdcs_api_version),
+  custom_target('DcsCore-@0@.typelib'.format(libdcs_api_version),
+        command: [ g_ir_compiler,
+                   '--shared-library', libdcs.full_path(),
+                   '--output', '@OUTPUT@',
+                   #'@INPUT@',
+                   join_paths(meson.current_build_dir(), 'DcsCore-@0@.gir'.format(libdcs_api_version)),
+                 ],
+          #input: join_paths(meson.current_build_dir(), 'DcsCore-@0@.gir'.format(libdcs_api_version)),
+         output: 'DcsCore-@0@.typelib'.format(libdcs_api_version),
         depends: libdcs,
         install: true,
-    install_dir: join_paths(get_option('libdir'), 'girepository-1.0')
-)
+    install_dir: dir_typelib,
+  )
 endif
+
+custom_target('DcsCore-@0@.gir'.format(libdcs_api_version),
+      command: [ sed,
+                 '-e', 's,Dcs[.],DcsCore.,g',
+                 '-e', 's,namespace name="Dcs",namespace name="DcsCore",g',
+                 #'@INPUT@',
+                 join_paths(meson.current_build_dir(), 'Dcs-@0@.gir'.format(libdcs_api_version)),
+               ],
+        #input: join_paths(meson.current_build_dir(), 'Dcs-@0@.gir'.format(libdcs_api_version)),
+       output: 'DcsCore-@0@.gir'.format(libdcs_api_version),
+      capture: true,
+      install: true,
+  install_dir: dir_gir,
+)
+
+libdcs_girdir = meson.current_build_dir()
 
 # XXX not sure if deps were done correctly here
 libdcs_dep = declare_dependency(
