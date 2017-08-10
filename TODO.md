@@ -1,3 +1,7 @@
+# General
+
+* Copy Budgie Desktop idea of a separate /idea repo and redirect this to that
+
 # Build
 
 * Add build to data/gsettings
@@ -14,6 +18,20 @@
 # Configuration
 
 * Fix half assed sample configs and rename to `whatever.xml.example`
+
+# Services
+
+## Data Acquisition
+
+## Feedback Control
+
+## Logging
+
+# Applications
+
+## DCS Command Line Utility
+
+## DCS GUI
 
 # Examples
 

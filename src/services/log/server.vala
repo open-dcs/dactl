@@ -66,8 +66,8 @@ public class Dcs.Recorder.Server : Dcs.Net.Service {
                                               ".config", "dcs", "dcs-log.xml"),
                     GLib.Path.build_filename (GLib.Environment.get_home_dir (),
                                               ".config", "dcs", "dcs-log.json"),
-                    GLib.Path.build_filename (Dcs.Build.DATADIR, "dcs-log.xml"),
-                    GLib.Path.build_filename (Dcs.Build.DATADIR, "dcs-log.json"),
+                    GLib.Path.build_filename (Dcs.CONFDIR, "dcs-log.xml"),
+                    GLib.Path.build_filename (Dcs.CONFDIR, "dcs-log.json"),
                 };
                 /* Take the first configuration that was found */
                 foreach (var file in filenames) {

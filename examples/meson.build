@@ -1,4 +1,4 @@
-if get_option('with_examples')
+if get_option('with-examples')
 
 subdir('vala')
 

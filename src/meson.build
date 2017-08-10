@@ -1,37 +1,45 @@
-# GUI deps
-if get_option('with_ui')
-  libgtk_dep = dependency('gtk+-3.0', version: '>= 3.22.0')
-  libgtksource_dep = dependency('gtksourceview-3.0', version: '>= 3.22.0')
-  librsvg_dep = dependency('librsvg-2.0', version: '>= 2.40.0')
-endif
-
 subdir('config')
 
-common_vala_args += [
+# XXX these should just be added to project or global
+common_c_args = []
+common_vala_args = [
   '--vapidir', dir_libconfig,
+  '--pkg', 'libzmq',
+  '--pkg', 'libsoup-2.4',
   '--pkg', 'dcs-config',
 ]
 
+common_deps = [
+  libgio_dep,
+  libgee_dep,
+  libgsl_dep,
+  libpeas_dep,
+  libjson_glib_dep,
+  libxml_dep,
+  libcld_dep,
+  libzmq_dep,
+  libsoup_dep,
+  libcomedi_dep,
+  dep_posix,
+  dep_linux,
+]
+
+# XXX move these into libdcs-ui build
+# GUI deps
+if get_option('with-ui')
+  dep_peasgtk = dependency('libpeas-gtk-1.0', version: '>= 1.20.0')
+  dep_gtk = dependency('gtk+-3.0', version: '>= 3.22.0')
+  dep_gtksource = dependency('gtksourceview-3.0', version: '>= 3.22.0')
+  dep_rsvg = dependency('librsvg-2.0', version: '>= 2.40.0')
+endif
+
 # Libraries
-subdir('lib')
-subdir('lib/core')
-subdir('lib/net')
-subdir('lib/cli')
-subdir('lib/control')
-subdir('lib/daq')
-subdir('lib/log')
-subdir('lib/ui')
+subdir('libdcs')
 
 # Plugins
 subdir('plugins')
-subdir('plugins/backends')
-subdir('plugins/controllers')
-subdir('plugins/devices')
-subdir('plugins/ui-modules')
 
 # Executables
+#subdir('dcs')
 subdir('dcsg')
 subdir('services')
-subdir('services/control')
-subdir('services/daq')
-subdir('services/log')

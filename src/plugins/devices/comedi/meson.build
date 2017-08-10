@@ -1,4 +1,4 @@
-if get_option('with_device_comedi')
+if get_option('with-device-comedi')
 
 comedi_device_sources = [
   'comedi-device.vala',
@@ -7,8 +7,7 @@ comedi_device_sources = [
 comedi_device_deps = device_deps
 
 comedi_device_c_args = [
-  '-DLOG_DOMAIN="comedi-device"',
-  '-DGETTEXT_PACKAGE="opendcs"',
+  '-DG_LOG_DOMAIN="comedi-device"',
   '-DPACKAGE_DATADIR="@0@"'.format(join_paths(get_option('prefix'),
                                               get_option('datadir'),
                                               'dcs'))
@@ -33,7 +32,6 @@ configure_file(
 shared_module('comedi-device', comedi_device_sources,
   dependencies: comedi_device_deps,
         c_args: comedi_device_c_args,
-    #vala_args: plugin_vala_args,
      link_args: plugin_link_args,
   link_depends: plugin_link_deps,
        install: true,

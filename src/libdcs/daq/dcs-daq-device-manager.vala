@@ -6,7 +6,7 @@ public class Dcs.DAQ.DeviceManager : Dcs.PluginManager {
         this.service = service;
 
         engine = Peas.Engine.get_default ();
-        search_path = Dcs.Build.DEVICE_DIR;
+        search_path = Dcs.DEVICE_DIR;
 
         init ();
         load_plugins ();

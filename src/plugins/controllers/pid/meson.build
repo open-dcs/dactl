@@ -1,4 +1,4 @@
-if get_option('with_controller_pid')
+if get_option('with-controller-pid')
 
 pid_controller_sources = [
   'pid-controller.vala',
@@ -8,8 +8,7 @@ pid_controller_sources = [
 pid_controller_deps = controller_deps
 
 pid_controller_c_args = [
-  '-DLOG_DOMAIN="pid-controller"',
-  '-DGETTEXT_PACKAGE="opendcs"',
+  '-DG_LOG_DOMAIN="pid-controller"',
   '-DPACKAGE_DATADIR="@0@"'.format(join_paths(get_option('prefix'),
                                               get_option('datadir'),
                                               'dcs'))
@@ -34,7 +33,6 @@ configure_file(
 shared_module('pid-controller', pid_controller_sources,
   dependencies: pid_controller_deps,
         c_args: pid_controller_c_args,
-    #vala_args: plugin_vala_args,
      link_args: plugin_link_args,
   link_depends: plugin_link_deps,
        install: true,

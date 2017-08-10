@@ -1,5 +1,5 @@
 # Desktop launcher and description file.
-if get_option('with_ui')
+if get_option('with-ui')
 
 desktop_file = i18n.merge_file(
   input: 'org.opendcs.Dcsg.desktop.in.in',

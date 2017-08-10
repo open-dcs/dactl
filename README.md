@@ -11,19 +11,31 @@ For the website associated with this project visit [here][gh-pages].
 
 OpenDCS is a set of services and applications for creating custom data
 acquisition and control systems in a distributed manner. The target operating
-system is Linux and its modern distribution variants.
+system is Linux and depends on GNOME libraries and utilities.
 
-### Release 0.2
+### Release 0.3
 
 The current public release is a beta release that is a fork of
 [dactl](https://github.com/coanda/dactl) and probably won't be in a usable
 state until at least the next minor release. The libraries include GIR output
 for use in other languages, the support of which is still a work in progress.
 
+### Building
+
+OpenDCS is built using meson:
+
+```bash
+meson _build
+ninja -C _build
+sudo ninja -C _build install
+```
+
+<!--
 ### Installation Instructions:
 
 Instructions for installing OpenDCS and it's dependencies can be read
 [here](https://dactl.readthedocs.org/en/latest/setup.html).
+-->
 
 [logo]: https://open-dcs.github.io/assets/img/dcs.svg "OpenDCS Logo"
 [gh-pages]: https://open-dcs.github.io/ "OpenDCS Pages"

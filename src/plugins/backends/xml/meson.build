@@ -1,4 +1,4 @@
-if get_option('with_backend_xml')
+if get_option('with-backend-xml')
 
 xml_backend_sources = [
   'xml-backend.vala',
@@ -8,8 +8,7 @@ xml_backend_sources = [
 xml_backend_deps = backend_deps
 
 xml_backend_c_args = [
-  '-DLOG_DOMAIN="xml-backend"',
-  '-DGETTEXT_PACKAGE="opendcs"',
+  '-DG_LOG_DOMAIN="xml-backend"',
   '-DPACKAGE_DATADIR="@0@"'.format(join_paths(get_option('prefix'),
                                               get_option('datadir'),
                                               'dcs'))
@@ -34,7 +33,6 @@ configure_file(
 shared_module('xml-backend', xml_backend_sources,
   dependencies: xml_backend_deps,
         c_args: xml_backend_c_args,
-    #vala_args: plugin_vala_args,
      link_args: plugin_link_args,
   link_depends: plugin_link_deps,
        install: true,

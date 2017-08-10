@@ -1,21 +1,21 @@
-option('enable_tracing', type: 'boolean', value: false)
-option('enable_profiling', type: 'boolean', value: false)
+option('enable-tracing', type: 'boolean', value: false)
+option('enable-profiling', type: 'boolean', value: false)
 
-option('with_ui', type: 'boolean')
-option('with_webkit', type: 'boolean')
-option('with_help', type: 'boolean')
-option('with_docs', type: 'boolean')
-option('with_examples', type: 'boolean', value: false)
-option('with_tests', type: 'boolean')
+option('with-ui', type: 'boolean')
+option('with-webkit', type: 'boolean')
+option('with-help', type: 'boolean')
+option('with-docs', type: 'boolean')
+option('with-examples', type: 'boolean', value: false)
+option('with-tests', type: 'boolean')
 
 option('with-valadoc', type: 'boolean', value: false)
 
 # Plugins
 # Ideally we want many of these to be defined in the plugin dir:
 #   https://github.com/mesonbuild/meson/issues/707
-option('with_backend_xml', type: 'boolean')
-option('with_controller_pid', type: 'boolean')
-option('with_device_arduino', type: 'boolean')
-option('with_device_comedi', type: 'boolean')
-option('with_device_mccusb', type: 'boolean')
-option('with_device_signal_generator', type: 'boolean', value: false)
+option('with-backend-xml', type: 'boolean')
+option('with-controller-pid', type: 'boolean')
+option('with-device-arduino', type: 'boolean')
+option('with-device-comedi', type: 'boolean')
+option('with-device-mccusb', type: 'boolean')
+option('with-device-signal-generator', type: 'boolean', value: false)

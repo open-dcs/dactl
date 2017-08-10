@@ -21,16 +21,20 @@ namespace Dcs {
     [CCode (cheader_filename = "dcs-config.h")]
     public extern const string DATADIR;
 
-    /*
-     *[CCode (cheader_filename = "dcs-config.h")]
-     *public extern const string CONFDIR;
-     */
+    [CCode (cheader_filename = "dcs-config.h")]
+    public extern const string CONFDIR;
 
     [CCode (cheader_filename = "dcs-config.h")]
     public extern const string VERSION;
 
     [CCode (cheader_filename = "dcs-config.h")]
     public extern const string WEBSITE;
+
+    [CCode (cheader_filename = "dcs-config.h")]
+    public extern const string NAME;
+
+    [CCode (cheader_filename = "dcs-config.h")]
+    public extern const string STRING;
 
     [CCode (cheader_filename = "dcs-config.h")]
     public extern const string GETTEXT_PACKAGE;
@@ -73,4 +77,10 @@ namespace Dcs {
 
     [CCode (cheader_filename = "dcs-config.h")]
     public extern const string PLUGIN_DATA_DIR;
+
+    [CCode (cheader_filename = "dcs-config.h")]
+    public extern const string TEMPLATE_DIR;
+
+    [CCode (cheader_filename = "dcs-config.h")]
+    public extern const string WEB_EXTENSION_DIR;
 }

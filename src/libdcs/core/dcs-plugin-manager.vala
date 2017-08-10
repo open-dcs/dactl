@@ -11,7 +11,7 @@ public abstract class Dcs.PluginManager {
 
     protected Peas.ExtensionSet factory_extensions;
 
-    protected string search_path = Dcs.Build.PLUGIN_DIR;
+    protected string search_path = Dcs.PLUGIN_DIR;
 
     public signal void plugin_available (Dcs.Extension extension);
 
@@ -131,10 +131,10 @@ public abstract class Dcs.PluginManager {
                                           info.get_external_data ("Type"),
                                           info.get_module_name () + ".json"),
                 /* Then from the system path */
-                GLib.Path.build_filename (Dcs.Build.PACKAGE_DATADIR,
+                GLib.Path.build_filename (Dcs.CONFDIR,
                                           info.get_external_data ("Type"),
                                           info.get_module_name () + ".xml"),
-                GLib.Path.build_filename (Dcs.Build.PACKAGE_DATADIR,
+                GLib.Path.build_filename (Dcs.CONFDIR,
                                           info.get_external_data ("Type"),
                                           info.get_module_name () + ".json")
             };

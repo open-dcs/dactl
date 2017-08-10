@@ -1,4 +1,4 @@
-if get_option('with_device_signal_generator')
+if get_option('with-device-signal-generator')
 
 configure_file(
           input: 'signal-generator.py',

@@ -66,8 +66,8 @@ public class Dcs.DAQ.Server : Dcs.Net.Service {
                                               ".config", "dcs", "dcs-daq.xml"),
                     GLib.Path.build_filename (GLib.Environment.get_home_dir (),
                                               ".config", "dcs", "dcs-daq.json"),
-                    GLib.Path.build_filename (Dcs.Build.DATADIR, "dcs-daq.xml"),
-                    GLib.Path.build_filename (Dcs.Build.DATADIR, "dcs-daq.json"),
+                    GLib.Path.build_filename (Dcs.CONFDIR, "dcs-daq.xml"),
+                    GLib.Path.build_filename (Dcs.CONFDIR, "dcs-daq.json"),
                 };
                 /* Take the first configuration that was found */
                 foreach (var file in filenames) {

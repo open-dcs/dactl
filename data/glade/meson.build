@@ -1,4 +1,4 @@
-if get_option('with_ui')
+if get_option('with-ui')
 
 configure_file(
   input: 'dcs.xml',

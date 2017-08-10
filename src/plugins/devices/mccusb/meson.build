@@ -1,4 +1,4 @@
-if get_option('with_device_mccusb')
+if get_option('with-device-mccusb')
 
 mccusb_device_sources = [
   'mccusb-device.vala',
@@ -7,8 +7,7 @@ mccusb_device_sources = [
 mccusb_device_deps = device_deps
 
 mccusb_device_c_args = [
-  '-DLOG_DOMAIN="mccusb-device"',
-  '-DGETTEXT_PACKAGE="opendcs"',
+  '-DG_LOG_DOMAIN="mccusb-device"',
   '-DPACKAGE_DATADIR="@0@"'.format(join_paths(get_option('prefix'),
                                               get_option('datadir'),
                                               'dcs'))
@@ -33,7 +32,6 @@ configure_file(
 shared_module('mccusb-device', mccusb_device_sources,
   dependencies: mccusb_device_deps,
         c_args: mccusb_device_c_args,
-    #vala_args: plugin_vala_args,
      link_args: plugin_link_args,
   link_depends: plugin_link_deps,
        install: true,

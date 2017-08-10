@@ -19,11 +19,11 @@ public class Dcsg.CmdlineConfig : Dcs.AbstractConfig {
         { "version", 0, 0, OptionArg.NONE, ref version,
           "Display version number", null },
         { "plugin-path", 'u', 0, OptionArg.STRING, ref plugin_path,
-          N"Plugin Path", "PLUGIN_PATH" },
+          "Plugin Path", "PLUGIN_PATH" },
         { "config", 'c', 0, OptionArg.FILENAME, ref config_file,
-          N"Use configuration file instead of user configuration", "FILE" },
+          "Use configuration file instead of user configuration", "FILE" },
         { "replace", 'r', 0, OptionArg.NONE, ref replace,
-          N"Replace currently running instance of dcsg", null },
+          "Replace currently running instance of dcsg", null },
         { null }
     };
 
@@ -37,7 +37,7 @@ public class Dcsg.CmdlineConfig : Dcs.AbstractConfig {
     public static void parse_args (ref unowned string[] args)
                                    throws CmdlineConfigError.VERSION_ONLY,
                                           OptionError {
-        var parameter_string = "- " + Dcs.Build.PACKAGE_NAME;
+        var parameter_string = "- %s".printf (Dcs.NAME);
         var opt_context = new OptionContext (parameter_string);
         opt_context.set_help_enabled (true);
         opt_context.set_ignore_unknown_options (true);
@@ -52,7 +52,7 @@ public class Dcsg.CmdlineConfig : Dcs.AbstractConfig {
         }
 
         if (version) {
-            stdout.printf ("%s\n", Dcs.Build.PACKAGE_STRING);
+            stdout.printf ("%s\n", Dcs.STRING);
 
             throw new Dcsg.CmdlineConfigError.VERSION_ONLY ("");
         }

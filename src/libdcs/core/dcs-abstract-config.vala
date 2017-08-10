@@ -48,7 +48,7 @@ public abstract class Dcs.AbstractConfig : Dcs.Config, GLib.Object {
      */
     public virtual string get_namespace () throws GLib.Error {
         if (@namespace == null) {
-            throw new ConfigError.NO_VALUE_SET ("No value available");
+            throw new ConfigError.NO_VALUE_SET (_("No value available"));
         }
         return @namespace;
     }

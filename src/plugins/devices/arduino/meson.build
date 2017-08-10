@@ -1,4 +1,4 @@
-if get_option('with_device_arduino')
+if get_option('with-device-arduino')
 
 arduino_device_sources = [
   'arduino-device.vala',
@@ -10,8 +10,7 @@ arduino_device_sources = [
 arduino_device_deps = device_deps
 
 arduino_device_c_args = [
-  '-DLOG_DOMAIN="arduino-device"',
-  '-DGETTEXT_PACKAGE="opendcs"',
+  '-DG_LOG_DOMAIN="arduino-device"',
   '-DPACKAGE_DATADIR="@0@"'.format(join_paths(get_option('prefix'),
                                               get_option('datadir'),
                                               'dcs'))
@@ -36,7 +35,6 @@ configure_file(
 shared_module('arduino-device', arduino_device_sources,
   dependencies: arduino_device_deps,
         c_args: arduino_device_c_args,
-     #vala_args: plugin_vala_args,
      link_args: plugin_link_args,
   link_depends: plugin_link_deps,
        install: true,

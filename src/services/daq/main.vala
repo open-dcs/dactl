@@ -21,7 +21,7 @@ internal class Dcs.DAQ.Main : GLib.Object {
     }
 
     private static void parse_local_args (ref unowned string[] args) {
-        var opt_context = new OptionContext (Dcs.Build.PACKAGE_NAME);
+        var opt_context = new OptionContext (Dcs.NAME);
         opt_context.set_ignore_unknown_options (true);
         opt_context.set_help_enabled (false);
         opt_context.add_main_entries (Options.entries, null);
@@ -71,7 +71,7 @@ internal class Dcs.DAQ.Main : GLib.Object {
     }
 
     private int run (string[] args) {
-        message ("DAQ Server v%s starting...", Dcs.Build.PACKAGE_VERSION);
+        message ("DAQ Server v%s starting...", Dcs.VERSION);
         app.launch (args);
 
         return this.exit_code;
@@ -88,12 +88,12 @@ internal class Dcs.DAQ.Main : GLib.Object {
         var original_args = args;
 
         Intl.setlocale (LocaleCategory.ALL, "");
-        Intl.bindtextdomain (Dcs.Build.GETTEXT_PACKAGE, Dcs.Build.LOCALEDIR);
-        Intl.bind_textdomain_codeset (Dcs.Build.GETTEXT_PACKAGE, "UTF-8");
-        Intl.textdomain (Dcs.Build.GETTEXT_PACKAGE);
+        Intl.bindtextdomain (Dcs.GETTEXT_PACKAGE, Dcs.LOCALEDIR);
+        Intl.bind_textdomain_codeset (Dcs.GETTEXT_PACKAGE, "UTF-8");
+        Intl.textdomain (Dcs.GETTEXT_PACKAGE);
 
-        GLib.Environment.set_prgname (_(Dcs.Build.PACKAGE_NAME));
-        GLib.Environment.set_application_name (_(Dcs.Build.PACKAGE_NAME));
+        GLib.Environment.set_prgname (_(Dcs.NAME));
+        GLib.Environment.set_application_name (_(Dcs.NAME));
 
         try {
             parse_local_args (ref args);

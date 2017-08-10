@@ -35,7 +35,7 @@ public class Dcs.DAQ.CmdlineConfig : Dcs.AbstractConfig {
         }
 
         if (_version) {
-            stdout.printf ("%s - version %s\n", args[0], Dcs.Build.PACKAGE_VERSION);
+            stdout.printf ("%s - version %s\n", args[0], Dcs.VERSION);
             Posix.exit (0);
         }
     }

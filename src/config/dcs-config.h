@@ -31,14 +31,16 @@ extern const char *DCS_VERSION;
 
 extern const char *DCS_WEBSITE;
 
+extern const char *DCS_NAME;
+
+extern const char *DCS_STRING;
+
 extern const char *DCS_LOCALEDIR;
 
 extern const char *DCS_GETTEXT_PACKAGE;
 
-/*
- *[> sysconfdir <]
- *extern const char *DCS_CONFDIR;
- */
+/* /etc/dcs */
+extern const char *DCS_CONFDIR;
 
 /* i.e. /usr/lib64/dcs/backends */
 extern const char *DCS_BACKEND_DIR;
@@ -66,5 +68,11 @@ extern const char *DCS_PLUGIN_DIR;
 extern const char *DCS_PLUGIN_CONF_DIR;
 
 extern const char *DCS_PLUGIN_DATA_DIR;
+
+/* /usr/lib/dcs/templates */
+extern const char *DCS_TEMPLATE_DIR;
+
+/* /usr/lib/dcs/extensions */
+extern const char *DCS_WEB_EXTENSION_DIR;
 
 #endif

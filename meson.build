@@ -1,10 +1,9 @@
-project('dcs', 'vala', 'c',
+project('dcs', [ 'c', 'vala' ],
           license: 'GPL3+',
           version: '0.3.0',
     meson_version: '>= 0.40.1',
   default_options: [
                      'c_std=gnu11',
-                     'cpp_std=c++11',
                      'warning_level=2',
                    ],
 )
@@ -13,14 +12,6 @@ version_split = meson.project_version().split('.')
 MAJOR_VERSION = version_split[0]
 MINOR_VERSION = version_split[1]
 MICRO_VERSION = version_split[2]
-
-pkgdocdir_abs = join_paths(get_option('prefix'), get_option('datadir'), 'doc', 'dcs')
-pkglibdir_abs = join_paths(get_option('prefix'), get_option('libdir'), 'dcs')
-pkglibdir = join_paths(get_option('libdir'), 'dcs')
-pkgincludedir = join_paths(get_option('includedir'), 'dcs')
-pkggirdir = join_paths(get_option('datadir'),'dcs', 'gir-1.0')
-pkgtypelibdir = join_paths(get_option('libdir'), 'dcs', 'girepository-1.0')
-pkgvapidir = join_paths(get_option('datadir'), 'dcs/vapi')
 
 status = [
   '', '',
@@ -44,32 +35,17 @@ status += [
   'Prefix ................................ : @0@'.format(get_option('prefix')),
   'Libdir ................................ : @0@'.format(join_paths(get_option('prefix'), get_option('libdir'))),
   '',
-  'Tracing ............................... : @0@'.format(get_option('enable_tracing')),
-  'Profiling ............................. : @0@'.format(get_option('enable_profiling')),
+  'Tracing ............................... : @0@'.format(get_option('enable-tracing')),
+  'Profiling ............................. : @0@'.format(get_option('enable-profiling')),
   '', ''
 ]
-
-conf = configuration_data()
-conf.set_quoted('PACKAGE_NAME', 'dcs')
-conf.set_quoted('PACKAGE_VERSION', meson.project_version())
-conf.set_quoted('PACKAGE_STRING', 'dcs-' + meson.project_version())
-conf.set_quoted('PACKAGE_DATADIR', join_paths(get_option('prefix'), get_option('datadir')))
-conf.set_quoted('PACKAGE_DOCDIR', join_paths(get_option('prefix'), get_option('datadir'), 'doc/dcs'))
-conf.set_quoted('PACKAGE_LIBDIR', join_paths(get_option('prefix'), get_option('libdir')))
-conf.set_quoted('PACKAGE_LOCALE_DIR', join_paths(get_option('prefix'), get_option('datadir'), 'locale'))
-conf.set_quoted('PACKAGE_LIBEXECDIR', join_paths(get_option('prefix'), get_option('libexecdir')))
-conf.set_quoted('PACKAGE_URL', 'https://github.com/open-dcs/dcs/')
-
-conf.set('GETTEXT_PACKAGE', 'PACKAGE_NAME')
-conf.set('LOCALEDIR', 'PACKAGE_LOCALE_DIR')
-
-conf.set10('ENABLE_NLS', true) # Always enabled
 
 add_global_arguments([
   '-DHAVE_CONFIG_H',
   '-I' + meson.build_root(), # config.h
   '-D_GNU_SOURCE',
   '-DDCS_COMPILATION',
+  '-DGETTEXT_PACKAGE="dcs"',
 ], language: 'c')
 
 add_project_arguments([
@@ -90,12 +66,12 @@ libsoup_dep = dependency('libsoup-2.4', version: '>= 2.50.0')
 libcld_dep = dependency('cld-1.0', version: '>= 0.4.0')
 libtemplate_glib_dep = dependency('template-glib-1.0', version: '>= 3.25.3', required: false)
 
-#libcomedi_vapi = meson.get_compiler('vala').find_library('comedi', dirs: join_paths(meson.current_source_dir(), 'vapi'))
-#libcomedi_dep = declare_dependency(dependencies: [libcomedi_vapi])
+libcomedi_lib = meson.get_compiler('c').find_library('comedi')
+libcomedi_vapi = meson.get_compiler('vala').find_library('comedi', dirs: join_paths(meson.current_source_dir(), 'vapi'))
+libcomedi_dep = declare_dependency(dependencies: [libcomedi_lib, libcomedi_vapi])
 
-comedi_dep = meson.get_compiler('vala').find_library('comedi')
-posix_dep = meson.get_compiler('vala').find_library('posix')
-linux_dep = meson.get_compiler('vala').find_library('linux')
+dep_posix = meson.get_compiler('vala').find_library('posix')
+dep_linux = meson.get_compiler('vala').find_library('linux')
 
 libcld_gir = 'Cld-1.0'
 libcld_vapi = 'cld-1.0'
@@ -125,46 +101,88 @@ if not libtemplate_glib_dep.found()
   libtemplate_glib_vapi = libtemplate_glib.get_variable('libtemplate_glib_vapi')
 endif
 
-common_c_args = []
+# Create config.h
+conf = configuration_data()
 
-common_vala_args = [
-  '--vapidir', join_paths(meson.source_root(), 'vapi'),
-  '--pkg', 'libzmq',
-  '--pkg', 'libsoup-2.4',
-]
+# Global paths that we need
+pkgdocdir_abs = join_paths(get_option('prefix'), get_option('datadir'), 'doc', 'dcs')
+pkglibdir_abs = join_paths(get_option('prefix'), get_option('libdir'), 'dcs')
+pkglibdir = join_paths(get_option('libdir'), 'dcs')
+pkgincludedir = join_paths(get_option('includedir'), 'dcs')
+pkggirdir = join_paths(get_option('datadir'),'dcs', 'gir-1.0')
+pkgtypelibdir = join_paths(get_option('libdir'), 'dcs', 'girepository-1.0')
+pkgvapidir = join_paths(get_option('datadir'), 'dcs/vapi')
 
-common_deps = [
-  libgio_dep,
-  libgee_dep,
-  libgsl_dep,
-  libpeas_dep,
-  libjson_glib_dep,
-  libxml_dep,
-  libcld_dep,
-  libzmq_dep,
-  libsoup_dep,
-  #libcomedi_dep,
-  comedi_dep,
-  posix_dep,
-  linux_dep,
-]
-
-sed = find_program('sed')
-g_ir_compiler = find_program('g-ir-compiler', required: false)
-
+# XXX these are redundant and need to be merged into one, need to decide on this vs. pkg*
+dir_lib = join_paths(get_option('prefix'), get_option('libdir'))
+dir_sysconfig = join_paths(get_option('prefix'), 'etc')
+dir_data = join_paths(get_option('prefix'), get_option('datadir'))
+dir_template = join_paths(dir_data, 'dcs', 'templates')
 dir_gir = join_paths(get_option('datadir'), 'gir-1.0')
 dir_typelib = join_paths(get_option('libdir'), 'girepository-1.0')
 
-gnome = import('gnome')
-i18n = import('i18n')
+conf.set10('ENABLE_NLS', true) # Always enabled
+conf.set_quoted('PACKAGE_NAME', 'dcs')
+conf.set_quoted('PACKAGE_VERSION', meson.project_version())
+conf.set_quoted('PACKAGE_STRING', 'dcs-' + meson.project_version())
+conf.set_quoted('PACKAGE_LIBDIR', join_paths(dir_lib, 'dcs'))
+conf.set_quoted('PACKAGE_LIBEXECDIR', join_paths(get_option('prefix'), get_option('libexecdir')))
+conf.set_quoted('PACKAGE_CONFDIR', join_paths(dir_sysconfig, 'dcs'))
+conf.set_quoted('PACKAGE_DATADIR', join_paths(dir_data, 'dcs'))
+conf.set_quoted('PACKAGE_DOCDIR', join_paths(dir_data, 'doc', 'dcs'))
+conf.set_quoted('PACKAGE_LOCALE_DIR', join_paths(dir_data, 'locale'))
+conf.set_quoted('PACKAGE_URL', 'https://github.com/open-dcs/dcs/')
 
-subdir('data')
-subdir('po')
-subdir('src')
-subdir('doc')
-subdir('examples')
-subdir('tests')
+# For i18n
+conf.set_quoted('GETTEXT_PACKAGE', meson.project_name())
 
+# TODO old configuration from autotools that need to be moved into libconfig
+conf.set('LOCALEDIR', 'PACKAGE_LOCALE_DIR')
+conf.set_quoted('SYS_CONFIG_DIR', dir_sysconfig)
+conf.set_quoted('TEMPLATE_DIR', dir_template)
+
+if get_option('with-ui')
+  dir_webkit_extension = join_paths(get_option('prefix'), get_option('libdir'), 'dcs', 'extensions')
+  conf.set_quoted('WEB_EXTENSION_DIR', dir_webkit_extension)
+endif
+
+# Configuration for logging plugins
+backenddir = join_paths(get_option('prefix'), get_option('libdir'), 'dcs/backends')
+backenddatadir = join_paths(get_option('prefix'), get_option('datadir'), 'dcs/backend')
+backendconfdir = join_paths(get_option('prefix'), get_option('sysconfdir'), 'dcs/backend')
+
+conf.set_quoted('BACKEND_DIR', backenddir)
+conf.set_quoted('BACKEND_CONF_DIR', backendconfdir)
+conf.set_quoted('BACKEND_DATA_DIR', backenddatadir)
+
+# Configuration for feedback control plugins
+controllerdir = join_paths(get_option('prefix'), get_option('libdir'), 'dcs/controllers')
+controllerdatadir = join_paths(get_option('prefix'), get_option('datadir'), 'dcs/controller')
+controllerconfdir = join_paths(get_option('prefix'), get_option('sysconfdir'), 'dcs/controller')
+
+conf.set_quoted('CONTROLLER_DIR', controllerdir)
+conf.set_quoted('CONTROLLER_CONF_DIR', controllerconfdir)
+conf.set_quoted('CONTROLLER_DATA_DIR', controllerdatadir)
+
+# Configuration for device plugins
+devicedir = join_paths(get_option('prefix'), get_option('libdir'), 'dcs/devices')
+devicedatadir = join_paths(get_option('prefix'), get_option('datadir'), 'dcs/device')
+deviceconfdir = join_paths(get_option('prefix'), get_option('sysconfdir'), 'dcs/device')
+
+conf.set_quoted('DEVICE_DIR', devicedir)
+conf.set_quoted('DEVICE_CONF_DIR', deviceconfdir)
+conf.set_quoted('DEVICE_DATA_DIR', devicedatadir)
+
+# Configuration for UI plugins
+plugindir = join_paths(get_option('prefix'), get_option('libdir'), 'dcs/plugins')
+plugindatadir = join_paths(get_option('prefix'), get_option('datadir'), 'dcs/plugin')
+pluginconfdir = join_paths(get_option('prefix'), get_option('sysconfdir'), 'dcs/plugin')
+
+conf.set_quoted('PLUGIN_DIR', plugindir)
+conf.set_quoted('PLUGIN_CONF_DIR', pluginconfdir)
+conf.set_quoted('PLUGIN_DATA_DIR', plugindatadir)
+
+# Write config.h
 configure_file(
          output: 'config.h',
   configuration: conf
@@ -175,8 +193,30 @@ extra_includes = [
   include_directories('.'),
 ]
 
+# XXX may not need these for anything if using gnome module correctly
+sed = find_program('sed')
+g_ir_compiler = find_program('g-ir-compiler', required: false)
+
+gnome = import('gnome')
+i18n = import('i18n')
+
+# Prep translations prior to build
+subdir('po')
+
+# TODO these may be needed by Peas plugins, double check later and remove if not
 exe_link_args = [ '-pie' ]
 exe_c_args = [ '-fPIE' ]
+
+# Build all the libs and executables
+subdir('src')
+subdir('tests')
+subdir('examples')
+
+# Documentation
+subdir('doc')
+
+# All the data to be installed
+subdir('data')
 
 meson.add_install_script('build-aux/meson/meson_post_install.py')
 

@@ -66,8 +66,8 @@ public class Dcs.Control.Server : Dcs.Net.Service {
                                               ".config", "dcs", "dcs-control.xml"),
                     GLib.Path.build_filename (GLib.Environment.get_home_dir (),
                                               ".config", "dcs", "dcs-control.json"),
-                    GLib.Path.build_filename (Dcs.Build.DATADIR, "dcs-control.xml"),
-                    GLib.Path.build_filename (Dcs.Build.DATADIR, "dcs-control.json"),
+                    GLib.Path.build_filename (Dcs.CONFDIR, "dcs-control.xml"),
+                    GLib.Path.build_filename (Dcs.CONFDIR, "dcs-control.json"),
                 };
                 /* Take the first configuration that was found */
                 foreach (var file in filenames) {
