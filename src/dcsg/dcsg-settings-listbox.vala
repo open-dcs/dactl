@@ -255,9 +255,9 @@ public class Dcsg.PropertyBox : Gtk.Box {
                                         "Choose a file",
                                         null,
                                         Gtk.FileChooserAction.SAVE,
-                                        _("_Cancel"),
+                                        "_Cancel",
                                         Gtk.ResponseType.CANCEL,
-                                        _("_Open"),
+                                        "_Open",
                                         Gtk.ResponseType.ACCEPT,
                                         null);
             try {

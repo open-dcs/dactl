@@ -46,6 +46,15 @@
       "sub1": {
         "type": "subscriber",
         "properties": {
+          "port": 5002,
+          "address": "127.0.0.1",
+          "filter": "daq-pub-gen",
+          "transport-spec": "tcp"
+        }
+      },
+      "sub2": {
+        "type": "subscriber",
+        "properties": {
           "port": 6001,
           "address": "127.0.0.1",
           "filter": "control-test",

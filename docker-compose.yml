@@ -1,0 +1,35 @@
+version: '3'
+services:
+  daq:
+    build: build-aux/docker/daq
+    privileged: true
+    ports:
+      - "8080:8080"
+      - "5001:5001"
+      - "5002:5002"
+      - "10000:10000"
+    networks:
+      - internal
+      - external
+  log:
+    build: build-aux/docker/log
+    ports:
+      - "8081:8081"
+      - "10001:10001"
+    networks:
+      - internal
+      - external
+  control:
+    build: build-aux/docker/control
+    privileged: true
+    ports:
+      - "8082:8082"
+      - "6001:6001"
+      - "10002:10002"
+    networks:
+      - internal
+      - external
+
+networks:
+  internal:
+  external:

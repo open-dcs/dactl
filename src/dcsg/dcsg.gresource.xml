@@ -6,7 +6,7 @@
   </gresource>
 
   <gresource prefix="/org/opendcs/dcs/icons">
-    <file compressed="true" alias="dcs.svg">../../data/icons/scalable/dcs.svg</file>
+    <file compressed="true" alias="dcs.svg">../../data/icons/scalable/apps/opendcs.svg</file>
   </gresource>
 
   <gresource prefix="/org/opendcs/dcs/ui">

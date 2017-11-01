@@ -25,7 +25,7 @@ internal class Dcsg.Main : GLib.Object {
     }
 
     private static void parse_local_args (ref unowned string[] args) {
-        var opt_context = new OptionContext (Dcs.Build.PACKAGE_NAME);
+        var opt_context = new OptionContext (Dcs.NAME);
         opt_context.set_ignore_unknown_options (true);
         opt_context.set_help_enabled (false);
         opt_context.add_main_entries (Options.entries, null);
@@ -36,7 +36,7 @@ internal class Dcsg.Main : GLib.Object {
         }
 
         if (Options.version) {
-            stdout.printf ("%s - version %s\n", args[0], Dcs.Build.PACKAGE_VERSION);
+            stdout.printf ("%s - version %s\n", args[0], Dcs.VERSION);
             Posix.exit (0);
         }
     }
@@ -94,7 +94,7 @@ internal class Dcsg.Main : GLib.Object {
     }
 
     private int run (string[] args) {
-        debug (_("OpenDCS GUI v%s starting..."), Dcs.Build.PACKAGE_VERSION);
+        debug ("OpenDCS GUI v%s starting...", Dcs.VERSION);
         app.launch (args);
 
         return exit_code;
@@ -165,12 +165,12 @@ internal class Dcsg.Main : GLib.Object {
         var original_args = args;
 
         Intl.setlocale (LocaleCategory.ALL, "");
-        Intl.bindtextdomain (Dcs.Build.GETTEXT_PACKAGE, Dcs.Build.LOCALEDIR);
-        Intl.bind_textdomain_codeset (Dcs.Build.GETTEXT_PACKAGE, "UTF-8");
-        Intl.textdomain (Dcs.Build.GETTEXT_PACKAGE);
+        Intl.bindtextdomain (Dcs.GETTEXT_PACKAGE, Dcs.LOCALEDIR);
+        Intl.bind_textdomain_codeset (Dcs.GETTEXT_PACKAGE, "UTF-8");
+        Intl.textdomain (Dcs.GETTEXT_PACKAGE);
 
-        GLib.Environment.set_prgname (_(Dcs.Build.PACKAGE_NAME));
-        GLib.Environment.set_application_name (_(Dcs.Build.PACKAGE_NAME));
+        GLib.Environment.set_prgname (_(Dcs.NAME));
+        GLib.Environment.set_application_name (_(Dcs.NAME));
 
         try {
             parse_local_args (ref args);

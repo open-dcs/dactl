@@ -1,0 +1,7 @@
+*.*~
+*.swp
+
+_build/
+
+subprojects/cld/
+subprojects/template-glib/

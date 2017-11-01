@@ -1,8 +1,0 @@
-/'
- '  UML include file for Plugin interface
- '/
-
-@startuml
-interface Plugin {
-}
-@enduml

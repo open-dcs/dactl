@@ -1,8 +1,0 @@
-/'
- '  UML include file for Message
- '/
-
-@startuml
-class Message {
-}
-@enduml

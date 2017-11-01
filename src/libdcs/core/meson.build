@@ -1,0 +1,52 @@
+core_headers = []
+
+core_sources = [
+  'dcs-abstract-buildable.vala',
+  'dcs-abstract-config.vala',
+  'dcs-abstract-container.vala',
+  'dcs-abstract-object.vala',
+  'dcs-application.vala',
+  'dcs-buildable.vala',
+  'dcs-cld-adapter.vala',
+  'dcs-config-file.vala',
+  'dcs-config-node.vala',
+  'dcs-config-provider.vala',
+  'dcs-config-util.vala',
+  'dcs-config.vala',
+  'dcs-container.vala',
+  'dcs-controller.vala',
+  'dcs-dataseries.vala',
+  'dcs-dbus-interface.vala',
+  'dcs-edge.vala',
+  'dcs-extendable.vala',
+  'dcs-factory-provider.vala',
+  'dcs-factory.vala',
+  'dcs-graph.vala',
+  'dcs-legacy-config.vala',
+  'dcs-legacy-plugin.vala',
+  'dcs-log.vala',
+  'dcs-message.vala',
+  'dcs-meta-config.vala',
+  'dcs-meta-factory.vala',
+  'dcs-model.vala',
+  'dcs-module-loader.vala',
+  'dcs-node.vala',
+  'dcs-object.vala',
+  'dcs-plugin-extension.vala',
+  'dcs-plugin-factory.vala',
+  'dcs-plugin-information.vala',
+  'dcs-plugin-loader.vala',
+  'dcs-plugin-manager.vala',
+  'dcs-plugin.vala',
+  'dcs-point.vala',
+  'dcs-ref-container.vala',
+  'dcs-ref-linker.vala',
+  'dcs-runnable.vala',
+  'dcs-serializable.vala',
+  'dcs-view.vala',
+]
+
+libdcs_headers += files(core_headers)
+libdcs_sources += files(core_sources)
+
+install_headers(core_headers, subdir: join_paths(libdcs_header_subdir, 'core'))

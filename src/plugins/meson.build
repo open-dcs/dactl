@@ -1,0 +1,10 @@
+plugin_deps = [ libdcs_plugin_dep, libdcs_dep ]
+plugin_link_deps = join_paths(meson.current_source_dir(), 'plugins.map')
+plugin_link_args = [ '-Wl,--version-script,' + plugin_link_deps ]
+
+plugin_vala_args = common_vala_args + []
+
+subdir('backends')
+subdir('controllers')
+subdir('devices')
+subdir('ui-modules')
