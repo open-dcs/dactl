@@ -1,7 +1,0 @@
-{
-global:
-    dcs_ui_*;
-    _dcs_ui_*;
-local:
-    *;
-};

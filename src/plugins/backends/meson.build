@@ -1,7 +1,3 @@
-backend_deps = [
-  libdcs_log_plugin_dep,
-]
-
 subdir('xml')
 
 status += [

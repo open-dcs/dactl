@@ -5,7 +5,7 @@ pid_controller_sources = [
   'dcs-pid-service-addin.vala',
 ]
 
-pid_controller_deps = controller_deps
+pid_controller_deps = plugin_deps
 
 pid_controller_c_args = [
   '-DG_LOG_DOMAIN="pid-controller"',
@@ -19,7 +19,7 @@ configure_file(
          output: 'pid.plugin',
   configuration: configuration_data(),
         install: true,
-    install_dir: controllerdir,
+    install_dir: dir_controller,
 )
 
 configure_file(
@@ -27,7 +27,7 @@ configure_file(
          output: 'pid.json',
   configuration: configuration_data(),
         install: true,
-    install_dir: controllerconfdir,
+    install_dir: dir_controllerconf,
 )
 
 shared_module('pid-controller', pid_controller_sources,
@@ -36,7 +36,7 @@ shared_module('pid-controller', pid_controller_sources,
      link_args: plugin_link_args,
   link_depends: plugin_link_deps,
        install: true,
-   install_dir: controllerdir,
+   install_dir: dir_controller,
 )
 
 endif

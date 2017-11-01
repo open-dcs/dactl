@@ -18,7 +18,7 @@ public class Dcs.Node : Gee.TreeMap<string, Dcs.Node>,
     /**
      * {@inheritDoc}
      */
-    protected virtual Gee.List<unowned Dcs.Node> references { get; private set; }
+    protected virtual Gee.List<unowned Dcs.Node> references { get; protected set; }
 
     /**
      * Parent of the node, null if this is the root.

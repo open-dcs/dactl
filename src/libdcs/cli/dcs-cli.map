@@ -1,7 +1,0 @@
-{
-global:
-    dcs_cli_*;
-    _dcs_cli_*;
-local:
-    *;
-};

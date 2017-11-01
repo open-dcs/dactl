@@ -10,36 +10,26 @@ common_vala_args = [
 ]
 
 common_deps = [
-  libgio_dep,
-  libgee_dep,
-  libgsl_dep,
-  libpeas_dep,
-  libjson_glib_dep,
-  libxml_dep,
-  libcld_dep,
-  libzmq_dep,
-  libsoup_dep,
-  libcomedi_dep,
+  dep_gio,
+  dep_gee,
+  dep_gsl,
+  dep_peas,
+  dep_json,
+  dep_xml,
+  dep_cld,
+  dep_zmq,
+  dep_soup,
+  #dep_comedi,
   dep_posix,
   dep_linux,
 ]
 
-# XXX move these into libdcs-ui build
-# GUI deps
-if get_option('with-ui')
-  dep_peasgtk = dependency('libpeas-gtk-1.0', version: '>= 1.20.0')
-  dep_gtk = dependency('gtk+-3.0', version: '>= 3.22.0')
-  dep_gtksource = dependency('gtksourceview-3.0', version: '>= 3.22.0')
-  dep_rsvg = dependency('librsvg-2.0', version: '>= 2.40.0')
-endif
-
-# Libraries
 subdir('libdcs')
-
-# Plugins
 subdir('plugins')
 
-# Executables
+exe_link_args = [ '-pie' ]
+exe_c_args = [ '-fPIE' ]
+
 #subdir('dcs')
 subdir('dcsg')
 subdir('services')

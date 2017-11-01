@@ -5,7 +5,7 @@ xml_backend_sources = [
   'dcs-xml-service-addin.vala',
 ]
 
-xml_backend_deps = backend_deps
+xml_backend_deps = plugin_deps
 
 xml_backend_c_args = [
   '-DG_LOG_DOMAIN="xml-backend"',
@@ -19,7 +19,7 @@ configure_file(
          output: 'xml.plugin',
   configuration: configuration_data(),
         install: true,
-    install_dir: backenddir,
+    install_dir: dir_backend,
 )
 
 configure_file(
@@ -27,7 +27,7 @@ configure_file(
          output: 'xml.json',
   configuration: configuration_data(),
         install: true,
-    install_dir: backendconfdir,
+    install_dir: dir_backendconf,
 )
 
 shared_module('xml-backend', xml_backend_sources,
@@ -36,7 +36,7 @@ shared_module('xml-backend', xml_backend_sources,
      link_args: plugin_link_args,
   link_depends: plugin_link_deps,
        install: true,
-   install_dir: backenddir,
+   install_dir: dir_backend,
 )
 
 endif

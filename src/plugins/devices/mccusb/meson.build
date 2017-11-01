@@ -4,7 +4,7 @@ mccusb_device_sources = [
   'mccusb-device.vala',
 ]
 
-mccusb_device_deps = device_deps
+mccusb_device_deps = plugin_deps
 
 mccusb_device_c_args = [
   '-DG_LOG_DOMAIN="mccusb-device"',
@@ -18,7 +18,7 @@ configure_file(
          output: 'mccusb.plugin',
   configuration: configuration_data(),
         install: true,
-    install_dir: devicedir,
+    install_dir: dir_device,
 )
 
 configure_file(
@@ -26,7 +26,7 @@ configure_file(
          output: 'mccusb.json',
   configuration: configuration_data(),
         install: true,
-    install_dir: deviceconfdir,
+    install_dir: dir_deviceconf,
 )
 
 shared_module('mccusb-device', mccusb_device_sources,
@@ -35,7 +35,7 @@ shared_module('mccusb-device', mccusb_device_sources,
      link_args: plugin_link_args,
   link_depends: plugin_link_deps,
        install: true,
-   install_dir: devicedir,
+   install_dir: dir_device,
 )
 
 endif

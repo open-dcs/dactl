@@ -29,6 +29,5 @@ public interface Dcs.Buildable : GLib.Object {
      *
      * @param node XML node to construction the object from
      */
-    internal abstract void build_from_xml_node (Xml.Node* node)
-                                                throws GLib.Error;
+    internal abstract void build_from_xml_node (Xml.Node* node);
 }

@@ -48,57 +48,62 @@ add_global_arguments([
   '-DGETTEXT_PACKAGE="dcs"',
 ], language: 'c')
 
+dir_vapi = join_paths(meson.current_source_dir(), 'vapi')
+
 add_project_arguments([
   '--thread',
   ['--target-glib', '2.38'],
-  ['--vapidir', join_paths(meson.current_source_dir(), 'vapi')],
+  ['--vapidir', dir_vapi],
 ], language: 'vala')
 
-# Commonly used deps
-libgio_dep = dependency('gio-2.0', version: '>= 2.44.0')
-libgee_dep = dependency('gee-0.8', version: '>= 0.18.0')
-libgsl_dep = dependency('gsl', version: '>= 2.1')
-libpeas_dep = dependency('libpeas-1.0', version: '>= 1.20.0')
-libjson_glib_dep = dependency('json-glib-1.0', version: '>= 1.2.0')
-libxml_dep = dependency('libxml-2.0', version: '>= 2.9.0')
-libzmq_dep = dependency('libzmq', version: '>= 3.2.0')
-libsoup_dep = dependency('libsoup-2.4', version: '>= 2.50.0')
-libcld_dep = dependency('cld-1.0', version: '>= 0.4.0')
-libtemplate_glib_dep = dependency('template-glib-1.0', version: '>= 3.25.3', required: false)
+dep_gio = dependency('gio-2.0', version: '>= 2.44.0')
+dep_gee = dependency('gee-0.8', version: '>= 0.18.0')
+dep_gsl = dependency('gsl', version: '>= 2.1')
+dep_peas = dependency('libpeas-1.0', version: '>= 1.20.0')
+dep_json = dependency('json-glib-1.0', version: '>= 1.2.0')
+dep_xml = dependency('libxml-2.0', version: '>= 2.9.0')
+dep_zmq = dependency('libzmq', version: '>= 3.2.0')
+dep_soup = dependency('libsoup-2.4', version: '>= 2.50.0')
+dep_cld = dependency('cld-1.0', version: '>= 0.4.5', required: false)
+dep_tmpl = dependency('template-glib-1.0', version: '>= 3.19.4', required: false)
 
-libcomedi_lib = meson.get_compiler('c').find_library('comedi')
-libcomedi_vapi = meson.get_compiler('vala').find_library('comedi', dirs: join_paths(meson.current_source_dir(), 'vapi'))
-libcomedi_dep = declare_dependency(dependencies: [libcomedi_lib, libcomedi_vapi])
+dep_comedi = dependency('comedi')
+dep_matheval = dependency('libmatheval')
+
+#comedi_lib = meson.get_compiler('c').find_library('comedi')
+#comedi_vapi = meson.get_compiler('vala').find_library('comedi', dirs: dir_vapi)
+#dep_comedi = declare_dependency(dependencies: [comedi_lib, comedi_vapi])
+
+#matheval_lib = meson.get_compiler('c').find_library('libmatheval')
+#matheval_vapi = meson.get_compiler('vala').find_library('libmatheval', dirs: dir_vapi)
+#dep_matheval = declare_dependency(dependencies: [matheval_lib, matheval_vapi])
 
 dep_posix = meson.get_compiler('vala').find_library('posix')
 dep_linux = meson.get_compiler('vala').find_library('linux')
 
 libcld_gir = 'Cld-1.0'
 libcld_vapi = 'cld-1.0'
-if not libcld_dep.found()
+if not dep_cld.found()
   libcld = subproject('cld',
-    default_options: [
-      'package_subdir=' + meson.project_name()
-    ]
+    default_options: []
   )
-  libcld_dep = libcld.get_variable('libcld_dep')
-  libcld_gir = libcld.get_variable('libcld_gir')[0]
-  libcld_vapi = libcld.get_variable('libcld_vapi')
+  dep_cld = libcld.get_variable('libcld_dep')
+  #libcld_gir = libcld.get_variable('libcld_gir')[0]
+  #libcld_vapi = libcld.get_variable('libcld_vapi')
 endif
 
-libtemplate_glib_gir = 'Template-1.0'
-libtemplate_glib_vapi = 'template-glib-1.0'
-if not libtemplate_glib_dep.found()
-  libtemplate_glib = subproject('template-glib',
+libtmpl_gir = 'Template-1.0'
+libtmpl_vapi = 'template-glib-1.0'
+if not dep_tmpl.found()
+  libtmpl = subproject('template-glib',
     default_options: [
       'with_introspection=true',
       'with_vapi=true',
-      'package_subdir=' + meson.project_name()
     ]
   )
-  libtemplate_glib_dep = libtemplate_glib.get_variable('libtemplate_glib_dep')
-  libtemplate_glib_gir = libtemplate_glib.get_variable('libtemplate_glib_gir')[0]
-  libtemplate_glib_vapi = libtemplate_glib.get_variable('libtemplate_glib_vapi')
+  dep_tmpl = libtmpl.get_variable('libtemplate_glib_dep')
+  libtmpl_gir = libtmpl.get_variable('libtemplate_glib_gir')[0]
+  libtmpl_vapi = libtmpl.get_variable('libtemplate_glib_vapi')
 endif
 
 # Create config.h
@@ -147,45 +152,45 @@ if get_option('with-ui')
 endif
 
 # Configuration for logging plugins
-backenddir = join_paths(get_option('prefix'), get_option('libdir'), 'dcs/backends')
-backenddatadir = join_paths(get_option('prefix'), get_option('datadir'), 'dcs/backend')
-backendconfdir = join_paths(get_option('prefix'), get_option('sysconfdir'), 'dcs/backend')
+dir_backend = join_paths(get_option('prefix'), get_option('libdir'), 'dcs/backends')
+dir_backenddata = join_paths(get_option('prefix'), get_option('datadir'), 'dcs/backend')
+dir_backendconf = join_paths(get_option('prefix'), get_option('sysconfdir'), 'dcs/backend')
 
-conf.set_quoted('BACKEND_DIR', backenddir)
-conf.set_quoted('BACKEND_CONF_DIR', backendconfdir)
-conf.set_quoted('BACKEND_DATA_DIR', backenddatadir)
+conf.set_quoted('BACKEND_DIR', dir_backend)
+conf.set_quoted('BACKEND_CONF_DIR', dir_backendconf)
+conf.set_quoted('BACKEND_DATA_DIR', dir_backenddata)
 
 # Configuration for feedback control plugins
-controllerdir = join_paths(get_option('prefix'), get_option('libdir'), 'dcs/controllers')
-controllerdatadir = join_paths(get_option('prefix'), get_option('datadir'), 'dcs/controller')
-controllerconfdir = join_paths(get_option('prefix'), get_option('sysconfdir'), 'dcs/controller')
+dir_controller = join_paths(get_option('prefix'), get_option('libdir'), 'dcs/controllers')
+dir_controllerdata = join_paths(get_option('prefix'), get_option('datadir'), 'dcs/controller')
+dir_controllerconf = join_paths(get_option('prefix'), get_option('sysconfdir'), 'dcs/controller')
 
-conf.set_quoted('CONTROLLER_DIR', controllerdir)
-conf.set_quoted('CONTROLLER_CONF_DIR', controllerconfdir)
-conf.set_quoted('CONTROLLER_DATA_DIR', controllerdatadir)
+conf.set_quoted('CONTROLLER_DIR', dir_controller)
+conf.set_quoted('CONTROLLER_CONF_DIR', dir_controllerconf)
+conf.set_quoted('CONTROLLER_DATA_DIR', dir_controllerdata)
 
 # Configuration for device plugins
-devicedir = join_paths(get_option('prefix'), get_option('libdir'), 'dcs/devices')
-devicedatadir = join_paths(get_option('prefix'), get_option('datadir'), 'dcs/device')
-deviceconfdir = join_paths(get_option('prefix'), get_option('sysconfdir'), 'dcs/device')
+dir_device = join_paths(get_option('prefix'), get_option('libdir'), 'dcs/devices')
+dir_devicedata = join_paths(get_option('prefix'), get_option('datadir'), 'dcs/device')
+dir_deviceconf = join_paths(get_option('prefix'), get_option('sysconfdir'), 'dcs/device')
 
-conf.set_quoted('DEVICE_DIR', devicedir)
-conf.set_quoted('DEVICE_CONF_DIR', deviceconfdir)
-conf.set_quoted('DEVICE_DATA_DIR', devicedatadir)
+conf.set_quoted('DEVICE_DIR', dir_device)
+conf.set_quoted('DEVICE_CONF_DIR', dir_deviceconf)
+conf.set_quoted('DEVICE_DATA_DIR', dir_devicedata)
 
 # Configuration for UI plugins
-plugindir = join_paths(get_option('prefix'), get_option('libdir'), 'dcs/plugins')
-plugindatadir = join_paths(get_option('prefix'), get_option('datadir'), 'dcs/plugin')
-pluginconfdir = join_paths(get_option('prefix'), get_option('sysconfdir'), 'dcs/plugin')
+dir_plugin = join_paths(get_option('prefix'), get_option('libdir'), 'dcs/plugins')
+dir_plugindata = join_paths(get_option('prefix'), get_option('datadir'), 'dcs/plugin')
+dir_pluginconf = join_paths(get_option('prefix'), get_option('sysconfdir'), 'dcs/plugin')
 
-conf.set_quoted('PLUGIN_DIR', plugindir)
-conf.set_quoted('PLUGIN_CONF_DIR', pluginconfdir)
-conf.set_quoted('PLUGIN_DATA_DIR', plugindatadir)
+conf.set_quoted('PLUGIN_DIR', dir_plugin)
+conf.set_quoted('PLUGIN_CONF_DIR', dir_pluginconf)
+conf.set_quoted('PLUGIN_DATA_DIR', dir_plugindata)
 
 # Write config.h
 configure_file(
          output: 'config.h',
-  configuration: conf
+  configuration: conf,
 )
 
 # Enable others to find this .h file
@@ -203,10 +208,6 @@ i18n = import('i18n')
 # Prep translations prior to build
 subdir('po')
 
-# TODO these may be needed by Peas plugins, double check later and remove if not
-exe_link_args = [ '-pie' ]
-exe_c_args = [ '-fPIE' ]
-
 # Build all the libs and executables
 subdir('src')
 subdir('tests')
@@ -218,12 +219,12 @@ subdir('doc')
 # All the data to be installed
 subdir('data')
 
-meson.add_install_script('build-aux/meson/meson_post_install.py')
+meson.add_install_script('build-aux/meson/post-install.py')
 
 # 'dist' will be used by meson, avoid conflicting
 run_target('dcs-dist',
   command: [
-    find_program('build-aux/meson/meson_dist.sh'),
+    find_program('build-aux/meson/dist.sh'),
     meson.project_version(),
     meson.project_name(),
   ]

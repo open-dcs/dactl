@@ -14,7 +14,7 @@ daq_c_args = exe_c_args + [
 daq_vala_args = common_vala_args + []
 
 daq_deps = [
-  libdcs_daq_dep,
+  libdcs_dep,
 ]
 
 executable('dcs-daq', daq_sources,

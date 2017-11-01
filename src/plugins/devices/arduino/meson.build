@@ -7,7 +7,7 @@ arduino_device_sources = [
   'dcs-arduino-service-addin.vala',
 ]
 
-arduino_device_deps = device_deps
+arduino_device_deps = plugin_deps
 
 arduino_device_c_args = [
   '-DG_LOG_DOMAIN="arduino-device"',
@@ -21,7 +21,7 @@ configure_file(
          output: 'arduino.plugin',
   configuration: configuration_data(),
         install: true,
-    install_dir: devicedir,
+    install_dir: dir_device,
 )
 
 configure_file(
@@ -29,7 +29,7 @@ configure_file(
          output: 'arduino.json',
   configuration: configuration_data(),
         install: true,
-    install_dir: deviceconfdir,
+    install_dir: dir_deviceconf,
 )
 
 shared_module('arduino-device', arduino_device_sources,
@@ -38,7 +38,7 @@ shared_module('arduino-device', arduino_device_sources,
      link_args: plugin_link_args,
   link_depends: plugin_link_deps,
        install: true,
-   install_dir: devicedir,
+   install_dir: dir_device,
 )
 
 endif

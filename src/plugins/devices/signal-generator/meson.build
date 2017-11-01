@@ -5,7 +5,7 @@ configure_file(
          output: 'signal-generator.py',
   configuration: configuration_data(),
         install: true,
-    install_dir: devicedir,
+    install_dir: dir_device,
 )
 
 configure_file(
@@ -13,7 +13,7 @@ configure_file(
          output: 'signal-generator.plugin',
   configuration: configuration_data(),
         install: true,
-    install_dir: devicedir,
+    install_dir: dir_device,
 )
 
 configure_file(
@@ -21,7 +21,7 @@ configure_file(
          output: 'signal-generator.json',
   configuration: configuration_data(),
         install: true,
-    install_dir: deviceconfdir,
+    install_dir: dir_deviceconf,
 )
 
 endif

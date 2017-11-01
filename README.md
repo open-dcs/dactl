@@ -24,7 +24,7 @@ for use in other languages, the support of which is still a work in progress.
 
 OpenDCS is built using meson:
 
-```bash
+```sh
 meson _build
 ninja -C _build
 sudo ninja -C _build install

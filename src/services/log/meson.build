@@ -14,7 +14,7 @@ log_c_args = exe_c_args + [
 log_vala_args = common_vala_args + []
 
 log_deps = [
-  libdcs_log_dep,
+  libdcs_dep,
 ]
 
 executable('dcs-log', log_sources,

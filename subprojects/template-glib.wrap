@@ -1,0 +1,4 @@
+[wrap-git]
+directory=template-glib
+url=https://github.com/chergert/template-glib.git
+revision=3.26.0

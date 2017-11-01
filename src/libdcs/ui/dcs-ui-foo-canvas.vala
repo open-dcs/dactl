@@ -13,7 +13,7 @@ public class Dcs.UI.FooCanvas : Dcs.UI.FooObject {
         build_from_xml_node (node);
     }
 
-    internal override void build_from_xml_node (Xml.Node* node) throws GLib.Error {
+    internal override void build_from_xml_node (Xml.Node* node) {
         string? value;
         string type;
 

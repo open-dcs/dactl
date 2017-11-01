@@ -1,7 +1,6 @@
 {
 global:
     dcs_*;
-    _dcs_*;
 local:
     *;
 };

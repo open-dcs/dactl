@@ -1,7 +1,0 @@
-{
-global:
-    dcs_daq_*;
-    _dcs_daq_*;
-local:
-    *;
-};

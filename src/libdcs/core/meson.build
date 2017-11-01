@@ -1,4 +1,6 @@
-libdcs_core_sources = [
+core_headers = []
+
+core_sources = [
   'dcs-abstract-buildable.vala',
   'dcs-abstract-config.vala',
   'dcs-abstract-container.vala',
@@ -44,59 +46,7 @@ libdcs_core_sources = [
   'dcs-view.vala',
 ]
 
-libdcs_core_girdir = meson.current_build_dir()
+libdcs_headers += files(core_headers)
+libdcs_sources += files(core_sources)
 
-libdcs_core_c_args = common_c_args + [
-  '-DG_LOG_DOMAIN="DcsCore"',
-]
-
-libdcs_core_vala_args = common_vala_args + []
-
-libdcs_core_deps = common_deps + [
-  libgmodule_dep,
-  link_libconfig,
-]
-
-libdcs_core = library('dcs-core-' + libdcs_api_version, libdcs_core_sources + libdcs_generated_headers,
-  link_depends: 'dcs-core.map',
-     link_args: [ '-Wl,--version-script,' + join_paths(meson.current_source_dir(), 'dcs-core.map') ],
-   vala_header: 'dcs-core.h',
-     vala_args: libdcs_core_vala_args,
-     vala_vapi: 'dcs-core-@0@.vapi'.format(libdcs_api_version),
-      vala_gir: 'Dcs-@0@.gir'.format(libdcs_api_version),
-  dependencies: libdcs_core_deps,
-        c_args: libdcs_core_c_args,
-     soversion: soversion,
-       install: true,
-   install_dir: [ true, true, true, false ],
-)
-
-libdcs_core_girdir = meson.current_build_dir()
-
-# XXX not sure if deps were done correctly here
-libdcs_core_dep = declare_dependency(
-              sources: libdcs_generated_headers,
-         dependencies: libdcs_core_deps,
-            link_with: libdcs_core,
-  include_directories: include_directories('.'),
-)
-
-# Doesn't link to libdcs
-libdcs_core_plugin_dep = declare_dependency(
-              sources: libdcs_generated_headers,
-         dependencies: libdcs_core_deps,
-  include_directories: include_directories('.'),
-)
-
-pkgg = import('pkgconfig')
-
-pkgg.generate(
-    libraries: [libdcs_core],
-      subdirs: [ 'dcs-core-@0@'.format(meson.project_version()) ],
-      version: meson.project_version(),
-         name: 'libdcs-core',
-     filebase: 'libdcs-core-@0@'.format(libdcs_api_version),
-  description: 'Core objects for OpenDCS',
-     requires: [ 'gee-0.8', 'gio-2.0' ],
-  install_dir: join_paths(pkglibdir, 'pkgconfig'),
-)
+install_headers(core_headers, subdir: join_paths(libdcs_header_subdir, 'core'))

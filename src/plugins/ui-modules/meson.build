@@ -1,8 +1,3 @@
-plugin_deps = [
-  libdcs_net_plugin_dep,
-  libdcs_ui_plugin_dep,
-]
-
 #subdir('placeholder')
 
 #status += [

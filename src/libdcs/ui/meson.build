@@ -1,15 +1,17 @@
 if get_option('with-ui')
 
-libdcs_ui_resources = gnome.compile_resources('libdcs-ui-resources',
-  'libdcs-ui.gresource.xml',
-  c_name: 'libdcs_ui',
+gresource = join_paths(meson.current_source_dir(), 'ui.gresource.xml')
+
+ui_resources = gnome.compile_resources('ui-resources',
+  gresource,
+  c_name: 'ui',
 )
 
-libdcs_ui_generated_headers = libdcs_generated_headers + [
-  libdcs_ui_resources[1],
-]
+ui_headers = []
 
-libdcs_ui_sources = libdcs_ui_generated_headers + [
+libdcs_generated_headers += [ ui_resources[1] ]
+
+ui_sources = [
   'dcs-ui-ai-control.vala',
   'dcs-ui-ao-control.vala',
   'dcs-ui-application.vala',
@@ -56,76 +58,46 @@ libdcs_ui_sources = libdcs_ui_generated_headers + [
   'dcs-ui-window.vala',
 ]
 
-libdcs_ui_c_args = common_c_args + [
-  '-DG_LOG_DOMAIN="DcsUI"',
-]
-
-libdcs_ui_vala_args = common_vala_args + [
+ui_vala_args = [
   '--pkg', 'gsl',
 ]
 
-libdcs_ui_deps = [
-  libdcs_core_dep,
+if get_option('with-ui')
+  dep_gtk = dependency('gtk+-3.0', version: '>= 3.22.0')
+  dep_gtksource = dependency('gtksourceview-3.0', version: '>= 3.22.0')
+  dep_peasgtk = dependency('libpeas-gtk-1.0', version: '>= 1.20.0')
+  dep_rsvg = dependency('librsvg-2.0', version: '>= 2.40.0')
+endif
+
+ui_deps = [
   dep_gtk,
   dep_gtksource,
+  dep_peasgtk,
   dep_rsvg,
 ]
 
 if get_option('with-webkit')
-  libdcs_ui_deps += [dependency('webkit2gtk-4.0', version: '>= 2.12.0')]
-  #libdcs_ui_deps += [dependency('webkit2gtk-web-extension-4.0', version: '>= 2.12.0')]
-  libdcs_ui_sources += [
+  ui_deps += [dependency('webkit2gtk-4.0', version: '>= 2.12.0')]
+  #ui_deps += [dependency('webkit2gtk-web-extension-4.0', version: '>= 2.12.0')]
+
+  ui_vala_args += [
+    '--pkg', 'javascriptcoregtk-3.0',
+    '--gresources=' + gresource,
+  ]
+
+  ui_sources += [
     'dcs-ui-rich-content.vala',
     'dcs-ui-webkit-widget.vala',
     #'extensions/dcs-ui-extension-dom.vala',
   ]
-  libdcs_ui_vala_args += [
-    '--pkg', 'javascriptcoregtk-3.0',
-  ]
 endif
 
-libdcs_ui = library('dcs-ui-' + libdcs_api_version, libdcs_ui_resources + libdcs_ui_sources,
-  link_depends: 'dcs-ui.map',
-     link_args: [ '-Wl,--version-script,' + join_paths(meson.current_source_dir(), 'dcs-ui.map') ],
-   vala_header: 'dcs-ui.h',
-     vala_args: libdcs_ui_vala_args,
-     vala_vapi: 'dcs-ui-@0@.vapi'.format(libdcs_api_version),
-      vala_gir: 'Dcs-@0@.gir'.format(libdcs_api_version),
-  dependencies: libdcs_ui_deps,
-        c_args: libdcs_ui_c_args,
-     soversion: soversion,
-       install: true,
-   install_dir: [ true, true, true, false ],
-)
+libdcs_deps += ui_deps
+libdcs_vala_args += ui_vala_args
 
-libdcs_ui_girdir = meson.current_build_dir()
+libdcs_headers += files(ui_headers)
+libdcs_sources += files(ui_sources)
 
-# XXX not sure if deps were done correctly here
-libdcs_ui_dep = declare_dependency(
-              sources: libdcs_ui_generated_headers,
-         dependencies: libdcs_ui_deps,
-            link_with: libdcs_ui,
-  include_directories: include_directories('.'),
-)
-
-# Doesn't link to libdcs_ui
-libdcs_ui_plugin_dep = declare_dependency(
-              sources: libdcs_ui_generated_headers,
-         dependencies: libdcs_ui_deps,
-  include_directories: include_directories('.'),
-)
-
-pkgg = import('pkgconfig')
-
-pkgg.generate(
-    libraries: [libdcs_ui],
-      subdirs: [ 'dcs-@0@'.format(meson.project_version()) ],
-      version: meson.project_version(),
-         name: 'libdcs-ui',
-     filebase: 'libdcs-ui-@0@'.format(libdcs_api_version),
-  description: 'Gtk UI widgets for OpenDCS',
-     requires: [ 'gtk+-3.0', 'gtksourceview-3.0', 'librsvg-2.0', 'gsl' ],
-  install_dir: join_paths(pkglibdir, 'pkgconfig'),
-)
+install_headers(ui_headers, subdir: join_paths(libdcs_header_subdir, 'ui'))
 
 endif

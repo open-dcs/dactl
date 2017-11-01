@@ -1,0 +1,4 @@
+[wrap-git]
+directory=cld
+url=https://github.com/geoffjay/libcld.git
+revision=v0.4.5

@@ -48,7 +48,7 @@ vapi_glibextra = meson.get_compiler('vala').find_library('glib-extra', dirs: joi
 dep_glibextra = declare_dependency(dependencies: vapi_glibextra)
 
 dcsg_deps = [
-  libdcs_ui_dep,
+  libdcs_dep,
   dep_peasgtk,
   dep_glibextra,
 ]

@@ -43,7 +43,7 @@ public class Dcs.UI.DigitalControl : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
 
     construct {
         id = "d-ctl0";
-        objects = new Gee.TreeMap<string, Cld.Object> ();
+        objects = new Gee.TreeMap<string, Dcs.Object> ();
     }
 
     //public AOControl (string ai_ref) {}

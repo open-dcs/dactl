@@ -1,6 +1,0 @@
-[submodule "subprojects/cld"]
-	path = subprojects/cld
-	url = https://github.com/geoffjay/libcld.git
-[submodule "subprojects/template-glib"]
-	path = subprojects/template-glib
-	url = https://github.com/chergert/template-glib.git

@@ -21,8 +21,7 @@ public abstract class Dcs.UI.FooObject : GLib.Object,
         }
     }
 
-    internal abstract void build_from_xml_node (Xml.Node* node)
-                                                throws GLib.Error;
+    internal abstract void build_from_xml_node (Xml.Node* node);
 
     /* Srsly need to deprecate */
     protected virtual void update_objects (Gee.Map<string, Dcs.Object> val) {

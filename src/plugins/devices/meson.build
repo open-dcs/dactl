@@ -1,7 +1,3 @@
-device_deps = [
-  libdcs_daq_plugin_dep,
-]
-
 subdir('arduino')
 subdir('comedi')
 subdir('mccusb')

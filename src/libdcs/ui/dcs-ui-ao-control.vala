@@ -62,7 +62,7 @@ public class Dcs.UI.AOControl : Dcs.UI.CompositeWidget, Dcs.CldAdapter {
         content.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
         content.transition_duration = 400;
 
-        objects = new Gee.TreeMap<string, Cld.Object> ();
+        objects = new Gee.TreeMap<string, Dcs.Object> ();
     }
 
     //public AOControl (string ai_ref) {}

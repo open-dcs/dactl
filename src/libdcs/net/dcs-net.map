@@ -1,7 +1,0 @@
-{
-global:
-    dcs_net_*;
-    _dcs_net_*;
-local:
-    *;
-};

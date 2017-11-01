@@ -14,7 +14,7 @@ control_c_args = exe_c_args + [
 control_vala_args = common_vala_args + []
 
 control_deps = [
-  libdcs_control_dep,
+  libdcs_dep,
 ]
 
 executable('dcs-control', control_sources,

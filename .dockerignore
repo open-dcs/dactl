@@ -1,7 +1,11 @@
 *.*~
 *.swp
 
-_build/
+Dockerfile
 
+.git/
+_build/
 subprojects/cld/
 subprojects/template-glib/
+
+doc/**/*.html
